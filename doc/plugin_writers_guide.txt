@@ -104,6 +104,9 @@ function, you must use the macro N_(...) instead. N(...) marks a string
 for later translation; _(...) marks a string for immediate translation,
 and can only be used where a function call is permitted.
 
+For more detailed information on the use of these macros, see the
+relevent section in "GTK+/Gnome Application Development" [4].
+
 If you would like to add a translation for Sweep into a new language,
 all you need to do is provide translations for the text strings used in
 Sweep. Please see the documentation for GNU gettext [3] for more
@@ -378,8 +381,8 @@ page describing the procedure in more detail.
 
 The identifier field should be a string which will uniquely identify
 this plugin. You may choose to put identifying information here such
-as your name, a suggested categorisation for the procedure, or the
-name of your favourite vegetable.
+as your name, domain, a suggested categorisation for the procedure, or
+the name of your favourite vegetable or fish.
 
 The accel_key and accel_mods fields list keybindings to initiate this
 procedure. The values of their types are defined in <gdk/gdkkeysyms.h>.
@@ -810,3 +813,7 @@ http://developer.gnome.org/doc/API/glib/index.html
 
 [3] GNU gettext
 http://www.gnu.org/software/gettext/
+
+[4] GTK+/Gnome Application Development, Section 5.2 "Internationalization"
+Havoc Pennington, New Riders Publishing 1999
+http://developer.gnome.org/doc/GGAD/sec-i18n.html
