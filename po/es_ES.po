@@ -1,24 +1,22 @@
-# Sweep Italian Translation.
-# Copyright @ 2003 Free Software Foundation, Inc.
-# Yuri Bongiorno <yuri.bongiorno AT libero.it>, 2000-2003.
-# Traduttori Italiani GNU:   http://www.linux.it/tp
+# Spanish translation of sweep
+# Juan Manuel Martínez <negromartinez@interlap.com.ar>
 #
 #: src/sample-display.c:220
 msgid ""
 msgstr ""
-"Project-Id-Version: sweep-0.8.2\n"
+"Project-Id-Version: sweep-0.5.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-04-23 12:36+1000\n"
-"PO-Revision-Date: 2003-08-15 12:31+0200\n"
-"Last-Translator: Yuri Bongiorno <yuri.bongiorno AT libero.it>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
+"PO-Revision-Date: 2003-01-12 10:49+0100\n"
+"Last-Translator: Juan Manuel Martnez <negromartinez@interlap.com.ar>\n"
+"Language-Team: Spanish <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/main.c:89
 msgid "Welcome to Sweep"
-msgstr "benvenuto in Sweep"
+msgstr "Bienvenido a Sweep"
 
 #: src/main.c:90
 msgid ""
@@ -26,62 +24,62 @@ msgid ""
 "\n"
 "Would you like to create a new file or load an existing file?"
 msgstr ""
-"Ciao, il mio nome Ã¨ Scrubby. Benvenuto in Sweep.\n"
+"Hola, mi nombre es Scrubby. Bienvenido a Sweep\n"
 "\n"
-"Creo un nuovo file o ne carico uno esistente?"
+"Quiere crear un archivo nuevo o cargar uno existente?"
 
 #: src/main.c:94
 msgid "Create new file"
-msgstr "Crea un nuovo file"
+msgstr "Crear archivo nuevo"
 
 #: src/main.c:94
 msgid "Load existing file"
-msgstr "Carica un file esistente"
+msgstr "Cargar uno existente"
 
 #: src/main.c:129
 msgid "WARNING: Build includes incomplete development code.\n"
-msgstr "ATTENZIONE: Build include codice (incompleto) di sviluppo.\n"
+msgstr "ATENCION: la compilación incluye código en desarrollo.\n"
 
 #: src/main.c:183
 msgid "Sweep version"
-msgstr "Versione di Sweep"
+msgstr "Versión de Sweep"
 
 #: src/main.c:184
 msgid "Sweep plugin API version"
-msgstr "Versione delle API dei plugin di Sweep"
+msgstr "Versión de la API de Sweep"
 
 #: src/main.c:190
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
-msgstr "Uso: %s [opzione...] [file...]\n"
+msgstr "Uso: %s [opción...] [archivos...]\n"
 
 #: src/main.c:191
 msgid "Valid options are:\n"
-msgstr "Le opzioni valide sono:\n"
+msgstr "Las opciones válidas son:\n"
 
 #: src/main.c:192
 msgid "  -h --help                Output this help.\n"
-msgstr "  -h --help                mostra questo aiuto.\n"
+msgstr "  -h --help                Muestra esta ayuda.\n"
 
 #: src/main.c:193
 msgid "  -v --version             Output version info.\n"
-msgstr "  -v --version             mostra le informazioni sulla versione.\n"
+msgstr "  -v --version             Muestra la versión.\n"
 
 #: src/main.c:194
 msgid "  --display <display>      Use the designated X display.\n"
-msgstr "  --display <display>      usa il display X designato.\n"
+msgstr "  --display <display>      Usa el display de X especificado.\n"
 
 #: src/main.c:196
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
-msgstr "  --no-toolbox             non mostrare la finestra degli strumenti.\n"
+msgstr "  --no-toolbox             No muestra la ventana de herramientas.\n"
 
 #: src/about_dialog.c:78
 msgid "About Sweep"
-msgstr "Informazioni su Sweep"
+msgstr "Sobre Sweep..."
 
 #: src/about_dialog.c:124
 msgid "This is Sweep version"
-msgstr "Questa Ã¨ la versione"
+msgstr "Swwep versión"
 
 #: src/about_dialog.c:142
 msgid "http://sweep.sourceforge.net/"
@@ -90,30 +88,30 @@ msgstr "http://sweep.sourceforge.net/"
 #: src/callbacks.c:920 src/callbacks.c:933 src/edit.c:1568 src/edit.c:1642
 #: src/edit.c:1726
 msgid "Clipboard empty"
-msgstr "Appunti vuoti"
+msgstr "Portapapeles vacio"
 
 #: src/channelops.c:146
 #, c-format
 msgid "Duplicate to %d channels"
-msgstr "Duplica in %d canali"
+msgstr "Duplica a %d canales"
 
 #: src/channelops.c:148
 #, c-format
 msgid "Duplicate from %d to %d channels"
-msgstr "Duplica da %d a %d canali"
+msgstr "Duplica de %d a %d canales"
 
 #: src/channelops.c:207
 msgid "Sweep: Duplicate channel"
-msgstr "Sweep: duplica canale"
+msgstr "Sweep: duplicar canales"
 
 #: src/channelops.c:214 src/channelops.c:698
 #, c-format
 msgid "Currently: %d channels"
-msgstr "Attualmente: %d canali"
+msgstr "Actualmente: %d canales"
 
 #: src/channelops.c:221 src/channelops.c:704
 msgid "Output channels"
-msgstr "Output canali"
+msgstr "Canales de salida"
 
 #. OK
 #: src/channelops.c:231 src/channelops.c:714 src/driver.c:369
@@ -128,119 +126,119 @@ msgstr "Ok"
 #: src/file_sndfile0.c:510 src/file_sndfile1.c:293 src/param.c:790
 #: src/question_dialogs.c:158 src/view.c:505 src/view.c:2767
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Cancelar"
 
 #: src/channelops.c:347 src/view.c:356
 msgid "Mix down to mono"
-msgstr "Riduci in mono mescolando"
+msgstr "Mezclar y reducir a Mono"
 
 #: src/channelops.c:445 src/view.c:333
 msgid "Remove left channel"
-msgstr "Rimuovi il canale sinistro"
+msgstr "Eliminar canal izquierdo"
 
 #: src/channelops.c:455 src/view.c:343
 msgid "Remove right channel"
-msgstr "Rimuovi il canale destro"
+msgstr "Eliminar canal derecho"
 
 #: src/channelops.c:539
 msgid "Swap channels"
-msgstr "Scambia i canali"
+msgstr "Intercambiar canales"
 
 #: src/channelops.c:541
 msgid "Not stereo"
-msgstr "Non stereo"
+msgstr "No stereo"
 
 #: src/channelops.c:643
 #, c-format
 msgid "Convert from %d to %d channels"
-msgstr "Converte da %d a %d canali"
+msgstr "Convertir de %d a %d canales"
 
 #: src/channelops.c:692
 msgid "Sweep: Add/Remove channels"
-msgstr "Sweep: aggiunge/rimuove canali"
+msgstr "Sweep: Agregar/Eliminar canales"
 
 #: src/driver.c:364
 msgid "Sweep: audio device configuration"
-msgstr "Sweep: configurazione del device audio"
+msgstr "Swwep: configuración del dispositivo de audio"
 
 #. Changes ... info
 #: src/driver.c:405
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
-"I cambiamenti alle impostazioni del device hanno effetto dalla prossima "
-"riproduzione."
+"Los cambios en el dispositivo de salida tendrán efecto la próxima vez que "
+"reproduzca el audio."
 
 #. Device name
 #: src/driver.c:419
 msgid "Device name"
-msgstr "Nome device:"
+msgstr "Nombre del dispositivo"
 
 #: src/driver.c:425
 msgid "Set the main device for playback and recording"
-msgstr "Imposta il device principale di riproduzione e di registrazione"
+msgstr "Establece el dispositivo principal para reproducción y grabación"
 
 #: src/driver.c:435
 msgid "Main device:"
-msgstr "Device principale:"
+msgstr "Dispositivo principal"
 
 #: src/driver.c:449 src/driver.c:631 src/samplerate.c:551
 msgid "Default"
-msgstr "Predefinito"
+msgstr "Predefinido"
 
 #: src/driver.c:462
 msgid "Use a different device for monitoring"
-msgstr "Usa un diverso device per il preascolto"
+msgstr "Usar un dispositivo distinto para el monitor"
 
 #: src/driver.c:474
 msgid "Monitor output:"
-msgstr "Output di preascolto:"
+msgstr "Salida del monitor"
 
 #: src/driver.c:499
 msgid "Swap"
-msgstr "Scambia"
+msgstr "Intercambiar"
 
 #: src/driver.c:507
 msgid "Swap main and monitor devices."
-msgstr "Scambia il device principale con quello di preascolto."
+msgstr "Intercambiar los dispositivos Principal y Monitor"
 
 #: src/driver.c:516 src/driver.c:617 src/file_speex.c:1972
 #: src/file_vorbis.c:1368 src/samplerate.c:537 src/sweep_sample.c:543
 msgid "Reset"
-msgstr "Reimposta"
+msgstr "Reinicializar"
 
 #: src/driver.c:524
 msgid "Reset to the last remembered device names."
-msgstr "Ritorna agli ultimi nomi di device memorizzati."
+msgstr "Reinicializa los dispositivos a los últimos valores que se recordaron"
 
 #: src/driver.c:530 src/file_speex.c:1986 src/file_vorbis.c:1382
 #: src/param.c:749 src/sweep_sample.c:554
 msgid "Defaults"
-msgstr "Predefiniti"
+msgstr "Predeterminados"
 
 #: src/driver.c:538
 msgid "Set to default device names."
-msgstr "Imposta i nomi di device predefiniti."
+msgstr "Establece los dispositivos a los valores predeterminados."
 
 #. Buffering
 #: src/driver.c:549
 msgid "Device buffering"
-msgstr "Device buffering"
+msgstr "Dispositivo de pre-lectura"
 
 #: src/driver.c:559
 msgid ""
 "Low latency /\n"
 "More dropouts"
 msgstr ""
-"Bassa latenza /\n"
-"PiÃ¹ interruzioni"
+"Baja latencia /\n"
+"Más interrupciones"
 
 #: src/driver.c:581
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
 msgstr ""
-"Alta latenza /\n"
-"Meno interruzioni"
+"Alta latencia /\n"
+"Menos interrupciones"
 
 #: src/driver.c:585
 msgid ""
@@ -250,84 +248,85 @@ msgid ""
 "Lower values improve responsiveness but may degrade audio quality on heavily-"
 "loaded systems."
 msgstr ""
-"Variando questa barra si modifica il ritardo tra i movimenti del cursore e "
-"la riproduzione. Questo si nota particolarmente nella riproduzione durante "
-"l'Â«audioscandaglioÂ».\n"
+"Variando este deslizador se controla el retraso entre los movimientos del "
+"cursor y la reproducción. Esto es más notorio cuando se \"frega\" durante la "
+"reproducción.\n"
 "\n"
-"Bassi valori migliorano la risposta, ma possono degradare la "
-"qualitÃ Â dell'audio su sistemi caricati pesantemente."
+"Los valores bajos mejoran la respuesta, pero pueden degradar la calidad del "
+"audio en sistemas damasiado cargados."
 
 #: src/driver.c:604
 msgid "Remember these options"
-msgstr "Memorizza queste opzioni"
+msgstr "Recordar estas opciones"
 
 #: src/driver.c:625
 msgid "Reset to the last remembered device buffering."
-msgstr "Ritorna all'ultimo device buffering memorizzato."
+msgstr ""
+"Reinicializar el dispositivo de pre-lectura al último valor que se rocordó."
 
 #: src/driver.c:639
 msgid "Set to default device buffering."
-msgstr "Imposta il device buffering predefinito."
+msgstr "Establece el dispositivo de pre-lectura al valor predeterminado."
 
 #: src/edit.c:1291
 msgid "No selection to copy"
-msgstr "Nessuna selezione da copiare"
+msgstr "No hay ninguna selección que copiar"
 
 #: src/edit.c:1308 src/view.c:565 src/view.c:1306
 msgid "Copy"
-msgstr "Copia"
+msgstr "Copiar"
 
 #: src/edit.c:1342
 msgid "No selection to cut"
-msgstr "Nessuna selezione da tagliare"
+msgstr "No hay ninguna selección que cortar"
 
 #: src/edit.c:1358 src/view.c:555 src/view.c:1300
 msgid "Cut"
-msgstr "Taglia"
+msgstr "Cortar"
 
 #: src/edit.c:1388
 msgid "No selection to clear"
-msgstr "Nessuna selezione da cancellare"
+msgstr "No hay ninguna selección que limpiar"
 
 #: src/edit.c:1404 src/view.c:575 src/view.c:1312
 msgid "Clear"
-msgstr "Cancella"
+msgstr "Limpiar"
 
 #: src/edit.c:1430
 msgid "No selection to delete"
-msgstr "Nessuna selezione da eliminare"
+msgstr "No hay ninguna selección que borrar"
 
 #: src/edit.c:1447 src/view.c:547
 msgid "Delete"
-msgstr "Elimina"
+msgstr "Borrar"
 
 #: src/edit.c:1482
 msgid "Nothing to crop out"
-msgstr "Niente da ritagliare"
+msgstr "No hay nada para recortar"
 
 #: src/edit.c:1498 src/view.c:587 src/view.c:1318 src/view.c:2010
 msgid "Crop"
-msgstr "Ritaglia"
+msgstr "Recortar"
 
 #: src/edit.c:1572 src/edit.c:1646 src/edit.c:1730
 msgid "Clipboard data has incompatible format"
-msgstr "Gli appunti hanno un formato non compatibile"
+msgstr "El formato de los datos del portapapeles es incompatible"
 
 #: src/edit.c:1590
 msgid "Paste insert"
-msgstr "Incolla inserendo"
+msgstr "Pega e inserta"
 
 #: src/edit.c:1669
 msgid "Paste mix"
-msgstr "Incolla mescolando"
+msgstr "Pega y mezcla"
 
 #: src/edit.c:1757
 msgid "Paste xfade"
-msgstr "Incolla con dissolvenza incrociata"
+msgstr "Pega intermezclando y desvaneciendo"
 
 #: src/file_dialogs.c:77
 msgid "MP3 export unsupported"
-msgstr "esportazione in MP3 non supportata"
+msgstr "No se puede exportar a MP3 (no soportado)"
 
 #: src/file_dialogs.c:78
 msgid ""
@@ -337,24 +336,24 @@ msgid ""
 "Please use Ogg Vorbis format instead, which\n"
 "provides better quality and is free."
 msgstr ""
-"L'esportazione nel formato MP3 non puÃ² essere legalmente supportata\n"
-"nel software libero a causa dei brevetti.\n"
+"No se puede dar soporte a la exportación a formato MP3 en el software libre\n"
+"a causa de restricciones en la patente de licencia.\n"
 "\n"
-"Il formato Ogg Vorbis fornisce una qualitÃ  migliore ed Ã¨ libero.\n"
-" "
+"Por favor, en reemplazo use el formato Ogg Vorbis que provee\n"
+"mejor calidad y además es de uso libre."
 
 #: src/file_dialogs.c:103
 msgid "Raw PCM (headerless)"
-msgstr "Raw PCM (senza intestazione)"
+msgstr "PCM crudo (son encabezamientos)"
 
 #: src/file_dialogs.c:161
 #, c-format
 msgid "%s does not exist."
-msgstr "%s non esiste."
+msgstr "%s no existe."
 
 #: src/file_dialogs.c:162
 msgid "Directory does not exist"
-msgstr "La directory non esiste"
+msgstr "El directorio no existe"
 
 #: src/file_dialogs.c:271
 #, c-format
@@ -362,12 +361,12 @@ msgid ""
 "Unable to read\n"
 "%s"
 msgstr ""
-"Impossibile leggere\n"
+"No es posible leer\n"
 "%s"
 
 #: src/file_dialogs.c:319
 msgid "Sweep: Load file"
-msgstr "Sweep: carica file"
+msgstr "Sweep: Cargar archivo"
 
 #: src/file_dialogs.c:385
 #, c-format
@@ -377,27 +376,27 @@ msgid ""
 "\n"
 "All changes and undo information will be lost."
 msgstr ""
-"Ripristinare %s in\n"
+"Está seguro que desea reviertir %s a\n"
 "%s?\n"
 "\n"
-"Si perdono tutti i cambiamenti e le informazioni di annullamento."
+"Todos los cambios y la información parar deshacer serán perdidos."
 
 #: src/file_dialogs.c:389
 msgid "Revert file"
-msgstr "ripristina il file"
+msgstr "Revertir archivo"
 
 #: src/file_dialogs.c:390 src/view.c:457
 msgid "Revert"
-msgstr "Ripristina"
+msgstr "Revertir"
 
 #: src/file_dialogs.c:390
 msgid "Don't revert"
-msgstr "Non ripristinare"
+msgstr "No revertir"
 
 #: src/file_dialogs.c:560
 #, c-format
 msgid "Save as %s cancelled"
-msgstr "Salvataggio come %s annullato"
+msgstr "Guardar como %s cancelado"
 
 #: src/file_dialogs.c:610
 #, c-format
@@ -405,46 +404,46 @@ msgid ""
 "You are not allowed to write to\n"
 "%s"
 msgstr ""
-"Non ci sono i permessi per scrivere\n"
+"No tiene permisos para guardar\n"
 "%s"
 
 #: src/file_dialogs.c:613
 #, c-format
 msgid "%s exists. Overwrite?"
-msgstr "%s esiste. Sovrascrivere?"
+msgstr "%s ya existe. Sobreescribir?"
 
 #: src/file_dialogs.c:614
 msgid "File exists"
-msgstr "il file esiste"
+msgstr "El archivo ya existe"
 
 #: src/file_dialogs.c:615
 msgid "Overwrite"
-msgstr "Sovrascrivi"
+msgstr "Sobreescribir"
 
 #: src/file_dialogs.c:615
 msgid "Don't overwrite"
-msgstr "Non sovrascrivere"
+msgstr "No sobreescribir"
 
 #: src/file_dialogs.c:660
 msgid "By extension"
-msgstr "Per estensione"
+msgstr "Por extensión"
 
 #. MP3 (encoding not supported due to patent restrictions)
 #: src/file_dialogs.c:718
 msgid "MP3 (Use Ogg Vorbis instead)"
-msgstr "MP3 (usa invece Ogg Vorbis)"
+msgstr "MP3 (Reemplace por Ogg Vorbis)"
 
 #: src/file_dialogs.c:777
 msgid "Sweep: Save file"
-msgstr "Sweep: salva file"
+msgstr "Sweep: Guardar archivo"
 
 #: src/file_dialogs.c:805
 msgid "Save Options"
-msgstr "Salva le opzioni"
+msgstr "Opciones para guardar"
 
 #: src/file_dialogs.c:814
 msgid "Determine File Type:"
-msgstr "Determina il tipo di file:"
+msgstr "Determinar tipo de archivo:"
 
 #: src/file_dialogs.c:891
 #, c-format
@@ -455,46 +454,46 @@ msgid ""
 "Are you sure you want to save?"
 msgstr ""
 "%s\n"
-" Ã¨ cambiato nel disco.\n"
+" ha cambiado en el disco.\n"
 "\n"
-"Salvare veramente?"
+"Está seguro que desea guardarlo?"
 
 #: src/file_dialogs.c:895 src/sweep_undo.c:331 src/view.c:3507
 msgid "File modified"
-msgstr "File modificato"
+msgstr "Archivo modificado"
 
 #. OK
 #: src/file_dialogs.c:896 src/file_speex.c:2142 src/file_vorbis.c:1631
 #: src/view.c:438 src/view.c:1924
 msgid "Save"
-msgstr "Salva"
+msgstr "Guardar"
 
 #. Cancel
 #: src/file_dialogs.c:896 src/file_speex.c:2153 src/file_vorbis.c:1642
 msgid "Don't save"
-msgstr "Non salvare"
+msgstr "No guardar"
 
 #: src/file_sndfile0.c:541 src/file_sndfile1.c:325
 msgid "Powered by libsndfile"
-msgstr "Basato su libsndfile"
+msgstr "Basado en libsndfile"
 
 #. Options
 #. XXX: prepend major format name
 #: src/file_sndfile0.c:566 src/file_sndfile1.c:350
 msgid "Encoding"
-msgstr "Codifica"
+msgstr "Codificación"
 
 #: src/file_sndfile0.c:586 src/file_sndfile1.c:371
 msgid "Encoding:"
-msgstr "Codifica:"
+msgstr "Codificación:"
 
 #: src/file_sndfile0.c:644 src/file_sndfile0.c:665 src/file_sndfile1.c:443
 msgid "Sampling rate:"
-msgstr "Frequenza di campionamento:"
+msgstr "Frecuencia de muestreo:"
 
 #: src/file_sndfile0.c:717
 msgid "Channels:"
-msgstr "Canali:"
+msgstr "Canales:"
 
 #: src/file_sndfile0.c:727 src/sw_chooser.c:67 src/view.c:3552 src/view.c:3565
 #: src/view.c:3604
@@ -503,7 +502,7 @@ msgstr "Mono"
 
 #: src/file_sndfile0.c:729
 msgid "Mono (mixdown)"
-msgstr "Mono (mescola i canali)"
+msgstr "Mono (mezcla de canales)"
 
 #: src/file_sndfile0.c:741 src/sw_chooser.c:68 src/view.c:3552 src/view.c:3565
 #: src/view.c:3607
@@ -512,11 +511,11 @@ msgstr "Stereo"
 
 #: src/file_sndfile0.c:745
 msgid "Stereo (duplicate)"
-msgstr "Stereo (duplicato)"
+msgstr "Stereo (duplicado)"
 
 #: src/file_sndfile0.c:763
 msgid "Bitwidth:"
-msgstr "Ampiezza di bit:"
+msgstr "Amplitud de bits:"
 
 #: src/file_sndfile0.c:772
 msgid "8 bit"
@@ -538,15 +537,15 @@ msgstr "32 bit"
 #: src/file_sndfile0.c:813 src/file_sndfile1.c:476 src/file_speex.c:2093
 #: src/file_vorbis.c:1582 src/samplerate.c:565
 msgid "About"
-msgstr "Informazioni"
+msgstr "Sobre..."
 
 #: src/file_sndfile0.c:829 src/file_sndfile1.c:492
 msgid ""
 "Libsndfile is a C library by Erik de Castro Lopo\n"
 "for reading and writing files containing sampled sound."
 msgstr ""
-"Libsndfile Ã¨ una libreria C di Erik de Castro Lopo\n"
-"per leggere e scrivere file contenenti suoni campionati."
+"Libsndfile es una librería en C escrita por Erik de Castro Lopo,\n"
+"para leer y escribir archivos que contengan sonidos muestreados."
 
 #. Conrad wrote the libsndfile0 interface, Erik ported it to libsndfile1
 #: src/file_sndfile0.c:841 src/file_speex.c:2135 src/file_vorbis.c:1624
@@ -556,28 +555,29 @@ msgid ""
 "Copyright (C) 2002 CSIRO Australia.\n"
 "\n"
 msgstr ""
-"Questa interfaccia utente Ã¨ di Conrad Parker,\n"
+"Esta interface de usuario, por Conrad Parker,\n"
 "Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
 
 #: src/file_sndfile0.c:908 src/file_sndfile1.c:546
 msgid "Sweep: Save PCM options"
-msgstr "Sweep: opzioni PCM di salvataggio"
+msgstr "Sweep: Opciones para guardar PCM"
 
 #: src/file_sndfile0.c:1072 src/file_sndfile1.c:715
 msgid "Sweep: Load Raw PCM options"
-msgstr "Sweep: opzioni Raw PCM di caricamento"
+msgstr "Sweep: Opciones para cargar Raw PCM"
 
 #: src/file_sndfile0.c:1122 src/file_sndfile1.c:767 src/file_mad.c:419
 #: src/file_speex.c:569 src/file_vorbis.c:324
 #, c-format
 msgid "Loading %s"
-msgstr "Caricamento di %s"
+msgstr "Cargando %s"
 
 #: src/file_sndfile0.c:1346 src/file_sndfile1.c:994 src/file_speex.c:1064
 #: src/file_vorbis.c:702
 #, c-format
 msgid "Saving %s"
-msgstr "Salvataggio di %s"
+msgstr "Guardando %s"
 
 #: src/file_sndfile1.c:503
 msgid ""
@@ -587,52 +587,53 @@ msgid ""
 "Copyright (C) 2002 CSIRO Australia.\n"
 "\n"
 msgstr ""
-"Questa interfaccia utente Ã¨ di Erik de Castro Lopo\n"
-" e Conrad Parker,\n"
+"Esta interface de usuario, por Erik de Castro Lopo\n"
+" y Conrad Parker,\n"
 "Copyright (C) 2002 Erik de Castro Lopo\n"
 "Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
 
 #: src/file_speex.c:1006 src/file_speex.c:1026
 msgid "Speex encoding results"
-msgstr "risultati della codifica Speex"
+msgstr "Resultados de la codificación Speex"
 
 #: src/file_speex.c:1198
 msgid "Narrowband ~8 kHz (telephone quality)"
-msgstr "Banda stretta  8 kHz (qualitÃ  del telefono)"
+msgstr "Banda angosta 8 kHz (Calidad de teléfono)"
 
 #: src/file_speex.c:1199
 msgid "Wideband ~16 kHz"
-msgstr "Banda larga ~16 kHz"
+msgstr "Banda ancha 16 kHz"
 
 #: src/file_speex.c:1201
 msgid "Ultra-wideband 32-48 kHz"
-msgstr "Banda larghissima 32-48 kHz"
+msgstr "Banda ultra ancha 32-48 kHz"
 
 #: src/file_speex.c:1208
 msgid "Constant bitrate (CBR) with no features"
-msgstr "Bit rate costante (CBR)"
+msgstr "Frecuencia de bits constante (CBR) sin prestaciones"
 
 #: src/file_speex.c:1211
 msgid "CBR with Voice Activity Detection (VAD)"
-msgstr "CBR con soppressione dei silenzi (VAD)"
+msgstr "CBR con Detección de Actividad de Voz (VAD)"
 
 #: src/file_speex.c:1212
 msgid "VAD generates low bitrate comfort noise to replace non-speech"
 msgstr ""
-"VAD genera un rumore di sottofondo a basso bit rate per rimpiazzare le pause "
-"del discorso"
 
 #: src/file_speex.c:1215
 msgid "CBR with VAD and Discontinuous Transmission (DTX)"
-msgstr "CBR con VAD e trasmissione discontinua (DTX)"
+msgstr "CBR con VAD y Transmisión Discontinua (DTX)"
 
 #: src/file_speex.c:1216
+#, fuzzy
 msgid "DTX marks extended pauses with a minimum bitrate signal"
-msgstr "DTX marca le pause prolungate con un segnale a minimo bit rate"
+msgstr ""
+"DTX marca las pausas extendidas con una señal de frecuencia de bits mínima"
 
 #: src/file_speex.c:1219
 msgid "Variable bitrate (VBR) with VAD"
-msgstr "Bit rate variabile (VBR) con VAD"
+msgstr "Frecuencia de bits variable (VBR) con VAD"
 
 #: src/file_speex.c:1220
 msgid ""
@@ -640,97 +641,101 @@ msgid ""
 "selection uses VBR without DTX, which may improve performance compared to "
 "full VBR in the presence of background noise."
 msgstr ""
-"VBR adatta il bit rate alla complessitÃ  del parlato, questa selezione usa "
-"VBR senza DTX e in presenza di rumore di fondo le prestazioni possono "
-"migliorare rispetto all'uso del normale VBR."
+"VBR permite adaptar la frecuencia de bits según la complejidad de la "
+"conversación; esta selección usa VBR sin DTX, lo que puede mejorar la "
+"performance en comparación con VBR total, en presencia de algún ruido de "
+"fondo."
 
 #: src/file_speex.c:1225
 msgid "Variable bitrate (VBR) with all features"
-msgstr "Bit rate variabile (VBR)"
+msgstr "Frecuencia de bits variable (VBR) con todas las prestaciones"
 
 #: src/file_speex.c:1226
 msgid ""
 "VBR allows the bitrate to adapt to the complexity of the speech, and handles "
 "pauses using VAD and DTX"
 msgstr ""
-"VBR adatta il bit rate alla complessitÃ  del parlato e gestendo i silenzi "
-"tramite VAD e DTX"
+"VBR permite adaptar la frecuencia de bits según la complejidad de la "
+"conversación, y maneja las pausas usando VAD y DTX"
 
 #: src/file_speex.c:1230
 msgid "Constant bitrate (CBR)"
-msgstr "Bit rate costante (CBR)"
+msgstr "Frecuencia de bits constante (ABR)"
 
 #: src/file_speex.c:1232
 msgid "Variable bitrate (VBR)"
-msgstr "Bit rate variabile (VBR)"
+msgstr "Frecuencia de bits variable (VBR)"
 
 #: src/file_speex.c:1233
 msgid "VBR allows the bitrate to adapt to the complexity of the speech."
-msgstr "VBR adatta il bit rate alla complessitÃ  del parlato."
+msgstr ""
+"VBR permite adaptar la frecuencia de bits según la complejidad de la "
+"conversación."
 
 #: src/file_speex.c:1288 src/file_speex.c:1818
 msgid "Average bitrate"
-msgstr "Bit rate medio"
+msgstr "Frecuencia de bits promedio"
 
 #: src/file_speex.c:1291
 msgid "Maximum bitrate"
-msgstr "Bit rate massimo"
+msgstr "Máxima frecuencia de bits"
 
 #: src/file_speex.c:1484 src/file_vorbis.c:1013
 msgid "Hack the planet!"
-msgstr "Spacca il mondo"
+msgstr "Hackea el mundo!"
 
 #: src/file_speex.c:1572
 msgid "Sweep: Speex save options"
-msgstr "Sweep: opzioni di salvataggio di Speex"
+msgstr "Sweep: Opciones para guardar Speex"
 
 #: src/file_speex.c:1646
 msgid "Speex encoding"
-msgstr "Codifica Speex"
+msgstr "Codificación Speex"
 
 #: src/file_speex.c:1659
 msgid "Mode:"
-msgstr "ModalitÃ :"
+msgstr "Modo"
 
 #: src/file_speex.c:1685
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automático"
 
 #: src/file_speex.c:1694
 msgid ""
 "Automatically select the encoding mode based on the sampling rate of the "
 "file."
 msgstr ""
-"Seleziona automaticamente la modalitÃ  di codifica basata sulla frequenza di "
-"campionamento del file."
+"Seleccionar automáticamente el modo de codificación basándose en la "
+"frecuencia de muestreo del archivo"
 
 #: src/file_speex.c:1747 src/file_vorbis.c:1180
 msgid "Encoding quality:"
-msgstr "QualitÃ  di codifica:"
+msgstr "Calidad de la codificación:"
 
 #: src/file_speex.c:1790
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file)."
 msgstr ""
-"QualitÃ  di codifica tra 0 (bassa qualitÃ , file piccolo) e 10 (alta qualitÃ , "
-"file grande)."
+"La calidad de codificación varía de 0 (la más baja calidad, archivos chicos) "
+"a 10 (la más alta calidad, archivos grandes)."
 
 #: src/file_speex.c:1800
 msgid "Enable bitrate management"
-msgstr "Attiva la gestione del bit rate"
+msgstr "Activa la administración de frecuencia de bits"
 
 #: src/file_speex.c:1813
 msgid ""
 "For non-VBR (constant bitrate) encoding, this sets the maximum bitrate.For "
 "VBR encoding, this sets the average bitrate."
 msgstr ""
-"Imposta il bit rate massimo per le codifiche non VBR e il bit rate medio per "
-"VBR."
+"Para codificaciones con frecuencia de bits constantes (no VBR), aquí se "
+"establece la frecuencia de bits máxima. Para codificaciones VBR, se "
+"establece la frecuencia de bits promedio."
 
 #: src/file_speex.c:1836
 msgid "bps"
-msgstr "bps"
+msgstr "Bits por segundo (bps)"
 
 #: src/file_speex.c:1842
 msgid "Extra"
@@ -738,53 +743,55 @@ msgstr "Extra"
 
 #: src/file_speex.c:1864
 msgid "Encoding complexity:"
-msgstr "ComplessitÃ  di codifica:"
+msgstr "Complejidad de la codificación:"
 
 #: src/file_speex.c:1903
 msgid ""
 "This sets the encoding speed/quality tradeoff between 0 (faster encoding) "
 "and 10 (slower encoding)"
 msgstr ""
-"Imposta il compromesso velocitÃ /qualitÃ  di codifica tra 0 (codifica veloce) "
-"e 10 (codifica lenta)"
+"Aquí se establece la relación velocidad/calidad de la codificación entre 0 "
+"(codifcación veloz) y 10 (codificaicón lenta)"
 
 #: src/file_speex.c:1919
 msgid "Speex frames per Ogg packet:"
-msgstr "Numero di frame Speex per ogni pacchetto Ogg:"
+msgstr "Número de muestras Speex por cada paquete Ogg:"
 
 #: src/file_speex.c:1945
 msgid ""
 "Number of Speex frames to pack into each Ogg packet. Higher values save "
 "space at low bitrates."
 msgstr ""
-"Numero di frame Speex da inserire in ciascun pacchetto Ogg. Valori elevati "
-"risparmiano spazio a bassi bit rate."
+"Número de muestras a insertar dentro de cada paquete Ogg. Los valores mas "
+"altos ahorran espacio a bajas frecuencias de bits."
 
 #: src/file_speex.c:1960 src/file_vorbis.c:1356
 msgid "Remember these encoding options"
-msgstr "Memorizza queste opzioni di codifica"
+msgstr "Recordar estas opciones de codificación"
 
 #: src/file_speex.c:1980 src/file_vorbis.c:1376
 msgid "Reset to the last remembered encoding options."
-msgstr "Ritorna alle ultime opzioni di codifica memorizzate"
+msgstr ""
+"Reinicializar a las últimas opciones de codificación que se recordaron."
 
 #: src/file_speex.c:1995
 msgid "Automatically select best encoding options for this file."
 msgstr ""
-"Seleziona automaticamente le opzioni per la migliore codifica di questo file."
+"Seleccionar automáticamente las mejores opciones de codificación para este "
+"archivo"
 
 #. Ogg stream
 #: src/file_speex.c:2000 src/file_vorbis.c:1489
 msgid "Ogg stream"
-msgstr "Flusso Ogg"
+msgstr "Flujo Ogg"
 
 #: src/file_speex.c:2013 src/file_vorbis.c:1502
 msgid "Ogg stream serial number:"
-msgstr "Numero di serie del flusso Ogg:"
+msgstr "Número de serie del flujo Ogg"
 
 #: src/file_speex.c:2034 src/file_vorbis.c:1523
 msgid "Remember this serial number"
-msgstr "Memorizza questo numero di serie"
+msgstr "Recordar este número de serie"
 
 #: src/file_speex.c:2044 src/file_vorbis.c:1533
 msgid ""
@@ -797,27 +804,28 @@ msgid ""
 "If this option is not checked, new serial numbers will be randomly generated "
 "for each file encoded."
 msgstr ""
-"Ricorda questo numero di serie per un riutilizzo futuro.\n"
-"L'USO DI QUESTA OPZIONE NON Ãˆ RACCOMANDATO.\n"
-"Ciascun file codificato dovrebbe avere un numero di serie diverso, "
-"riutilizzare numeri di serie di Ogg in file diversi puÃ² creare "
-"incompatibilitÃ  con applicazioni di streaming. Questa opzione Ã¨ fornita solo "
-"per scopi di progettazione di flussi.\n"
-"Se questa opzione non Ã¨ attivata, nuovi numeri di serie sono creati "
-"casualmente per ciascun file codificato."
+"Recordar este número de serie para usos futuros.\n"
+"NO SE RECOMIENDA EL USO DE ESTA OPCION.\n"
+"Cada archivo codificado debería tener un número de serie diferente; "
+"reutilizar números de serie Ogg en distintos archivos puede crear "
+"incompatibilidades con aplicaciones que leen el flujo. Esta opción se "
+"suministra a los fines de ser usada solamente en ingeniería de flujos de "
+"bits.\n"
+"Si la opción no está seleccionada, se generarán números de serie aleatorios "
+"para cada archivo codificado."
 
 #. Randomise serialno!
 #: src/file_speex.c:2071 src/file_vorbis.c:1560
 msgid "Randomize!"
-msgstr "Casuale"
+msgstr "Aleatorizar!"
 
 #: src/file_speex.c:2078 src/file_vorbis.c:1567
 msgid ""
 "Generate a random serial number for the Ogg bitstream. The number will "
 "change while this button is held down."
 msgstr ""
-"Genera un numero di serie casuale per il flusso Ogg. Il numero cambia finchÃ© "
-"questo bottone Ã¨ premuto."
+"Genera un número de serie aleatorio para el flujo Ogg. El número cambiará "
+"mientras este botón se mantenga presionado."
 
 #: src/file_speex.c:2109
 msgid ""
@@ -825,9 +833,9 @@ msgid ""
 "voice over IP (VoIP) and file-based compression.\n"
 "It is free, open and unpatented."
 msgstr ""
-"Speex Ã¨ un codec di alta qualitÃ  vocale progettato per\n"
-"voice over IP (VoIP) e compressione di file.\n"
-"Ãˆ gratuito, aperto e non brevettato."
+"Speex es un codec de voz de alta calidad diseñado\n"
+"para \"voice over IP (VoIP)\" y compresión de archivos.\n"
+"Es de uso gratuito, abierto y no está patentado."
 
 #: src/file_speex.c:2120
 msgid ""
@@ -835,9 +843,9 @@ msgid ""
 "are trademarks (tm) of the Xiph.org Foundation.\n"
 "Used with permission."
 msgstr ""
-"Ogg, Speex, Xiph.org Foundation e i loro loghi\n"
-"sono marchi registrati(tm) della Xiph.org Foundation.\n"
-"Sono usati con il loro permesso."
+"Ogg, Speex, Xiph.org Foundation y sus logotipos\n"
+"son marcas registradas de la fundación Xiph.org.\n"
+"Usado con autorización."
 
 #: src/file_vorbis.c:356
 #, c-format
@@ -847,43 +855,44 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Decodifica di %s\n"
-"Codificato da: %s\n"
+"Decodificando %s\n"
+"Codificado por: %s\n"
 "\n"
 "%s"
 
 #: src/file_vorbis.c:470
 msgid "Unsupported encoding mode"
-msgstr "ModalitÃ  di codifica non supportata"
+msgstr "Modo de codificación no soportado"
 
 #: src/file_vorbis.c:473
 msgid "Invalid encoding options"
-msgstr "Opzioni di codifica non valide"
+msgstr "Opciones de codificación inválidas"
 
 #: src/file_vorbis.c:643 src/file_vorbis.c:663
 msgid "Ogg Vorbis encoding results"
-msgstr "risultati della codifica Ogg Vorbis"
+msgstr "Resultados de la codificación Ogg Vorbis"
 
 #: src/file_vorbis.c:1094
 msgid "Sweep: Ogg Vorbis save options"
-msgstr "Sweep: opzioni di salvataggio di Ogg Vorbis"
+msgstr "Sweep: Opciones para guardar Ogg Vorbis"
 
 #. Encoding quality
 #: src/file_vorbis.c:1168
 msgid "Vorbis encoding"
-msgstr "Codifica Vorbis"
+msgstr "Codificación Vorbis"
 
 #: src/file_vorbis.c:1215
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file) using variable bitrate mode (VBR)."
 msgstr ""
-"QualitÃ  di codifica tra 0 (bassa qualitÃ , file piccolo) e 10 (alta qualitÃ , "
-"file grande) che usa la modalitÃ  con bit rate variabile (VBR)."
+"La calidad de codificación varía de 0 (la más baja calidad, archivos chicos) "
+"a 10 (la más alta calidad, archivos grandes) usando el modo de frecuencia de "
+"bits variable."
 
 #: src/file_vorbis.c:1225
 msgid "Enable bitrate management engine"
-msgstr "Attiva il motore di gestione del bit rate"
+msgstr "Habilitar el motor de administración de frecuencia de bits"
 
 #: src/file_vorbis.c:1231
 msgid ""
@@ -892,25 +901,27 @@ msgid ""
 "For best results it is generally recommended that you use the variable "
 "bitrate 'encoding quality' control (above) instead."
 msgstr ""
-"Attiva il bit rate medio (ABR). Si deve suggerire un bit rate nominale medio "
-"e specificare il limite massimo e minimo.\n"
-"Per migliori risultati si raccomanda di utilizzare il controllo Â«qualitÃ  di "
-"codificaÂ» del bit rate variabile (vedi sopra)"
+"Aquí se habilita el modo de promedio de frecuencia de bits (ABR). Debe "
+"sugerir un promedio de frecuencia de bits nominal y debería especificar los "
+"límites mínimo y máximo.\n"
+"Para lograr mejores resultados, generalmente se recomienda que se use el "
+"control de frecuencia de bits variable \"Calidad de codificación\" en "
+"reemplazo de este (ver mas arriba)."
 
 #: src/file_vorbis.c:1241
 msgid "Bitrate management engine"
-msgstr "Motore di gestione del bit rate"
+msgstr "Motor de administración de frecuencia de bits"
 
 #: src/file_vorbis.c:1267
 msgid "Nominal bitrate (ABR):"
-msgstr "Bit rate nominale (ABR):"
+msgstr "Frecuencia de bits nominal (ABR):"
 
 #: src/file_vorbis.c:1280
 msgid ""
 "Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
 msgstr ""
-"Specifica un bit rate nominale. Si tenta di codificare con questo bit rate "
-"medio."
+"Especifique una frecuencia de bits nominal. Se tratará de codificar con una "
+"frecuencia de bits que promedie este valor"
 
 #: src/file_vorbis.c:1284 src/file_vorbis.c:1313 src/file_vorbis.c:1343
 msgid "kbps"
@@ -918,30 +929,30 @@ msgstr "kbps"
 
 #: src/file_vorbis.c:1296
 msgid "Minimum bitrate:"
-msgstr "Bit rate minimo:"
+msgstr "Frecuencia de bits mínima:"
 
 #: src/file_vorbis.c:1309
 msgid ""
 "Specify a minimum bitrate, useful for encoding for a fixed-size channel. "
 "(Optional)"
 msgstr ""
-"Specifica un bit rate minimo, utile per codificare per un canale di "
-"dimensione fissata (opzionale)."
+"Especifique una frecuencia de bits mínimam; es útil para codificar canales "
+"de tamaño fijo (opcional)."
 
 #: src/file_vorbis.c:1326
 msgid "Maximum bitrate:"
-msgstr "Bit rate massimo:"
+msgstr "Frecuencia de bits máxima:"
 
 #: src/file_vorbis.c:1339
 msgid ""
 "Specify a maximum bitrate, useful for streaming applications. (Optional)"
 msgstr ""
-"Specifica un bit rate massimo, utile per applicazioni di streaming "
-"(opzionale)."
+"Especifique una frecuencia de bits máxima; es útil para las aplicaciones que "
+"leen el flujo (opcional)."
 
 #: src/file_vorbis.c:1390
 msgid "Set to default encoding options."
-msgstr "Imposta le opzioni di codifica predefinite."
+msgstr "Establece las opciones de codificación predeterminadas."
 
 #. Metadata
 #: src/file_vorbis.c:1397
@@ -953,23 +964,23 @@ msgstr "Metadata"
 #.
 #: src/file_vorbis.c:1419
 msgid "Title:"
-msgstr "Titolo:"
+msgstr "Título:"
 
 #: src/file_vorbis.c:1419
 msgid "Track/Work name"
-msgstr "Nome del brano o dell'opera"
+msgstr "Nombre de la pista/trabajo"
 
 #: src/file_vorbis.c:1421
 msgid "Version:"
-msgstr "Versione:"
+msgstr "Versión:"
 
 #: src/file_vorbis.c:1422
 msgid ""
 "The version field may be used to differentiate multiple versions of the same "
 "track title in a single collection. (e.g. remix info)"
 msgstr ""
-"Il campo versione puÃ² essere usato per differenziare le diverse versioni "
-"dello stesso brano di una singola raccolta (es. informazioni di remix)."
+"El campo Versión puede ser usado para diferenciar las distintas versiones "
+"del mismo título de pista de un mismo álbum (p.e. remix info)"
 
 #: src/file_vorbis.c:1426
 msgid "Album:"
@@ -977,7 +988,7 @@ msgstr "Album:"
 
 #: src/file_vorbis.c:1427
 msgid "The collection name to which this track belongs"
-msgstr "Il nome della raccolta a cui il brano appartiene"
+msgstr "El nombre del álbum al que pertenece esta pista"
 
 #: src/file_vorbis.c:1429
 msgid "Artist:"
@@ -990,14 +1001,14 @@ msgid ""
 "be the composer. For an audio book it would be the author of the original "
 "text."
 msgstr ""
-"L'artista Ã¨ generalmente considerato il responsabile dell'opera. Nella "
-"musica popolare Ã¨ normalmente la banda che suona o il cantante. Per la "
-"musica classica sarebbe il compositore. Per un libro vocale sarebbe l'autore "
-"del testo originale."
+"El artista que es, generalmente, considerado el responsable del trabajo. "
+"Para música popular usualmente es el cantante o la banda que tocan. Para "
+"música clásica. debería ser el compositor. Para un libro de audio, debería "
+"ser el autor del texto original."
 
 #: src/file_vorbis.c:1436
 msgid "Performer:"
-msgstr "Esecutore:"
+msgstr "Ejecutor:"
 
 #: src/file_vorbis.c:1437
 msgid ""
@@ -1006,10 +1017,10 @@ msgid ""
 "did the reading. In popular music this is typically the same as the ARTIST "
 "and is omitted."
 msgstr ""
-"L'artista che ha eseguito l'opera. Nella musica classica sarebbe il "
-"direttore, l'orchestra, i solisti. In un libro vocale sarebbero gli attori "
-"che leggono. Nella musica popolare Ã¨ normalmente uguale all'Artista ed Ã¨ "
-"omesso."
+"El artista que ejecutó el trabajo. Para música clásica, debería ser el "
+"director, orquesta o solista. Para un libro de audio, debería ser el actor "
+"que lo leyó. Para música popular, generalmente es igual al ARTISTA y por eso "
+"se omite."
 
 #: src/file_vorbis.c:1444
 msgid "Copyright:"
@@ -1019,12 +1030,12 @@ msgstr "Copyright:"
 msgid ""
 "Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
 msgstr ""
-"Assegnazione del Copyright, es. Â«2001 I cavalieri del reÂ» o Â«1999 Riccardo "
-"ZaraÂ»"
+"Derecho de Copia, p.e. '2001 Juan Manuel Martínez' o '1999 La banda de "
+"pirulo'"
 
 #: src/file_vorbis.c:1448
 msgid "License:"
-msgstr "Licenza:"
+msgstr "Licencia:"
 
 #: src/file_vorbis.c:1449
 msgid ""
@@ -1034,56 +1045,57 @@ msgid ""
 "the terms of the Open Audio License. see http://www.eff.org/IP/Open_licenses/"
 "eff_oal.html for details'), etc."
 msgstr ""
-"Informazione sulla licenza, es. Â«Tutti i diritti riservatiÂ», Â«Tutti gli usi "
-"consentitiÂ», una URL per la licenza come la Creative Commons license (Â«www."
-"creativecommons.org/blahblah/license.htmlÂ») o la EFF Open Audio License "
-"(Â«distribuita secondo i termini della Open Audio License. Vedere http://www."
-"eff.org/IP/Open_licenses/eff_oal.html per i dettagliÂ»), ecc."
+"Información de la licencia, p.e. 'Todos los derechos reservados', 'Permitido "
+"su uso', una URL que apunte hacia una licencia como la Creative Commons "
+"license (\"www.creativecommons.org/blahblah/license.html\") o la EFF Open "
+"Audio License ('Distribuido bajo los términos de la Open Audio License. Ver "
+"http://www.eff.org/IP/Open_licenses/eff_oal.html pera más detalles'), etc."
 
 #: src/file_vorbis.c:1458
 msgid "Organization:"
-msgstr "Organizzazione:"
+msgstr "Organización:"
 
 #: src/file_vorbis.c:1459
 msgid "Name of the organization producing the track (i.e. the 'record label')"
 msgstr ""
-"Nome dell'organizzazione che produce il brano (cioÃ¨ la Â«casa discograficaÂ»)"
+"Nombre de la organización que produjo la pista (es decir, el 'sello "
+"discográfico')"
 
 #: src/file_vorbis.c:1462
 msgid "Description:"
-msgstr "Descrizione:"
+msgstr "Descripción:"
 
 #: src/file_vorbis.c:1463
 msgid "A short text description of the contents"
-msgstr "Una breve descrizione dei contenuti"
+msgstr "Una breve descripción del contenido"
 
 #: src/file_vorbis.c:1465
 msgid "Genre:"
-msgstr "Genere:"
+msgstr "Género:"
 
 #: src/file_vorbis.c:1466
 msgid "A short text indication of music genre"
-msgstr "Una breve indicazione del genere musicale"
+msgstr "Una breve indicación del género musical"
 
 #: src/file_vorbis.c:1468
 msgid "Date:"
-msgstr "Data:"
+msgstr "Fecha:"
 
 #: src/file_vorbis.c:1469
 msgid "Date the track was recorded"
-msgstr "Data in cui il brano Ã¨ stato registrato"
+msgstr "Fecha de la grabación de la pista"
 
 #: src/file_vorbis.c:1471
 msgid "Location:"
-msgstr "LocalitÃ :"
+msgstr "Ubicación:"
 
 #: src/file_vorbis.c:1472
 msgid "Location where track was recorded"
-msgstr "LocalitÃ  dove il brano Ã¨ stato registrato"
+msgstr "Lugar donde fué grabada la pista"
 
 #: src/file_vorbis.c:1474
 msgid "Contact:"
-msgstr "Contatti:"
+msgstr "Contacto:"
 
 #: src/file_vorbis.c:1475
 msgid ""
@@ -1091,9 +1103,9 @@ msgid ""
 "could be a URL, an email address, the physical address of the producing "
 "label."
 msgstr ""
-"Informazione per contattare i creatori o i distributori del brano. Potrebbe "
-"essere un URL, un indirizzo email, un indirizzo fisico della casa "
-"discografica."
+"Información de los contactos con los creadores o distribuidores de la pista. "
+"Puede ser una URL, una dirección de mail, la dirección física de la casa "
+"discográfica, etc."
 
 #: src/file_vorbis.c:1480
 msgid "ISRC:"
@@ -1104,9 +1116,9 @@ msgid ""
 "ISRC number for the track; see the ISRC intro page (http://www.ifpi.org/site-"
 "content/online/isrc_intro.html) for more information on ISRC numbers."
 msgstr ""
-"Numero ISRC del brano; vedere la pagina introduttiva di ISRC (http://www."
-"ifpi.org/site-content/online/isrc_intro.html) per maggiori informazioni sui "
-"numeri ISRC."
+"Número de ISRC de la pista; vea la página de introducción a ISRC (http://www."
+"ifpi.org/site-content/online/isrc_intro.html) para obtener mayor información "
+"sobre los números ISRC."
 
 #: src/file_vorbis.c:1598
 msgid ""
@@ -1114,8 +1126,9 @@ msgid ""
 "perceptual audio codec. It is free, open and\n"
 "unpatented."
 msgstr ""
-"Ogg Vorbis Ã¨ un codec audio universale di alta qualitÃ .\n"
-"Ãˆ gratuito, aperto e non brevettato."
+"Ogg Vorbis es un codec de alta calidad\n"
+"para uso general. Es gratis, abierto y no\n"
+"está patentado."
 
 #: src/file_vorbis.c:1609
 msgid ""
@@ -1123,45 +1136,45 @@ msgid ""
 "are trademarks (tm) of the Xiph.org Foundation.\n"
 "Used with permission."
 msgstr ""
-"Ogg, Vorbis, Xiph.org Foundation e i loro loghi\n"
-"sono marchi registrati(tm) della Xiph.org Foundation.\n"
-"Sono usati con il loro permesso."
+"Ogg, Vorbis, Xiph.org Foundation y sus logotipos\n"
+"son marcas registradas de la fundación Xiph.org.\n"
+"Usado con autorización."
 
 #: src/head.c:399 src/view.c:2450
 msgid "Cursor position (indicator)"
-msgstr "Posizione del cursore (indicatore)"
+msgstr "Posición del cursor (indicador)"
 
 #: src/head.c:440
 msgid "Reverse mode (toggle)"
-msgstr "ModalitÃ  invertita (attiva/disattiva)"
+msgstr "Grabación en reversa (activar/desactivar)"
 
 #: src/head.c:455
 msgid "Loop mode recording (toggle)"
-msgstr "Registrazione in modalitÃ  ciclica (attiva/disattiva)"
+msgstr "Grabación en modo cíclico (activar/desactivar)"
 
 #: src/head.c:474
 msgid "Record into selection"
-msgstr "Registra nella selezione"
+msgstr "Grabación dentro de la selección"
 
 #: src/head.c:490 src/view.c:1218
 msgid "Stop"
-msgstr "Stop"
+msgstr "Detener"
 
 #: src/head.c:503
 msgid "Go to beginning"
-msgstr "Va all'inizio"
+msgstr "Ir al comienzo"
 
 #: src/head.c:514 src/view.c:2605
 msgid "Rewind"
-msgstr "Riavvolge"
+msgstr "Rebobinar"
 
 #: src/head.c:527 src/view.c:2617
 msgid "Fast forward"
-msgstr "Avanzamento veloce"
+msgstr "Avance rápido"
 
 #: src/head.c:542
 msgid "Go to the end"
-msgstr "Va alla fine"
+msgstr "Ir al final"
 
 #: src/interface.c:250
 msgid "Sweep"
@@ -1170,37 +1183,37 @@ msgstr "Sweep"
 #. File
 #: src/interface.c:275 src/view.c:414
 msgid "File"
-msgstr "File"
+msgstr "Archivo"
 
 #: src/interface.c:280
 msgid "New"
-msgstr "Nuovo"
+msgstr "Nuevo"
 
 #: src/interface.c:289
 msgid "Open"
-msgstr "Apri"
+msgstr "Abrir"
 
 #: src/interface.c:298 src/sweep_sample.c:811 src/sweep_sample.c:819
 #: src/view.c:489
 msgid "Quit"
-msgstr "Esci"
+msgstr "Salir"
 
 #: src/interface.c:309 src/view.c:1229
 msgid "Help"
-msgstr "Aiuto"
+msgstr "Ayuda"
 
 #: src/interface.c:314
 msgid "About..."
-msgstr "Informazioni"
+msgstr "Sobre..."
 
 #. Radio group
 #: src/interface.c:337 src/view.c:666
 msgid "Select"
-msgstr "Seleziona"
+msgstr "Selección"
 
 #: src/interface.c:338
 msgid "Select regions of a sample"
-msgstr "Seleziona le regioni di un campione"
+msgstr "Selecciona regiones de un muestreo"
 
 #: src/interface.c:339
 msgid ""
@@ -1208,87 +1221,86 @@ msgid ""
 "and effects to the: selected regions. Hold down shift whilst selecting to "
 "add discontinuous regions to the selection."
 msgstr ""
-"Questo strumento permette di selezionare le regioni di un campione. Si "
-"possono quindi applicare le modifiche e gli effetti alle regioni "
-"selezionate. Tenere premuto Â«shiftÂ» durante la selezione per aggiungere "
-"regioni discontinue alla selezione."
+"Esta herramienta le permite seleccionar regiones de un muestreo. Luego puede "
+"aplicar las modificaciones y los efectos a las regiones selccinadas. "
+"Mantenga presionada la tecla shift mientras selecciona para agregar regiones "
+"discontínuas a la selección."
 
 #. Radio group
 #: src/interface.c:356
 msgid "Move"
-msgstr "Muove"
+msgstr "Mover"
 
 #: src/interface.c:357
 msgid "Move regions in a sample"
-msgstr "Muove le regioni in un campione"
+msgstr "Mueve regiones en un muestreo"
 
 #: src/interface.c:358
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
-"Con questo strumento si possono muovere le regioni selezionate di un "
-"campione."
+"Con esta herramienta puede mover las regiones seleccionadas de un muestreo."
 
 #. Radio group
 #: src/interface.c:370
 msgid "Scrub"
-msgstr "Audioscandaglio"
+msgstr "Scrub"
 
 #: src/interface.c:371
 msgid "Locate sounds directly"
-msgstr "Localizza i suoni direttamente"
+msgstr "Encontrar sonidos directamente"
 
 #: src/interface.c:372
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
 msgstr ""
-"Posizionare il segnapunti sul campione. Cliccare in qualunque punto della "
-"vista per muovere istantaneamente la posizione di riproduzione in quella "
-"parte del campione."
+"Ubique el marcador de reproducción en un muestreo. Haga click en cualquier "
+"lado en la vista para mover instantáneamente la posición de reproducción a "
+"esa parte del muestreo."
 
 #. Radio group
 #: src/interface.c:389
 msgid "Zoom"
-msgstr "Ingrandimento"
+msgstr "Zoom"
 
 #: src/interface.c:390
 msgid "Zoom in & out"
-msgstr "Aumenta e riduci ingrandimento"
+msgstr "Aumenta o disminuye"
 
 #: src/interface.c:391
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
-"Aumenta e riduce l'ingrandimento. Cliccare in qualunque punto della vista "
-"per aumentare l'ingrandimento in quella parte del campione. Per ridurlo, "
-"tenere premuto Â«shiftÂ» e cliccare."
+"Agranda o disminuye la vista. Haga click en cualquier lado de la vista para "
+"agrandar esa parte del muestreo. Mantenga presionada la tecla shift para "
+"disminuir la vusta."
 
 #. Radio group
 #: src/interface.c:407
 msgid "Pencil"
-msgstr "Matita"
+msgstr "Lápiz"
 
 #: src/interface.c:408
 msgid "Edit PCM sample values"
-msgstr "Modifica i valori del campione PCM"
+msgstr "Modifica los valores PCM de un muestreo"
 
 #: src/interface.c:409
 msgid "When zoomed down to individual  samples, click to edit"
-msgstr "Quando Ã¨ rimpicciolito a campioni individuali, cliccare per modificare"
+msgstr "Cuando está a nivel de muestreos individuales, haga click para editar"
 
 #. Radio group
 #: src/interface.c:420
 msgid "Noise"
-msgstr "Rumore"
+msgstr "Ruido"
 
 #: src/interface.c:421
 msgid "Add noise"
-msgstr "Aggiungi rumore"
+msgstr "Agrega ruido"
 
 #: src/interface.c:422
 msgid "Randomise PCM values"
-msgstr "Valori PCM casuali"
+msgstr "Aleatoriza los valores PCM"
 
 #: src/notes.c:60
 msgid "C3"
@@ -1436,147 +1448,147 @@ msgstr "Si    5"
 
 #: src/param.c:117
 msgid "TRUE"
-msgstr "VERO"
+msgstr ""
 
 #: src/param.c:118
 msgid "FALSE"
-msgstr "FALSO"
+msgstr ""
 
 #: src/param.c:740
 msgid "Parameters"
-msgstr "Parametri"
+msgstr "Parámetros"
 
 #: src/param.c:771
 msgid "Preview"
-msgstr "Anteprima"
+msgstr "Sonido preliminar"
 
 #: src/paste_dialogs.c:221
 msgid "Start gain"
-msgstr "Guadagno iniziale"
+msgstr "Ganancia inicial"
 
 #: src/paste_dialogs.c:223 src/record.c:474 src/record.c:492
 #: plugins/echo/echo.c:61
 msgid "Gain"
-msgstr "Guadagno"
+msgstr "Ganancia"
 
 #: src/paste_dialogs.c:230
 msgid "Sweep: Paste crossfade"
-msgstr "Sweep: incolla dissolvenza incrociata"
+msgstr "Sweep: Pegar intermezclando y desvaneciendo"
 
 #: src/paste_dialogs.c:232
 msgid "Sweep: Paste mix"
-msgstr "Sweep: incolla mescolando"
+msgstr "Sweep: Pegar y mezclar"
 
 #. Source
 #: src/paste_dialogs.c:257
 msgid "Source"
-msgstr "Sorgente"
+msgstr "Fuente"
 
 #: src/paste_dialogs.c:257
 msgid "Clipboard"
-msgstr "Appunti"
+msgstr "Portapapeles"
 
 #: src/paste_dialogs.c:279 src/paste_dialogs.c:318
 msgid "End gain"
-msgstr "Guadagno finale"
+msgstr "Ganancia final"
 
 #: src/paste_dialogs.c:287 src/paste_dialogs.c:326
 msgid "Invert phase"
-msgstr "Inverte la fase"
+msgstr "Invertir la fase"
 
 #. Destination
 #: src/paste_dialogs.c:295
 msgid "Destination"
-msgstr "Destinazione"
+msgstr "Destino"
 
 #: src/paste_dialogs.c:345
 msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
 msgstr ""
-"Indica la durata totale degli appunti, che Ã¨ la lunghezza massima che sarÃ  "
-"incollata."
+"Indica la duración total del portapapeles, que es el largo máximo que será "
+"pegado."
 
 #: src/paste_dialogs.c:362
 msgid "Clipboard duration:"
-msgstr "Durata appunti:"
+msgstr "Duración del portapapeles:"
 
 #. OK
 #: src/paste_dialogs.c:375
 msgid "Crossfade"
-msgstr "Dissolvenza incrociata"
+msgstr "Intermezclar desvaneciendo"
 
 #: src/paste_dialogs.c:375
 msgid "Mix"
-msgstr "Mescola"
+msgstr "Mezclar"
 
 #: src/paste_dialogs.c:394
 msgid "Don't crossfade"
-msgstr "Nessuna dissolvenza incrociata"
+msgstr "No intermezclar"
 
 #: src/paste_dialogs.c:394
 msgid "Don't mix"
-msgstr "Non mescolare"
+msgstr "No mezclar"
 
 #: src/preferences.c:58
 msgid "Error creating ~/.sweep"
-msgstr "Errore durante la creazione di ~/.sweep"
+msgstr "Error al crear ~/.sweep"
 
 #: src/preferences.c:62
 #, c-format
 msgid "Created %s/ mode %04o\n"
-msgstr "Creato %s/ con permessi %04o\n"
+msgstr "Se creó %s/ modo %04o\n"
 
 #: src/preferences.c:69
 msgid "Error on ~/.sweep"
-msgstr "Errore in ~/.sweep"
+msgstr "Error en ~/.sweep"
 
 #: src/preferences.c:78
 msgid "Error setting permissions on ~/.sweep"
-msgstr "Errore nell'impostazione dei permessi su ~/.sweep"
+msgstr "Error al poner los permisos de ~/.sweep"
 
 #: src/preferences.c:85
 msgid "Error accessing ~/.sweep"
-msgstr "Errore nell'accesso in ~/.sweep"
+msgstr "Error al acceder a ~/.sweep"
 
 #: src/preferences.c:110
 msgid "Error opening ~/.sweep/preferences.tdb"
-msgstr "Errore nell'aprire ~/.sweep/preferences.tdb"
+msgstr "Error al acceder a ~/.sweep/preferences.tdb"
 
 #: src/record.c:94 src/record.c:529
 msgid "Ready to record"
-msgstr "Pronto per registrare"
+msgstr "Listo para grabar"
 
 #: src/record.c:308
 msgid "No selection to record into"
-msgstr "Nessuna selezione da registrarci dentro"
+msgstr "No hay ninguna selección en la que grabar"
 
 #: src/record.c:428
 msgid "Sweep: Record"
-msgstr "Sweep: registra"
+msgstr "Sweep: Grabar"
 
 #: src/record.c:444 src/undo_dialog.c:370
 msgid "File:"
-msgstr "File:"
+msgstr "Archivo:"
 
 #. Old signal
 #: src/record.c:467
 msgid "Previous sound"
-msgstr "Suono precedente"
+msgstr "Sonido anterior"
 
 #: src/record.c:481
 msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
 msgstr ""
-"Questo cursore permette di mescolare la nuova registrazione con i contenuti "
-"precedenti del buffer. Impostarlo a -inf dB per sovrascrivere il suono "
-"precedente."
+"El deslizador le permite mezclar la nueva grabación con el contenido "
+"anterior del buffer. Al ponerlo en -inf dB se sobreescribe el sonido "
+"anterior."
 
 #. New signal
 #: src/record.c:487
 msgid "Recorded sound"
-msgstr "Suono registrato"
+msgstr "Sonido grabado"
 
 #: src/record.c:499
 msgid ""
@@ -1584,118 +1596,118 @@ msgid ""
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
 "record silence."
 msgstr ""
-"Questo cursore permette di ridurre il livello del suono registrato. "
-"Impostarlo a 0 dB per registrare senza nessuna riduzione. Notare che "
-"impostando questo a -inf dB registrerÃ  il silenzio."
+"Este deslizador le permite reducir el nivel del sonido grabado. Al ponerlo "
+"en 0 dB se graba sin reducción. Tenga en cuenta que al ponerlo en -in dB se "
+"grabará silenciado."
 
 #. NONE
 #: src/sample-display.c:221
 msgid "New selection"
-msgstr "Nuova selezione"
+msgstr "Nueva selección"
 
 #. REPLACE
 #: src/sample-display.c:222
 msgid "Selection: add/modify region"
-msgstr "Selezione: aggiunge/modifica la regione"
+msgstr "Selección: agregar/modificar región"
 
 #. INTERSECT
 #: src/sample-display.c:223
 msgid "Selection: subtract region"
-msgstr "Selezione: sottrae la regione"
+msgstr "Selección: sustraer región"
 
 #: src/samplerate.c:103 src/samplerate.c:167
 msgid "Resample error"
-msgstr "Errore di ricampionamento"
+msgstr "Error de remuestreo"
 
 #: src/samplerate.c:104 src/samplerate.c:168
 msgid "libsamplerate error"
-msgstr "errore di libsamplerate"
+msgstr "Error de libsamplerate"
 
 #: src/samplerate.c:225
 #, c-format
 msgid "Resample from %d Hz to %d Hz"
-msgstr "Ricampiona da %d Hz a %d Hz"
+msgstr "Remuestrear de %d Hz a %d Hz"
 
 #: src/samplerate.c:428
 msgid "Sweep: Resample"
-msgstr "Sweep: ricampiona"
+msgstr "Sweep: Remuestrear"
 
 #. Conversion
 #: src/samplerate.c:448
 msgid "Conversion"
-msgstr "Conversione"
+msgstr "Conversión"
 
 #: src/samplerate.c:455
 #, c-format
 msgid "Current sample rate: %d Hz"
-msgstr "Frequenza attuale di campionamento: %d Hz"
+msgstr "Frecuencia de muestreo actual: %d Hz"
 
 #: src/samplerate.c:464
 msgid "New sample rate"
-msgstr "Nuova frequenza di campionamento"
+msgstr "Nueva frecencia de muestreo"
 
 #. Quality
 #: src/samplerate.c:475
 msgid "Quality"
-msgstr "QualitÃ "
+msgstr "Calidad"
 
 #: src/samplerate.c:482
 msgid "Converter"
-msgstr "Convertitore"
+msgstr "Convertir"
 
 #: src/samplerate.c:525
 msgid "Remember this quality"
-msgstr "Memorizza questa qualitÃ "
+msgstr "Recordar esta calidad"
 
 #: src/samplerate.c:545
 msgid "Reset to the last remembered quality."
-msgstr "Ritorna all'ultima qualitÃ  memorizzata."
+msgstr "Reinicializar a la última calidad que se recordó."
 
 #: src/samplerate.c:559
 msgid "Set to default quality."
-msgstr "Imposta la qualitÃ  predefinita."
+msgstr "Establecer a la calidad predeterminada."
 
 #: src/samplerate.c:581
 msgid ""
 "Secret Rabbit Code (aka libsamplerate) is a\n"
 "Sample Rate Converter for audio by Erik de Castro Lopo\n"
 msgstr ""
-"Il codice del coniglio segreto (cioÃ¨ libsamplerate) Ã¨ un\n"
-"convertitore di frequenza di campionamento audio di Erik de Castro Lopo\n"
+"Secret Rabbit Code (alias libsamplerate) es un\n"
+"conversor para audio escrito por Erik de Castro Lopo\n"
 
 #. OK
 #: src/samplerate.c:601
 msgid "Resample"
-msgstr "Ricampiona"
+msgstr "Remuestrear"
 
 #. Cancel
 #: src/samplerate.c:614
 msgid "Don't resample"
-msgstr "Non ricampionare"
+msgstr "No remuestrear"
 
 #: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
-msgstr "Personalizzato"
+msgstr "Personalizado"
 
 #: src/sw_chooser.c:52
 msgid "192000 Hz (Studio quality)"
-msgstr "192000 Hz (qualitÃ  studio)"
+msgstr "192000 Hz (Calidad de estudio)"
 
 #: src/sw_chooser.c:53
 msgid " 96000 Hz (High quality)"
-msgstr " 96000 Hz (qualitÃ  alta)"
+msgstr " 96000 Hz (Alta calidad)"
 
 #: src/sw_chooser.c:54
 msgid " 48000 Hz (DAT quality)"
-msgstr " 48000 Hz (qualitÃ  DAT)"
+msgstr " 48000 Hz (Calidad de DAT)"
 
 #: src/sw_chooser.c:55
 msgid " 44100 Hz (CD quality)"
-msgstr " 44100 Hz (qualitÃ  CD)"
+msgstr " 44100 Hz (Calidad de CD)"
 
 #: src/sw_chooser.c:56
 msgid " 32000 Hz (Ultra-wideband voice quality)"
-msgstr " 32000 Hz (qualitÃ  voce a banda larghissima)"
+msgstr " 32000 Hz (Calidad de voz de ultra ancho de banda)"
 
 #: src/sw_chooser.c:57
 msgid " 22050 Hz"
@@ -1703,7 +1715,7 @@ msgstr " 22050 Hz"
 
 #: src/sw_chooser.c:58
 msgid " 16000 Hz (Wideband voice quality)"
-msgstr " 16000 Hz (qualitÃ  voce a banda larga)"
+msgstr " 16000 Hz (Calidad de voz de banda ancha)"
 
 #: src/sw_chooser.c:59
 msgid " 11025 Hz"
@@ -1711,23 +1723,23 @@ msgstr " 11025 Hz"
 
 #: src/sw_chooser.c:60
 msgid "  8000 Hz (Narrowband voice quality)"
-msgstr "  8000 Hz (qualitÃ  voce a banda stretta)"
+msgstr "  8000 Hz (Calidad de voz de banda angosta)"
 
 #: src/sw_chooser.c:61
 msgid "  4000 Hz (Low quality)"
-msgstr "  4000 Hz (qualitÃ  bassa)"
+msgstr "  4000 Hz (Baja calidad)"
 
 #: src/sw_chooser.c:69
 msgid "Quadraphonic"
-msgstr "Quadrifonia"
+msgstr "Cuadrofónico"
 
 #: src/sw_chooser.c:296
 msgid "Custom: "
-msgstr "Personalizzato: "
+msgstr "Personalizado: "
 
 #: src/sw_chooser.c:331
 msgid "Sampling rate"
-msgstr "Frequenza di campionamento"
+msgstr "Frecuencia de muestreo"
 
 #: src/sw_chooser.c:333
 msgid "Hz"
@@ -1735,36 +1747,36 @@ msgstr "Hz"
 
 #: src/sw_chooser.c:357 src/view.c:1001
 msgid "Channels"
-msgstr "Canali"
+msgstr "Canales"
 
 #: src/sw_chooser.c:359 src/view.c:3611
 msgid "channels"
-msgstr "canali"
+msgstr "canales"
 
 #: src/sweep_filter.c:125
 msgid "No selection to process"
-msgstr "Nessuna selezione da elaborare"
+msgstr "No hay ninguna selección para procesar"
 
 #: src/sweep_sample.c:119 src/view.c:3550 src/view.c:3556 src/view.c:3563
 #: src/view.c:3569
 msgid "Untitled"
-msgstr "Senzatitolo"
+msgstr "Sin título"
 
 #: src/sweep_sample.c:324
 msgid "Overflow"
-msgstr "Overflow"
+msgstr "Desbordamiento"
 
 #: src/sweep_sample.c:411
 msgid "Sweep: New file"
-msgstr "Sweep: nuovo file"
+msgstr "Sweep: Nuevo archivo"
 
 #: src/sweep_sample.c:446
 msgid "Name:"
-msgstr "Nome:"
+msgstr "Nombre:"
 
 #: src/sweep_sample.c:466
 msgid "Duration:"
-msgstr "Durata:"
+msgstr "Duración:"
 
 #: src/sweep_sample.c:482
 msgid "hh:mm:ss.xxx"
@@ -1772,22 +1784,22 @@ msgstr "hh:mm:ss.xxx"
 
 #: src/sweep_sample.c:525
 msgid "Remember this format"
-msgstr "Memorizza questo formato"
+msgstr "Recordar este formato"
 
 #: src/sweep_sample.c:531
 msgid ""
 "Remember this sampling rate and channel configuration for creating new files."
 msgstr ""
-"Memorizza questa frequenza di campionamento e questa configurazione dei "
-"canali per creare nuovi file."
+"Recordar esta frecuencia de muestreo y la configuración de canales para "
+"crear archivos nuevos."
 
 #: src/sweep_sample.c:551
 msgid "Reset to the last remembered format for new files."
-msgstr "Ritorna all'ultimo formato memorizzato per i nuovi file."
+msgstr "Reinicializar al último formato que se recordó para archivos nuevos."
 
 #: src/sweep_sample.c:562
 msgid "Set to the default format for new files."
-msgstr "Imposta il formato predefinito per i nuovi file."
+msgstr "Establecer al formato predeterminado para archivos nuevos."
 
 #: src/sweep_sample.c:578
 msgid ""
@@ -1795,31 +1807,31 @@ msgid ""
 "duration and format. All audio data is processed internally in 32 bit "
 "floating point format."
 msgstr ""
-"Indica il valore della memoria che sarÃ  allocata per la durata e il formato "
-"selezionato. Tutti i dati audio sono elaborati internamente nel formato a 32 "
-"bit a virgola mobile."
+"Indica la cantidad de memoria para datos que será reservada para el formato "
+"y la duración seleccionados. Todos los datos de audio son procesados "
+"internamente en formato de 32 bits con punto flotante."
 
 #: src/sweep_sample.c:593
 msgid "Data memory:"
-msgstr "Memoria dati:"
+msgstr "Memoria de datos:"
 
 #. OK
 #: src/sweep_sample.c:605
 msgid "Create"
-msgstr "Crea"
+msgstr "Crear"
 
 #. Cancel
 #: src/sweep_sample.c:617
 msgid "Don't create"
-msgstr "Non creare"
+msgstr "No crear"
 
 #: src/sweep_sample.c:785
 msgid "Excellent!!!"
-msgstr "Eccellente"
+msgstr "Excelente!!!"
 
 #: src/sweep_sample.c:807
 msgid "Files unsaved"
-msgstr "File non salvati"
+msgstr "Archivos no guardados"
 
 #: src/sweep_sample.c:808
 msgid ""
@@ -1827,17 +1839,18 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Alcuni file non sono stati salvati. Uscendo, si perdono tutte le modifiche.\n"
+"Algunos archivos no han sido guardados. Si sale del programa, se perderán "
+"todos los cambios.\n"
 "\n"
-"Uscire veramente?"
+"Está seguro que desea salir?"
 
 #: src/sweep_sample.c:811 src/sweep_sample.c:819
 msgid "Don't quit"
-msgstr "Non uscire"
+msgstr "No salir"
 
 #: src/sweep_sample.c:815
 msgid "Files playing"
-msgstr "I file sono in riproduzione"
+msgstr "Archivos en reproducción"
 
 #: src/sweep_sample.c:816
 msgid ""
@@ -1845,75 +1858,75 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Non ci sono file modificati, ma qualche file Ã¨ attualmente in riproduzione.\n"
+"No hay archivos sin guardar, pero algunos se están reproduciendo.\n"
 "\n"
-"Uscire veramente?"
+"Está seguro que desea salir?"
 
 #. Select
 #: src/sweep_sample.c:1476 src/view.c:1362
 msgid "Invert selection"
-msgstr "Inverte la selezione"
+msgstr "Invertir selección"
 
 #. Select
 #: src/sweep_sample.c:1496 src/view.c:1370 src/view.c:1464
 msgid "Select all"
-msgstr "Seleziona tutto"
+msgstr "Seleccionar todo"
 
 #: src/sweep_sample.c:1516 src/view.c:1378
 msgid "Select none"
-msgstr "Seleziona niente"
+msgstr "Sin selección"
 
 #: src/sweep_sample.c:1536
 msgid "Halve selection"
-msgstr "Dimezza la selezione"
+msgstr "Seleccionar la mitad"
 
 #: src/sweep_sample.c:1556
 msgid "Double selection"
-msgstr "Raddoppia la selezione"
+msgstr "Seleccionar el doble"
 
 #: src/sweep_sample.c:1579
 msgid "Selection left"
-msgstr "Selezione sinistra"
+msgstr "Seleccinar la izquierda"
 
 #: src/sweep_sample.c:1601
 msgid "Selection right"
-msgstr "Selezione destra"
+msgstr "Seleccionar la derecha"
 
 #: src/sweep_sample.c:1689
 msgid "Insert selection ["
-msgstr "Inverti selezione ["
+msgstr "Insertar la selección ["
 
 #: src/sweep_sample.c:1742
 msgid "Subtract selection ["
-msgstr "Togli selezione ["
+msgstr "Sustraer la selección ["
 
 #: src/sweep_sample.c:1787
 msgid "Set selection ["
-msgstr "Imposta selezione ["
+msgstr "Establecer la selección ["
 
 #: src/sweep_sample.c:1886
 msgid "Sweep: File properties"
-msgstr "Sweep: proprietÃ  del file"
+msgstr "Sweep: Proiedades del archivo"
 
 #: src/sweep_sample.c:1910
 msgid "Filename: "
-msgstr "Nome file: "
+msgstr "Nombre del archivo:"
 
 #: src/sweep_sample.c:1912
 msgid "Sampling rate: "
-msgstr "Frequenza: "
+msgstr "Frequencia de muestreo:"
 
 #: src/sweep_sample.c:1914
 msgid "Channels: "
-msgstr "Canali: "
+msgstr "Canales:"
 
 #: src/sweep_sample.c:1916
 msgid "Data memory: "
-msgstr "Memoria dati: "
+msgstr "Memoria de datos:"
 
 #: src/sweep_sample.c:1918
 msgid "Duration: "
-msgstr "Durata: "
+msgstr "Duración:"
 
 #: src/sweep_undo.c:327
 #, c-format
@@ -1924,193 +1937,193 @@ msgid ""
 "Do you want to continue editing this buffer?"
 msgstr ""
 "%s\n"
-" Ã¨ cambiato nel disco.\n"
+" ha cambiado en el disco.\n"
 "\n"
-"Continuare a modificare questo buffer?"
+"Desea seguir editando este buffer?"
 
 #: src/sweep_undo.c:332
 msgid "Continue editing"
-msgstr "Continua"
+msgstr "Seguir editando"
 
 #: src/sweep_undo.c:332
 msgid "Reread from disk"
-msgstr "Rilegge dal disco"
+msgstr "Releer del disco"
 
 #: src/sweep_undo.c:430 src/sweep_undo.c:488
 msgid "Nothing to undo"
-msgstr "Niente da annullare"
+msgstr "No hay nada que deshacer"
 
 #: src/sweep_undo.c:511 src/sweep_undo.c:567
 msgid "Nothing to redo"
-msgstr "Niente da ripristinare"
+msgstr "No hay nada que rehacer"
 
 #: src/undo_dialog.c:158
 msgid "Original data"
-msgstr "Dati originali"
+msgstr "Datos originales"
 
 #: src/undo_dialog.c:343
 msgid "Action"
-msgstr "Azione"
+msgstr "Acción"
 
 #: src/undo_dialog.c:350
 msgid "Sweep: History"
-msgstr "Sweep: cronologia"
+msgstr "Sweep: Historial"
 
 #: src/undo_dialog.c:387 src/view.c:515 src/view.c:2029
 msgid "Undo"
-msgstr "Annulla"
+msgstr "Deshacer"
 
 #: src/undo_dialog.c:395 src/view.c:526 src/view.c:2038
 msgid "Redo"
-msgstr "Ripeti"
+msgstr "Rehacer"
 
 #: src/undo_dialog.c:420
 msgid "Revert to selected state"
-msgstr "Inverte lo stato selezionato"
+msgstr "Revertir al estado seleccionado"
 
 #. Cancel
 #: src/undo_dialog.c:446 src/view.c:480 src/view.c:3508
 msgid "Close"
-msgstr "Chiudi"
+msgstr "Cerrar"
 
 #: src/view.c:301
 msgid "Duplicate to stereo"
-msgstr "Duplica in stereo"
+msgstr "Duplicar a stereo"
 
 #: src/view.c:311
 msgid "Duplicate to multichannel"
-msgstr "Duplica in multicanale"
+msgstr "Duplicar a multicanal"
 
 #: src/view.c:323
 msgid "Swap left and right"
-msgstr "Scambia destra e sinistra"
+msgstr "Intercambiar izquierda y derecha"
 
 #: src/view.c:367
 msgid "Add/Remove channels"
-msgstr "Aggiungi/rimuovi canali"
+msgstr "Agregar/Eliminar canales"
 
 #: src/view.c:420 src/view.c:1910
 msgid "New ..."
-msgstr "Nuovo"
+msgstr "Nuevo..."
 
 #: src/view.c:429 src/view.c:1917
 msgid "Open ..."
-msgstr "Apri"
+msgstr "Abrir..."
 
 #: src/view.c:449
 msgid "Save As ..."
-msgstr "Salva come..."
+msgstr "Guardar como..."
 
 #: src/view.c:469
 msgid "Properties ..."
-msgstr "ProprietÃ "
+msgstr "Propiedades..."
 
 #. Edit
 #: src/view.c:499 src/view.c:1292
 msgid "Edit"
-msgstr "Modifica"
+msgstr "Editar"
 
 #: src/view.c:537
 msgid "Show history ..."
-msgstr "Mostra cronologia"
+msgstr "Mostrar historial..."
 
 #: src/view.c:603 src/view.c:1328
 msgid "Paste: Insert"
-msgstr "Incolla: inserisci"
+msgstr "Pegar: Insertar"
 
 #: src/view.c:613 src/view.c:1334
 msgid "Paste: Mix"
-msgstr "Incolla: mescola"
+msgstr "Pegar: Mezclar"
 
 #: src/view.c:623 src/view.c:1340
 msgid "Paste: Crossfade"
-msgstr "Incolla: dissolvenza incrociata"
+msgstr "Pegar: Intermezclar desvaneciendo"
 
 #: src/view.c:633
 msgid "Paste as New"
-msgstr "Incolla come nuovo"
+msgstr "Pegar como Nuevo archivo"
 
 #: src/view.c:647
 msgid "Preview Cut/Cursor"
-msgstr "Anteprima taglia/cursore"
+msgstr "Previsualizar Cortar/Cursor"
 
 #: src/view.c:656
 msgid "Pre-roll to Cursor"
-msgstr "Prearrotola il cursore"
+msgstr "Pre-roll hasta el cursor"
 
 #: src/view.c:672
 msgid "Invert"
-msgstr "Inverti"
+msgstr "Invertir"
 
 #: src/view.c:681
 msgid "All"
-msgstr "Tutto"
+msgstr "Todo"
 
 #: src/view.c:690
 msgid "None"
-msgstr "Niente"
+msgstr "Nada"
 
 #: src/view.c:704
 msgid "Halve"
-msgstr "Dimezza"
+msgstr "Dividir"
 
 #: src/view.c:714
 msgid "Double"
-msgstr "Raddoppia"
+msgstr "Duplicar"
 
 #: src/view.c:724
 msgid "Shift left"
-msgstr "Sposta a sinistra"
+msgstr "Pasar a la izquierda"
 
 #: src/view.c:734
 msgid "Shift right"
-msgstr "Sposta a destra"
+msgstr "Pasar a la derecha"
 
 #. View
 #: src/view.c:745
 msgid "View"
-msgstr "Visualizza"
+msgstr "Ver"
 
 #: src/view.c:752 src/view.c:2190
 msgid "Autoscroll: follow playback cursor"
-msgstr "Autoscroll: segue il cursore di riproduzione"
+msgstr "Autoscroll: seguir el cursor de reproducción"
 
 #: src/view.c:766
 msgid "Center"
-msgstr "Centra"
+msgstr "Centrar"
 
 #. Zoom in
 #: src/view.c:779 src/view.c:2129
 msgid "Zoom in"
-msgstr "Aumenta ingrandimento"
+msgstr "Agrandar"
 
 #. Zoom out
 #: src/view.c:788 src/view.c:2138
 msgid "Zoom out"
-msgstr "Riduci ingrandimento"
+msgstr "Reducir"
 
 #. Zoom
 #: src/view.c:797 src/view.c:1267
 msgid "Zoom to selection"
-msgstr "Ingrandisci la selezione"
+msgstr "Agrandar la selección"
 
 #: src/view.c:804
 msgid "Left"
-msgstr "Sinistra"
+msgstr "Izquierda"
 
 #: src/view.c:813
 msgid "Right"
-msgstr "Destra"
+msgstr "Derecha"
 
 #. Zoom
 #: src/view.c:823 src/view.c:1273 src/view.c:1432
 msgid "Zoom normal"
-msgstr "Dimensioni normali"
+msgstr "Zoom normal"
 
 #. Zoom all
 #: src/view.c:829 src/view.c:1279 src/view.c:1438 src/view.c:2120
 msgid "Zoom all"
-msgstr "Visualizza tutto"
+msgstr "Zoom total"
 
 #: src/view.c:838
 msgid "1:1"
@@ -2119,7 +2132,7 @@ msgstr "1:1"
 #. Store view
 #: src/view.c:851
 msgid "Remember as"
-msgstr "Memorizza come"
+msgstr "Recordar como"
 
 #: src/view.c:868 src/view.c:898
 msgid "Area 1"
@@ -2164,131 +2177,131 @@ msgstr "Area 10"
 #. Retrieve view
 #: src/view.c:881
 msgid "Zoom to"
-msgstr "Vai in"
+msgstr "Agrandar a"
 
 #: src/view.c:913
 msgid "Color scheme"
-msgstr "Schema di colore"
+msgstr "Esquema de colores"
 
 #: src/view.c:919
 msgid "Decoder Red"
-msgstr "Profondo rosso"
+msgstr "Rojo profundo"
 
 #: src/view.c:927
 msgid "Orangeboom"
-msgstr "Arancio meccanico"
+msgstr "Naranja mecánica"
 
 #: src/view.c:935
 msgid "Lame Yellow"
-msgstr "Giallo cedrone"
+msgstr "Amarillo debil"
 
 #: src/view.c:943
 msgid "Coogee Bay Blue"
-msgstr "Azzurro sussurro"
+msgstr "Susurro Azul"
 
 #: src/view.c:951
 msgid "Blackwattle"
-msgstr "Maron glacÃ©"
+msgstr "Marrón glacé"
 
 #: src/view.c:959
 msgid "Frigid"
-msgstr "Biancaneve"
+msgstr "Blancanieves"
 
 #: src/view.c:967
 msgid "Radar"
-msgstr "Verdicchio"
+msgstr "Verde radar"
 
 #: src/view.c:975
 msgid "Bluescreen"
-msgstr "Tuono blu"
+msgstr "Pantalla azul"
 
 #. View
 #: src/view.c:988 src/view.c:1392 src/view.c:1478
 msgid "New View"
-msgstr "Nuova vista"
+msgstr "Nueva vista"
 
 #. Sample
 #: src/view.c:995
 msgid "Sample"
-msgstr "Campione"
+msgstr "Muestreo"
 
 #: src/view.c:1010
 msgid "Resample ..."
-msgstr "Ricampiona"
+msgstr "Remuestrear..."
 
 #: src/view.c:1023
 msgid "Duplicate"
-msgstr "Duplica"
+msgstr "Duplicar"
 
 #. Filters
 #: src/view.c:1034 src/view.c:1348
 msgid "Process"
-msgstr "Elabora"
+msgstr "Procesar"
 
 #. Playback
 #: src/view.c:1043
 msgid "Playback"
-msgstr "Riproduci"
+msgstr "Reproducción"
 
 #: src/view.c:1049
 msgid "Configure audio device ..."
-msgstr "Configura il device audio"
+msgstr "Configurar dispositivo de audio..."
 
 #: src/view.c:1059
 msgid "Transport"
-msgstr "Spostamento"
+msgstr "Transportar"
 
 #: src/view.c:1067
 msgid "Go to start of file"
-msgstr "Va all'inizio del file"
+msgstr "Ir al comienzo del archivo"
 
 #: src/view.c:1076
 msgid "Go to start of window"
-msgstr "Va all'inizio della finestra"
+msgstr "Ir al comienzo de la ventana"
 
 #: src/view.c:1086
 msgid "Skip back"
-msgstr "Salta indietro"
+msgstr "Saltear hacia atrás"
 
 #: src/view.c:1096
 msgid "Skip forward"
-msgstr "Salta avanti"
+msgstr "Saltear hacia adelante"
 
 #: src/view.c:1105
 msgid "Go to end of window"
-msgstr "Va alla fine della finestra"
+msgstr "Ir al final de la ventana"
 
 #: src/view.c:1114
 msgid "Go to end of file"
-msgstr "Va alla fine del file"
+msgstr "Ir al final del archivo"
 
 #: src/view.c:1127
 msgid "Play selection"
-msgstr "Suona la selezione"
+msgstr "Reproducir la selección"
 
 #: src/view.c:1138
 msgid "Play sample"
-msgstr "Suona il campione"
+msgstr "Reproducir muestreo"
 
 #: src/view.c:1148
 msgid "Play note"
-msgstr "Suona la nota"
+msgstr "Reproducir nota"
 
 #: src/view.c:1167
 msgid "Toggle monitoring"
-msgstr "Attiva/Disattiva preascolto"
+msgstr "Activar/desactivar el Monitor"
 
 #: src/view.c:1176
 msgid "Toggle looping"
-msgstr "Attiva/Disattiva la modalitÃ  ciclica"
+msgstr "Activar/Desactivar el modo cíclico"
 
 #: src/view.c:1185
 msgid "Toggle muting"
-msgstr "Attiva/Disattiva muto"
+msgstr "Activar/Desactivar mudo"
 
 #: src/view.c:1194
 msgid "Toggle reverse playback"
-msgstr "Attiva/Disattiva la riproduzione invertita"
+msgstr "Activar/Desactivar la reproducción en reversa"
 
 #: src/view.c:1211
 msgid "Pause"
@@ -2296,116 +2309,116 @@ msgstr "Pausa"
 
 #: src/view.c:1235
 msgid "About MP3 export..."
-msgstr "Informazioni sull'esportazione in MP3"
+msgstr "Información sobre la exportación a MP3..."
 
 #: src/view.c:1241
 msgid "About Sweep ..."
-msgstr "Informazioni su Sweep"
+msgstr "Sobre Sweep..."
 
 #. Properties
 #: src/view.c:1405 src/view.c:1491
 msgid "File properties ..."
-msgstr "ProprietÃ  del file"
+msgstr "Propiedades del archivo..."
 
 #. Edit
 #: src/view.c:1450
 msgid "Paste"
-msgstr "Incolla"
+msgstr "Pegar"
 
 #: src/view.c:1933
 msgid "Save as ..."
-msgstr "Salva come..."
+msgstr "Guardar como..."
 
 #: src/view.c:1953
 msgid "Cut selection to clipboard"
-msgstr "Taglia la selezione negli appunti"
+msgstr "Cortar la selección al portapapeles"
 
 #: src/view.c:1963
 msgid "Copy selection to clipboard"
-msgstr "Copia la selezione negli appunti"
+msgstr "Copiar la selección al portapapeles"
 
 #: src/view.c:1974
 msgid "Paste: insert clipboard at cursor position"
-msgstr "Incolla: inserisce gli appunti nella posizione del cursore"
+msgstr "Pegar: insertar el portapapeles en la posición del cursor"
 
 #: src/view.c:1985
 msgid "Paste: mix clipboard in from cursor position"
-msgstr "Incolla: mescola gli appunti dalla posizione del cursore"
+msgstr "Pegar: mezclar el portapapeles desde la posición del cursor"
 
 #: src/view.c:1996
 msgid "Paste: fade clipboard in from cursor position"
-msgstr "Incolla: dissolve gli appunti dalla posizione del cursore"
+msgstr "Pegar: desvanecer el portapapeles desde la posición del cursor"
 
 #: src/view.c:2066
 msgid "Selector tool"
-msgstr "Selezionatore"
+msgstr "Herramienta seleccionar"
 
 #: src/view.c:2077
 msgid "\"Scrubby\" the scrub tool"
-msgstr "Â«ScrubbyÂ» lo strumento per l'audioscandaglio"
+msgstr "\"Scrubby\" la herramienta para fregar"
 
 #: src/view.c:2087
 msgid "Pencil tool"
-msgstr "Matita"
+msgstr "Herramienta lápiz"
 
 #: src/view.c:2095
 msgid "Noise tool"
-msgstr "Strumento di rumore"
+msgstr "Herramienta de ruido"
 
 #: src/view.c:2181
 msgid "Visible length"
-msgstr "Lunghezza visibile"
+msgstr "Largo visible"
 
 #: src/view.c:2300
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
-msgstr "Ingrandimento verticale [shift + freccia su/giÃ¹]"
+msgstr "Zoom vertical [Shift + Flecha Arriba/Abajo]"
 
 #: src/view.c:2427
 msgid "Record ..."
-msgstr "Registra"
+msgstr "Grabar..."
 
 #: src/view.c:2503
 msgid "Reverse mode playback (toggle)"
-msgstr "ModalitÃ  di riproduzione invertita (attiva/disattiva)"
+msgstr "Modo de reproducción en reversa (activar/desactivar)"
 
 #: src/view.c:2521
 msgid "Loop mode playback (toggle)"
-msgstr "ModalitÃ  di riproduzione ciclica (attiva/disattiva)"
+msgstr "Modo de reproducción cíclica (activar/desactivar)"
 
 #. _("Play all / Pause    [Ctrl+Space / Enter]"),
 #: src/view.c:2545
 msgid "Play all / Pause    [Ctrl+Space]"
-msgstr "Suona tutto / Pausa    [ctrl+spazio]"
+msgstr "Reproducir todo / Pausa    [Ctrl+Espacio]"
 
 #. _("Play selection / Pause    [Space / Enter]"),
 #: src/view.c:2561
 msgid "Play selection / Pause    [Space]"
-msgstr "Suona la selezione / Pausa    [spazio]"
+msgstr "Reproducir la selección / Pausa    [Espacio]"
 
 #. _("Stop playback    [Space]"),
 #: src/view.c:2577
 msgid "Stop playback    [Enter]"
-msgstr "Ferma la riproduzione    [invio]"
+msgstr "Detener la reproducción    [Enter]"
 
 #: src/view.c:2594
 msgid "Go to beginning    [Ctrl+Home]"
-msgstr "Va all'inizio    [ctrl+inizio]"
+msgstr "Ir al inicio    [Ctrl+Inicio]"
 
 #: src/view.c:2630
 msgid "Go to the end    [Ctrl+End]"
-msgstr "Va alla fine    [ctrl+fine]"
+msgstr "Ir al final    [Ctrl+Fin]"
 
 #: src/view.c:2644
 msgid "Muted playback (toggle)"
-msgstr "Riproduzione muta (attiva/disattiva)"
+msgstr "Reproducción silenciada (activar/desactivar)"
 
 #: src/view.c:2664 src/view.c:2682
 msgid "Playback gain slider (volume)"
-msgstr "Cursore di guadagno di riproduzione (volume)"
+msgstr "Deslizador de ganancia de la reproducción (volumen)"
 
 #: src/view.c:2694
 msgid "Monitor (toggle)"
-msgstr "Preascolto (attiva/disattiva)"
+msgstr "Monitor (activar/desactivar)"
 
 #. SYNC
 #: src/view.c:2712
@@ -2415,34 +2428,34 @@ msgstr "SYNC"
 #: src/view.c:3255
 #, c-format
 msgid "Remembered as area %d"
-msgstr "Memorizza come area %d"
+msgstr "Area recordada como %d"
 
 #: src/view.c:3273
 #, c-format
 msgid "No area remembered as %d"
-msgstr "Nessuna area memorizzata come %d"
+msgstr "No hay ningún area reacordada como %d"
 
 #: src/view.c:3276
 #, c-format
 msgid "Zoomed to area %d"
-msgstr "Visualizzata l'area %d"
+msgstr "Agrandado al área %d"
 
 #: src/view.c:3452 src/view.c:3456
 msgid "Scrub!"
-msgstr "Audioscandaglio"
+msgstr "Fregado!"
 
 #: src/view.c:3452 src/view.c:3458
 msgid "Ready"
-msgstr "Pronto"
+msgstr "Listo"
 
 #: src/view.c:3505
 #, c-format
 msgid "%s has been modified. Close anyway?"
-msgstr "%s Ã¨ stato modificato. Chiudere comunque?"
+msgstr "%s ha sido modificado. Cerrar de todos modos?"
 
 #: src/view.c:3508
 msgid "Don't close"
-msgstr "Non chiudere"
+msgstr "No cerrar"
 
 #: src/view.c:3555 src/view.c:3568
 msgid "*"
@@ -2450,68 +2463,70 @@ msgstr "*"
 
 #: src/view.c:3571
 msgid "Empty"
-msgstr "Vuoto"
+msgstr "Vacío"
 
 #: plugins/byenergy/byenergy.c:58
 msgid "Select regions above threshold"
-msgstr "Seleziona le regioni sopra la soglia"
+msgstr "Seleccionar las regiones sobre el umbral"
 
 #: plugins/byenergy/byenergy.c:59
 msgid ""
 "Whether to select those regions lying above a given threshold or below it."
-msgstr "Se selezionare quelle regioni sopra o sotto una data soglia."
+msgstr ""
+"Seleccionar aquellas regiones que están sobre un unbral especificado o "
+"debajo de él."
 
 #: plugins/byenergy/byenergy.c:66
 msgid "Resolution"
-msgstr "Risoluzione"
+msgstr "Resolución"
 
 #: plugins/byenergy/byenergy.c:67
 msgid "Width of energy detection window (s)"
-msgstr "Finestra di rilevamento della larghezza di energia (s)"
+msgstr "Ancho de la ventana de detección de energía (s)"
 
 #: plugins/byenergy/byenergy.c:73
 msgid "Threshold"
-msgstr "Soglia"
+msgstr "Umbral"
 
 #: plugins/byenergy/byenergy.c:74
 msgid "Energy level to detect [0.0 - 1.0]"
-msgstr "Livello di energia da rilevare [0.0 - 1.0]"
+msgstr "Nivel de energía a detectar [0.0 - 1.0]"
 
 #: plugins/byenergy/byenergy.c:80
 msgid "Minimum duration"
-msgstr "Durata minima"
+msgstr "Duración mínima"
 
 #: plugins/byenergy/byenergy.c:81
 msgid "Shortest region of selection to detect (s)"
-msgstr "La piÃ¹ breve regione di selezione da rilevare (s)"
+msgstr "Región mas corta de la selección a detectar (s)"
 
 #: plugins/byenergy/byenergy.c:87
 msgid "Maximum interruption"
-msgstr "Interruzione massima"
+msgstr "Interrupción máxima"
 
 #: plugins/byenergy/byenergy.c:88
 msgid "Longest length of sound above threshold to allow (s)"
-msgstr "Lunghezza massima di suono sopra la soglia da permettere (s)"
+msgstr "Longitud mas larga de sonido permitida sobre el umbral (s)"
 
 #: plugins/byenergy/byenergy.c:227 plugins/byenergy/byenergy.c:232
 msgid "Select by energy"
-msgstr "Seleziona per energia"
+msgstr "Seleccionar por energía"
 
 #: plugins/byenergy/byenergy.c:233
 msgid "Select loud or quiet regions"
-msgstr "Seleziona regioni rumorose o silenziose"
+msgstr "Seleccionar regiones sileciosas o ruidosas"
 
 #: plugins/echo/echo.c:53
 msgid "Delay"
-msgstr "Ritardo"
+msgstr "Retardo"
 
 #: plugins/echo/echo.c:54
 msgid "Time to delay by"
-msgstr "Tempo di ritardo da"
+msgstr "Retardo de"
 
 #: plugins/echo/echo.c:62
 msgid "Gain with which to mix in delayed signal"
-msgstr "Guadagno con cui mescolare il segnale ritardato"
+msgstr "Ganancia para mezclar la señal retardada"
 
 #: plugins/echo/echo.c:107 plugins/echo/echo.c:113
 msgid "Echo"
@@ -2519,85 +2534,88 @@ msgstr "Eco"
 
 #: plugins/echo/echo.c:114
 msgid "Apply an echo to selected regions of a sample"
-msgstr "Applica l'eco alle regioni selezionate di un campione"
+msgstr "Aplica un eco a las regiones seleccionadas de un muestreo"
 
 #: plugins/normalise/normalise.c:128 plugins/normalise/normalise.c:133
 msgid "Normalise"
-msgstr "Normalizza"
+msgstr "Normalizar"
 
 #: plugins/normalise/normalise.c:134
 msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
-msgstr "Altera l'ampiezza del campione per stare tra 1.0 e -1.0"
+msgstr "Altera la amplitud del muestreo para estar entre 1.0 e -1.0"
 
 #: plugins/reverse/reverse.c:129 plugins/reverse/reverse.c:134
 #: plugins/reverse/reverse.c:140
 msgid "Reverse"
-msgstr "Inverte"
+msgstr "Invertir"
 
 #: plugins/reverse/reverse.c:141
 msgid "Reverse selected regions of a sample"
-msgstr "Inverte le regioni selezionate di un campione"
+msgstr "Invierte las regiones seleccionadas de un muestreo"
 
 #: plugins/example/example.c:37 plugins/example/example.c:86
 msgid "With a fork"
-msgstr "Con una forchetta"
+msgstr "Con un tenedor"
 
 #: plugins/example/example.c:38
 msgid "With a spoon"
-msgstr "Con un cucchiaio"
+msgstr "Con una cuchara"
 
 #: plugins/example/example.c:39
 msgid "With false teeth"
-msgstr "Con una dentiera"
+msgstr "Con una dentadura falsa"
 
 #: plugins/example/example.c:40
 msgid "With Nigel's bum"
-msgstr "Con un vagabondo di Nigel"
+msgstr "Con un vagabundo de Nigel"
 
 #: plugins/example/example.c:56
 msgid "Flim"
-msgstr "Satira"
+msgstr ""
 
 #: plugins/example/example.c:57
 msgid "Should you manage your flim?"
-msgstr "Domeresti la tua satira?"
+msgstr ""
 
 #: plugins/example/example.c:64
 msgid "Beans"
-msgstr "Fagioli"
+msgstr "Maníes"
 
 #: plugins/example/example.c:65
 msgid "Method of eating beans"
-msgstr "Metodo di mangiare fagioli"
+msgstr "Método para comer maníes"
 
 #: plugins/example/example.c:72
 msgid "Pants methodology"
-msgstr "Metodologia delle mutande"
+msgstr "Metodología de calzoncillos"
 
 #: plugins/example/example.c:73
 msgid "How many pants should you wear per day?"
-msgstr "Quante mutande dovresti indossare al giorno?"
+msgstr "Cuantos calzoncillos deberías usar por día?"
 
 #: plugins/example/example.c:122 plugins/example/example.c:129
 msgid "Example Filter Region"
-msgstr "Regione filtro di esempio"
+msgstr "Ejemplo de filtrado de región"
 
 #: plugins/example/example.c:130
 msgid "An example filter region plugin"
-msgstr "Un plugin della regione filtro di esempio"
+msgstr "Un plugin de ejemplo de filtrado de regiones"
 
 #: plugins/fade/fade.c:144 plugins/fade/fade.c:157
 msgid "Fade in"
-msgstr "Dissolvenza in apertura"
+msgstr "Desvanecido (aparecer)"
 
 #: plugins/fade/fade.c:152 plugins/fade/fade.c:173
 msgid "Fade out"
-msgstr "Dissolvenza in chiusura"
+msgstr "Desvanecido (desaparecer)"
 
 #: plugins/fade/fade.c:158
 msgid "Apply a linear fade to the selection, fading in from silence"
-msgstr "Applica una dissolvenza lineare alla selezione, iniziando dal silenzio"
+msgstr ""
+"Aplicar un desvanecido lineal a la selección, apareciendo desde el silencio"
 
 #: plugins/fade/fade.c:174
 msgid "Apply a linear fade to the selection, fading out to silence"
-msgstr "Applica una dissolvenza lineare alla selezione, finendo in silenzio"
+msgstr ""
+"Aplicar un desvanecido lineal a la selección, desapareciendo hasta el "
+"silencio"

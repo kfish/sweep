@@ -1,3 +1,8 @@
+Thu Sep  4 11:54:23 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* added es_ES translation by Juan Manuel Mart\xednez
+	* updated it translation from Yuri Bongiorno
+
 Sat Apr 29 02:48:14 EST 2003 Silvia Pfeiffer <silvia@silvia-pfeiffer.de>
 
 	* driver_alsa.c: deleting double line #include <alsa/asoundlib.h>
