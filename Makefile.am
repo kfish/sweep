@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = intl po src doc
+SUBDIRS = intl po src plugins doc
 
 pkgdata_DATA = sweep_logo.ppm
 
