@@ -2,7 +2,7 @@
 
 INCLUDES = -I$(top_srcdir)/include
 
-libdir = @PACKAGE_PLUGIN_DIR@
+libdir = $(PACKAGE_PLUGIN_DIR)
 
 # Use lib_LTLIBRARIES to create a plugin that you actually want installed;
 # Here, for the example plugin, we specify the noinst prefix instead of

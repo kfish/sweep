@@ -1,33 +1,34 @@
-%define name sweep
+%define name    sweep
 %define version 0.1.0
 %define release 1
-%define prefix /usr
+%define prefix  /usr
 
 Summary: Sound wave editor
 
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Copyright: GPL
-Group: Applications/Sound
-URL: http://sweep.sourceforge.net/
+Name:           %{name}
+Version:        %{version}
+Release:        %{release}
+Copyright:      GPL
+Group:          Applications/Sound
+URL:            http://sweep.sourceforge.net/
 
-Source: http://download.sourceforge.net/pub/sweep/sweep-%{version}.tar.gz
-Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
-Docdir: %{prefix}/doc
-Prefix: %{prefix}
-Requires: gtk+ >= 1.2.0
+Source:         %{name}-%{version}.tar.gz
+Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root
+Docdir:         %{prefix}/doc
+Prefix:         %{prefix}
+Requires:       gtk+ >= 1.2.0
 
 %description
 Sweep is an editor for sound samples. It operates on files of various
 formats such as .wav, .aiff and .au, and has multiple undo/redo levels
 and filters. It supports audio filter plugins from the LADSPA project.
 
+%package        devel
+Summary:        Sweep plugin development kit
+Group:          Applications/Sound
+Requires:       %{name} = %{version}
 
-%package devel
-Summary: Sweep plugin development kit
-Group: Applications/Sound
-%description devel
+%description    devel
 The sweep-devel package contains header files and documentation for writing
 plugins for Sweep, a sound wave editor.
 
@@ -35,8 +36,14 @@ Install sweep-devel if you're going to create plugins for Sweep. You will
 also need to install sweep.
 
 %prep
-
-%setup
+%setup -q -n %{name}-%{version}
+if [ -f configure ]; then
+        CFLAGS=$RPM_OPT_FLAGS \
+        ./configure --prefix=%{prefix};
+else
+        CFLAGS=$RPM_OPT_FLAGS \
+        ./autogen.sh --prefix=%{prefix};
+fi
 
 %build
 LINGUAS="fr hu it de" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
@@ -49,16 +56,15 @@ make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
 
 %files
 
-%defattr (0444, bin, bin, 0555)
-%dir %{prefix}/lib/sweep
-
 %defattr (0555, bin, bin)
 %{prefix}/bin/sweep
-%{prefix}/lib/sweep/libladspameta.so.1.0.0
-%{prefix}/lib/sweep/libnormalise.so.1.0.0
-%{prefix}/lib/sweep/libecho.so.1.0.0
-%{prefix}/lib/sweep/libreverse.so.1.0.0
-%{prefix}/lib/sweep/libbyenergy.so.1.0.0
+
+%defattr (0444, bin, bin, 0555)
+%{prefix}/lib/sweep/libladspameta*
+%{prefix}/lib/sweep/libecho*
+%{prefix}/lib/sweep/libnormalise*
+%{prefix}/lib/sweep/libreverse*
+%{prefix}/lib/sweep/libbyenergy*
 
 %defattr (0555, bin, man)
 %{prefix}/man/man1/sweep.1*
@@ -66,6 +72,7 @@ make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
 %doc README.Solaris README.ALSA
 %doc doc/*.txt
 
+%defattr (-, root, root)
 %{prefix}/share/gnome/apps/Multimedia/sweep.desktop
 %{prefix}/share/locale/*/*/*
 

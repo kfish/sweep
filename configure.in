@@ -94,11 +94,11 @@ else
 fi
 
 dnl Set PACKAGE_PLUGIN_DIR in Makefiles and config.h.
-if test "x${prefix}" = "xNONE"; then
-  PACKAGE_PLUGIN_DIR="${ac_default_prefix}/lib/${PACKAGE}"
-else
-  PACKAGE_PLUGIN_DIR="${prefix}/lib/${PACKAGE}"
-fi
+dnl if test "x${prefix}" = "xNONE"; then
+dnl   PACKAGE_PLUGIN_DIR="${ac_default_prefix}/lib/${PACKAGE}"
+dnl else
+  PACKAGE_PLUGIN_DIR="${libdir}/${PACKAGE}"
+dnl fi
 AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "${PACKAGE_PLUGIN_DIR}")
 AC_SUBST(PACKAGE_PLUGIN_DIR)
 

@@ -2,7 +2,7 @@
 
 INCLUDES = -I$(top_srcdir)/include
 
-libdir = @PACKAGE_PLUGIN_DIR@
+libdir = $(PACKAGE_PLUGIN_DIR)
 
 lib_LTLIBRARIES = \
 	libladspameta.la
