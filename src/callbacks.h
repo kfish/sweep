@@ -57,7 +57,7 @@ void
 zoom_right_cb (GtkWidget * widget, gpointer data);
 
 void
-zoom_1_1_cb (GtkWidget * widget, gpointer data);
+zoom_all_cb (GtkWidget * widget, gpointer data);
 
 void
 zoom_2_1_cb (GtkWidget * widget, gpointer data);

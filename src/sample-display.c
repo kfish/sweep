@@ -950,6 +950,9 @@ sample_display_handle_motion (SampleDisplay *s,
   int ol, or;
   int ss, se;
 
+  /* ignore non select motion on button 1 for now */
+  if (current_tool != TOOL_SELECT) return;
+
   if(!s->selecting)
     return;
 
@@ -1110,7 +1113,7 @@ sample_display_button_press (GtkWidget      *widget,
   sw_sample * sample;
   int x, y;
   int xss, xse;
-  int o, vlen;
+  int o;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (IS_SAMPLE_DISPLAY (widget), FALSE);
@@ -1134,19 +1137,6 @@ sample_display_button_press (GtkWidget      *widget,
     return TRUE;
   }
 
-
-  if (current_tool == TOOL_ZOOM) {
-    gdk_window_get_pointer (event->window, &x, &y, &state);
-    o = XPOS_TO_OFFSET(x);
-    vlen = s->view->end - s->view->start;
-    if (state & GDK_SHIFT_MASK) {
-      view_set_ends (s->view, o - 3*vlen/4, o + 3*vlen/4);
-    } else {
-      view_set_ends (s->view, o - vlen/4, o + vlen/4);
-    }
-    return TRUE;
-  }
-
   /* Cancel the current operation if a different button is pressed. */
   if(s->selecting && event->button != last_button) {
     sample_display_clear_sel (s);
@@ -1163,49 +1153,70 @@ sample_display_button_press (GtkWidget      *widget,
 	  XPOS_TO_OFFSET(x) > sample->sounddata->nr_frames)
 	return TRUE;
 
-      for (gl = sample->sounddata->sels; gl; gl = gl->next) {
-	sel = (sw_sel *)gl->data;
-	
-	xss = OFFSET_TO_XPOS(sel->sel_start);
-	xse = OFFSET_TO_XPOS(sel->sel_end);
-	
-	/* If the cursor is near the current start or end of
+      switch (current_tool) {
+      case TOOL_SELECT:
+
+	for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+	  sel = (sw_sel *)gl->data;
+	  
+	  xss = OFFSET_TO_XPOS(sel->sel_start);
+	  xse = OFFSET_TO_XPOS(sel->sel_end);
+	  
+	  /* If the cursor is near the current start or end of
 	   * the selection, move that.
 	   */
-	if(abs(x-xss) < 3) {
-	  sample_set_tmp_sel (sample, s->view, sel);
-	  s->selecting = SELECTING_SELECTION_START;
-	  s->selection_mode = SELECTION_MODE_INTERSECT;
-	  sample_display_set_intersect_cursor (s);
-	  sample_display_handle_motion(s, x, y, FALSE);
-	  return TRUE;
-	} else if(abs(x-xse) < 3) {
-	  sample_set_tmp_sel (sample, s->view, sel);
-	  s->selecting = SELECTING_SELECTION_END;
-	  s->selection_mode = SELECTION_MODE_INTERSECT;
-	  sample_display_set_intersect_cursor (s);
-	  sample_display_handle_motion(s, x, y, FALSE);
-	  return TRUE;
+	  if(abs(x-xss) < 3) {
+	    sample_set_tmp_sel (sample, s->view, sel);
+	    s->selecting = SELECTING_SELECTION_START;
+	    s->selection_mode = SELECTION_MODE_INTERSECT;
+	    sample_display_set_intersect_cursor (s);
+	    sample_display_handle_motion(s, x, y, FALSE);
+	    return TRUE;
+	  } else if(abs(x-xse) < 3) {
+	    sample_set_tmp_sel (sample, s->view, sel);
+	    s->selecting = SELECTING_SELECTION_END;
+	    s->selection_mode = SELECTION_MODE_INTERSECT;
+	    sample_display_set_intersect_cursor (s);
+	    sample_display_handle_motion(s, x, y, FALSE);
+	    return TRUE;
+	  }
 	}
+	
+	/* Otherwise, start a new selection. */
+	
+	sample_set_tmp_sel_1(sample, s->view,
+			     XPOS_TO_OFFSET(x),
+			     XPOS_TO_OFFSET(x)+1);
+	
+	s->selecting = SELECTING_SELECTION_START;
+	
+	if(state & GDK_SHIFT_MASK) {
+	  s->selection_mode = SELECTION_MODE_INTERSECT;
+	  sample_display_set_intersect_cursor (s);
+	} else {
+	  s->selection_mode = SELECTION_MODE_REPLACE;
+	  SET_CURSOR(widget, horiz_cr);
+	}
+	
+	sample_display_handle_motion(s, x, y, TRUE);
+	break;
+
+      case TOOL_ZOOM:
+	o = XPOS_TO_OFFSET(x);
+	view_center_on (s->view, o);
+	if (state & GDK_SHIFT_MASK) {
+	  view_zoom_out (s->view, 2.0);
+	} else {
+	  view_zoom_in (s->view, 2.0);
+	}
+	return TRUE;
+	
+	break;
+
+      default:
+	break;
       }
 
-      /* Otherwise, start a new selection. */
-
-      sample_set_tmp_sel_1(sample, s->view,
-			   XPOS_TO_OFFSET(x),
-			   XPOS_TO_OFFSET(x)+1);
-
-      s->selecting = SELECTING_SELECTION_START;
-
-      if(state & GDK_SHIFT_MASK) {
-	s->selection_mode = SELECTION_MODE_INTERSECT;
-	sample_display_set_intersect_cursor (s);
-      } else {
-	s->selection_mode = SELECTION_MODE_REPLACE;
-	SET_CURSOR(widget, horiz_cr);
-      }
-
-      sample_display_handle_motion(s, x, y, TRUE);
     } else if(last_button == 2) {
       s->selecting = SELECTING_PAN_WINDOW;
       gdk_window_get_pointer (event->window, &s->selecting_x0, NULL, NULL);
@@ -1359,9 +1370,6 @@ sample_display_motion_notify (GtkWidget *widget,
 
     return FALSE;
   }
-
-  /* ignore non select motion for now */
-  if (current_tool != TOOL_SELECT) return FALSE;
 
   if((state & GDK_BUTTON1_MASK) && last_button == 1) {
     sample_display_handle_motion(s, x, y, 0);

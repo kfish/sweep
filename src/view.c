@@ -65,6 +65,8 @@
 #define VIEW_MAX_WIDTH 517
 #define VIEW_DEFAULT_HEIGHT 320
 
+#define DEFAULT_MIN_ZOOM 8
+
 #define NO_TIME ""
 
 extern GList * plugins;
@@ -406,16 +408,18 @@ create_view_menu (sw_view * view, GtkWidget * m)
   subsubmenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), subsubmenu);
 
+#if 0
   menuitem = gtk_menu_item_new_with_label(_("50%"));
   gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
   gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
 		     GTK_SIGNAL_FUNC(zoom_2_1_cb), s);
   gtk_widget_show(menuitem);
+#endif
 
-  menuitem = gtk_menu_item_new_with_label(_("100%"));
+  menuitem = gtk_menu_item_new_with_label(_("All"));
   gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
   gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
-		     GTK_SIGNAL_FUNC(zoom_1_1_cb), s);
+		     GTK_SIGNAL_FUNC(zoom_all_cb), s);
   gtk_widget_show(menuitem);
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_1, GDK_CONTROL_MASK,
@@ -938,6 +942,116 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
 
   view_refresh_title(view);
   view_refresh_display(view);
+}
+
+void
+view_center_on (sw_view * view, sw_framecount_t offset)
+{
+  sw_framecount_t vlen2;
+
+  vlen2 = (view->end - view->start) / 2;
+
+  view_set_ends (view, offset - vlen2, offset + vlen2);
+}
+
+void
+view_zoom_in (sw_view * view, double ratio)
+{
+  sw_framecount_t nstart, nlength, olength;
+
+  olength = view->end - view->start;
+  nlength = (sw_framecount_t)((double)olength / ratio);
+
+  if (nlength < olength) {
+    nstart = view->start + (olength - nlength) / 2UL;
+  } else {
+    nstart = view->start - (nlength - olength) / 2UL;
+  }
+
+  if(nlength <= DEFAULT_MIN_ZOOM) return;
+
+  view_set_ends(view, nstart, nstart+nlength);
+}
+
+void
+view_zoom_out (sw_view * view, double ratio)
+{
+  sw_framecount_t nstart, nlength, olength;
+
+  olength = view->end - view->start;
+  nlength = (sw_framecount_t)((double)olength * ratio);
+
+  if (nlength < 0) return; /* sw_framecount_t multiplication overflow */
+
+  if (nlength > olength) {
+    nstart = view->start - (nlength - olength) / 2UL;
+  } else {
+    nstart = view->start + (olength - nlength) / 2UL;
+  }
+
+  if (nstart == view->start && (nstart+nlength) == view->end)
+    return;
+
+  view_set_ends(view, nstart, nstart+nlength);
+}
+
+void
+view_zoom_to_sel (sw_view * view)
+{
+  GList * gl;
+  sw_sel * sel;
+  gint sel_min, sel_max;
+
+  if(!view->sample->sounddata->sels) return;
+
+  gl = view->sample->sounddata->sels;
+
+  sel = (sw_sel *)gl->data;
+  sel_min = sel->sel_start;
+
+  if (gl->next)
+    for (gl = gl->next; gl->next; gl = gl->next);
+
+  sel = (sw_sel *)gl->data;
+  sel_max = sel->sel_end;
+
+  view_set_ends(view, sel_min, sel_max);
+}
+
+void
+view_zoom_left (sw_view * view)
+{
+  GtkAdjustment * adj = GTK_ADJUSTMENT(view->adj);
+
+  adj->value -= adj->page_size;
+  if(adj->value < adj->lower) {
+    adj->value = adj->lower;
+  }
+
+  gtk_adjustment_value_changed (GTK_ADJUSTMENT(adj));
+}
+
+void
+view_zoom_right (sw_view * view)
+{
+  GtkAdjustment * adj = GTK_ADJUSTMENT(view->adj);
+
+  adj->value += adj->page_size;
+  if(adj->value > adj->upper) {
+    adj->value = adj->upper;
+  }
+
+  gtk_adjustment_value_changed (GTK_ADJUSTMENT(adj));
+}
+
+void
+view_zoom_all (sw_view * view)
+{
+  sw_sample * s;
+
+  s = view->sample;
+
+  view_set_ends(view, 0, s->sounddata->nr_frames);
 }
 
 void

@@ -37,6 +37,27 @@ void
 view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end);
 
 void
+view_center_on (sw_view * view, sw_framecount_t offset);
+
+void
+view_zoom_in (sw_view * view, double ratio);
+
+void
+view_zoom_out (sw_view * view, double ratio);
+
+void
+view_zoom_to_sel (sw_view * view);
+
+void
+view_zoom_left (sw_view * view);
+
+void
+view_zoom_right (sw_view * view);
+
+void
+view_zoom_all (sw_view * view);
+
+void
 view_set_playmarker (sw_view * view, int offset);
 
 void

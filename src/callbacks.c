@@ -49,11 +49,12 @@ extern gint current_tool;
  * length. Each time zoom_out is called, the view is adjusted to
  * DEFAULT_ZOOM times its current length.
  * 
- * If you alter these, make sure
+ * If you alter this, make sure
  * (DEFAULT_ZOOM - 1) * DEFAULT_MIN_ZOOM  >  1
+ *
+ * where DEFAULT_MIN_ZOOM is defined in view.c
  */
 #define DEFAULT_ZOOM 1.2
-#define DEFAULT_MIN_ZOOM 8
 
 
 /* Sample creation */
@@ -155,20 +156,8 @@ zoom_in_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_view * v = sd->view;
-  sw_framecount_t nstart, nlength, olength;
 
-  olength = v->end - v->start;
-  nlength = (sw_framecount_t)((double)olength / DEFAULT_ZOOM);
-
-  if (nlength < olength) {
-    nstart = v->start + (olength - nlength) / 2UL;
-  } else {
-    nstart = v->start - (nlength - olength) / 2UL;
-  }
-
-  if(nlength <= DEFAULT_MIN_ZOOM) return;
-
-  view_set_ends(sd->view, nstart, nstart+nlength);
+  view_zoom_in (v, DEFAULT_ZOOM);
 }
 
 void
@@ -176,90 +165,47 @@ zoom_out_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_view * v = sd->view;
-  sw_framecount_t nstart, nlength, olength;
 
-  olength = v->end - v->start;
-  nlength = (sw_framecount_t)((double)olength * DEFAULT_ZOOM);
-
-  if (nlength < 0) return; /* sw_framecount_t multiplication overflow */
-
-  if (nlength > olength) {
-    nstart = v->start - (nlength - olength) / 2UL;
-  } else {
-    nstart = v->start + (olength - nlength) / 2UL;
-  }
-
-  if (nstart == v->start && (nstart+nlength) == v->end)
-    return;
-
-  view_set_ends(sd->view, nstart, nstart+nlength);
+  view_zoom_out (v, DEFAULT_ZOOM);
 }
 
 void
 zoom_to_sel_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  GList * gl;
-  sw_sel * sel;
-  gint sel_min, sel_max;
+  sw_view * v = sd->view;
 
-  if(!sd) return;
-
-  if(!sd->view->sample->sounddata->sels) return;
-
-  gl = sd->view->sample->sounddata->sels;
-
-  sel = (sw_sel *)gl->data;
-  sel_min = sel->sel_start;
-
-  if (gl->next)
-    for (gl = gl->next; gl->next; gl = gl->next);
-
-  sel = (sw_sel *)gl->data;
-  sel_max = sel->sel_end;
-
-  view_set_ends(sd->view, sel_min, sel_max);
+  view_zoom_to_sel (v);
 }
 
 void
 zoom_left_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->adj);
+  sw_view * v = sd->view;
 
-  adj->value -= adj->page_size;
-  if(adj->value < adj->lower) {
-    adj->value = adj->lower;
-  }
-
-  gtk_adjustment_value_changed (GTK_ADJUSTMENT(adj));
+  view_zoom_left (v);
 }
 
 void
 zoom_right_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->adj);
+  sw_view * v = sd->view;
 
-  adj->value += adj->page_size;
-  if(adj->value > adj->upper) {
-    adj->value = adj->upper;
-  }
-
-  gtk_adjustment_value_changed (GTK_ADJUSTMENT(adj));
+  view_zoom_right (v);
 }
 
 void
-zoom_1_1_cb (GtkWidget * widget, gpointer data)
+zoom_all_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s;
+  sw_view * v = sd->view;
 
-  s = sd->view->sample;
-
-  view_set_ends(sd->view, 0, s->sounddata->nr_frames);
+  view_zoom_all (v);
 }
 
+/* XXX: dump this ?? */
 void
 zoom_2_1_cb (GtkWidget * widget, gpointer data)
 {
