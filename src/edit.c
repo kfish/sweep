@@ -27,7 +27,7 @@
 #include "sweep_sounddata.h"
 #include "edit.h"
 #include "format.h"
-#include "sample.h"
+#include "sweep_sample.h"
 
 sw_edit_buffer * ebuf = NULL;
 

@@ -31,7 +31,7 @@
 
 #include "sweep_types.h"
 #include "sweep_undo.h"
-#include "sample.h"
+#include "sweep_sample.h"
 #include "interface.h"
 #include "edit.h"
 #include "sample-display.h"

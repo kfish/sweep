@@ -34,7 +34,7 @@
 #include "sweep_typeconvert.h"
 #include "print.h"
 #include "param.h"
-#include "sample.h"
+#include "sweep_sample.h"
 #include "sample-display.h"
 #include "file_dialogs.h"
 #include "driver.h"

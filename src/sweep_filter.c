@@ -27,7 +27,7 @@
 #include "sweep_filter.h"
 
 #include "edit.h"
-#include "sample.h"
+#include "sweep_sample.h"
 
 
 static sw_operation filter_op = {

@@ -30,7 +30,7 @@
 #include "sweep_sounddata.h"
 #include "i18n.h"
 
-#include "sample.h"
+#include "sweep_sample.h"
 
 #define NR_PARAMS 5
 

@@ -35,7 +35,7 @@
 
 #include "sweep_types.h"
 #include "driver.h"
-#include "sample.h"
+#include "sweep_sample.h"
 
 #ifdef DRIVER_OSS
 #include <sys/soundcard.h>

@@ -35,7 +35,7 @@
 #include "sweep_types.h"
 #include "file_ops.h"
 #include "sweep_typeconvert.h"
-#include "sample.h"
+#include "sweep_sample.h"
 #include "view.h"
 
 sw_sample *
@@ -214,6 +214,7 @@ sample_save (sw_sample * s)
   }
 
   afFreeFileSetup(outputSetup);
+  if(!outputFile) return -1;
 
   afSetVirtualByteOrder(outputFile, AF_DEFAULT_TRACK,
 			AF_BYTEORDER_LITTLEENDIAN);

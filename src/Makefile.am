@@ -14,6 +14,7 @@ sweepinclude_HEADERS = \
 	sweep.h \
 	sweep_types.h \
 	sweep_typeconvert.h \
+	sweep_sample.h \
 	sweep_sounddata.h \
 	sweep_filter.h \
 	sweep_selection.h \
@@ -35,9 +36,9 @@ sweep_SOURCES = \
 	param.c param.h \
 	plugin.c plugin.h \
 	print.c print.h \
-	sample.c sample.h \
 	sample-display.c sample-display.h \
 	sweep_filter.c sweep_filter.h \
+	sweep_sample.c sweep_sample.h \
 	sweep_sounddata.c sweep_sounddata.h \
 	sweep_selection.c sweep_selection.h \
 	sweep_typeconvert.c sweep_typeconvert.h \

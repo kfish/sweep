@@ -23,7 +23,7 @@
 #include <glib.h>
 
 
-#include "sample.h"
+#include "sweep_sample.h"
 #include "sweep_typeconvert.h"
 #include "format.h"
 #include "view.h"

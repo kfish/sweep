@@ -1,3 +1,10 @@
+Thu Oct 05 20:48.03 GMT+2 2000 Nicolas Léveillé  <knos@free.fr>
+
+	* src/file_dialogs.c: file selection now has a memory 
+	for the current directory.
+	* src/file_dialogs.c+src/file_ops.c: fixed seg faults when
+	user presses 'ok' without having selected anything.
+
 Thu May 11 22:49:08 EST 2000 Conrad Parker <conrad@vergenet.net>
 
 	* merged in Solaris audio driver code from Mattias Engdegård

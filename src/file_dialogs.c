@@ -25,8 +25,11 @@
 
 #include "sweep_types.h"
 #include "file_ops.h"
-#include "sample.h"
+#include "sweep_sample.h"
 #include "sample-display.h"
+
+static gchar* load_current_file = NULL; /* last visited dir for loading */
+static gchar* save_current_file = NULL; /* last visited dir for saving */
 
 static void
 sample_load_ok_cb(GtkWidget * widget, gpointer data)
@@ -36,12 +39,15 @@ sample_load_ok_cb(GtkWidget * widget, gpointer data)
   gchar *dir;
 
   dir = gtk_file_selection_get_filename(GTK_FILE_SELECTION(data));
+  g_free(load_current_file);
+  load_current_file = g_strdup(dir);
 
   s = sample_load(dir);
-
-  v = view_new_all (s, 1.0);
-  sample_add_view (s, v);
-  sample_bank_add(s);
+  if(s) {
+      v = view_new_all (s, 1.0);
+      sample_add_view (s, v);
+      sample_bank_add(s);
+  }
 
   gtk_widget_destroy(GTK_WIDGET(data));
 }
@@ -52,17 +58,17 @@ sample_load_cancel_cb(GtkWidget * widget, gpointer data)
   gtk_widget_destroy(GTK_WIDGET(data));
 }
 
-static void
-sample_load_help_cb(GtkWidget * widget, gpointer data)
-{
-}
-
 void
 sample_load_cb(GtkWidget * wiget, gpointer data)
 {
   GtkWidget *filesel;
 
   filesel = gtk_file_selection_new("Load Sample");
+  if(load_current_file) {
+      gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), 
+				      load_current_file);
+  }
+
   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
 		     "clicked", GTK_SIGNAL_FUNC(sample_load_ok_cb), filesel);
 
@@ -107,6 +113,7 @@ sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
   filesel = gtk_widget_get_toplevel (widget);
 
   dn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filesel));
+  save_current_file = g_strdup(dn);
 
   /* remove filename from dir */
   fn = strrchr (dn, '/');
@@ -119,6 +126,7 @@ sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
 
   sample_set_pathname (sample, dn, fn);
 
+  g_free(save_current_file);
   sample_save(sample);
 
   gtk_widget_destroy(GTK_WIDGET(filesel));
@@ -128,11 +136,6 @@ static void
 sample_save_as_cancel_cb(GtkWidget * widget, gpointer data)
 {
   gtk_widget_destroy(GTK_WIDGET(data));
-}
-
-static void
-sample_save_as_help_cb(GtkWidget * widget, gpointer data)
-{
 }
 
 void
@@ -147,6 +150,10 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   chdir(sample->directory);
 
   filesel = gtk_file_selection_new("Save Sample");
+  if(save_current_file)
+      gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), 
+				      save_current_file);
+
   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
 		     "clicked", GTK_SIGNAL_FUNC(sample_save_as_ok_cb), data);
 
