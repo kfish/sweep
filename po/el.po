@@ -1,21 +1,21 @@
-# Copyright (C) 2000 Free Software Foundation, Inc.
-# Yuri Bongiorno <yuri.bongiorno@libero.it>, 2000-2003.
+# Greek Translation of Sweep.
+# Dokianakis Fanis <madf@hellug.gr>, 2003.
 #
 #: src/sample-display.c:220
 msgid ""
 msgstr ""
-"Project-Id-Version: sweep-0.5.13\n"
+"Project-Id-Version: Sweep 0.8.1\n"
 "POT-Creation-Date: 2003-04-29 18:27+1000\n"
-"PO-Revision-Date: 2003-01-12 10:49+0100\n"
-"Last-Translator: Yuri Bongiorno <yuri.bongiorno@libero.it>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
+"PO-Revision-Date: 2003-02-08 05:40+0200\n"
+"Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
+"Language-Team: Greek <EL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-7\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/main.c:89
 msgid "Welcome to Sweep"
-msgstr "Benvenuto in Sweep"
+msgstr "Καλώς ήλθατε στο Sweep"
 
 #: src/main.c:90
 msgid ""
@@ -23,63 +23,62 @@ msgid ""
 "\n"
 "Would you like to create a new file or load an existing file?"
 msgstr ""
-"Ciao, il mio nome θ Scrubby. Benvenuto in Sweep!\n"
+"Γεία σας, το όνομα μου είναι Scrubby. Καλώς ήλθατε στο Sweep!\n"
 "\n"
-"Creo un nuovo file o ne carico uno esistente?"
+"Θέλετε να δημιουργήσετε ένα νέο αρχείο ή να ανοίξετε ένα προϋπάρχων;"
 
 #: src/main.c:94
 msgid "Create new file"
-msgstr "Crea un nuovo file"
+msgstr "Δημιουργία νέου αρχείου"
 
 #: src/main.c:94
 msgid "Load existing file"
-msgstr "Carica un file esistente"
+msgstr "Άνοιγμα αρχείου"
 
 #: src/main.c:129
 msgid "WARNING: Build includes incomplete development code.\n"
-msgstr "ATTENZIONE: Build include codice (incompleto) di sviluppo.\n"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή η έκδοση περιέχει ημιτελή, υπό ανάπτυξη κώδικα.\n"
 
 #: src/main.c:183
 msgid "Sweep version"
-msgstr "Sweep versione"
+msgstr "Έκδοση sweep"
 
 #: src/main.c:184
 msgid "Sweep plugin API version"
-msgstr "Sweep plugin API versione"
+msgstr "Έκδοση API των αρθρωμάτων του sweep"
 
 #: src/main.c:190
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
-msgstr "Uso: %s [opzione...] [file...]\n"
+msgstr "Χρήση: %s [επιλογές ...] [αρχεία ...]\n"
 
 #: src/main.c:191
 msgid "Valid options are:\n"
-msgstr "Le opzioni valide sono:\n"
+msgstr "Έγκυρες επιλογές είναι:\n"
 
 #: src/main.c:192
 msgid "  -h --help                Output this help.\n"
-msgstr "  -h --help                Visualizza questo aiuto.\n"
+msgstr "  -h --help                Απεικόνιση αυτής της βοήθειας.\n"
 
 #: src/main.c:193
 msgid "  -v --version             Output version info.\n"
-msgstr ""
-"  -v --version             Visualizza le informazioni sulla versione.\n"
+msgstr "  -v --version             Απεικόνιση πληροφοριών έκδοσης.\n"
 
 #: src/main.c:194
 msgid "  --display <display>      Use the designated X display.\n"
-msgstr "  --display <display>      Usa il display X designato.\n"
+msgstr "  --display <display>      Χρήση της συγκεκριμένης οθόνης X.\n"
 
 #: src/main.c:196
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
-msgstr "  --no-toolbox             Non mostrare la finestra degli strumenti.\n"
+msgstr "  --no-toolbox             Απόκρυψη του παραθύρου της εργαλειοθήκης.\n"
 
 #: src/about_dialog.c:78
 msgid "About Sweep"
-msgstr "Informazioni su Sweep"
+msgstr "Περί Sweep"
 
 #: src/about_dialog.c:124
 msgid "This is Sweep version"
-msgstr "Questo θ Sweep versione"
+msgstr "Αυτό είναι το Sweep έκδοσης"
 
 #: src/about_dialog.c:142
 msgid "http://sweep.sourceforge.net/"
@@ -88,30 +87,30 @@ msgstr "http://sweep.sourceforge.net/"
 #: src/callbacks.c:920 src/callbacks.c:933 src/edit.c:1568 src/edit.c:1642
 #: src/edit.c:1726
 msgid "Clipboard empty"
-msgstr "Appunti vuoti"
+msgstr "Άδειο πρόχειρο"
 
 #: src/channelops.c:146
 #, c-format
 msgid "Duplicate to %d channels"
-msgstr "Duplica in %d canali"
+msgstr "Αντιγραφή σε %d κανάλια"
 
 #: src/channelops.c:148
 #, c-format
 msgid "Duplicate from %d to %d channels"
-msgstr "Duplica da %d a %d canali"
+msgstr "Αντιγραφή από %d σε %d κανάλια"
 
 #: src/channelops.c:207
 msgid "Sweep: Duplicate channel"
-msgstr "Sweep: duplica canale"
+msgstr "Sweep: Διπλασιασμός καναλιού"
 
 #: src/channelops.c:214 src/channelops.c:698
 #, c-format
 msgid "Currently: %d channels"
-msgstr "Attualmente: %d canali"
+msgstr "Αυτή τη στιγμή: %d κανάλια"
 
 #: src/channelops.c:221 src/channelops.c:704
 msgid "Output channels"
-msgstr "Output canali"
+msgstr "Εξαγωγή καναλιών"
 
 #. OK
 #: src/channelops.c:231 src/channelops.c:714 src/driver.c:369
@@ -119,43 +118,43 @@ msgstr "Output canali"
 #: src/question_dialogs.c:144 src/question_dialogs.c:204
 #: src/question_dialogs.c:253 src/sweep_sample.c:1929 src/undo_dialog.c:434
 msgid "OK"
-msgstr "Ok"
+msgstr "Εντάξει"
 
 #. Cancel
 #: src/channelops.c:242 src/channelops.c:725 src/driver.c:382
 #: src/file_sndfile0.c:510 src/file_sndfile1.c:293 src/param.c:790
 #: src/question_dialogs.c:158 src/view.c:505 src/view.c:2767
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Ακύρωση"
 
 #: src/channelops.c:347 src/view.c:356
 msgid "Mix down to mono"
-msgstr "Riduce in mono mescolando"
+msgstr "Μίξη σε μονοφωνικό"
 
 #: src/channelops.c:445 src/view.c:333
 msgid "Remove left channel"
-msgstr "Rimuove il canale sinistro"
+msgstr "Αφαίρεση αριστερού καναλιού"
 
 #: src/channelops.c:455 src/view.c:343
 msgid "Remove right channel"
-msgstr "Rimuove il canale destro"
+msgstr "Αφαίρεση δεξιού καναλιού"
 
 #: src/channelops.c:539
 msgid "Swap channels"
-msgstr "Scambia i canali"
+msgstr "Εναλλαγή καναλιών"
 
 #: src/channelops.c:541
 msgid "Not stereo"
-msgstr "Non stereo"
+msgstr "Όχι στερεοφωνικό"
 
 #: src/channelops.c:643
 #, c-format
 msgid "Convert from %d to %d channels"
-msgstr "Converte da %d a %d canali"
+msgstr "Μετατροπή από %d σε %d κανάλια"
 
 #: src/channelops.c:692
 msgid "Sweep: Add/Remove channels"
-msgstr "Sweep: aggiunge/rimuove canali"
+msgstr "Sweep: Προσθήκη/Αφαίρεση καναλιών"
 
 #: src/driver.c:364
 msgid "Sweep: audio device configuration"
@@ -165,14 +164,12 @@ msgstr ""
 #: src/driver.c:405
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
-"I cambiamenti alle impostazioni del device avranno effetto alla prossima "
-"riproduzione."
+"Αλλαγές στις ρυθμίσεις συσκευών θα ενεργοποιηθούν στην επόμενη αναπαραγωγή."
 
 #. Device name
 #: src/driver.c:419
-#, fuzzy
 msgid "Device name"
-msgstr "Device:"
+msgstr "Όνομα συσκευής"
 
 #: src/driver.c:425
 msgid "Set the main device for playback and recording"
@@ -184,65 +181,62 @@ msgstr ""
 
 #: src/driver.c:449 src/driver.c:631 src/samplerate.c:551
 msgid "Default"
-msgstr "Predefinito"
+msgstr "Εξ ορισμού"
 
 #: src/driver.c:462
 msgid "Use a different device for monitoring"
-msgstr ""
+msgstr "Χρήση διαφορετικής συσκευής για παρακολούθηση"
 
 #: src/driver.c:474
 msgid "Monitor output:"
-msgstr ""
+msgstr "Έξοδος παρακολούθησης:"
 
 #: src/driver.c:499
-#, fuzzy
 msgid "Swap"
-msgstr "Sweep"
+msgstr "Εναλλαγή"
 
 #: src/driver.c:507
 msgid "Swap main and monitor devices."
-msgstr ""
+msgstr "Εναλλαγή μεταξύ κύριας και συσκευής παρακολούθησης."
 
 #: src/driver.c:516 src/driver.c:617 src/file_speex.c:1972
 #: src/file_vorbis.c:1368 src/samplerate.c:537 src/sweep_sample.c:543
 msgid "Reset"
-msgstr "Reimposta"
+msgstr "Επαναφορά"
 
 #: src/driver.c:524
-#, fuzzy
 msgid "Reset to the last remembered device names."
-msgstr "Ritorna alle ultime opzioni di codifica memorizzate"
+msgstr "Επαναφορά τών προηγούμενων ονομάτων των συσκευών."
 
 #: src/driver.c:530 src/file_speex.c:1986 src/file_vorbis.c:1382
 #: src/param.c:749 src/sweep_sample.c:554
 msgid "Defaults"
-msgstr "Predefiniti"
+msgstr "Εξ ορισμού"
 
 #: src/driver.c:538
-#, fuzzy
 msgid "Set to default device names."
-msgstr "Imposta le opzioni di codifica predefinite."
+msgstr "Χρήση σαν εξ ορισμού ονόματα συσκευών."
 
 #. Buffering
 #: src/driver.c:549
 msgid "Device buffering"
-msgstr "Device buffering"
+msgstr "Buffering συσκευής"
 
 #: src/driver.c:559
 msgid ""
 "Low latency /\n"
 "More dropouts"
 msgstr ""
-"Bassa latenza /\n"
-"Piω interruzioni"
+"Χαμηλή καθυστέρηση /\n"
+"Περισσότερες απορρίψεις"
 
 #: src/driver.c:581
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
 msgstr ""
-"Alta latenza /\n"
-"Meno interruzioni"
+"Υψηλή καθυστέρηση /\n"
+"Λιγότερες απορρίψεις"
 
 #: src/driver.c:585
 msgid ""
@@ -252,87 +246,84 @@ msgid ""
 "Lower values improve responsiveness but may degrade audio quality on heavily-"
 "loaded systems."
 msgstr ""
-"Variando questa barra si modifica il ritardo tra i movimenti del cursore e "
-"la riproduzione. Questo si nota particolarmente nella riproduzione durante "
-"l'\"audioscandaglio\".\n"
+"Αυτός ο επιλογέας ελέγχει την καθυστέρηση μεταξύ των κινήσεων του κέρσορα "
+"και της αναπαραγωγής. Παρατήρείται ιδιαίτερα στο \"scrubbing\" κατά "
+"τηναναπαραγωγή\n"
 "\n"
-"Bassi valori migliorano la risposta, ma possono degradare la "
-"qualitΰ dell'audio su sistemi caricati pesantemente."
+"Χαμηλές τιμές βελτιώνουν την ανταπόκριση αλλά μπορέί να μειώσουν την "
+"ποιότητα του ήχου σε συστήματα με μεγάλο φόρτο."
 
 #: src/driver.c:604
-#, fuzzy
 msgid "Remember these options"
-msgstr "Memorizza queste opzioni di codifica"
+msgstr "Απομνημόνευση αυτών των επιλογών"
 
 #: src/driver.c:625
-#, fuzzy
 msgid "Reset to the last remembered device buffering."
-msgstr "Ritorna all'ultima qualitΰ memorizzata."
+msgstr "Επαναφορά στο τελευταίο στη μνήμη  buffering της συσκευής."
 
 #: src/driver.c:639
-#, fuzzy
 msgid "Set to default device buffering."
-msgstr "Imposta le opzioni di codifica predefinite."
+msgstr "Χρήση σαν εξ ορισμού buffering συσκεύης."
 
 #: src/edit.c:1291
 msgid "No selection to copy"
-msgstr "Nessuna selezione da copiare"
+msgstr "Καμμία επιλογή για αντιγραφή"
 
 #: src/edit.c:1308 src/view.c:565 src/view.c:1306
 msgid "Copy"
-msgstr "Copia"
+msgstr "Αντιγραφή"
 
 #: src/edit.c:1342
 msgid "No selection to cut"
-msgstr "Nessuna selezione da tagliare"
+msgstr "Καμμία επιλογή για αποκοπή"
 
 #: src/edit.c:1358 src/view.c:555 src/view.c:1300
 msgid "Cut"
-msgstr "Taglia"
+msgstr "Αποκοπή"
 
 #: src/edit.c:1388
 msgid "No selection to clear"
-msgstr "Nessuna selezione da cancellare"
+msgstr "Καμμία επιλογή για καθαρισμό"
 
 #: src/edit.c:1404 src/view.c:575 src/view.c:1312
 msgid "Clear"
-msgstr "Cancella"
+msgstr "Καθαρισμός"
 
 #: src/edit.c:1430
 msgid "No selection to delete"
-msgstr "Nessuna selezione da eliminare"
+msgstr "Καμμία επιλογή για διαγραφή"
 
 #: src/edit.c:1447 src/view.c:547
 msgid "Delete"
-msgstr "Elimina"
+msgstr "Διαγραφή"
 
 #: src/edit.c:1482
 msgid "Nothing to crop out"
-msgstr "Niente da ritagliare"
+msgstr "Τίποτα για κόψιμο"
 
 #: src/edit.c:1498 src/view.c:587 src/view.c:1318 src/view.c:2010
 msgid "Crop"
-msgstr "Ritaglia"
+msgstr "Κόψιμο"
 
 #: src/edit.c:1572 src/edit.c:1646 src/edit.c:1730
 msgid "Clipboard data has incompatible format"
-msgstr "Gli appunti hanno un formato non compatibile"
+msgstr "Τα δεδομένα στο πρόχειρο είναι ασύμβατης μορφής"
 
 #: src/edit.c:1590
 msgid "Paste insert"
-msgstr "Incolla inserendo"
+msgstr "Επικόλληση μέσα"
 
 #: src/edit.c:1669
 msgid "Paste mix"
-msgstr "Incolla mescolando"
+msgstr "Επικόλληση μίξη"
 
 #: src/edit.c:1757
 msgid "Paste xfade"
-msgstr "Incolla con dissolvenza incrociata"
+msgstr "Επικόλληση xfade"
 
 #: src/file_dialogs.c:71
 msgid "MP3 export unsupported"
-msgstr "Esportazione in MP3 non supportata"
+msgstr "Δεν υποστηρίζεται η εξαγωγή σε MP3"
 
 #: src/file_dialogs.c:72
 msgid ""
@@ -342,11 +333,11 @@ msgid ""
 "Please use Ogg Vorbis format instead, which\n"
 "provides better quality and is free."
 msgstr ""
-"L'esportazione nel formato MP3 non puς essere legalmente supportata\n"
-"nel software libero a causa dei brevetti.\n"
+"Η εξαγωγή προς τη μορφή MP3 δεν μπορεί να συμπεριληφθεί νόμιμα σε ελεύθερο\n"
+"λογισμικό λόγω περιορισμών της άδειας πνευματικής ιδιοκτησίας.\n"
 "\n"
-"Usate invece il formato Ogg Vorbis che fornisce una qualitΰ\n"
-"migliore ed θ libero."
+"Αντί αυτού, παρακαλούμε να χρησιμοποιήσετε τη μορφή Ogg Vοrbis, η οποία\n"
+"παρέχει καλύτερη ποιότητα και είναι ελεύθερη."
 
 #: src/file_dialogs.c:97
 msgid "Raw PCM (headerless)"
@@ -355,11 +346,11 @@ msgstr ""
 #: src/file_dialogs.c:155
 #, c-format
 msgid "%s does not exist."
-msgstr "%s non esiste."
+msgstr "Το %s δεν υπάρχει"
 
 #: src/file_dialogs.c:156
 msgid "Directory does not exist"
-msgstr "La directory non esiste"
+msgstr "Ο φάκελος δεν υπάρχει"
 
 #: src/file_dialogs.c:255
 #, c-format
@@ -367,12 +358,12 @@ msgid ""
 "Unable to read\n"
 "%s"
 msgstr ""
-"Impossibile leggere\n"
-"%s"
+"Αδυναμία ανάγνωσης\n"
+"του %s"
 
 #: src/file_dialogs.c:303
 msgid "Sweep: Load file"
-msgstr "Sweep: carica file"
+msgstr "Sweep: Άνοιγμα αρχείου"
 
 #: src/file_dialogs.c:369
 #, c-format
@@ -382,27 +373,26 @@ msgid ""
 "\n"
 "All changes and undo information will be lost."
 msgstr ""
-"Sicuri di voler ripristinare %s in\n"
-"%s?\n"
+"Σίγουρα να επιστρέψετε το %s στο%s;\n"
 "\n"
-"Tutti i cambiamenti e le informazioni di annullamento andranno perduti."
+"Όλες οι αλλαγές και οι πληροφορίες ανάκτησης θα χαθούν."
 
 #: src/file_dialogs.c:373
 msgid "Revert file"
-msgstr "Ripristina il file"
+msgstr "Επιστροφή στο αρχείο"
 
 #: src/file_dialogs.c:374 src/view.c:457
 msgid "Revert"
-msgstr "Ripristina"
+msgstr "Επιστροφή"
 
 #: src/file_dialogs.c:374
 msgid "Don't revert"
-msgstr "Non ripristinare"
+msgstr "Όχι επιστροφή"
 
 #: src/file_dialogs.c:544
 #, c-format
 msgid "Save as %s cancelled"
-msgstr "Salva con nome %s annullato"
+msgstr "Αποθήκευση ως %s ακυρώθηκε"
 
 #: src/file_dialogs.c:594
 #, c-format
@@ -410,29 +400,29 @@ msgid ""
 "You are not allowed to write to\n"
 "%s"
 msgstr ""
-"Non ci sono i permessi per scrivere\n"
+"Δεν επιτρέπετε να γράψετε στο\n"
 "%s"
 
 #: src/file_dialogs.c:597
 #, c-format
 msgid "%s exists. Overwrite?"
-msgstr "%s esiste. Sovrascrivere?"
+msgstr "Το %s υπάρχει ήδη. Να γράφτεί σε αυτό."
 
 #: src/file_dialogs.c:598
 msgid "File exists"
-msgstr "Il file esiste"
+msgstr "Το αρχείο υπάρχει ήδη"
 
 #: src/file_dialogs.c:599
 msgid "Overwrite"
-msgstr "Sovrascrive"
+msgstr "Εγγραφή"
 
 #: src/file_dialogs.c:599
 msgid "Don't overwrite"
-msgstr "Non sovrascrivere"
+msgstr "Όχι εγγραφή"
 
 #: src/file_dialogs.c:644
 msgid "By extension"
-msgstr "Per estensione"
+msgstr "Μέσω κατάληξης"
 
 #. MP3 (encoding not supported due to patent restrictions)
 #: src/file_dialogs.c:702
@@ -441,15 +431,15 @@ msgstr ""
 
 #: src/file_dialogs.c:761
 msgid "Sweep: Save file"
-msgstr "Sweep: salva file"
+msgstr "Sweep: Αποθήκευση αρχείου"
 
 #: src/file_dialogs.c:789
 msgid "Save Options"
-msgstr "Salva le opzioni"
+msgstr "Αποθήκευση Επιλογών"
 
 #: src/file_dialogs.c:798
 msgid "Determine File Type:"
-msgstr "Determina il tipo di file:"
+msgstr "Καθορισμός Τύπου Αρχείου:"
 
 #: src/file_dialogs.c:875
 #, c-format
@@ -460,68 +450,68 @@ msgid ""
 "Are you sure you want to save?"
 msgstr ""
 "%s\n"
-" θ cambiato nel disco.\n"
+" άλλαξε στο δίσκο.\n"
 "\n"
-"Sicuri di voler salvare?"
+"Θέλετε σίγουρα να το αποθηκεύσετε;"
 
 #: src/file_dialogs.c:879 src/sweep_undo.c:331 src/view.c:3507
 msgid "File modified"
-msgstr "File modificato"
+msgstr "Το αρχείο τροποποιήθηκε"
 
 #. OK
 #: src/file_dialogs.c:880 src/file_speex.c:2142 src/file_vorbis.c:1631
 #: src/view.c:438 src/view.c:1924
 msgid "Save"
-msgstr "Salva"
+msgstr "Αποθήκευση"
 
 #. Cancel
 #: src/file_dialogs.c:880 src/file_speex.c:2153 src/file_vorbis.c:1642
 msgid "Don't save"
-msgstr "Non salvare"
+msgstr "Όχι αποθήκευση"
 
 #: src/file_sndfile0.c:541 src/file_sndfile1.c:325
 msgid "Powered by libsndfile"
-msgstr "Basato su libsndfile"
+msgstr "Powered by libsndfile"
 
 #. Options
 #. XXX: prepend major format name
 #: src/file_sndfile0.c:566 src/file_sndfile1.c:350
 msgid "Encoding"
-msgstr "Codifica"
+msgstr "Κωδικοποίηση"
 
 #: src/file_sndfile0.c:586 src/file_sndfile1.c:371
 msgid "Encoding:"
-msgstr "Codifica:"
+msgstr "Κωδικοποίηση:"
 
 #: src/file_sndfile0.c:644 src/file_sndfile0.c:665 src/file_sndfile1.c:443
 msgid "Sampling rate:"
-msgstr "Frequenza di campionamento:"
+msgstr "Ρυθμός δειγματοληψίας:"
 
 #: src/file_sndfile0.c:717
 msgid "Channels:"
-msgstr "Canali:"
+msgstr "Κανάλια"
 
 #: src/file_sndfile0.c:727 src/sw_chooser.c:67 src/view.c:3552 src/view.c:3565
 #: src/view.c:3604
 msgid "Mono"
-msgstr "Mono"
+msgstr "Μονοφωνικό"
 
 #: src/file_sndfile0.c:729
 msgid "Mono (mixdown)"
-msgstr "Mono (mescola i canali)"
+msgstr "Μονοφωνικό (μίξη προς κάτω)"
 
 #: src/file_sndfile0.c:741 src/sw_chooser.c:68 src/view.c:3552 src/view.c:3565
 #: src/view.c:3607
 msgid "Stereo"
-msgstr "Stereo"
+msgstr "Στερεοφωνικό"
 
 #: src/file_sndfile0.c:745
 msgid "Stereo (duplicate)"
-msgstr "Stereo (duplicato)"
+msgstr "Στερεοφωνικό (αντιγραφή)"
 
 #: src/file_sndfile0.c:763
 msgid "Bitwidth:"
-msgstr "Ampiezza di bit:"
+msgstr "Μήκος bit:"
 
 #: src/file_sndfile0.c:772
 msgid "8 bit"
@@ -543,15 +533,15 @@ msgstr "32 bit"
 #: src/file_sndfile0.c:813 src/file_sndfile1.c:476 src/file_speex.c:2093
 #: src/file_vorbis.c:1582 src/samplerate.c:565
 msgid "About"
-msgstr "Informazioni su..."
+msgstr "Περί"
 
 #: src/file_sndfile0.c:829 src/file_sndfile1.c:492
 msgid ""
 "Libsndfile is a C library by Erik de Castro Lopo\n"
 "for reading and writing files containing sampled sound."
 msgstr ""
-"Libsndfile θ una libreria C di Erik de Castro Lopo\n"
-"per leggere e scrivere file contenenti suoni campionati."
+"Η libsndfile είναι μια βιβλιοθήκη της C από τον Erik de Castro Lopo\n"
+"για την ανάγνωση και εγγραφή αρχείων που περιέχουν δείγματα ήχου."
 
 #. Conrad wrote the libsndfile0 interface, Erik ported it to libsndfile1
 #: src/file_sndfile0.c:841 src/file_speex.c:2135 src/file_vorbis.c:1624
@@ -561,28 +551,29 @@ msgid ""
 "Copyright (C) 2002 CSIRO Australia.\n"
 "\n"
 msgstr ""
-"Questa interfaccia utente θ di Conrad Parker,\n"
-"Copyright (C) 2002 CSIRO Australia.\n"
+"Αυτό το περιβάλλον χρήσης από το Conrad Parker,\n"
+"Copyright (C) 2002 CSIRO Αυστραλίας.\n"
+"\n"
 
 #: src/file_sndfile0.c:908 src/file_sndfile1.c:546
 msgid "Sweep: Save PCM options"
-msgstr "Sweep: opzioni PCM di salvataggio"
+msgstr "Sweep: Αποθήκευση επιλογών PCM"
 
 #: src/file_sndfile0.c:1072 src/file_sndfile1.c:715
 msgid "Sweep: Load Raw PCM options"
-msgstr "Sweep: opzioni Raw PCM di caricamento"
+msgstr "Sweep: Άνοιγμα επιλογών Ομού PCM"
 
 #: src/file_sndfile0.c:1122 src/file_sndfile1.c:767 src/file_mad.c:419
 #: src/file_speex.c:569 src/file_vorbis.c:324
 #, c-format
 msgid "Loading %s"
-msgstr "Caricamento di %s"
+msgstr "Άνοιγμα του %s"
 
 #: src/file_sndfile0.c:1346 src/file_sndfile1.c:994 src/file_speex.c:1064
 #: src/file_vorbis.c:702
 #, c-format
 msgid "Saving %s"
-msgstr "Salvataggio di %s"
+msgstr "Αποθήκευση του %s"
 
 #: src/file_sndfile1.c:503
 msgid ""
@@ -592,52 +583,54 @@ msgid ""
 "Copyright (C) 2002 CSIRO Australia.\n"
 "\n"
 msgstr ""
-"Questa interfaccia utente θ di Erik de Castro Lopo\n"
-" e Conrad Parker,\n"
+"Αυτό το περιβάλλον χρήστη από το Erik de Castro Lopo\n"
+" και το Conrad Parker,\n"
 "Copyright (C) 2002 Erik de Castro Lopo\n"
-"Copyright (C) 2002 CSIRO Australia.\n"
+"Copyright (C) 2002 CSIRO Αυστραλίας.\n"
+"\n"
 
 #: src/file_speex.c:1006 src/file_speex.c:1026
 msgid "Speex encoding results"
-msgstr "risultati della codifica Speex"
+msgstr "Αποτελέσματα κωδικοποίησης Speex"
 
 #: src/file_speex.c:1198
-#, fuzzy
 msgid "Narrowband ~8 kHz (telephone quality)"
-msgstr "  8000 Hz (qualitΰ voce a banda stretta)"
+msgstr "Στενή ζώνη ~8000 Hz (ποιότητα τηλεφώνου)"
 
 #: src/file_speex.c:1199
 msgid "Wideband ~16 kHz"
-msgstr ""
+msgstr "Ευρυζωνικό ~16 kHz"
 
 #: src/file_speex.c:1201
 msgid "Ultra-wideband 32-48 kHz"
-msgstr ""
+msgstr "Υπερ-ευρυζωνικό 32-48 kHz"
 
 #: src/file_speex.c:1208
 msgid "Constant bitrate (CBR) with no features"
-msgstr ""
+msgstr "Σταθερός ρυθμός bit (CBR) χωρίς χαρακτηριστικά"
 
 #: src/file_speex.c:1211
 msgid "CBR with Voice Activity Detection (VAD)"
-msgstr ""
+msgstr "CBR με Ανίχνευση Φωνητικής Δραστηριότητας (VAD)"
 
 #: src/file_speex.c:1212
 msgid "VAD generates low bitrate comfort noise to replace non-speech"
 msgstr ""
+"Το VAD παράγει ένα χαμηλού ρυθμού bit θόρυβο που αντικαθιστεί το μερος χωρίς "
+"φωνή."
 
 #: src/file_speex.c:1215
 msgid "CBR with VAD and Discontinuous Transmission (DTX)"
-msgstr ""
+msgstr "CBR με VAD και Ασυνεχή Μετάδοση (DTX)"
 
 #: src/file_speex.c:1216
 msgid "DTX marks extended pauses with a minimum bitrate signal"
-msgstr ""
+msgstr "Το DTX σημειώνει τις παύσεις με ένα ελάχιστου ρυθμού bit σήμα"
 
 #: src/file_speex.c:1219
 #, fuzzy
 msgid "Variable bitrate (VBR) with VAD"
-msgstr "Bit rate nominale (ABR):"
+msgstr "Μεταβλητός ρυθμός bit (VBR)"
 
 #: src/file_speex.c:1220
 msgid ""
@@ -647,147 +640,147 @@ msgid ""
 msgstr ""
 
 #: src/file_speex.c:1225
-#, fuzzy
 msgid "Variable bitrate (VBR) with all features"
-msgstr "Modalitΰ con bit rate variabile (VBR)"
+msgstr "Μεταβλητός ρυθμός bit (VBR) με όλα τα χαρακτηριστικά"
 
 #: src/file_speex.c:1226
 msgid ""
 "VBR allows the bitrate to adapt to the complexity of the speech, and handles "
 "pauses using VAD and DTX"
 msgstr ""
+"Το VBR επιτρέπει στο ρυθμό bit να προσαρμοστεί στην πολυπλοκότητα της φωνής "
+"και χειρίζεται τις παύσεις χρησιμοποιώντας VAD και VTX"
 
 #: src/file_speex.c:1230
-#, fuzzy
 msgid "Constant bitrate (CBR)"
-msgstr "Bit rate nominale (ABR):"
+msgstr "Σταθερός ρυθμός bit (CBR):"
 
 #: src/file_speex.c:1232
-#, fuzzy
 msgid "Variable bitrate (VBR)"
-msgstr "Bit rate nominale (ABR):"
+msgstr "Μεταβλητός ρυθμός bit (VBR)"
 
 #: src/file_speex.c:1233
 msgid "VBR allows the bitrate to adapt to the complexity of the speech."
 msgstr ""
+"Το VBR επιτρέπει στο ρυθμό bit να προσαρμοστεί στην πολυπλοκότητα της φωνής."
 
 #: src/file_speex.c:1288 src/file_speex.c:1818
 msgid "Average bitrate"
-msgstr ""
+msgstr "Μέσος ρυθμός bit"
 
 #: src/file_speex.c:1291
-#, fuzzy
 msgid "Maximum bitrate"
-msgstr "Bit rate massimo:"
+msgstr "Μέγιστος ρυθμός bit"
 
 #: src/file_speex.c:1484 src/file_vorbis.c:1013
 msgid "Hack the planet!"
-msgstr "Spacca il mondo!"
+msgstr "Hack the planet!"
 
 #: src/file_speex.c:1572
 msgid "Sweep: Speex save options"
-msgstr "Sweep: opzioni di salvataggio di Speex"
+msgstr "Sweep: Επιλογές αποθήκευσης Speex"
 
 #: src/file_speex.c:1646
 msgid "Speex encoding"
-msgstr "Codifica Speex"
+msgstr "Κωδικοποίηση Speex"
 
 #: src/file_speex.c:1659
-#, fuzzy
 msgid "Mode:"
-msgstr "Muove"
+msgstr "Κατάσταση:"
 
 #: src/file_speex.c:1685
-#, fuzzy
 msgid "Auto"
-msgstr "Informazioni su..."
+msgstr "Αυτόματο"
 
 #: src/file_speex.c:1694
 msgid ""
 "Automatically select the encoding mode based on the sampling rate of the "
 "file."
 msgstr ""
+"Επιλέγει αυτόματα την κατάσταση κωδικοποίησης με βάση το ρυθμό "
+"δειγματοληψίας του αρχείου."
 
 #: src/file_speex.c:1747 src/file_vorbis.c:1180
 msgid "Encoding quality:"
-msgstr "Qualitΰ di codifica:"
+msgstr "Ποιότητα κωδικοποίησης:"
 
 #: src/file_speex.c:1790
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file)."
 msgstr ""
-"Qualitΰ di codifica tra 0 (bassa qualitΰ, file piccolo) e 10 (alta qualitΰ, "
-"file grande)."
+"Ποιότητα κωδικοποίησης μεταξύ 0 (η χαμηλότερη ποιότητα, το μικρότερο αρχείο) "
+"(η υψηλότερη ποιότητα, το μεγαλυτερο αρχείο)."
 
 #: src/file_speex.c:1800
-#, fuzzy
 msgid "Enable bitrate management"
-msgstr "Attiva il motore di gestione del bit rate"
+msgstr "Ενεργοποίηση διαχείρησης ρυθμού bit"
 
 #: src/file_speex.c:1813
 msgid ""
 "For non-VBR (constant bitrate) encoding, this sets the maximum bitrate.For "
 "VBR encoding, this sets the average bitrate."
 msgstr ""
+"Για μη-VBR (σταθερός ρυθμός bit) κωδικοποίηση, αυτό θέτει το μέγιστο ρυθμό. "
+"Για κωδικοποίηση VBR θέτει το μέσο ρυθμό bit."
 
 #: src/file_speex.c:1836
-#, fuzzy
 msgid "bps"
-msgstr "kbps"
+msgstr "bps"
 
 #: src/file_speex.c:1842
 msgid "Extra"
-msgstr ""
+msgstr "Εξτρά"
 
 #: src/file_speex.c:1864
 msgid "Encoding complexity:"
-msgstr "Complessitΰ di codifica:"
+msgstr "Πολυπλοκότητα κωδικοποίησης:"
 
 #: src/file_speex.c:1903
 msgid ""
 "This sets the encoding speed/quality tradeoff between 0 (faster encoding) "
 "and 10 (slower encoding)"
 msgstr ""
-"Imposta il compromesso velocitΰ/qualitΰ di codifica tra 0 (codifica veloce) "
-"e 10 (codifica lenta)"
+"Θέτει στη κωδικοποίηση, την ισορροπία μεταξύ ταχύτητας/ποιότητας από 0 "
+"(ταχύτερη κωδικοποίηση) εώς 10 (βραδύτερη κωδικοποίηση)"
 
 #: src/file_speex.c:1919
 msgid "Speex frames per Ogg packet:"
-msgstr "Numero di frame Speex per ogni pacchetto Ogg:"
+msgstr "Πλαίσια Speex για κάθε πακέτο Ogg:"
 
 #: src/file_speex.c:1945
 msgid ""
 "Number of Speex frames to pack into each Ogg packet. Higher values save "
 "space at low bitrates."
 msgstr ""
-"Numero di frame Speex da inserire in ciascun pacchetto Ogg. Valori elevati "
-"risparmiano spazio a bassi bit rate."
+"Ο αριθμός των πλαισίων Speex για αποθήκευση σε κάθε πακέτο Ogg. Υψηλότερες "
+"τιμές εξοικονομούν χώρο με χαμηλούς ρυθμούς bit."
 
 #: src/file_speex.c:1960 src/file_vorbis.c:1356
 msgid "Remember these encoding options"
-msgstr "Memorizza queste opzioni di codifica"
+msgstr "Απομνημόνευση αυτών των επιλογών κωδικοποίησης"
 
 #: src/file_speex.c:1980 src/file_vorbis.c:1376
 msgid "Reset to the last remembered encoding options."
-msgstr "Ritorna alle ultime opzioni di codifica memorizzate"
+msgstr "Επαναφορά των τελευταίων στη μνήμη επιλογών κωδικοποιησης."
 
 #: src/file_speex.c:1995
 msgid "Automatically select best encoding options for this file."
 msgstr ""
+"Αυτόματη επιλογή των βέλτιστων επιλογών κωδικοποίησης για αυτό το αρχείο."
 
 #. Ogg stream
 #: src/file_speex.c:2000 src/file_vorbis.c:1489
 msgid "Ogg stream"
-msgstr "Flusso Ogg"
+msgstr "Ρεύμα (stream) Ogg"
 
 #: src/file_speex.c:2013 src/file_vorbis.c:1502
 msgid "Ogg stream serial number:"
-msgstr "Numero di serie del flusso Ogg"
+msgstr "Σειριακός αριθμός ρεύματος (stream) Ogg:"
 
 #: src/file_speex.c:2034 src/file_vorbis.c:1523
 msgid "Remember this serial number"
-msgstr "Memorizza questo numero di serie"
+msgstr "Απομνημόνευση αυτού του σειριακού αριθμού"
 
 #: src/file_speex.c:2044 src/file_vorbis.c:1533
 msgid ""
@@ -800,27 +793,27 @@ msgid ""
 "If this option is not checked, new serial numbers will be randomly generated "
 "for each file encoded."
 msgstr ""
-"Ricorda questo numero di serie per un riutilizzo futuro.\n"
-"L'USO DI QUESTA OPZIONE NON Θ RACCOMANDATO.\n"
-"Ciascun file codificato dovrebbe avere un numero di serie diverso, "
-"riutilizzare numeri di serie di Ogg in file diversi puς creare "
-"incompatibilitΰ con applicazioni di streaming. Questa opzione θ fornita solo "
-"per scopi di progettazione di flussi.\n"
-"Se questa opzione non θ attivata, nuovi numeri di serie saranno creati "
-"casualmente per ciascun file codificato."
+"Απομνημόνευση αυτού του σειριακού αριθμού για μελλοντική του χρήση.\n"
+"ΔΕΝ ΠΡΟΤΕΙΝΕΤΑΙ Η ΧΡΗΣΗ ΑΥΤΗΣ ΤΗΣ ΕΠΙΛΟΓΗΣ.\n"
+"Κάθε κωδικοποιημένο αρχείο πρέπει να έχει διαφορετικό σειριακό αριθμό·η "
+"επαναχρησιμοποίηση αυτών των αριθμών σε διαφορετικά αρχεία μπορεί να "
+"δημιουργήσει ασυμβατότητες με εφαρμογές ροής (streaming). Αυτή η επιλογή "
+"παρέχεται μόνο για λόγους κατανόησης της μηχανικής της ροής bit.\n"
+"Εάν δεν έχει ενεργοποήθεί αυτή η επιλογή, τότε οι σειριακοί αριθμοί θα "
+"παράγονται τυχαία για κάθε αρχείο που κωδικοποιείτε."
 
 #. Randomise serialno!
 #: src/file_speex.c:2071 src/file_vorbis.c:1560
 msgid "Randomize!"
-msgstr "Casuale!"
+msgstr "Τυχαιοποίηση!"
 
 #: src/file_speex.c:2078 src/file_vorbis.c:1567
 msgid ""
 "Generate a random serial number for the Ogg bitstream. The number will "
 "change while this button is held down."
 msgstr ""
-"Genera un numero di serie casuale per il flusso Ogg. Il numero cambia finchι "
-"questo bottone θ premuto."
+"Δημιουργία ενός τυχαίου σειριακού αριθμού για τη ροή bit Ogg. Ο αριθμός θα "
+"αλλάζει όσο είναι σε πίεση αυτό το κουμπί."
 
 #: src/file_speex.c:2109
 msgid ""
@@ -828,9 +821,9 @@ msgid ""
 "voice over IP (VoIP) and file-based compression.\n"
 "It is free, open and unpatented."
 msgstr ""
-"Speex θ un codec di alta qualitΰ vocale progettato per\n"
-"voice over IP (VoIP) e compressione di file.\n"
-"Θ gratuito, aperto e non brevettato."
+"Το Speex είναι ένα codec φωνής υψηλής ποιότητας, που\n"
+"έχει σχεδιαστεί για φώνη πάνω σε IP (VoIP) και συμπίεση\n"
+"αρχείων. Είναι δωρεάν, ανοικτό και χωρίς πατέντα."
 
 #: src/file_speex.c:2120
 msgid ""
@@ -838,9 +831,9 @@ msgid ""
 "are trademarks (tm) of the Xiph.org Foundation.\n"
 "Used with permission."
 msgstr ""
-"Ogg, Speex, Xiph.org Foundation e i loro loghi\n"
-"sono marchi registrati(tm) della Xiph.org Foundation.\n"
-"Sono usati con il loro permesso."
+"Το Ogg, το Speex, το Ίδρυμα Xiph.org και τα σήματα\n"
+"τους είναι σήματα κατατεθέν (tm) του Ιδρύματος Xiph.org.\n"
+"Χρήσή αυτών με άδεια."
 
 #: src/file_vorbis.c:356
 #, c-format
@@ -850,43 +843,44 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Decodifica di %s\n"
-"Codificato da: %s\n"
+"Αποκωδικοποίηση %s\n"
+"Κωδικοποιήθηκε από: %s\n"
 "\n"
 "%s"
 
 #: src/file_vorbis.c:470
 msgid "Unsupported encoding mode"
-msgstr "Modalitΰ di codifica non supportata"
+msgstr "Μη υποστηριζόμενη κατάσταση κωδικοποίησης"
 
 #: src/file_vorbis.c:473
 msgid "Invalid encoding options"
-msgstr "Opzioni di codifica non valide"
+msgstr "Άκυρες επιλογές κωδικοποίησης"
 
 #: src/file_vorbis.c:643 src/file_vorbis.c:663
 msgid "Ogg Vorbis encoding results"
-msgstr "risultati della codifica Ogg Vorbis"
+msgstr "Αποτελέσματα κωδικοποίησης Ogg Vorbis"
 
 #: src/file_vorbis.c:1094
 msgid "Sweep: Ogg Vorbis save options"
-msgstr "Sweep: opzioni di salvataggio di Ogg Vorbis"
+msgstr "Sweep: επιλογές αποθήκευσης Ogg Vorbis"
 
 #. Encoding quality
 #: src/file_vorbis.c:1168
 msgid "Vorbis encoding"
-msgstr "Codifica Vorbis"
+msgstr "Κωδικοποίηση Vorbis"
 
 #: src/file_vorbis.c:1215
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file) using variable bitrate mode (VBR)."
 msgstr ""
-"Qualitΰ di codifica tra 0 (bassa qualitΰ, file piccolo) e 10 (alta qualitΰ, "
-"file grande) che usa la modalitΰ con bit rate variabile (VBR)."
+"Ποιότητα κωδικοποίησης μεταξύ 0 (η χαμηλότερη ποιότητα, το μικρότερο αρχείο) "
+"και 10 (η υψηλότερη ποιότητα, το μεγαλύτερο αρχείο) με χρήση μεταβλητου "
+"ρυθμού bit (VBR)."
 
 #: src/file_vorbis.c:1225
 msgid "Enable bitrate management engine"
-msgstr "Attiva il motore di gestione del bit rate"
+msgstr "Ενεργοποίηση μηχανής διαχείρησης ρυθμού bit"
 
 #: src/file_vorbis.c:1231
 msgid ""
@@ -895,25 +889,23 @@ msgid ""
 "For best results it is generally recommended that you use the variable "
 "bitrate 'encoding quality' control (above) instead."
 msgstr ""
-"Attiva il bit rate medio (ABR). Si deve suggerire un bit rate nominale medio "
-"e specificare il limite massimo e minimo.\n"
-"Per migliori risultati si raccomanda di utilizzare il controllo \"qualitΰ di "
-"codifica\" del bit rate variabile (vedi sopra)"
+"Ενεργοποιεί την κατάσταση μέσου ρυθμού bit (ABR). Πρέπει να προτείνετε ένα "
+"ονομαστικό μέσο ρυθμό bit και εάν θέλετε άνω και κάτω όρια.\n"
+"Για καλύτερα αποτέλεσματα, γενικά προτείνεται η χρήση, στο μεταβλητό ρυθμό "
+"bit, του ελέγχου 'ποιότητα κωδικοποίησης' (πάνω) αντι αυτού."
 
 #: src/file_vorbis.c:1241
 msgid "Bitrate management engine"
-msgstr "Motore di gestione del bit rate"
+msgstr "Μηχανή διαχείρησης ρυθμού bit"
 
 #: src/file_vorbis.c:1267
 msgid "Nominal bitrate (ABR):"
-msgstr "Bit rate nominale (ABR):"
+msgstr "Ονομαστικός ρυθμός bit (ABR):"
 
 #: src/file_vorbis.c:1280
 msgid ""
 "Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
-msgstr ""
-"Specifica un bit rate nominale. Si tenta di codificare con questo bit rate "
-"medio."
+msgstr "Καθορισμός ενός ονομαστικού ρυθμού bit. Χρήση αυτού σαν μέση τιμή."
 
 #: src/file_vorbis.c:1284 src/file_vorbis.c:1313 src/file_vorbis.c:1343
 msgid "kbps"
@@ -921,70 +913,69 @@ msgstr "kbps"
 
 #: src/file_vorbis.c:1296
 msgid "Minimum bitrate:"
-msgstr "Bit rate minimo:"
+msgstr "Ελάχιστος ρυθμός bit:"
 
 #: src/file_vorbis.c:1309
 msgid ""
 "Specify a minimum bitrate, useful for encoding for a fixed-size channel. "
 "(Optional)"
 msgstr ""
-"Specifica un bit rate minimo, utile per codificare per un canale di "
-"dimensione fissata (opzionale)."
+"Καθορισμός ενός ελάχιστου ρυθμού bit, χρήσιμο για κωδικοποίηση καναλιού "
+"σταθερού μεγέθους. (Προαιρετικό)"
 
 #: src/file_vorbis.c:1326
 msgid "Maximum bitrate:"
-msgstr "Bit rate massimo:"
+msgstr "Μέγιστος ρυθμός bit:"
 
 #: src/file_vorbis.c:1339
 msgid ""
 "Specify a maximum bitrate, useful for streaming applications. (Optional)"
 msgstr ""
-"Specifica un bit rate massimo, utile per applicazioni di streaming "
-"(opzionale)."
+"Καθορισμός ενός μέγιστου ρυθμού, χρήσιμο για εφαρμογές ροής. (Προαιρετικό)"
 
 #: src/file_vorbis.c:1390
 msgid "Set to default encoding options."
-msgstr "Imposta le opzioni di codifica predefinite."
+msgstr "Χρήση σαν εξ ορισμού επιλογές κωδικοποίησης."
 
 #. Metadata
 #: src/file_vorbis.c:1397
 msgid "Metadata"
-msgstr "Metadata"
+msgstr "Mεταδεδομένα"
 
 #. These fields and descriptions derived from libvorbis API documentation:
 #. * /usr/share/doc/libvorbis-dev/v-comment.html
 #.
 #: src/file_vorbis.c:1419
 msgid "Title:"
-msgstr "Titolo:"
+msgstr "Τίτλος:"
 
 #: src/file_vorbis.c:1419
 msgid "Track/Work name"
-msgstr "Nome del brano o dell'opera"
+msgstr "Όνομα κομματιού/έργου"
 
 #: src/file_vorbis.c:1421
 msgid "Version:"
-msgstr "Versione:"
+msgstr "Έκδοση:"
 
 #: src/file_vorbis.c:1422
 msgid ""
 "The version field may be used to differentiate multiple versions of the same "
 "track title in a single collection. (e.g. remix info)"
 msgstr ""
-"Il campo versione puς essere usato per differenziare le diverse versioni "
-"dello stesso brano di una singola raccolta (es. informazioni di remix)."
+"Το πεδίο της έκδοσης μπορεί να χρησιμοποιηθεί για να ξεχωρίσουμε εκδόσεις "
+"του ίδιου κομματιού σε μια συλλογή. (π.χ. για πληροφορίες remix)"
 
 #: src/file_vorbis.c:1426
 msgid "Album:"
-msgstr "Album:"
+msgstr "Συλλογή:"
 
 #: src/file_vorbis.c:1427
 msgid "The collection name to which this track belongs"
-msgstr "Il nome della raccolta a cui il brano appartiene"
+msgstr "Το όνομα της συλλογής που ανήκει αυτό το κομμάτι"
 
 #: src/file_vorbis.c:1429
 msgid "Artist:"
-msgstr "Artista:"
+msgstr "Καλλιτέχνης"
 
 #: src/file_vorbis.c:1430
 msgid ""
@@ -993,14 +984,14 @@ msgid ""
 "be the composer. For an audio book it would be the author of the original "
 "text."
 msgstr ""
-"L'artista θ generalmente considerato il responsabile dell'opera. Nella "
-"musica popolare θ normalmente la banda che suona o il cantante. Per la "
-"musica classica sarebbe il compositore. Per un libro vocale sarebbe l'autore "
-"del testo originale."
+"Ο καλλιτέχνης που ευθύνεται για αυτό το έργο. Σε δημοφιλή μουσική είναι "
+"συνήθως το συγκρότημα ή ο τραγουδιστής που το εκτελεί. Σε κλασσική μουσική "
+"θα πρέπει να είναι ο συνθέτης. Για ένα ηχητικό βιβλίο θα είναι ο συγγραφέας "
+"του πρωτότυπου κειμένου."
 
 #: src/file_vorbis.c:1436
 msgid "Performer:"
-msgstr "Esecutore:"
+msgstr "Εκτελεστής:"
 
 #: src/file_vorbis.c:1437
 msgid ""
@@ -1009,25 +1000,23 @@ msgid ""
 "did the reading. In popular music this is typically the same as the ARTIST "
 "and is omitted."
 msgstr ""
-"L'artista che ha eseguito l'opera. Nella musica classica sarebbe il "
-"direttore, l'orchestra, i solisti. In un libro vocale sarebbero gli attori "
-"che leggono. Nella musica popolare θ normalmente uguale all'Artista ed θ "
-"omesso."
+"Ο καλλιτέχνης(ες) που εκτέλεσαν αυτό το έργο. Στη κλασσική μουσική αυτός θα "
+"πρέπει να είναι ο διευθυντής, ορχήστρα, σολίστ. Σε ένα ηχητικό βιβλίο είναι "
+"ο ηθοποιός που το διαβάζει. Στη δημοφιλή μουσική τυπικά είναι το ίδιο σα το "
+"καλλιτέχνη και μπορεί να παραληφθεί."
 
 #: src/file_vorbis.c:1444
 msgid "Copyright:"
-msgstr "Copyright:"
+msgstr "Πνευματική Ιδιοκτησία:"
 
 #: src/file_vorbis.c:1445
 msgid ""
 "Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
-msgstr ""
-"Assegnazione del Copyright, es. \"2001 I cavalieri del re\" o \"1999 "
-"Riccardo Zara\""
+msgstr "Απόδοση ιδιοκτησίας, π.χ., '2001 Nobody's Band' ή '1999 Jack Moffitt'"
 
 #: src/file_vorbis.c:1448
 msgid "License:"
-msgstr "Licenza:"
+msgstr "Άδεια Χρήσης:"
 
 #: src/file_vorbis.c:1449
 msgid ""
@@ -1037,56 +1026,55 @@ msgid ""
 "the terms of the Open Audio License. see http://www.eff.org/IP/Open_licenses/"
 "eff_oal.html for details'), etc."
 msgstr ""
-"Informazione sulla licenza, es. \"Tutti i diritti riservati\", \"Tutti gli "
-"usi consentiti\", una URL per la licenza come la Creative Commons license "
-"(\"www.creativecommons.org/blahblah/license.html\") o la EFF Open Audio "
-"License (\"distribuita secondo i termini della Open Audio License. Vedi "
-"http://www.eff.org/IP/Open_licenses/eff_oal.html per i dettagli\"), ecc."
+"Πληροφορίες άδειας χρήσης, πχ 'All Rights Reserved', 'Any Use Permitted', "
+"έναURL με την άδεια όπως η Creative Commons άδεια (\"www.creativecommons.org/"
+"blahblah/license.html\") ή Ανοιχτή Άδεια Ήχου του EFF ('διανέμετε υπό τους "
+"όρους της Ανοιχτής Άδειας Ήχου. Βλέπε http://www.eff.org/IP/Open_licenses/"
+"eff_oal.html για λεπτομέρειες'), κλπ."
 
 #: src/file_vorbis.c:1458
 msgid "Organization:"
-msgstr "Organizzazione:"
+msgstr "Οργανισμός:"
 
 #: src/file_vorbis.c:1459
 msgid "Name of the organization producing the track (i.e. the 'record label')"
-msgstr ""
-"Nome dell'organizzazione che produce il brano (cioθ la \"casa discografica\")"
+msgstr "Όνομα του οργανισμού που παράγει το κομμάτι ('π.χ η δισκογραφική')"
 
 #: src/file_vorbis.c:1462
 msgid "Description:"
-msgstr "Descrizione:"
+msgstr "Περιγραφή:"
 
 #: src/file_vorbis.c:1463
 msgid "A short text description of the contents"
-msgstr "Una breve descrizione dei contenuti"
+msgstr "Μια μικρή περιγραφή των περιεχομένων"
 
 #: src/file_vorbis.c:1465
 msgid "Genre:"
-msgstr "Genere:"
+msgstr "Γένος:"
 
 #: src/file_vorbis.c:1466
 msgid "A short text indication of music genre"
-msgstr "Una breve indicazione del genere musicale"
+msgstr "Μια ένδειξη του μουσικού γένους"
 
 #: src/file_vorbis.c:1468
 msgid "Date:"
-msgstr "Data:"
+msgstr "Ημερομηνία:"
 
 #: src/file_vorbis.c:1469
 msgid "Date the track was recorded"
-msgstr "Data in cui il brano θ stato registrato"
+msgstr "Η ημερομηνία που ηχογραφήθηκε το κομμάτι"
 
 #: src/file_vorbis.c:1471
 msgid "Location:"
-msgstr "Localitΰ:"
+msgstr "Τοποθεσία:"
 
 #: src/file_vorbis.c:1472
 msgid "Location where track was recorded"
-msgstr "Localitΰ dove il brano θ stato registrato"
+msgstr "Η τοποθεσία που ηχογραφήθηκε το κομμάτι"
 
 #: src/file_vorbis.c:1474
 msgid "Contact:"
-msgstr "Contatti:"
+msgstr "Επαφή:"
 
 #: src/file_vorbis.c:1475
 msgid ""
@@ -1094,9 +1082,9 @@ msgid ""
 "could be a URL, an email address, the physical address of the producing "
 "label."
 msgstr ""
-"Informazione per contattare i creatori o i distributori del brano. Potrebbe "
-"essere una URL, un indirizzo email, un indirizzo fisico della casa "
-"discografica."
+"Πληροφορίες για επαφή με τους δημιουργούς ή του διακινητές του κομματιού. "
+"Αυτό μπορεί να είναι ένα URL, μια διεύθυνση email, η φυσική διεύθυνση "
+"τηςδισκογραφικής εταιρίας."
 
 #: src/file_vorbis.c:1480
 msgid "ISRC:"
@@ -1107,9 +1095,8 @@ msgid ""
 "ISRC number for the track; see the ISRC intro page (http://www.ifpi.org/site-"
 "content/online/isrc_intro.html) for more information on ISRC numbers."
 msgstr ""
-"Numero ISRC del brano; vedere la pagina introduttiva di ISRC (http://www."
-"ifpi.org/site-content/online/isrc_intro.html) per maggiori informazioni sui "
-"numeri ISRC."
+"Αριθμός ISRC του κομματιού· δείτε την εισαγωγική σελίδα (http://www.ifpi.org/"
+"site-content/online/isrc_intro.html) για περισσότερες πληροφορίες."
 
 #: src/file_vorbis.c:1598
 msgid ""
@@ -1117,8 +1104,9 @@ msgid ""
 "perceptual audio codec. It is free, open and\n"
 "unpatented."
 msgstr ""
-"Ogg Vorbis θ un codec audio universale di alta qualitΰ.\n"
-"Θ gratuito, aperto e non brevettato."
+"Το Ogg Vorbis είναι ένα αντιληπτικό codec ήχου\n"
+"γενικής χρήσης και υψηλής ποιότητας. Είναι δωρεάν,\n"
+"ανοικτό και χωρίς πατέντες."
 
 #: src/file_vorbis.c:1609
 msgid ""
@@ -1126,46 +1114,46 @@ msgid ""
 "are trademarks (tm) of the Xiph.org Foundation.\n"
 "Used with permission."
 msgstr ""
-"Ogg, Vorbis, Xiph.org Foundation e i loro loghi\n"
-"sono marchi registrati(tm) della Xiph.org Foundation.\n"
-"Sono usati con il loro permesso."
+"Το Ogg, το Vorbis, το Ίδρυμα Xiph.org και τα σήματα\n"
+"τους είναι κατατεθέν (tm) του Ιδρύματος Xiph.org.\n"
+"Χρήση τους με άδεια."
 
 #: src/head.c:399 src/view.c:2450
 msgid "Cursor position (indicator)"
-msgstr "Posizione del cursore (indicatore)"
+msgstr "Θέση κέρσορα (δείκτης)"
 
 #: src/head.c:440
 #, fuzzy
 msgid "Reverse mode (toggle)"
-msgstr "Modalitΰ di riproduzione invertita (attiva/disattiva)"
+msgstr "Αναπαραγωγή ανάστροφης κατάστασης (διακόπτης)"
 
 #: src/head.c:455
 msgid "Loop mode recording (toggle)"
-msgstr "Registrazione in modalitΰ ciclica (attiva/disattiva)"
+msgstr "Ηχογράφηση κατάστασης βρόγχου (διακόπτης)"
 
 #: src/head.c:474
 msgid "Record into selection"
-msgstr "Registra nella selezione"
+msgstr "Ηχογράφηση μέσα στην επιλογή"
 
 #: src/head.c:490 src/view.c:1218
 msgid "Stop"
-msgstr "Stop"
+msgstr "Διακοπή"
 
 #: src/head.c:503
 msgid "Go to beginning"
-msgstr "Va all'inizio"
+msgstr "Επιστροφή στην αρχή"
 
 #: src/head.c:514 src/view.c:2605
 msgid "Rewind"
-msgstr "Riavvolge"
+msgstr "Γρήγορα πίσω"
 
 #: src/head.c:527 src/view.c:2617
 msgid "Fast forward"
-msgstr "Avanzamento veloce"
+msgstr "Γρήγορα μπροστά"
 
 #: src/head.c:542
 msgid "Go to the end"
-msgstr "Va alla fine"
+msgstr "Μετακίνηση στο τέλος"
 
 #: src/interface.c:250
 msgid "Sweep"
@@ -1174,37 +1162,37 @@ msgstr "Sweep"
 #. File
 #: src/interface.c:275 src/view.c:414
 msgid "File"
-msgstr "File"
+msgstr "Αρχείο"
 
 #: src/interface.c:280
 msgid "New"
-msgstr "Nuovo"
+msgstr "Νέο"
 
 #: src/interface.c:289
 msgid "Open"
-msgstr "Apri"
+msgstr "Άνοιγμα"
 
 #: src/interface.c:298 src/sweep_sample.c:811 src/sweep_sample.c:819
 #: src/view.c:489
 msgid "Quit"
-msgstr "Esci"
+msgstr "Έξοδος"
 
 #: src/interface.c:309 src/view.c:1229
 msgid "Help"
-msgstr "Aiuto"
+msgstr "Βοήθεια"
 
 #: src/interface.c:314
 msgid "About..."
-msgstr "Informazioni su..."
+msgstr "Περί..."
 
 #. Radio group
 #: src/interface.c:337 src/view.c:666
 msgid "Select"
-msgstr "Seleziona"
+msgstr "Επιλογή"
 
 #: src/interface.c:338
 msgid "Select regions of a sample"
-msgstr "Seleziona le regioni di un campione"
+msgstr "Επιλογή περιοχών ενός δείγματος."
 
 #: src/interface.c:339
 msgid ""
@@ -1212,230 +1200,229 @@ msgid ""
 "and effects to the: selected regions. Hold down shift whilst selecting to "
 "add discontinuous regions to the selection."
 msgstr ""
-"Questo strumento permette di selezionare le regioni di un campione. Si "
-"possono quindi applicare le modifiche e gli effetti alle regioni "
-"selezionate. Tenere premuto shift durante la selezione per aggiungere "
-"regioni discontinue alla selezione."
+"Αυτό το εργαλείο επιτρέπει την επιλογή περιοχών από ένα δείγμα. "
+"Μπορείτεέπειτα να εφαρμόσετε επεξεργασίες και εφέ στις επιλεγμένες περιοχές. "
+"Κρατήστε πατημένο το Shift ενώ επιλέγετε για να προσθέσετε μη συνεχής "
+"περιοχές στην επιλογή"
 
 #. Radio group
 #: src/interface.c:356
 msgid "Move"
-msgstr "Muove"
+msgstr "Μετακίνηση"
 
 #: src/interface.c:357
 msgid "Move regions in a sample"
-msgstr "Muove le regioni in un campione"
+msgstr "Μετακινεί περιοχές σε ένα δείγμα"
 
 #: src/interface.c:358
 msgid "With this tool you can move selected regions of a sample."
-msgstr ""
-"Con questo strumento si possono muovere le regioni selezionate di un "
-"campione."
+msgstr "Με αυτό το εργαλείο μπορείτε να μετακινήσετε επιλεγμένες περιοχές."
 
 #. Radio group
 #: src/interface.c:370
 msgid "Scrub"
-msgstr "Audioscandaglio"
+msgstr "Scrub"
 
 #: src/interface.c:371
 msgid "Locate sounds directly"
-msgstr "Localizza i suoni direttamente"
+msgstr "Κατευθείαν εντοπισμός ήχων"
 
 #: src/interface.c:372
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
 msgstr ""
-"Posizionare il segnapunti sul campione. Cliccare in qualunque punto della "
-"vista per muovere istantaneamente la posizione di riproduzione in quella "
-"parte del campione."
+"Τοποθετείστε το δείκτη αναπαραγωγής σε ένα δείγμα. Κλικ οπουδήποτε σε μια "
+"απεικόνιση για άμεση μετακίνηση της θέσης αναπαραγωγής σε αυτό το μέρος στο "
+"δείγμα."
 
 #. Radio group
 #: src/interface.c:389
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Ζούμ"
 
 #: src/interface.c:390
 msgid "Zoom in & out"
-msgstr "Ingrandisci e riduci"
+msgstr "Ζούμ μέσα & έξω"
 
 #: src/interface.c:391
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
-"Ingrandisce e riduce. Cliccare in qualunque punto della vista per ingrandire "
-"quella parte del campione. Per ridurre tenere premuto shift e cliccare."
+"Ζούμ μέσα και έξω στην απεικόνιση. Κλίκ οπουδήποτε σε μια απεικόνιση για "
+"ζούμ προς τα μέσα σε αυτό το μέρος στο δείγμα. Με πατημένο Shift και κλικ "
+"για ζούμ προς τα έξω."
 
 #. Radio group
 #: src/interface.c:407
 msgid "Pencil"
-msgstr "Matita"
+msgstr "Μολύβι"
 
 #: src/interface.c:408
 msgid "Edit PCM sample values"
-msgstr "Modifica i valori del campione PCM"
+msgstr "Επεξεργασία τιμών PCM δείγματος"
 
 #: src/interface.c:409
 msgid "When zoomed down to individual  samples, click to edit"
-msgstr "Quando θ ridotto a campioni individuali, cliccare per modificare"
+msgstr "Όταν γίνει ζούμ σε μεμονομένα δείγματα, κλικ για επεξεργασία"
 
 #. Radio group
 #: src/interface.c:420
 msgid "Noise"
-msgstr "Rumore"
+msgstr "Θόρυβος"
 
 #: src/interface.c:421
 msgid "Add noise"
-msgstr "Aggiunge rumore"
+msgstr "Προσθήκη θορύβου"
 
 #: src/interface.c:422
 msgid "Randomise PCM values"
-msgstr "Valori PCM casuali"
+msgstr "Τυχαιοποίηση τιμών PCM"
 
 #: src/notes.c:60
 msgid "C3"
-msgstr "Do    3"
+msgstr "C3"
 
 #: src/notes.c:61
 msgid "C#3"
-msgstr "Do#  3"
+msgstr "C#3"
 
 #: src/notes.c:62
 msgid "D3"
-msgstr "Re    3"
+msgstr "D3"
 
 #: src/notes.c:63
 msgid "Eb3"
-msgstr "Mib  3"
+msgstr "Eb3"
 
 #: src/notes.c:64
 msgid "E3"
-msgstr "Mi    3"
+msgstr "E3"
 
 #: src/notes.c:65
 msgid "F3"
-msgstr "Fa    3"
+msgstr "F3"
 
 #: src/notes.c:66
 msgid "F#3"
-msgstr "Fa#  3"
+msgstr "F#3"
 
 #: src/notes.c:67
 msgid "G3"
-msgstr "Sol   3"
+msgstr "G3"
 
 #: src/notes.c:68
 msgid "G#3"
-msgstr "Sol# 3"
+msgstr "G#3"
 
 #: src/notes.c:69
 msgid "A3"
-msgstr "La    3"
+msgstr "A3"
 
 #: src/notes.c:70
 msgid "Bb3"
-msgstr "Sib   3"
+msgstr "Bb3"
 
 #: src/notes.c:71
 msgid "B3"
-msgstr "Si     3"
+msgstr "B3"
 
 #: src/notes.c:73
 msgid "C4"
-msgstr "Do    4"
+msgstr "C4"
 
 #: src/notes.c:75
 msgid "C#4"
-msgstr "Do#  4"
+msgstr "C#4"
 
 #: src/notes.c:76
 msgid "D4"
-msgstr "Re    4"
+msgstr "D4"
 
 #: src/notes.c:77
 msgid "Eb4"
-msgstr "Mib  4"
+msgstr "Eb4"
 
 #: src/notes.c:78
 msgid "E4"
-msgstr "Mi    4"
+msgstr "E4"
 
 #: src/notes.c:79
 msgid "F4"
-msgstr "Fa    4"
+msgstr "F4"
 
 #: src/notes.c:80
 msgid "F#4"
-msgstr "Fa#  4"
+msgstr "F#4"
 
 #: src/notes.c:81
 msgid "G4"
-msgstr "Sol   4"
+msgstr "G4"
 
 #: src/notes.c:82
 msgid "G#4"
-msgstr "Sol# 4"
+msgstr "G#4"
 
 #: src/notes.c:83
 msgid "A4"
-msgstr "La    4"
+msgstr "A4"
 
 #: src/notes.c:84
 msgid "Bb4"
-msgstr "Sib   4"
+msgstr "Bb4"
 
 #: src/notes.c:85
 msgid "B4"
-msgstr "Si     4"
+msgstr "B4"
 
 #: src/notes.c:87
 msgid "C5"
-msgstr "Do    5"
+msgstr "C5"
 
 #: src/notes.c:88
 msgid "C#5"
-msgstr "Do#  5"
+msgstr "C#5"
 
 #: src/notes.c:89
 msgid "D5"
-msgstr "Re    5"
+msgstr "D5"
 
 #: src/notes.c:90
 msgid "D#5"
-msgstr "Re#  5"
+msgstr "D#5"
 
 #: src/notes.c:91
 msgid "E5"
-msgstr "Mi    5"
+msgstr "E5"
 
 #: src/notes.c:93
 msgid "F5"
-msgstr "Fa    5"
+msgstr "F5"
 
 #: src/notes.c:94
 msgid "F#5"
-msgstr "Fa#  5"
+msgstr "F#5"
 
 #: src/notes.c:95
 msgid "G5"
-msgstr "Sol   5"
+msgstr "G5"
 
 #: src/notes.c:96
 msgid "G#5"
-msgstr "Sol# 5"
+msgstr "G#5"
 
 #: src/notes.c:97
 msgid "A5"
-msgstr "La    5"
+msgstr "A5"
 
 #: src/notes.c:98
 msgid "Bb5"
-msgstr "Sib   5"
+msgstr "Bb5"
 
 #: src/notes.c:99
 msgid "B5"
-msgstr "Si    5"
+msgstr "B5"
 
 #: src/param.c:117
 msgid "TRUE"
@@ -1455,71 +1442,71 @@ msgstr ""
 
 #: src/paste_dialogs.c:221
 msgid "Start gain"
-msgstr "Guadagno iniziale"
+msgstr "Κέρδος αρχής"
 
 #: src/paste_dialogs.c:223 src/record.c:474 src/record.c:492
 #: plugins/echo/echo.c:61
 msgid "Gain"
-msgstr "Guadagno"
+msgstr "Κέρδος"
 
 #: src/paste_dialogs.c:230
 msgid "Sweep: Paste crossfade"
-msgstr "Sweep: incolla dissolvenza incrociata"
+msgstr "Sweep: Επικόλληση crossfade"
 
 #: src/paste_dialogs.c:232
 msgid "Sweep: Paste mix"
-msgstr "Sweep: incolla mescolando"
+msgstr "Sweep: Επικόλληση μίξης"
 
 #. Source
 #: src/paste_dialogs.c:257
 msgid "Source"
-msgstr "Sorgente"
+msgstr "Πηγή"
 
 #: src/paste_dialogs.c:257
 msgid "Clipboard"
-msgstr "Appunti"
+msgstr "Πρόχειρο"
 
 #: src/paste_dialogs.c:279 src/paste_dialogs.c:318
 msgid "End gain"
-msgstr "Guadagno finale"
+msgstr "Κέρδος τέλους"
 
 #: src/paste_dialogs.c:287 src/paste_dialogs.c:326
 msgid "Invert phase"
-msgstr "Inverte la fase"
+msgstr "Αναστροφή φάσης"
 
 #. Destination
 #: src/paste_dialogs.c:295
 msgid "Destination"
-msgstr "Destinazione"
+msgstr "Προορισμός"
 
 #: src/paste_dialogs.c:345
 msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
 msgstr ""
-"Indica la durata totale degli appunti, che θ la lunghezza massima che sarΰ "
-"incollata."
+"Απεικονίζει την ολίκη διάρκεια στο πρόχειρο, η οποία είναι το μέγιστο μήκος "
+"που θα επικκοληθεί."
 
 #: src/paste_dialogs.c:362
 msgid "Clipboard duration:"
-msgstr "Durata appunti:"
+msgstr "Διάρκεια προχείρου:"
 
 #. OK
 #: src/paste_dialogs.c:375
 msgid "Crossfade"
-msgstr "Dissolvenza incrociata"
+msgstr "Crossfade"
 
 #: src/paste_dialogs.c:375
 msgid "Mix"
-msgstr "Mescola"
+msgstr "Μίξη"
 
 #: src/paste_dialogs.c:394
 msgid "Don't crossfade"
-msgstr "Nessuna dissolvenza incrociata"
+msgstr "Να μη γίνει crossfade"
 
 #: src/paste_dialogs.c:394
 msgid "Don't mix"
-msgstr "Non mescolare"
+msgstr "Να μη γίνει μίξη"
 
 #: src/preferences.c:58
 msgid "Error creating ~/.sweep"
@@ -1548,38 +1535,38 @@ msgstr ""
 
 #: src/record.c:94 src/record.c:529
 msgid "Ready to record"
-msgstr "Pronto per registrare"
+msgstr "Έτοιμο για ηχογράφηση"
 
 #: src/record.c:308
 msgid "No selection to record into"
-msgstr "Nessuna selezione da registrarci dentro"
+msgstr "Δεν υπάρχει επιλογή για ηχογράφηση μέσα"
 
 #: src/record.c:428
 msgid "Sweep: Record"
-msgstr "Sweep: registra"
+msgstr "Sweep: Ηχογράφηση"
 
 #: src/record.c:444 src/undo_dialog.c:370
 msgid "File:"
-msgstr "File:"
+msgstr "Αρχείο:"
 
 #. Old signal
 #: src/record.c:467
 msgid "Previous sound"
-msgstr "Suono precedente"
+msgstr "Προηγούμενος ήχος"
 
 #: src/record.c:481
 msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
 msgstr ""
-"Questo cursore permette di mescolare la nuova registrazione con i contenuti "
-"precedenti del buffer. Impostarlo a -inf dB per sovrascrivere il suono "
-"precedente."
+"Αυτός ο επιλογέας επιτρέπει τη μίξη μιας νέας ηχογράφησης μέσα στα "
+"προηγούμενα περιεχόμενα της μνήμης. Τοποθέτηση σε -inf dB για να παραγραφεί "
+"ο προηγούμενος ήχος."
 
 #. New signal
 #: src/record.c:487
 msgid "Recorded sound"
-msgstr "Suono registrato"
+msgstr "Ηχογραφούμενος ήχος"
 
 #: src/record.c:499
 msgid ""
@@ -1587,118 +1574,118 @@ msgid ""
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
 "record silence."
 msgstr ""
-"Questo cursore permette di ridurre il livello del suono registrato. "
-"Impostarlo a 0 dB per registrare senza nessuna riduzione. Notare che "
-"impostando questo a -inf dB registrerΰ il silenzio."
+"Αυτός ο επιλογέας επιτρέπει την μείωση του επιπέδου του ηχογραφούμενου ήχου. "
+"Τοποθέτηση στο 0 dB για ηχογράφηση χωρίς μείωση. Σημείωση ότι όταν είναι -"
+"inf dB θα ηχογραφηθεί σιωπή."
 
 #. NONE
 #: src/sample-display.c:221
 msgid "New selection"
-msgstr "Nuova selezione"
+msgstr "Νέα επιλογή"
 
 #. REPLACE
 #: src/sample-display.c:222
 msgid "Selection: add/modify region"
-msgstr "Selezione: aggiunge/modifica la regione"
+msgstr "Επιλογή: προσθήκη/τροποποίηση περιοχής"
 
 #. INTERSECT
 #: src/sample-display.c:223
 msgid "Selection: subtract region"
-msgstr "Selezione: sottrae la regione"
+msgstr "Επιλογή: αφαίρεση περιοχής"
 
 #: src/samplerate.c:103 src/samplerate.c:167
 msgid "Resample error"
-msgstr "Errore di ricampionamento"
+msgstr "Σφάλμα επαναδειγματοληψίας"
 
 #: src/samplerate.c:104 src/samplerate.c:168
 msgid "libsamplerate error"
-msgstr "errore di libsamplerate"
+msgstr "σφάλμα libsamplerate"
 
 #: src/samplerate.c:225
 #, c-format
 msgid "Resample from %d Hz to %d Hz"
-msgstr "Ricampiona da %d Hz a %d Hz"
+msgstr "Επαναδειγματοληψία από %d Hz σε %d Hz"
 
 #: src/samplerate.c:428
 msgid "Sweep: Resample"
-msgstr "Sweep: ricampiona"
+msgstr "Sweep: Επαναδειγματοληψία"
 
 #. Conversion
 #: src/samplerate.c:448
 msgid "Conversion"
-msgstr "Conversione"
+msgstr "Μετατροπή"
 
 #: src/samplerate.c:455
 #, c-format
 msgid "Current sample rate: %d Hz"
-msgstr "Frequenza attuale di campionamento: %d Hz"
+msgstr "Τρέχων ρυθμός δειγματοληψίας: %d Hz"
 
 #: src/samplerate.c:464
 msgid "New sample rate"
-msgstr "Nuova frequenza di campionamento"
+msgstr "Νέος ρυθμός δειγματοληψίας"
 
 #. Quality
 #: src/samplerate.c:475
 msgid "Quality"
-msgstr "Qualitΰ"
+msgstr "Ποιότητα"
 
 #: src/samplerate.c:482
 msgid "Converter"
-msgstr "Convertitore"
+msgstr "Μετατροπέας"
 
 #: src/samplerate.c:525
 msgid "Remember this quality"
-msgstr "Memorizza questa qualitΰ"
+msgstr "Απομνημόνευση αυτής της ποιότητας"
 
 #: src/samplerate.c:545
 msgid "Reset to the last remembered quality."
-msgstr "Ritorna all'ultima qualitΰ memorizzata."
+msgstr "Επαναφορά της τελευταίας στη μνήμη ποιότητα"
 
 #: src/samplerate.c:559
 msgid "Set to default quality."
-msgstr "Imposta la qualitΰ predefinita."
+msgstr "Χρήση σαν εξ ορισμού ποιότητα"
 
 #: src/samplerate.c:581
 msgid ""
 "Secret Rabbit Code (aka libsamplerate) is a\n"
 "Sample Rate Converter for audio by Erik de Castro Lopo\n"
 msgstr ""
-"Il codice del coniglio segreto (cioθ libsamplerate) θ un\n"
-"convertitore di frequenza di campionamento audio di Erik de Castro Lopo\n"
+"Μυστικός Κουνελοκώδικας (γνωστός σαν libsamplerate) είναι ένας\n"
+"Μετατροπέας Ρυθμού Δειγματοληψίας για ήχο από τον Erik de Castro Lopo\n"
 
 #. OK
 #: src/samplerate.c:601
 msgid "Resample"
-msgstr "Ricampiona"
+msgstr "Επαναδειγματοληψία"
 
 #. Cancel
 #: src/samplerate.c:614
 msgid "Don't resample"
-msgstr "Non ricampionare"
+msgstr "Όχι επαναδειγματολήψία"
 
 #: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
-msgstr "Personalizzato"
+msgstr "Προσαρμοσμένος"
 
 #: src/sw_chooser.c:52
 msgid "192000 Hz (Studio quality)"
-msgstr "192000 Hz (qualitΰ studio)"
+msgstr "192000 Hz (Ποιότητα Στούντιο)"
 
 #: src/sw_chooser.c:53
 msgid " 96000 Hz (High quality)"
-msgstr " 96000 Hz (qualitΰ alta)"
+msgstr " 96000 Hz (Υψηλή ποιότητα)"
 
 #: src/sw_chooser.c:54
 msgid " 48000 Hz (DAT quality)"
-msgstr " 48000 Hz (qualitΰ DAT)"
+msgstr " 48000 Hz (Ποιότητα DAT)"
 
 #: src/sw_chooser.c:55
 msgid " 44100 Hz (CD quality)"
-msgstr " 44100 Hz (qualitΰ CD)"
+msgstr " 44100 Hz (Ποιότητα CD)"
 
 #: src/sw_chooser.c:56
 msgid " 32000 Hz (Ultra-wideband voice quality)"
-msgstr " 32000 Hz (qualitΰ voce a banda larghissima)"
+msgstr " 44100 Hz (Ποιότητα υπερ-ευρυζωνικής φωνής)"
 
 #: src/sw_chooser.c:57
 msgid " 22050 Hz"
@@ -1706,7 +1693,7 @@ msgstr " 22050 Hz"
 
 #: src/sw_chooser.c:58
 msgid " 16000 Hz (Wideband voice quality)"
-msgstr " 16000 Hz (qualitΰ voce a banda larga)"
+msgstr " 16000 Hz (Ποιότητα ευρυζωνικής φωνής)"
 
 #: src/sw_chooser.c:59
 msgid " 11025 Hz"
@@ -1714,23 +1701,23 @@ msgstr " 11025 Hz"
 
 #: src/sw_chooser.c:60
 msgid "  8000 Hz (Narrowband voice quality)"
-msgstr "  8000 Hz (qualitΰ voce a banda stretta)"
+msgstr "  8000 Hz (Ποιότητα φωνής στενής ζώνης)"
 
 #: src/sw_chooser.c:61
 msgid "  4000 Hz (Low quality)"
-msgstr "  4000 Hz (qualitΰ bassa)"
+msgstr "  4000 Hz (Χαμηλή ποιότητα)"
 
 #: src/sw_chooser.c:69
 msgid "Quadraphonic"
-msgstr "Quadrifonia"
+msgstr "Τετραφωνικό"
 
 #: src/sw_chooser.c:296
 msgid "Custom: "
-msgstr "Personalizzato: "
+msgstr "Προσαρμοσμένος: "
 
 #: src/sw_chooser.c:331
 msgid "Sampling rate"
-msgstr "Frequenza di campionamento"
+msgstr "Ρυθμός δειγματοληψίας"
 
 #: src/sw_chooser.c:333
 msgid "Hz"
@@ -1738,59 +1725,59 @@ msgstr "Hz"
 
 #: src/sw_chooser.c:357 src/view.c:1001
 msgid "Channels"
-msgstr "Canali"
+msgstr "Κανάλια"
 
 #: src/sw_chooser.c:359 src/view.c:3611
 msgid "channels"
-msgstr "canali"
+msgstr "Κανάλια"
 
 #: src/sweep_filter.c:125
 msgid "No selection to process"
-msgstr "Nessuna selezione da processare"
+msgstr "Δεν υπάρχει επιλογή για κατεργασία"
 
 #: src/sweep_sample.c:119 src/view.c:3550 src/view.c:3556 src/view.c:3563
 #: src/view.c:3569
 msgid "Untitled"
-msgstr "Senzatitolo"
+msgstr "Ανώνυμο"
 
 #: src/sweep_sample.c:324
 msgid "Overflow"
-msgstr "Overflow"
+msgstr "Υπερχείληση"
 
 #: src/sweep_sample.c:411
 msgid "Sweep: New file"
-msgstr "Sweep: nuovo file"
+msgstr "Sweep: Νέο αρχείο"
 
 #: src/sweep_sample.c:446
 msgid "Name:"
-msgstr "Nome:"
+msgstr "Όνομα:"
 
 #: src/sweep_sample.c:466
 msgid "Duration:"
-msgstr "Durata:"
+msgstr "Διάρκεια:"
 
 #: src/sweep_sample.c:482
 msgid "hh:mm:ss.xxx"
-msgstr "hh:mm:ss.xxx"
+msgstr "ωω:λλ:δδ.χχχ"
 
 #: src/sweep_sample.c:525
 msgid "Remember this format"
-msgstr "Memorizza questo formato"
+msgstr "Απομνημόνευση αυτής της μορφής"
 
 #: src/sweep_sample.c:531
 msgid ""
 "Remember this sampling rate and channel configuration for creating new files."
 msgstr ""
-"Memorizza questa frequenza di campionamento e questa configurazione dei "
-"canali per creare nuovi file."
+"Απομνημόνευση αυτού του ρυθμού δειγματολήψίας και ρυθμίσεων καναλιών για νέα "
+"αρχεία"
 
 #: src/sweep_sample.c:551
 msgid "Reset to the last remembered format for new files."
-msgstr "Ritorna all'ultimo formato memorizzato per i nuovi file."
+msgstr "Επαναφορά στη τελευταία στη μνήμη μορφή για τα νέα αρχεία"
 
 #: src/sweep_sample.c:562
 msgid "Set to the default format for new files."
-msgstr "Imposta il formato predefinito per i nuovi file."
+msgstr "Χρήση σαν εξ ορισμού μορφή για τα νέα αρχεία"
 
 #: src/sweep_sample.c:578
 msgid ""
@@ -1798,31 +1785,31 @@ msgid ""
 "duration and format. All audio data is processed internally in 32 bit "
 "floating point format."
 msgstr ""
-"Indica il valore della memoria che sarΰ allocata per la durata e il formato "
-"selezionato. Tutti i dati audio sono processati internamente nel formato a "
-"32 bit a virgola mobile."
+"Αναφέρει το ποσό της μνήμης δεδομένων που θα δεσμευτεί για την επιλεγμένη "
+"διάρκεια και μορφή. Όλα τα ηχητικά δεδομένα επεξεργάζοντε εσωτερικά σε μορφή "
+"32 bit κινητής υποδιαστολής."
 
 #: src/sweep_sample.c:593
 msgid "Data memory:"
-msgstr "Memoria dati:"
+msgstr "Μνήμη δεδομένων:"
 
 #. OK
 #: src/sweep_sample.c:605
 msgid "Create"
-msgstr "Crea"
+msgstr "Δημιουργία"
 
 #. Cancel
 #: src/sweep_sample.c:617
 msgid "Don't create"
-msgstr "Non creare"
+msgstr "Όχι δημιουργία"
 
 #: src/sweep_sample.c:785
 msgid "Excellent!!!"
-msgstr "Eccellente!!!"
+msgstr "Περίφημα!!!"
 
 #: src/sweep_sample.c:807
 msgid "Files unsaved"
-msgstr "File non salvati"
+msgstr "Μη αποθηκευμένα αρχεία"
 
 #: src/sweep_sample.c:808
 msgid ""
@@ -1830,18 +1817,17 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Alcuni file non sono stati salvati. Se si esce, tutte le modifiche saranno "
-"perse.\n"
+"Μερικά αρχεία δεν έχουν αποθηκευτεί. Εάν φύγετε θα χαθούν όλες οι αλλαγές.\n"
 "\n"
-"Sicuri di voler uscire?"
+"Θέλετε σίγουρα να εγκαταλείψετε;"
 
 #: src/sweep_sample.c:811 src/sweep_sample.c:819
 msgid "Don't quit"
-msgstr "Non uscire"
+msgstr "Όχι εγκατάλειψη"
 
 #: src/sweep_sample.c:815
 msgid "Files playing"
-msgstr "I file sono in riproduzione"
+msgstr "Αρχεία που αναπαράγονται"
 
 #: src/sweep_sample.c:816
 msgid ""
@@ -1849,83 +1835,83 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Non ci sono file modificati, ma qualche file θ attualmente in riproduzione.\n"
+"Δεν υπαρχουν μη αποθηκευμένα αρχεία, αλλά μερικα αναπαράγονται.\n"
 "\n"
-"Sicuri di voler uscire?"
+"Θέλετε σίγουρα να εγκαταλείψετε;"
 
 #. Select
 #: src/sweep_sample.c:1476 src/view.c:1362
 msgid "Invert selection"
-msgstr "Inverte la selezione"
+msgstr "Αναστροφή επιλογής"
 
 #. Select
 #: src/sweep_sample.c:1496 src/view.c:1370 src/view.c:1464
 msgid "Select all"
-msgstr "Seleziona tutto"
+msgstr "Επιλογή όλων"
 
 #: src/sweep_sample.c:1516 src/view.c:1378
 msgid "Select none"
-msgstr "Seleziona niente"
+msgstr "Επιλογή τίποτα"
 
 #: src/sweep_sample.c:1536
 msgid "Halve selection"
-msgstr "Dimezza la selezione"
+msgstr "Μισή επιλογή"
 
 #: src/sweep_sample.c:1556
 msgid "Double selection"
-msgstr "Raddoppia la selezione"
+msgstr "Διπλή επιλογή"
 
 #: src/sweep_sample.c:1579
 msgid "Selection left"
-msgstr "Selezione sinistra"
+msgstr "Επιλογή αριστερά"
 
 #: src/sweep_sample.c:1601
 msgid "Selection right"
-msgstr "Selezione destra"
+msgstr "Επιλογή δεξιά"
 
 #: src/sweep_sample.c:1689
 #, fuzzy
 msgid "Insert selection ["
-msgstr "Inverte la selezione"
+msgstr "Αναστροφή επιλογής"
 
 #: src/sweep_sample.c:1742
 #, fuzzy
 msgid "Subtract selection ["
-msgstr "Raddoppia la selezione"
+msgstr "Διπλή επιλογή"
 
 #: src/sweep_sample.c:1787
 #, fuzzy
 msgid "Set selection ["
-msgstr "Nuova selezione"
+msgstr "Νέα επιλογή"
 
 #: src/sweep_sample.c:1886
 msgid "Sweep: File properties"
-msgstr "Sweep: proprietΰ del file"
+msgstr "Sweep: Ιδιότητες αρχείου"
 
 #: src/sweep_sample.c:1910
 #, fuzzy
 msgid "Filename: "
-msgstr "Nome file:"
+msgstr "Όνομα αρχείου:"
 
 #: src/sweep_sample.c:1912
 #, fuzzy
 msgid "Sampling rate: "
-msgstr "Frequenza di campionamento:"
+msgstr "Ρυθμός δειγματοληψίας:"
 
 #: src/sweep_sample.c:1914
 #, fuzzy
 msgid "Channels: "
-msgstr "Canali:"
+msgstr "Κανάλια"
 
 #: src/sweep_sample.c:1916
 #, fuzzy
 msgid "Data memory: "
-msgstr "Memoria dati:"
+msgstr "Μνήμη δεδομένων:"
 
 #: src/sweep_sample.c:1918
 #, fuzzy
 msgid "Duration: "
-msgstr "Durata:"
+msgstr "Διάρκεια:"
 
 #: src/sweep_undo.c:327
 #, c-format
@@ -1936,434 +1922,432 @@ msgid ""
 "Do you want to continue editing this buffer?"
 msgstr ""
 "%s\n"
-" θ cambiato nel disco.\n"
-"\n"
-"Continuare a modificare questo buffer?"
+" έχει αλλάξει στο δίσκο.\n"
+"Θέλετε να συνεχίσετε την επεξεργασία αυτού του buffer;"
 
 #: src/sweep_undo.c:332
 msgid "Continue editing"
-msgstr "Continua"
+msgstr "Συνέχεια επεξεργασίας"
 
 #: src/sweep_undo.c:332
 msgid "Reread from disk"
-msgstr "Rilegge dal disco"
+msgstr "Επανάγνωση από το δίσκο"
 
 #: src/sweep_undo.c:430 src/sweep_undo.c:488
 msgid "Nothing to undo"
-msgstr "Niente da annullare"
+msgstr "Τίποτα για να ανακτηθεί"
 
 #: src/sweep_undo.c:511 src/sweep_undo.c:567
 msgid "Nothing to redo"
-msgstr "Niente da ripristinare"
+msgstr "Τίποτα για να ξαναεφαρμοστεί"
 
 #: src/undo_dialog.c:158
 msgid "Original data"
-msgstr "Dati originali"
+msgstr "Πρωτότυπα δεδομένα"
 
 #: src/undo_dialog.c:343
 msgid "Action"
-msgstr "Azione"
+msgstr "Πράξη"
 
 #: src/undo_dialog.c:350
 msgid "Sweep: History"
-msgstr "Sweep: cronologia"
+msgstr "Sweep: Ιστορία"
 
 #: src/undo_dialog.c:387 src/view.c:515 src/view.c:2029
 msgid "Undo"
-msgstr "Annulla"
+msgstr "Ανάκτηση"
 
 #: src/undo_dialog.c:395 src/view.c:526 src/view.c:2038
 msgid "Redo"
-msgstr "Ripristina"
+msgstr "Ξαναεφαρμογή"
 
 #: src/undo_dialog.c:420
 msgid "Revert to selected state"
-msgstr "Inverte lo stato selezionato"
+msgstr "Επιστροφή στην επιλεγμενη κατάσταση"
 
 #. Cancel
 #: src/undo_dialog.c:446 src/view.c:480 src/view.c:3508
 msgid "Close"
-msgstr "Chiudi"
+msgstr "Κλείσιμο"
 
 #: src/view.c:301
 msgid "Duplicate to stereo"
-msgstr "Duplica in stereo"
+msgstr "Αντιγραφή σε στέρεοφωνικο"
 
 #: src/view.c:311
 msgid "Duplicate to multichannel"
-msgstr "Duplica in multicanale"
+msgstr "Αντιγραφή σε πολυφωνικό"
 
 #: src/view.c:323
 msgid "Swap left and right"
-msgstr "Scambia destra e sinistra"
+msgstr "Εναλλαγή αριστερού με δεξιού"
 
 #: src/view.c:367
 msgid "Add/Remove channels"
-msgstr "Aggiunge/rimuove canali"
+msgstr "Προσθήκη/Αφαίρεση καναλιών"
 
 #: src/view.c:420 src/view.c:1910
 msgid "New ..."
-msgstr "Nuovo..."
+msgstr "Νέο ..."
 
 #: src/view.c:429 src/view.c:1917
 msgid "Open ..."
-msgstr "Apri..."
+msgstr "Άνοιγμα ..."
 
 #: src/view.c:449
 msgid "Save As ..."
-msgstr "Salva con nome..."
+msgstr "Αποθήκευση Ως ..."
 
 #: src/view.c:469
 msgid "Properties ..."
-msgstr "Proprietΰ..."
+msgstr "Ιδιότητες ..."
 
 #. Edit
 #: src/view.c:499 src/view.c:1292
 msgid "Edit"
-msgstr "Modifica"
+msgstr "Επεξεργασία"
 
 #: src/view.c:537
 msgid "Show history ..."
-msgstr "Mostra cronologia..."
+msgstr "Εμφάνιση ιστορίας ..."
 
 #: src/view.c:603 src/view.c:1328
 msgid "Paste: Insert"
-msgstr "Incolla: inserisce"
+msgstr "Επικόλληση: Εισαγωγή"
 
 #: src/view.c:613 src/view.c:1334
 msgid "Paste: Mix"
-msgstr "Incolla: mescola"
+msgstr "Επικόλληση: Μίξη"
 
 #: src/view.c:623 src/view.c:1340
 msgid "Paste: Crossfade"
-msgstr "Incolla: dissolvenza incrociata"
+msgstr "Επικόλληση: Crossfade"
 
 #: src/view.c:633
 msgid "Paste as New"
-msgstr "Incolla come nuovo"
+msgstr "Επικόλληση σαν Νέο"
 
 #: src/view.c:647
 msgid "Preview Cut/Cursor"
-msgstr "Anteprima taglia/cursore"
+msgstr "Δοκιμή Αποκοπής/Κέρσορα"
 
 #: src/view.c:656
 msgid "Pre-roll to Cursor"
-msgstr "Pre-arrotola il cursore"
+msgstr "Εκκίνηση στο Κέρσορα"
 
 #: src/view.c:672
 msgid "Invert"
-msgstr "Inverti"
+msgstr "Αναστροφή"
 
 #: src/view.c:681
 msgid "All"
-msgstr "Tutto"
+msgstr "Όλα"
 
 #: src/view.c:690
 msgid "None"
-msgstr "Niente"
+msgstr "Κανένα"
 
 #: src/view.c:704
 msgid "Halve"
-msgstr "Dimezza"
+msgstr "Μισή"
 
 #: src/view.c:714
 msgid "Double"
-msgstr "Raddoppia"
+msgstr "Διπλάσια"
 
 #: src/view.c:724
 msgid "Shift left"
-msgstr "Sposta a sinistra"
+msgstr "Κύλιση αριστερά"
 
 #: src/view.c:734
 msgid "Shift right"
-msgstr "Sposta a destra"
+msgstr "Κύλιση δεξιά"
 
 #. View
 #: src/view.c:745
 msgid "View"
-msgstr "Vista"
+msgstr "Απεικόνιση"
 
 #: src/view.c:752 src/view.c:2190
 msgid "Autoscroll: follow playback cursor"
-msgstr "Autoscroll: segue il cursore di riproduzione"
+msgstr "Αυτόματη κύλιση: ακολουθά τον κέρσορα"
 
 #: src/view.c:766
 msgid "Center"
-msgstr "Centra"
+msgstr "Κέντρο"
 
 #. Zoom in
 #: src/view.c:779 src/view.c:2129
 msgid "Zoom in"
-msgstr "Ingrandisci"
+msgstr "Ζούμ μέσα"
 
 #. Zoom out
 #: src/view.c:788 src/view.c:2138
 msgid "Zoom out"
-msgstr "Riduci"
+msgstr "Ζούμ έξω"
 
 #. Zoom
 #: src/view.c:797 src/view.c:1267
 msgid "Zoom to selection"
-msgstr "Ingrandisci la selezione"
+msgstr "Ζούμ στην επιλογή"
 
 #: src/view.c:804
 msgid "Left"
-msgstr "Sinistra"
+msgstr "Αριστερά"
 
 #: src/view.c:813
 msgid "Right"
-msgstr "Destra"
+msgstr "Δεξιά"
 
 #. Zoom
 #: src/view.c:823 src/view.c:1273 src/view.c:1432
 msgid "Zoom normal"
-msgstr "Zoom normale"
+msgstr "Ζούμ σε κανονικό"
 
 #. Zoom all
 #: src/view.c:829 src/view.c:1279 src/view.c:1438 src/view.c:2120
 msgid "Zoom all"
-msgstr "Zoom totale"
+msgstr "Ζούμ όλων"
 
 #: src/view.c:838
 msgid "1:1"
-msgstr "1:1"
+msgstr "1 προς 1"
 
 #. Store view
 #: src/view.c:851
 msgid "Remember as"
-msgstr "Memorizza come"
+msgstr "Απομνημόνευση ως"
 
 #: src/view.c:868 src/view.c:898
 msgid "Area 1"
-msgstr "Area 1"
+msgstr "Περιοχή 1"
 
 #: src/view.c:869 src/view.c:899
 msgid "Area 2"
-msgstr "Area 2"
+msgstr "Περιοχή 2"
 
 #: src/view.c:870 src/view.c:900
 msgid "Area 3"
-msgstr "Area 3"
+msgstr "Περιοχή 3"
 
 #: src/view.c:871 src/view.c:901
 msgid "Area 4"
-msgstr "Area 4"
+msgstr "Περιοχή 4"
 
 #: src/view.c:872 src/view.c:902
 msgid "Area 5"
-msgstr "Area 5"
+msgstr "Περιοχή 5"
 
 #: src/view.c:873 src/view.c:903
 msgid "Area 6"
-msgstr "Area 6"
+msgstr "Περιοχή 6"
 
 #: src/view.c:874 src/view.c:904
 msgid "Area 7"
-msgstr "Area 7"
+msgstr "Περιοχή 7"
 
 #: src/view.c:875 src/view.c:905
 msgid "Area 8"
-msgstr "Area 8"
+msgstr "Περιοχή 8"
 
 #: src/view.c:876 src/view.c:906
 msgid "Area 9"
-msgstr "Area 9"
+msgstr "Περιοχή 9"
 
 #: src/view.c:877 src/view.c:907
 msgid "Area 10"
-msgstr "Area 10"
+msgstr "Περιοχή 10"
 
 #. Retrieve view
 #: src/view.c:881
 msgid "Zoom to"
-msgstr "Vai in"
+msgstr "Ζούμ σε"
 
 #: src/view.c:913
 msgid "Color scheme"
-msgstr "Schema di colore"
+msgstr "Παλέτα χρωμάτων"
 
 #: src/view.c:919
 msgid "Decoder Red"
-msgstr "Profondo rosso"
+msgstr "Decoder Red"
 
 #: src/view.c:927
 msgid "Orangeboom"
-msgstr "Arancio meccanico"
+msgstr "Orangeboom"
 
 #: src/view.c:935
 msgid "Lame Yellow"
-msgstr "Giallo cedrone"
+msgstr "Lame Yellow"
 
 #: src/view.c:943
 msgid "Coogee Bay Blue"
-msgstr "Azzurro sussurro"
+msgstr "Coogee Bay Blue"
 
 #: src/view.c:951
 msgid "Blackwattle"
-msgstr "Maron glacι"
+msgstr "Blackwattle"
 
 #: src/view.c:959
 msgid "Frigid"
-msgstr "Biancaneve"
+msgstr "Frigid"
 
 #: src/view.c:967
 msgid "Radar"
-msgstr "Verdicchio"
+msgstr "Radar"
 
 #: src/view.c:975
 msgid "Bluescreen"
-msgstr "Tuono blu"
+msgstr "Bluescreen"
 
 #. View
 #: src/view.c:988 src/view.c:1392 src/view.c:1478
 msgid "New View"
-msgstr "Nuova vista"
+msgstr "Νέα Απεικόνιση"
 
 #. Sample
 #: src/view.c:995
 msgid "Sample"
-msgstr "Campione"
+msgstr "Δείγμα"
 
 #: src/view.c:1010
 msgid "Resample ..."
-msgstr "Ricampiona..."
+msgstr "Επαναδειγματοληψία ..."
 
 #: src/view.c:1023
 msgid "Duplicate"
-msgstr "Duplica"
+msgstr "Διπλασιασμός"
 
 #. Filters
 #: src/view.c:1034 src/view.c:1348
 msgid "Process"
-msgstr "Elabora"
+msgstr "Κατεργασία"
 
 #. Playback
 #: src/view.c:1043
 msgid "Playback"
-msgstr "Riproduzione"
+msgstr "Αναπαραγωγή"
 
 #: src/view.c:1049
 msgid "Configure audio device ..."
-msgstr "Configura il device audio..."
+msgstr "Ρύθμιση συσκευής ήχου ..."
 
 #: src/view.c:1059
 msgid "Transport"
-msgstr "Spostamento"
+msgstr "Μεταφορά"
 
 #: src/view.c:1067
 msgid "Go to start of file"
-msgstr "Va all'inizio del file"
+msgstr "Μετακίνηση στην αρχή του αρχείου"
 
 #: src/view.c:1076
 msgid "Go to start of window"
-msgstr "Va all'inizio della finestra"
+msgstr "Μετακίνηση στην αρχή του παραθύρου"
 
 #: src/view.c:1086
 msgid "Skip back"
-msgstr "Salta indietro"
+msgstr "Πήδημα πίσω"
 
 #: src/view.c:1096
 msgid "Skip forward"
-msgstr "Salta avanti"
+msgstr "Πήδημα μπροστά"
 
 #: src/view.c:1105
 msgid "Go to end of window"
-msgstr "Va alla fine della finestra"
+msgstr "Μετακίνηση στο τέλος του παραθύρου"
 
 #: src/view.c:1114
 msgid "Go to end of file"
-msgstr "Va alla fine del file"
+msgstr "Μετακίνηση στο τέλος του αρχείου"
 
 #: src/view.c:1127
 msgid "Play selection"
-msgstr "Suona la selezione"
+msgstr "Αναπαραγωγή επιλογής"
 
 #: src/view.c:1138
 msgid "Play sample"
-msgstr "Suona il campione"
+msgstr "Αναπαραγωγή δείγματος"
 
 #: src/view.c:1148
 msgid "Play note"
-msgstr "Suona la nota"
+msgstr "Αναπαραγωγή νότας"
 
 #: src/view.c:1167
-#, fuzzy
 msgid "Toggle monitoring"
-msgstr "Attiva/disattiva muto"
+msgstr "Διακόπτης παρακολούθησης"
 
 #: src/view.c:1176
 msgid "Toggle looping"
-msgstr "Attiva/disattiva la modalitΰ ciclica"
+msgstr "Διακόπτης επανάληψης"
 
 #: src/view.c:1185
 msgid "Toggle muting"
-msgstr "Attiva/disattiva muto"
+msgstr "Διακόπτης αποσιώπησης"
 
 #: src/view.c:1194
 msgid "Toggle reverse playback"
-msgstr "Attiva/disattiva la riproduzione invertita"
+msgstr "Διακόπτης ανάστροφης αναπαραγωγής"
 
 #: src/view.c:1211
 msgid "Pause"
-msgstr "Pausa"
+msgstr "Παύση"
 
 #: src/view.c:1235
 msgid "About MP3 export..."
-msgstr "Informazioni sull'esportazione in MP3..."
+msgstr "Περί εξαγωγή MP3..."
 
 #: src/view.c:1241
 msgid "About Sweep ..."
-msgstr "Informazioni su Sweep..."
+msgstr "Περί Sweep ..."
 
 #. Properties
 #: src/view.c:1405 src/view.c:1491
 msgid "File properties ..."
-msgstr "Proprietΰ del file..."
+msgstr "Ιδιότητες αρχείου ..."
 
 #. Edit
 #: src/view.c:1450
 msgid "Paste"
-msgstr "Incolla"
+msgstr "Επικόλληση"
 
 #: src/view.c:1933
 msgid "Save as ..."
-msgstr "Salva con nome..."
+msgstr "Αποθήκευση ως ..."
 
 #: src/view.c:1953
 msgid "Cut selection to clipboard"
-msgstr "Taglia la selezione negli appunti"
+msgstr "Αποκοπή επιλογής στο πρόχειρο"
 
 #: src/view.c:1963
 msgid "Copy selection to clipboard"
-msgstr "Copia la selezione negli appunti"
+msgstr "Αντιγραφή επιλογής στο πρόχειρο"
 
 #: src/view.c:1974
 msgid "Paste: insert clipboard at cursor position"
-msgstr "Incolla: inserisce gli appunti nella posizione del cursore"
+msgstr "Επικόλληση: εισαγωγή προχείρου στη θέση του κέρσορα"
 
 #: src/view.c:1985
 msgid "Paste: mix clipboard in from cursor position"
-msgstr "Incolla: mescola gli appunti dalla posizione del cursore"
+msgstr "Επικόλληση: μίξη προχείρου από τη θέση του κέρσορα"
 
 #: src/view.c:1996
 msgid "Paste: fade clipboard in from cursor position"
-msgstr "Incolla: dissolve gli appunti dalla posizione del cursore"
+msgstr "Επικόλληση: εξασθένιση προχείρου από τη θέση του κέρσορα"
 
 #: src/view.c:2066
 msgid "Selector tool"
-msgstr "Selezionatore"
+msgstr "Εργαλείο επιλογής"
 
 #: src/view.c:2077
 msgid "\"Scrubby\" the scrub tool"
-msgstr "\"Scrubby\" lo strumento per l'audioscandaglio"
+msgstr "\"Scrubby\" το εργαλείο για scrub"
 
 #: src/view.c:2087
 msgid "Pencil tool"
-msgstr "Matita"
+msgstr "Εργαλείο μολυβιού"
 
 #: src/view.c:2095
 msgid "Noise tool"
-msgstr "Strumento di rumore"
+msgstr "Εργαλείο θορύβου"
 
 #: src/view.c:2181
 msgid "Visible length"
@@ -2371,54 +2355,54 @@ msgstr ""
 
 #: src/view.c:2300
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
-msgstr "Ingrandisce verticalmente [shift + freccia su/giω]"
+msgstr "Κάθετο ζούμ [Shift + Arrow Up/Down]"
 
 #: src/view.c:2427
 msgid "Record ..."
-msgstr "Registra..."
+msgstr "Ηχογράφηση ..."
 
 #: src/view.c:2503
 msgid "Reverse mode playback (toggle)"
-msgstr "Modalitΰ di riproduzione invertita (attiva/disattiva)"
+msgstr "Αναπαραγωγή ανάστροφης κατάστασης (διακόπτης)"
 
 #: src/view.c:2521
 msgid "Loop mode playback (toggle)"
-msgstr "Modalitΰ di riproduzione ciclica (attiva/disattiva)"
+msgstr "Αναπαραγωγή κατάστασης βρόγχου (διακόπτης)"
 
 #. _("Play all / Pause    [Ctrl+Space / Enter]"),
 #: src/view.c:2545
 msgid "Play all / Pause    [Ctrl+Space]"
-msgstr "Suona tutto / Pausa    [ctrl+spazio]"
+msgstr "Αναπαραγωγή όλων / Παύση    [Ctrl+Space]"
 
 #. _("Play selection / Pause    [Space / Enter]"),
 #: src/view.c:2561
 msgid "Play selection / Pause    [Space]"
-msgstr "Suona la selezione / Pausa    [spazio]"
+msgstr "Αναπαραγωγή επιλογής / Παύση    [Space]"
 
 #. _("Stop playback    [Space]"),
 #: src/view.c:2577
 msgid "Stop playback    [Enter]"
-msgstr "Ferma la riproduzione    [invio]"
+msgstr "Διακοπή αναπαραγωγής    [Enter]"
 
 #: src/view.c:2594
 msgid "Go to beginning    [Ctrl+Home]"
-msgstr "Va all'inizio    [ctrl+inizio]"
+msgstr "Μετακίνηση στην αρχή    [Ctrl+Home]"
 
 #: src/view.c:2630
 msgid "Go to the end    [Ctrl+End]"
-msgstr "Va alla fine    [ctrl+fine]"
+msgstr "Μετακίνηση στο τέλος    [Ctrl+End]"
 
 #: src/view.c:2644
 msgid "Muted playback (toggle)"
-msgstr "Riproduzione muta (attiva/disattiva)"
+msgstr "Αποσιωπημένη αναπαραγωγή (διακόπτης)"
 
 #: src/view.c:2664 src/view.c:2682
 msgid "Playback gain slider (volume)"
-msgstr "Cursore di guadagno di riproduzione (volume)"
+msgstr "Επιλογέας κέρδους αναπαραγωγής (ένταση)"
 
 #: src/view.c:2694
 msgid "Monitor (toggle)"
-msgstr ""
+msgstr "Παρακολούθηση (διακόπτης)"
 
 #. SYNC
 #: src/view.c:2712
@@ -2428,34 +2412,34 @@ msgstr ""
 #: src/view.c:3255
 #, c-format
 msgid "Remembered as area %d"
-msgstr "Memorizza come area %d"
+msgstr "Απομνημόνευση σαν περιοχή %d"
 
 #: src/view.c:3273
 #, c-format
 msgid "No area remembered as %d"
-msgstr "Nessuna area memorizzata come %d"
+msgstr "Δεν υπάρχει στη μνήμη η περιοχή %d"
 
 #: src/view.c:3276
 #, c-format
 msgid "Zoomed to area %d"
-msgstr "Andato in area %d"
+msgstr "Ζούμ στη περιοχή %d"
 
 #: src/view.c:3452 src/view.c:3456
 msgid "Scrub!"
-msgstr "Audioscandaglio!"
+msgstr "Scrub!"
 
 #: src/view.c:3452 src/view.c:3458
 msgid "Ready"
-msgstr "Pronto"
+msgstr "Έτοιμο"
 
 #: src/view.c:3505
 #, c-format
 msgid "%s has been modified. Close anyway?"
-msgstr "%s θ stato modificato. Chiudere comunque?"
+msgstr "Το %s έχει αλλάξει. Να κλείσει;"
 
 #: src/view.c:3508
 msgid "Don't close"
-msgstr "Non chiudere"
+msgstr "Όχι κλείσιμο"
 
 #: src/view.c:3555 src/view.c:3568
 msgid "*"
@@ -2463,141 +2447,141 @@ msgstr "*"
 
 #: src/view.c:3571
 msgid "Empty"
-msgstr "Vuoto"
+msgstr "Άδειο"
 
 #: plugins/byenergy/byenergy.c:58
 msgid "Select regions above threshold"
-msgstr "Seleziona le regioni sopra la soglia"
+msgstr "Επιλογή περιοχών πάνω από το κατώφλι"
 
 #: plugins/byenergy/byenergy.c:59
 msgid ""
 "Whether to select those regions lying above a given threshold or below it."
-msgstr "Se selezionare quelle regioni sopra o sotto una data soglia."
+msgstr "Εάν θα επιλεγούν οι περιοχές πάνω ή κάτω από ένα δεδομένο κατώφλι."
 
 #: plugins/byenergy/byenergy.c:66
 msgid "Resolution"
-msgstr "Risoluzione"
+msgstr "Ανάλυση"
 
 #: plugins/byenergy/byenergy.c:67
 msgid "Width of energy detection window (s)"
-msgstr "Finestra di rilevamento della larghezza di energia (s)"
+msgstr "Μήκος του παραθύρου εντοπισμού ενέργειας"
 
 #: plugins/byenergy/byenergy.c:73
 msgid "Threshold"
-msgstr "Soglia"
+msgstr "Κατώφλι"
 
 #: plugins/byenergy/byenergy.c:74
 msgid "Energy level to detect [0.0 - 1.0]"
-msgstr "Livello di energia da rilevare [0.0 - 1.0]"
+msgstr "Επίπεδο ενέργειας για να εντοπιστεί [0.0 - 1.0]"
 
 #: plugins/byenergy/byenergy.c:80
 msgid "Minimum duration"
-msgstr "Durata minima"
+msgstr "Ελάχιστη διάρκεια"
 
 #: plugins/byenergy/byenergy.c:81
 msgid "Shortest region of selection to detect (s)"
-msgstr "La piω breve regione di selezione da rilevare (s)"
+msgstr "Μικρότερη περιοχή της επιλογής για να εντοπιστεί (s)"
 
 #: plugins/byenergy/byenergy.c:87
 msgid "Maximum interruption"
-msgstr "Interruzione massima"
+msgstr "Μέγιστη διακοπή"
 
 #: plugins/byenergy/byenergy.c:88
 msgid "Longest length of sound above threshold to allow (s)"
-msgstr "Lunghezza massima di suono sopra la soglia da permettere (s)"
+msgstr "Μεγαλύτερο μήκος του ήχου πάνω από το κατώφλι που θα επιτρέπεται (s)"
 
 #: plugins/byenergy/byenergy.c:227 plugins/byenergy/byenergy.c:232
 msgid "Select by energy"
-msgstr "Seleziona per energia"
+msgstr "Επιλογή με βάση την ενέργεια"
 
 #: plugins/byenergy/byenergy.c:233
 msgid "Select loud or quiet regions"
-msgstr "Seleziona regioni rumorose o silenziose"
+msgstr "Επιλογή ηχηρών ή ήσυχων περιοχών"
 
 #: plugins/echo/echo.c:53
 msgid "Delay"
-msgstr "Ritardo"
+msgstr "Καθυστέρηση"
 
 #: plugins/echo/echo.c:54
 msgid "Time to delay by"
-msgstr "Tempo di ritardo da"
+msgstr "Χρόνος για καθυστέρηση"
 
 #: plugins/echo/echo.c:62
 msgid "Gain with which to mix in delayed signal"
-msgstr "Guadagno con cui mescolare il segnale ritardato"
+msgstr "Κέρδος με το οποίο θα γίνει μίξη με το καθυστερούμενο σήμα"
 
 #: plugins/echo/echo.c:107 plugins/echo/echo.c:113
 msgid "Echo"
-msgstr "Eco"
+msgstr "Ηχό"
 
 #: plugins/echo/echo.c:114
 msgid "Apply an echo to selected regions of a sample"
-msgstr "Applica l'eco alle regioni selezionate di un campione"
+msgstr "Εφαρμογή μιας ηχού στις επιλεγμένες περιοχές ενός δείγματος"
 
 #: plugins/normalise/normalise.c:128 plugins/normalise/normalise.c:133
 msgid "Normalise"
-msgstr "Normalizza"
+msgstr "Κανονικοποίηση"
 
 #: plugins/normalise/normalise.c:134
 msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
-msgstr "Altera l'ampiezza del campione per stare tra 1.0 e -1.0"
+msgstr "Αλλαγή του πλάτους του δείγματος μεταξύ των τιμών 1.0 και -1.0"
 
 #: plugins/reverse/reverse.c:129 plugins/reverse/reverse.c:134
 #: plugins/reverse/reverse.c:140
 msgid "Reverse"
-msgstr "Inverte"
+msgstr "Αναστροφή"
 
 #: plugins/reverse/reverse.c:141
 msgid "Reverse selected regions of a sample"
-msgstr "Inverte le regioni selezionate di un campione"
+msgstr "Αναστροφή επιλεγμένων περιοχών ενός δείγματος"
 
 #: plugins/example/example.c:37 plugins/example/example.c:86
 msgid "With a fork"
-msgstr "Con una forchetta"
+msgstr "Με πηρούνι"
 
 #: plugins/example/example.c:38
 msgid "With a spoon"
-msgstr "Con un cucchiaio"
+msgstr "Με κουτάλι"
 
 #: plugins/example/example.c:39
 msgid "With false teeth"
-msgstr "Con una dentiera"
+msgstr "Με ψεύτικα δόντια"
 
 #: plugins/example/example.c:40
 msgid "With Nigel's bum"
-msgstr "Con un vagabondo di Nigel"
+msgstr "Με το πισινό του Nαΐγκελ"
 
 #: plugins/example/example.c:56
 msgid "Flim"
-msgstr "Satira"
+msgstr "Flim"
 
 #: plugins/example/example.c:57
 msgid "Should you manage your flim?"
-msgstr "Domeresti la tua satira?"
+msgstr "Should you manage your flim?"
 
 #: plugins/example/example.c:64
 msgid "Beans"
-msgstr "Fagioli"
+msgstr "Φασόλια"
 
 #: plugins/example/example.c:65
 msgid "Method of eating beans"
-msgstr "Metodo di mangiare fagioli"
+msgstr "Μέθοδος για την κατανάλωση φασολιών"
 
 #: plugins/example/example.c:72
 msgid "Pants methodology"
-msgstr "Metodologia delle mutande"
+msgstr "Μεθοδολογία σωβράκων"
 
 #: plugins/example/example.c:73
 msgid "How many pants should you wear per day?"
-msgstr "Quante mutande dovresti indossare al giorno?"
+msgstr "Πόσα σώβρακα πρέπει να φοράτε την ημέρα;"
 
 #: plugins/example/example.c:122 plugins/example/example.c:129
 msgid "Example Filter Region"
-msgstr "Regione filtro di esempio"
+msgstr "Παράδειγμα Φίλτρου Περιοχής"
 
 #: plugins/example/example.c:130
 msgid "An example filter region plugin"
-msgstr "Un plugin della regione filtro di esempio"
+msgstr "Ένα παράδειγμα αρθρώματος φίλτρου περιοχής"
 
 #: plugins/fade/fade.c:144 plugins/fade/fade.c:157
 msgid "Fade in"
@@ -2616,11 +2600,7 @@ msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
 
 #~ msgid "Filename:"
-#~ msgstr "Nome file:"
+#~ msgstr "Όνομα αρχείου:"
 
-#, fuzzy
-#~ msgid "VBR: Variable bitrate mode"
-#~ msgstr "Modalitΰ con bit rate variabile (VBR)"
-
-#~ msgid "This enables variable bitrate mode (VBR)."
-#~ msgstr "Questo attiva il bit rate variabile (VBR)"
+#~ msgid "Main output:"
+#~ msgstr "Κύρια έξοδος:"

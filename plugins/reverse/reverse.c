@@ -19,12 +19,15 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
 #include <sweep/sweep.h>
 
+#include "../src/sweep_app.h" /* XXX */
 
+#if 0
 static void
 region_reverse (gpointer data, sw_format * format, int nr_frames,
 		sw_param_set pset, gpointer custom_data)
@@ -49,13 +52,87 @@ region_reverse (gpointer data, sw_format * format, int nr_frames,
 
   g_free (t);
 }
+#endif
+
+static sw_sample *
+sounddata_reverse (sw_sample * sample, sw_param_set pset,
+		   gpointer custom_data)
+{
+  GList * gl;
+  sw_sel * sel;
+  glong i, sw;
+  sw_sounddata * sounddata;
+  sw_format * format;
+  sw_framecount_t nr_frames;
+  gpointer d, e, t;
+
+  sw_framecount_t op_total, run_total;
+  sw_framecount_t remaining, n;
+
+  gboolean active = TRUE;
+
+  sounddata = sample_get_sounddata (sample);
+  format = sounddata->format;
+
+  op_total = sounddata_selection_nr_frames (sounddata) / 200;
+  if (op_total == 0) op_total = 1;
+  run_total = 0;
+
+  sw = frames_to_bytes (format, 1);
+  t = alloca (sw);
+
+  for (gl = sounddata->sels; active && gl; gl = gl->next) {
+    sel = (sw_sel *)gl->data;
+
+    d = sounddata->data + frames_to_bytes (format, sel->sel_start);
+    nr_frames = sel->sel_end - sel->sel_start;
+
+    e = d + frames_to_bytes (format, nr_frames);
+    
+    remaining = nr_frames/2;
+
+    while (active && remaining > 0) {
+      g_mutex_lock (sample->ops_mutex);
+
+      if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
+	active = FALSE;
+      } else {
+	n = MIN (remaining, 1024);
+
+	for (i = 0; i <= n; i++) {
+	  memcpy (t, d, sw);
+	  memcpy (d, e, sw);
+	  memcpy (e, t, sw);
+	
+	  d += sw;
+	  e -= sw;
+	}
+
+	remaining -= n;
+
+	run_total += n;
+	sample_set_progress_percent (sample, run_total / op_total);
+      }
+
+      g_mutex_unlock (sample->ops_mutex);
+    }
+  }
+
+  return sample;
+}
 
 static sw_op_instance *
 apply_reverse (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
+#if 0
   return
     perform_filter_region_op (sample, _("Reverse"),
 			       (SweepFilterRegion)region_reverse, pset, NULL);
+#endif
+
+  return
+    perform_filter_op (sample, _("Reverse"),
+		       (SweepFilter)sounddata_reverse, pset, NULL);
 }
 
 

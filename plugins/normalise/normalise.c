@@ -25,44 +25,100 @@
 
 #include <sweep/sweep.h>
 
+#include <../src/sweep_app.h> /* XXX */
 
-static sw_sounddata *
-normalise (sw_sounddata * sounddata, sw_param_set pset, gpointer custom_data)
+static sw_sample *
+normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
-  sw_format * f = sounddata->format;
+  sw_sounddata * sounddata;
+  sw_format * f;
   GList * gl;
   sw_sel * sel;
   sw_audio_t * d;
   sw_audio_t max = 0;
-  gfloat factor;
-  glong i, len;
+  gfloat factor = 1.0;
+  sw_framecount_t op_total, run_total;
+  glong i;
+  sw_framecount_t offset, remaining, n;
+
+  gboolean active = TRUE;
+
+  sounddata = sample_get_sounddata (sample);
+  f = sounddata->format;
+
+  op_total = sounddata_selection_nr_frames (sounddata) * 2 / 100;/* 2 passes */
+  if (op_total == 0) op_total = 1;
+  run_total = 0;
 
   /* Find max */
-  for (gl = sounddata->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; active && gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (sw_audio_t *)(sounddata->data + frames_to_bytes (f, sel->sel_start));
-    len = sel->sel_end - sel->sel_start;
-    for (i=0; i < len * f->channels; i++) {
-      if(d[i]>=0) max = MAX(max, d[i]);
-      else max = MAX(max, -d[i]);
+    offset = 0;
+    remaining = sel->sel_end - sel->sel_start;
+
+    while (active && remaining > 0) {
+      g_mutex_lock (sample->ops_mutex);
+
+      if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
+	active = FALSE;
+      } else {
+
+	d = sounddata->data + frames_to_bytes (f, sel->sel_start + offset);
+
+	n = MIN(remaining, 1024);
+
+	for (i=0; i < n * f->channels; i++) {
+	  if(d[i]>=0) max = MAX(max, d[i]);
+	  else max = MAX(max, -d[i]);
+	}
+
+	remaining -= n;
+	offset += n;
+
+	run_total += n;
+	sample_set_progress_percent (sample, run_total / op_total);
+      }
+
+      g_mutex_unlock (sample->ops_mutex);
     }
   }
 
-  factor = SW_AUDIO_T_MAX / (gfloat)max;
+  if (max != 0) factor = SW_AUDIO_T_MAX / (gfloat)max;
 
   /* Scale */
-  for (gl = sounddata->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; active && gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (sw_audio_t *)(sounddata->data + frames_to_bytes (f, sel->sel_start));
-    len = sel->sel_end - sel->sel_start;
-    for (i=0; i < len * f->channels; i++) {
-      d[i] = (sw_audio_t)((gfloat)d[i] * factor);
+    offset = 0;
+    remaining = sel->sel_end - sel->sel_start;
+
+    while (active && remaining > 0) {
+      g_mutex_lock (sample->ops_mutex);
+
+      if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
+	active = FALSE;
+      } else {
+	d = sounddata->data + frames_to_bytes (f, sel->sel_start + offset);
+
+	n = MIN(remaining, 1024);
+
+	for (i=0; i < n * f->channels; i++) {
+	  d[i] = (sw_audio_t)((gfloat)d[i] * factor);
+	}
+
+	remaining -= n;
+	offset += n;
+
+	run_total += n;
+	sample_set_progress_percent (sample, run_total * 100 / op_total);
+      }
+
+      g_mutex_unlock (sample->ops_mutex);
     }
   }
 
-  return sounddata;
+  return sample;
 }
 
 static sw_op_instance *
