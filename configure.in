@@ -72,7 +72,7 @@ if test "${ac_cv_header_sys_audioio_h}" = "yes"; then
 fi
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="fr hu it de ru po"
+ALL_LINGUAS="fr hu it de ru pl"
 AM_GNU_GETTEXT
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
