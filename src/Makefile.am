@@ -5,7 +5,7 @@ SUBDIRS = tdb
 INCLUDES = \
 	-I$(top_srcdir)/intl \
 	-I$(top_srcdir)/include \
-	-Itdb \
+	-I$(top_srcdir)/src/tdb \
 	@SNDFILE_CFLAGS@ \
 	@OGG_CFLAGS@ @VORBIS_CFLAGS@ \
 	@SAMPLERATE_CFLAGS@
@@ -15,7 +15,7 @@ TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
 bin_PROGRAMS = sweep
 
 sweep_SOURCES = \
-	sweep_app.h compat.h\
+	sweep_app.h sweep_compat.h\
 	main.c \
 	about_dialog.c about_dialog.h \
 	callbacks.c callbacks.h \

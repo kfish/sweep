@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-04-29 18:27+1000\n"
+"POT-Creation-Date: 2004-04-30 15:33+1000\n"
 "PO-Revision-Date: 2002-07-11 17:58+1000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,7 +123,7 @@ msgstr ""
 #. Cancel
 #: src/channelops.c:242 src/channelops.c:725 src/driver.c:382
 #: src/file_sndfile0.c:510 src/file_sndfile1.c:293 src/param.c:790
-#: src/question_dialogs.c:158 src/view.c:505 src/view.c:2767
+#: src/question_dialogs.c:158 src/view.c:505 src/view.c:2772
 msgid "Cancel"
 msgstr ""
 
@@ -178,7 +178,7 @@ msgstr ""
 msgid "Main device:"
 msgstr ""
 
-#: src/driver.c:449 src/driver.c:631 src/samplerate.c:551
+#: src/driver.c:449 src/driver.c:631 src/samplerate.c:560
 msgid "Default"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgid "Swap main and monitor devices."
 msgstr ""
 
 #: src/driver.c:516 src/driver.c:617 src/file_speex.c:1972
-#: src/file_vorbis.c:1368 src/samplerate.c:537 src/sweep_sample.c:543
+#: src/file_vorbis.c:1368 src/samplerate.c:546 src/sweep_sample.c:543
 msgid "Reset"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr ""
 msgid "Nothing to crop out"
 msgstr ""
 
-#: src/edit.c:1498 src/view.c:587 src/view.c:1318 src/view.c:2010
+#: src/edit.c:1498 src/view.c:587 src/view.c:1318 src/view.c:2012
 msgid "Crop"
 msgstr ""
 
@@ -310,11 +310,11 @@ msgstr ""
 msgid "Paste xfade"
 msgstr ""
 
-#: src/file_dialogs.c:71
+#: src/file_dialogs.c:72
 msgid "MP3 export unsupported"
 msgstr ""
 
-#: src/file_dialogs.c:72
+#: src/file_dialogs.c:73
 msgid ""
 "Export to MP3 format cannot legally be supported in free software\n"
 "due to patent licensing restrictions.\n"
@@ -323,31 +323,31 @@ msgid ""
 "provides better quality and is free."
 msgstr ""
 
-#: src/file_dialogs.c:97
+#: src/file_dialogs.c:98
 msgid "Raw PCM (headerless)"
 msgstr ""
 
-#: src/file_dialogs.c:155
+#: src/file_dialogs.c:156
 #, c-format
 msgid "%s does not exist."
 msgstr ""
 
-#: src/file_dialogs.c:156
+#: src/file_dialogs.c:157
 msgid "Directory does not exist"
 msgstr ""
 
-#: src/file_dialogs.c:255
+#: src/file_dialogs.c:258
 #, c-format
 msgid ""
 "Unable to read\n"
 "%s"
 msgstr ""
 
-#: src/file_dialogs.c:303
+#: src/file_dialogs.c:306
 msgid "Sweep: Load file"
 msgstr ""
 
-#: src/file_dialogs.c:369
+#: src/file_dialogs.c:372
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -356,69 +356,69 @@ msgid ""
 "All changes and undo information will be lost."
 msgstr ""
 
-#: src/file_dialogs.c:373
+#: src/file_dialogs.c:376
 msgid "Revert file"
 msgstr ""
 
-#: src/file_dialogs.c:374 src/view.c:457
+#: src/file_dialogs.c:377 src/view.c:457
 msgid "Revert"
 msgstr ""
 
-#: src/file_dialogs.c:374
+#: src/file_dialogs.c:377
 msgid "Don't revert"
 msgstr ""
 
-#: src/file_dialogs.c:544
+#: src/file_dialogs.c:547
 #, c-format
 msgid "Save as %s cancelled"
 msgstr ""
 
-#: src/file_dialogs.c:594
+#: src/file_dialogs.c:597
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
 "%s"
 msgstr ""
 
-#: src/file_dialogs.c:597
+#: src/file_dialogs.c:600
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr ""
 
-#: src/file_dialogs.c:598
+#: src/file_dialogs.c:601
 msgid "File exists"
 msgstr ""
 
-#: src/file_dialogs.c:599
+#: src/file_dialogs.c:602
 msgid "Overwrite"
 msgstr ""
 
-#: src/file_dialogs.c:599
+#: src/file_dialogs.c:602
 msgid "Don't overwrite"
 msgstr ""
 
-#: src/file_dialogs.c:644
+#: src/file_dialogs.c:647
 msgid "By extension"
 msgstr ""
 
 #. MP3 (encoding not supported due to patent restrictions)
-#: src/file_dialogs.c:702
+#: src/file_dialogs.c:705
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr ""
 
-#: src/file_dialogs.c:761
+#: src/file_dialogs.c:764
 msgid "Sweep: Save file"
 msgstr ""
 
-#: src/file_dialogs.c:789
+#: src/file_dialogs.c:792
 msgid "Save Options"
 msgstr ""
 
-#: src/file_dialogs.c:798
+#: src/file_dialogs.c:801
 msgid "Determine File Type:"
 msgstr ""
 
-#: src/file_dialogs.c:875
+#: src/file_dialogs.c:878
 #, c-format
 msgid ""
 "%s\n"
@@ -427,18 +427,18 @@ msgid ""
 "Are you sure you want to save?"
 msgstr ""
 
-#: src/file_dialogs.c:879 src/sweep_undo.c:331 src/view.c:3507
+#: src/file_dialogs.c:882 src/sweep_undo.c:331 src/view.c:3517
 msgid "File modified"
 msgstr ""
 
 #. OK
-#: src/file_dialogs.c:880 src/file_speex.c:2142 src/file_vorbis.c:1631
-#: src/view.c:438 src/view.c:1924
+#: src/file_dialogs.c:883 src/file_speex.c:2142 src/file_vorbis.c:1631
+#: src/view.c:438 src/view.c:1926
 msgid "Save"
 msgstr ""
 
 #. Cancel
-#: src/file_dialogs.c:880 src/file_speex.c:2153 src/file_vorbis.c:1642
+#: src/file_dialogs.c:883 src/file_speex.c:2153 src/file_vorbis.c:1642
 msgid "Don't save"
 msgstr ""
 
@@ -464,8 +464,8 @@ msgstr ""
 msgid "Channels:"
 msgstr ""
 
-#: src/file_sndfile0.c:727 src/sw_chooser.c:67 src/view.c:3552 src/view.c:3565
-#: src/view.c:3604
+#: src/file_sndfile0.c:727 src/sw_chooser.c:67 src/view.c:3562 src/view.c:3575
+#: src/view.c:3614
 msgid "Mono"
 msgstr ""
 
@@ -473,8 +473,8 @@ msgstr ""
 msgid "Mono (mixdown)"
 msgstr ""
 
-#: src/file_sndfile0.c:741 src/sw_chooser.c:68 src/view.c:3552 src/view.c:3565
-#: src/view.c:3607
+#: src/file_sndfile0.c:741 src/sw_chooser.c:68 src/view.c:3562 src/view.c:3575
+#: src/view.c:3617
 msgid "Stereo"
 msgstr ""
 
@@ -504,7 +504,7 @@ msgstr ""
 
 #. About
 #: src/file_sndfile0.c:813 src/file_sndfile1.c:476 src/file_speex.c:2093
-#: src/file_vorbis.c:1582 src/samplerate.c:565
+#: src/file_vorbis.c:1582 src/samplerate.c:574
 msgid "About"
 msgstr ""
 
@@ -516,7 +516,7 @@ msgstr ""
 
 #. Conrad wrote the libsndfile0 interface, Erik ported it to libsndfile1
 #: src/file_sndfile0.c:841 src/file_speex.c:2135 src/file_vorbis.c:1624
-#: src/samplerate.c:592
+#: src/samplerate.c:601
 msgid ""
 "This user interface by Conrad Parker,\n"
 "Copyright (C) 2002 CSIRO Australia.\n"
@@ -531,7 +531,7 @@ msgstr ""
 msgid "Sweep: Load Raw PCM options"
 msgstr ""
 
-#: src/file_sndfile0.c:1122 src/file_sndfile1.c:767 src/file_mad.c:419
+#: src/file_mad.c:419 src/file_sndfile0.c:1122 src/file_sndfile1.c:767
 #: src/file_speex.c:569 src/file_vorbis.c:324
 #, c-format
 msgid "Loading %s"
@@ -1008,7 +1008,7 @@ msgid ""
 "Used with permission."
 msgstr ""
 
-#: src/head.c:399 src/view.c:2450
+#: src/head.c:399 src/view.c:2455
 msgid "Cursor position (indicator)"
 msgstr ""
 
@@ -1032,11 +1032,11 @@ msgstr ""
 msgid "Go to beginning"
 msgstr ""
 
-#: src/head.c:514 src/view.c:2605
+#: src/head.c:514 src/view.c:2610
 msgid "Rewind"
 msgstr ""
 
-#: src/head.c:527 src/view.c:2617
+#: src/head.c:527 src/view.c:2622
 msgid "Fast forward"
 msgstr ""
 
@@ -1323,8 +1323,8 @@ msgstr ""
 msgid "Start gain"
 msgstr ""
 
-#: src/paste_dialogs.c:223 src/record.c:474 src/record.c:492
-#: plugins/echo/echo.c:61
+#: plugins/echo/echo.c:61 src/paste_dialogs.c:223 src/record.c:474
+#: src/record.c:492
 msgid "Gain"
 msgstr ""
 
@@ -1385,28 +1385,28 @@ msgstr ""
 msgid "Don't mix"
 msgstr ""
 
-#: src/preferences.c:58
+#: src/preferences.c:60
 msgid "Error creating ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:62
+#: src/preferences.c:64
 #, c-format
 msgid "Created %s/ mode %04o\n"
 msgstr ""
 
-#: src/preferences.c:69
+#: src/preferences.c:71
 msgid "Error on ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:78
+#: src/preferences.c:80
 msgid "Error setting permissions on ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:85
+#: src/preferences.c:87
 msgid "Error accessing ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:110
+#: src/preferences.c:112
 msgid "Error opening ~/.sweep/preferences.tdb"
 msgstr ""
 
@@ -1472,63 +1472,63 @@ msgstr ""
 msgid "libsamplerate error"
 msgstr ""
 
-#: src/samplerate.c:225
+#: src/samplerate.c:234
 #, c-format
 msgid "Resample from %d Hz to %d Hz"
 msgstr ""
 
-#: src/samplerate.c:428
+#: src/samplerate.c:437
 msgid "Sweep: Resample"
 msgstr ""
 
 #. Conversion
-#: src/samplerate.c:448
+#: src/samplerate.c:457
 msgid "Conversion"
 msgstr ""
 
-#: src/samplerate.c:455
+#: src/samplerate.c:464
 #, c-format
 msgid "Current sample rate: %d Hz"
 msgstr ""
 
-#: src/samplerate.c:464
+#: src/samplerate.c:473
 msgid "New sample rate"
 msgstr ""
 
 #. Quality
-#: src/samplerate.c:475
+#: src/samplerate.c:484
 msgid "Quality"
 msgstr ""
 
-#: src/samplerate.c:482
+#: src/samplerate.c:491
 msgid "Converter"
 msgstr ""
 
-#: src/samplerate.c:525
+#: src/samplerate.c:534
 msgid "Remember this quality"
 msgstr ""
 
-#: src/samplerate.c:545
+#: src/samplerate.c:554
 msgid "Reset to the last remembered quality."
 msgstr ""
 
-#: src/samplerate.c:559
+#: src/samplerate.c:568
 msgid "Set to default quality."
 msgstr ""
 
-#: src/samplerate.c:581
+#: src/samplerate.c:590
 msgid ""
 "Secret Rabbit Code (aka libsamplerate) is a\n"
 "Sample Rate Converter for audio by Erik de Castro Lopo\n"
 msgstr ""
 
 #. OK
-#: src/samplerate.c:601
+#: src/samplerate.c:610
 msgid "Resample"
 msgstr ""
 
 #. Cancel
-#: src/samplerate.c:614
+#: src/samplerate.c:623
 msgid "Don't resample"
 msgstr ""
 
@@ -1596,7 +1596,7 @@ msgstr ""
 msgid "Channels"
 msgstr ""
 
-#: src/sw_chooser.c:359 src/view.c:3611
+#: src/sw_chooser.c:359 src/view.c:3621
 msgid "channels"
 msgstr ""
 
@@ -1604,8 +1604,8 @@ msgstr ""
 msgid "No selection to process"
 msgstr ""
 
-#: src/sweep_sample.c:119 src/view.c:3550 src/view.c:3556 src/view.c:3563
-#: src/view.c:3569
+#: src/sweep_sample.c:119 src/view.c:3560 src/view.c:3566 src/view.c:3573
+#: src/view.c:3579
 msgid "Untitled"
 msgstr ""
 
@@ -1800,11 +1800,11 @@ msgstr ""
 msgid "Sweep: History"
 msgstr ""
 
-#: src/undo_dialog.c:387 src/view.c:515 src/view.c:2029
+#: src/undo_dialog.c:387 src/view.c:515 src/view.c:2031
 msgid "Undo"
 msgstr ""
 
-#: src/undo_dialog.c:395 src/view.c:526 src/view.c:2038
+#: src/undo_dialog.c:395 src/view.c:526 src/view.c:2040
 msgid "Redo"
 msgstr ""
 
@@ -1813,7 +1813,7 @@ msgid "Revert to selected state"
 msgstr ""
 
 #. Cancel
-#: src/undo_dialog.c:446 src/view.c:480 src/view.c:3508
+#: src/undo_dialog.c:446 src/view.c:480 src/view.c:3518
 msgid "Close"
 msgstr ""
 
@@ -1833,11 +1833,11 @@ msgstr ""
 msgid "Add/Remove channels"
 msgstr ""
 
-#: src/view.c:420 src/view.c:1910
+#: src/view.c:420 src/view.c:1912
 msgid "New ..."
 msgstr ""
 
-#: src/view.c:429 src/view.c:1917
+#: src/view.c:429 src/view.c:1919
 msgid "Open ..."
 msgstr ""
 
@@ -1915,7 +1915,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: src/view.c:752 src/view.c:2190
+#: src/view.c:752 src/view.c:2192
 msgid "Autoscroll: follow playback cursor"
 msgstr ""
 
@@ -1924,12 +1924,12 @@ msgid "Center"
 msgstr ""
 
 #. Zoom in
-#: src/view.c:779 src/view.c:2129
+#: src/view.c:779 src/view.c:2131
 msgid "Zoom in"
 msgstr ""
 
 #. Zoom out
-#: src/view.c:788 src/view.c:2138
+#: src/view.c:788 src/view.c:2140
 msgid "Zoom out"
 msgstr ""
 
@@ -1952,7 +1952,7 @@ msgid "Zoom normal"
 msgstr ""
 
 #. Zoom all
-#: src/view.c:829 src/view.c:1279 src/view.c:1438 src/view.c:2120
+#: src/view.c:829 src/view.c:1279 src/view.c:1438 src/view.c:2122
 msgid "Zoom all"
 msgstr ""
 
@@ -2156,143 +2156,143 @@ msgstr ""
 msgid "Paste"
 msgstr ""
 
-#: src/view.c:1933
+#: src/view.c:1935
 msgid "Save as ..."
 msgstr ""
 
-#: src/view.c:1953
+#: src/view.c:1955
 msgid "Cut selection to clipboard"
 msgstr ""
 
-#: src/view.c:1963
+#: src/view.c:1965
 msgid "Copy selection to clipboard"
 msgstr ""
 
-#: src/view.c:1974
+#: src/view.c:1976
 msgid "Paste: insert clipboard at cursor position"
 msgstr ""
 
-#: src/view.c:1985
+#: src/view.c:1987
 msgid "Paste: mix clipboard in from cursor position"
 msgstr ""
 
-#: src/view.c:1996
+#: src/view.c:1998
 msgid "Paste: fade clipboard in from cursor position"
 msgstr ""
 
-#: src/view.c:2066
+#: src/view.c:2068
 msgid "Selector tool"
 msgstr ""
 
-#: src/view.c:2077
+#: src/view.c:2079
 msgid "\"Scrubby\" the scrub tool"
 msgstr ""
 
-#: src/view.c:2087
+#: src/view.c:2089
 msgid "Pencil tool"
 msgstr ""
 
-#: src/view.c:2095
+#: src/view.c:2097
 msgid "Noise tool"
 msgstr ""
 
-#: src/view.c:2181
+#: src/view.c:2183
 msgid "Visible length"
 msgstr ""
 
-#: src/view.c:2300
+#: src/view.c:2302
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
 msgstr ""
 
-#: src/view.c:2427
+#: src/view.c:2432
 msgid "Record ..."
 msgstr ""
 
-#: src/view.c:2503
+#: src/view.c:2508
 msgid "Reverse mode playback (toggle)"
 msgstr ""
 
-#: src/view.c:2521
+#: src/view.c:2526
 msgid "Loop mode playback (toggle)"
 msgstr ""
 
 #. _("Play all / Pause    [Ctrl+Space / Enter]"),
-#: src/view.c:2545
+#: src/view.c:2550
 msgid "Play all / Pause    [Ctrl+Space]"
 msgstr ""
 
 #. _("Play selection / Pause    [Space / Enter]"),
-#: src/view.c:2561
+#: src/view.c:2566
 msgid "Play selection / Pause    [Space]"
 msgstr ""
 
 #. _("Stop playback    [Space]"),
-#: src/view.c:2577
+#: src/view.c:2582
 msgid "Stop playback    [Enter]"
 msgstr ""
 
-#: src/view.c:2594
+#: src/view.c:2599
 msgid "Go to beginning    [Ctrl+Home]"
 msgstr ""
 
-#: src/view.c:2630
+#: src/view.c:2635
 msgid "Go to the end    [Ctrl+End]"
 msgstr ""
 
-#: src/view.c:2644
+#: src/view.c:2649
 msgid "Muted playback (toggle)"
 msgstr ""
 
-#: src/view.c:2664 src/view.c:2682
+#: src/view.c:2669 src/view.c:2687
 msgid "Playback gain slider (volume)"
 msgstr ""
 
-#: src/view.c:2694
+#: src/view.c:2699
 msgid "Monitor (toggle)"
 msgstr ""
 
 #. SYNC
-#: src/view.c:2712
+#: src/view.c:2717
 msgid "SYNC"
 msgstr ""
 
-#: src/view.c:3255
+#: src/view.c:3265
 #, c-format
 msgid "Remembered as area %d"
 msgstr ""
 
-#: src/view.c:3273
+#: src/view.c:3283
 #, c-format
 msgid "No area remembered as %d"
 msgstr ""
 
-#: src/view.c:3276
+#: src/view.c:3286
 #, c-format
 msgid "Zoomed to area %d"
 msgstr ""
 
-#: src/view.c:3452 src/view.c:3456
+#: src/view.c:3462 src/view.c:3466
 msgid "Scrub!"
 msgstr ""
 
-#: src/view.c:3452 src/view.c:3458
+#: src/view.c:3462 src/view.c:3468
 msgid "Ready"
 msgstr ""
 
-#: src/view.c:3505
+#: src/view.c:3515
 #, c-format
 msgid "%s has been modified. Close anyway?"
 msgstr ""
 
-#: src/view.c:3508
+#: src/view.c:3518
 msgid "Don't close"
 msgstr ""
 
-#: src/view.c:3555 src/view.c:3568
+#: src/view.c:3565 src/view.c:3578
 msgid "*"
 msgstr ""
 
-#: src/view.c:3571
+#: src/view.c:3581
 msgid "Empty"
 msgstr ""
 
