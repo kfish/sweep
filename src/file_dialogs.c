@@ -23,6 +23,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -167,6 +168,7 @@ sweep_dir_exists (char * pathname)
   return TRUE;
 }
 
+#ifdef HAVE_MAD
 static gboolean
 file_guess_mp3 (char * pathname)
 {
@@ -182,6 +184,7 @@ file_guess_mp3 (char * pathname)
 
   return FALSE;
 }
+#endif
 
 sw_sample *
 sample_reload (sw_sample * sample)

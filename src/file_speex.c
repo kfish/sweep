@@ -169,7 +169,7 @@ file_is_ogg_speex (const char * pathname)
 
   char * ogg_data;
 
-  SpeexMode *mode;
+  const SpeexMode *mode;
   SpeexHeader *header;
 
   fd = open (pathname, O_RDONLY);
@@ -217,7 +217,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
 	       SpeexStereoState * stereo, int * extra_headers)
 {
   void *st;
-  SpeexMode *mode;
+  const SpeexMode *mode;
   SpeexHeader *header;
   int modeID;
   SpeexCallback callback;
@@ -704,7 +704,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   int id = 0;
 
   int frame_size;
-  SpeexMode * mode = NULL;
+  const SpeexMode * mode = NULL;
   SpeexHeader header;
   void * st;
   SpeexBits bits;

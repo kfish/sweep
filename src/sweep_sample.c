@@ -139,7 +139,7 @@ sample_new_empty(char * pathname,
   else
     s->pathname = filename_generate ();
 
-  s->ops_thread = -1;
+  s->ops_thread = (pthread_t) -1;
 
   s->ops_mutex = g_mutex_new ();
   s->registered_ops = NULL;

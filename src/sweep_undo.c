@@ -151,7 +151,7 @@ op_main (sw_sample * sample)
 
 #endif
 
-  sample->ops_thread = -1;
+  sample->ops_thread = (pthread_t) -1;
 
   g_mutex_unlock (sample->edit_mutex);
 
@@ -171,7 +171,7 @@ prepare_op (sw_op_instance * inst)
   sample_set_edit_mode (sample, inst->op->edit_mode);
   sample_set_progress_percent (sample, 0);
 
-  if (sample->ops_thread == -1) {
+  if (sample->ops_thread == (pthread_t) -1) {
     pthread_create (&sample->ops_thread, NULL, (void *) (*op_main), sample);
   }
 #undef BUF_LEN
@@ -671,7 +671,7 @@ cancel_active_op (sw_sample * s)
    * s->ops_thread will have been set to -1 on its departure, also within
    * s->edit_mutex, in which case the signalled CANCEL would never be cleared.
    */
-  if (s->ops_thread != -1) {
+  if (s->ops_thread != (pthread_t) -1) {
     s->edit_state = SWEEP_EDIT_STATE_CANCEL;
   }
 

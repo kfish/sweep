@@ -72,7 +72,7 @@ static GList * active_monitor_heads = NULL;
 
 /*static int realoffset = 0;*/
 static sw_sample * prev_sample = NULL;
-static pthread_t player_thread = -1;
+static pthread_t player_thread = (pthread_t)-1;
 
 static gboolean stop_all = FALSE;
 
@@ -139,7 +139,9 @@ start_playmarker (sw_sample * s)
 		     (gpointer)s);
 }
 
+#if 0
 static struct timeval tv_instant = {0, 0};
+#endif
 
 static sw_framecount_t
 head_read_unrestricted (sw_head * head, sw_audio_t * buf,
@@ -921,7 +923,7 @@ play_active_heads (void)
   }
 #endif
 
-  player_thread = -1;
+  player_thread = (pthread_t) -1;
 }
 
 static gboolean
@@ -929,7 +931,7 @@ ensure_playing (void)
 {
   sw_handle * h;
 
-  if (player_thread == -1) {
+  if (player_thread == (pthread_t) -1) {
     if ((h = device_open (0, O_WRONLY)) != NULL) {
       main_handle = h;
       if (monitor_active()) {
@@ -1125,7 +1127,7 @@ stop_playback (sw_sample * s)
 gboolean
 any_playing (void)
 {
-  return ((player_thread != -1) && (active_main_heads != NULL));
+  return ((player_thread != (pthread_t) -1) && (active_main_heads != NULL));
 }
 
 void
