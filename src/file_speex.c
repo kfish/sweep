@@ -217,7 +217,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
 	       SpeexStereoState * stereo, int * extra_headers)
 {
   void *st;
-  const SpeexMode *mode;
+  SpeexMode *mode;
   SpeexHeader *header;
   int modeID;
   SpeexCallback callback;
@@ -237,7 +237,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
   modeID = header->mode;
   if (forceMode!=-1)
     modeID = forceMode;
-  mode = speex_mode_list[modeID];
+  mode = (SpeexMode *)speex_mode_list[modeID];
 
 #ifdef HAVE_SPEEX_BETA4
   if (header->speex_version_id > 1) {
@@ -704,7 +704,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   int id = 0;
 
   int frame_size;
-  const SpeexMode * mode = NULL;
+  SpeexMode * mode = NULL;
   SpeexHeader header;
   void * st;
   SpeexBits bits;
