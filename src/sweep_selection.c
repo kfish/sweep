@@ -171,6 +171,8 @@ perform_selection_op (sw_sample * s, char * desc, SweepModify func,
   sels = sels_copy (s->sounddata->sels);
   inst->redo_data = sel_replace_data_new (sels);
 
+  sample_refresh_views (s);
+
   register_operation (s, inst);
 
   return inst;
