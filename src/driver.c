@@ -318,7 +318,7 @@ flush_dev_dsp (void)
 #endif
 
 #ifdef DRIVER_ALSA
-  if (snd_pcm_stop (pcm_handle) < 0) {
+  if (snd_pcm_drop (pcm_handle) < 0) {
         fprintf (stderr, "audio interface could not be stopped\n");
         return;
   }
