@@ -1,4 +1,5 @@
 Fri Apr 27 13:22:44 EST 2001 Radoslaw Korzeniewski <Radoslaw.Korzeniewski@centertel.pl>
+	* added Polish translation
 	* fixed bug #414942 (segfault after revert)
 
 Wed Oct 25 22:18:39 EST 2000 Conrad Parker <conrad@vergenet.net>
