@@ -40,4 +40,10 @@ frames_to_bytes (sw_format * format, sw_framecount_t nr_frames);
 sw_time_t
 frames_to_time (sw_format * format, sw_framecount_t nr_frames);
 
+/*
+ * Convert seconds to frames
+ */
+sw_framecount_t
+time_to_frames (sw_format * format, sw_time_t time);
+
 #endif /* __SWEEP_TYPE_CONVERT_H__ */

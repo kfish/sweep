@@ -44,7 +44,7 @@ struct _sw_view {
   gfloat vol;
 
   GtkWidget * window;
-  GtkWidget * hruler;
+  GtkWidget * time_ruler;
   GtkWidget * scrollbar;
   GtkWidget * display;
   GtkWidget * pos;

@@ -34,6 +34,7 @@ sweep_SOURCES = \
 	sweep_filter.c sweep_filter.h \
 	sweep_typeconvert.c sweep_typeconvert.h \
 	sweep_undo.c sweep_undo.h \
+	time_ruler.c time_ruler.h \
 	view.c view.h \
 	pixmaps.h \
 	view_pixmaps.h \

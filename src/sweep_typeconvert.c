@@ -51,3 +51,12 @@ frames_to_time (sw_format * format, sw_framecount_t nr_frames)
 {
   return ((gfloat)nr_frames / (gfloat)format->rate);
 }
+
+/*
+ * Convert seconds to frames
+ */
+sw_framecount_t
+time_to_frames (sw_format * format, sw_time_t time)
+{
+  return ((sw_framecount_t)((sw_time_t)format->rate / time));
+}

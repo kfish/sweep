@@ -39,6 +39,7 @@
 #include "file_dialogs.h"
 #include "driver.h"
 #include "notes.h"
+#include "time_ruler.h"
 
 #include "view_pixmaps.h"
 
@@ -646,7 +647,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   GtkWidget * table;
   GtkWidget * hbox;
   GtkWidget * vbox;
-  GtkWidget * hruler;
+  GtkWidget * time_ruler;
   GtkWidget * scrollbar;
   GtkObject * vol_adj;
   GtkWidget * vol_vscale;
@@ -730,21 +731,21 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_container_add (GTK_CONTAINER(stop_button), pixmap);
 
 
-  /* hruler */
-  hruler = gtk_hruler_new ();
-  gtk_table_attach (GTK_TABLE(table), hruler,
+  /* time_ruler */
+  time_ruler = time_ruler_new ();
+  gtk_table_attach (GTK_TABLE(table), time_ruler,
 		    1, 2, 0, 1,
 		    GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
 		    0, 0);
-  gtk_ruler_set_range (GTK_RULER(hruler),
+  gtk_ruler_set_range (GTK_RULER(time_ruler),
 		       start, end,
 		       start, end);
-  gtk_widget_show (hruler);
-  view->hruler = hruler;
+  gtk_widget_show (time_ruler);
+  view->time_ruler = time_ruler;
 
   gtk_signal_connect_object (GTK_OBJECT (table), "motion_notify_event",
-                             (GtkSignalFunc) GTK_WIDGET_CLASS (GTK_OBJECT (hruler)->klass)->motion_notify_event,
-                             GTK_OBJECT (hruler));
+                             (GtkSignalFunc) GTK_WIDGET_CLASS (GTK_OBJECT (time_ruler)->klass)->motion_notify_event,
+                             GTK_OBJECT (time_ruler));
 
   /* display */
   view->display = sample_display_new();
@@ -909,7 +910,7 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
 
   gtk_adjustment_changed(adj);
 
-  gtk_ruler_set_range (GTK_RULER(view->hruler),
+  gtk_ruler_set_range (GTK_RULER(view->time_ruler),
 		       start, end,
 		       start, end);
 
@@ -1011,7 +1012,7 @@ view_default_status (sw_view * view)
 void
 view_refresh_hruler (sw_view * v)
 {
-  gtk_ruler_set_range (GTK_RULER(v->hruler),
+  gtk_ruler_set_range (GTK_RULER(v->time_ruler),
 		       v->start, v->end,
 		       v->start, v->end);
 }
