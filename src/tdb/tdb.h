@@ -2,24 +2,29 @@
 #define __TDB_H__
 
 /* 
-   Unix SMB/Netbios implementation.
-   Version 3.0
-   Samba database functions
-   Copyright (C) Andrew Tridgell 1999
+   Unix SMB/CIFS implementation.
    
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
+   trivial database library
    
-   This program is distributed in the hope that it will be useful,
+   Copyright (C) Andrew Tridgell 1999-2004
+   
+     ** NOTE! The following LGPL license applies to the tdb
+     ** library. This does NOT imply that all of Samba is released
+     ** under the LGPL
+   
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2 of the License, or (at your option) any later version.
+
+   This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
    
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 #ifdef  __cplusplus
@@ -39,12 +44,14 @@ extern "C" {
 #define TDB_NOLOCK   4 /* don't do any locking */
 #define TDB_NOMMAP   8 /* don't use mmap */
 #define TDB_CONVERT 16 /* convert endian (internal use) */
+#define TDB_BIGENDIAN 32 /* header is big-endian (internal use) */
 
 #define TDB_ERRCODE(code, ret) ((tdb->ecode = (code)), ret)
 
 /* error codes */
 enum TDB_ERROR {TDB_SUCCESS=0, TDB_ERR_CORRUPT, TDB_ERR_IO, TDB_ERR_LOCK, 
-		TDB_ERR_OOM, TDB_ERR_EXISTS, TDB_ERR_NOEXIST, TDB_ERR_NOLOCK };
+		TDB_ERR_OOM, TDB_ERR_EXISTS, TDB_ERR_NOLOCK, TDB_ERR_LOCK_TIMEOUT,
+		TDB_ERR_NOEXIST};
 
 #ifndef u32
 #define u32 unsigned
@@ -101,25 +108,25 @@ typedef struct tdb_context {
 typedef int (*tdb_traverse_func)(TDB_CONTEXT *, TDB_DATA, TDB_DATA, void *);
 typedef void (*tdb_log_func)(TDB_CONTEXT *, int , const char *, ...);
 
-TDB_CONTEXT *tdb_open(char *name, int hash_size, int tdb_flags,
+TDB_CONTEXT *tdb_open(const char *name, int hash_size, int tdb_flags,
 		      int open_flags, mode_t mode);
-TDB_CONTEXT *tdb_open_ex(char *name, int hash_size, int tdb_flags,
-                        int open_flags, mode_t mode,
-                        tdb_log_func log_fn);
+TDB_CONTEXT *tdb_open_ex(const char *name, int hash_size, int tdb_flags,
+			 int open_flags, mode_t mode,
+			 tdb_log_func log_fn);
 
 int tdb_reopen(TDB_CONTEXT *tdb);
 int tdb_reopen_all(void);
 void tdb_logging_function(TDB_CONTEXT *tdb, tdb_log_func);
-
 enum TDB_ERROR tdb_error(TDB_CONTEXT *tdb);
 const char *tdb_errorstr(TDB_CONTEXT *tdb);
 TDB_DATA tdb_fetch(TDB_CONTEXT *tdb, TDB_DATA key);
 int tdb_delete(TDB_CONTEXT *tdb, TDB_DATA key);
 int tdb_store(TDB_CONTEXT *tdb, TDB_DATA key, TDB_DATA dbuf, int flag);
+int tdb_append(TDB_CONTEXT *tdb, TDB_DATA key, TDB_DATA new_dbuf);
 int tdb_close(TDB_CONTEXT *tdb);
 TDB_DATA tdb_firstkey(TDB_CONTEXT *tdb);
 TDB_DATA tdb_nextkey(TDB_CONTEXT *tdb, TDB_DATA key);
-int tdb_traverse(TDB_CONTEXT *tdb, tdb_traverse_func fn, void *state);
+int tdb_traverse(TDB_CONTEXT *tdb, tdb_traverse_func fn, void *);
 int tdb_exists(TDB_CONTEXT *tdb, TDB_DATA key);
 int tdb_lockkeys(TDB_CONTEXT *tdb, u32 number, TDB_DATA keys[]);
 void tdb_unlockkeys(TDB_CONTEXT *tdb);
@@ -127,14 +134,16 @@ int tdb_lockall(TDB_CONTEXT *tdb);
 void tdb_unlockall(TDB_CONTEXT *tdb);
 
 /* Low level locking functions: use with care */
+void tdb_set_lock_alarm(sig_atomic_t *palarm);
 int tdb_chainlock(TDB_CONTEXT *tdb, TDB_DATA key);
-void tdb_chainunlock(TDB_CONTEXT *tdb, TDB_DATA key);
+int tdb_chainunlock(TDB_CONTEXT *tdb, TDB_DATA key);
 
 /* Debug functions. Not used in production. */
 void tdb_dump_all(TDB_CONTEXT *tdb);
-void tdb_printfreelist(TDB_CONTEXT *tdb);
+int tdb_printfreelist(TDB_CONTEXT *tdb);
 
 extern TDB_DATA tdb_null;
+
 #ifdef  __cplusplus
 }
 #endif

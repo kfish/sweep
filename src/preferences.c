@@ -26,15 +26,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <tdb.h>
 #include <glib.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <signal.h>
 #include <fcntl.h>
 #include <errno.h>
 
 #include <sweep/sweep_i18n.h>
 #include "question_dialogs.h"
+
+#include "tdb.h"
 
 static TDB_CONTEXT * prefs_tdb = NULL;
 
