@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-08-22 09:57+1000\n"
+"POT-Creation-Date: 2000-09-05 18:45+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,45 +39,45 @@ msgstr ""
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr ""
 
-#: src/interface.c:77
+#: src/interface.c:80
 msgid "Sweep"
 msgstr ""
 
 #. File
-#: src/interface.c:102 src/view.c:145
+#: src/interface.c:105 src/view.c:158
 msgid "File"
 msgstr ""
 
-#: src/interface.c:107 src/view.c:151
+#: src/interface.c:110 src/view.c:164
 msgid "New"
 msgstr ""
 
-#: src/interface.c:116
+#: src/interface.c:119
 msgid "Open"
 msgstr ""
 
-#: src/interface.c:125 src/view.c:203
+#: src/interface.c:128 src/view.c:216
 msgid "Quit"
 msgstr ""
 
-#: src/interface.c:136
+#: src/interface.c:139
 msgid "Help"
 msgstr ""
 
-#: src/interface.c:141
+#: src/interface.c:144
 msgid "About..."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:162 src/view.c:296
+#: src/interface.c:165 src/view.c:309
 msgid "Select"
 msgstr ""
 
-#: src/interface.c:163
+#: src/interface.c:166
 msgid "Select regions of a sample"
 msgstr ""
 
-#: src/interface.c:164
+#: src/interface.c:167
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -85,192 +85,192 @@ msgid ""
 msgstr ""
 
 #. Radio group
-#: src/interface.c:179
+#: src/interface.c:182
 msgid "Move"
 msgstr ""
 
-#: src/interface.c:180
+#: src/interface.c:183
 msgid "Move regions in a sample"
 msgstr ""
 
-#: src/interface.c:181
+#: src/interface.c:184
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:194 src/view.c:378
+#: src/interface.c:197 src/view.c:391
 msgid "Zoom"
 msgstr ""
 
-#: src/interface.c:195
+#: src/interface.c:198
 msgid "Zoom in & out"
 msgstr ""
 
-#: src/interface.c:196
+#: src/interface.c:199
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
 
-#: src/view.c:160
+#: src/view.c:173
 msgid "Open..."
 msgstr ""
 
-#: src/view.c:169
+#: src/view.c:182
 msgid "Save"
 msgstr ""
 
-#: src/view.c:178
+#: src/view.c:191
 msgid "Save As..."
 msgstr ""
 
-#: src/view.c:184
+#: src/view.c:197
 msgid "Revert"
 msgstr ""
 
-#: src/view.c:194
+#: src/view.c:207
 msgid "Close"
 msgstr ""
 
 #. Edit
-#: src/view.c:213
+#: src/view.c:226
 msgid "Edit"
 msgstr ""
 
-#: src/view.c:219
+#: src/view.c:232
 msgid "Undo"
 msgstr ""
 
-#: src/view.c:229
+#: src/view.c:242
 msgid "Redo"
 msgstr ""
 
-#: src/view.c:242
+#: src/view.c:255
 msgid "Delete"
 msgstr ""
 
-#: src/view.c:248
+#: src/view.c:261
 msgid "Cut"
 msgstr ""
 
-#: src/view.c:257
+#: src/view.c:270
 msgid "Copy"
 msgstr ""
 
-#: src/view.c:266
+#: src/view.c:279
 msgid "Paste"
 msgstr ""
 
-#: src/view.c:275
+#: src/view.c:288
 msgid "Paste as New"
 msgstr ""
 
-#: src/view.c:285
+#: src/view.c:298
 msgid "Clear"
 msgstr ""
 
-#: src/view.c:302
+#: src/view.c:315
 msgid "Invert"
 msgstr ""
 
-#: src/view.c:310
+#: src/view.c:323
 msgid "All"
 msgstr ""
 
-#: src/view.c:318
+#: src/view.c:331
 msgid "None"
 msgstr ""
 
 #. View
-#: src/view.c:328
+#: src/view.c:341
 msgid "View"
 msgstr ""
 
-#: src/view.c:334
+#: src/view.c:347
 msgid "Zoom In"
 msgstr ""
 
-#: src/view.c:343
+#: src/view.c:356
 msgid "Zoom Out"
 msgstr ""
 
-#: src/view.c:352
+#: src/view.c:365
 msgid "Zoom to selection"
 msgstr ""
 
-#: src/view.c:359
+#: src/view.c:372
 msgid "Left"
 msgstr ""
 
-#: src/view.c:368
+#: src/view.c:381
 msgid "Right"
 msgstr ""
 
-#: src/view.c:384
+#: src/view.c:397
 #, c-format
 msgid "50%"
 msgstr ""
 
-#: src/view.c:390
+#: src/view.c:403
 #, c-format
 msgid "100%"
 msgstr ""
 
-#: src/view.c:404
+#: src/view.c:417
 msgid "New View"
 msgstr ""
 
 #. Sample
-#: src/view.c:411
+#: src/view.c:424
 msgid "Sample"
 msgstr ""
 
-#: src/view.c:417
+#: src/view.c:430
 msgid "Duplicate"
 msgstr ""
 
 #. Filters
-#: src/view.c:427
+#: src/view.c:440
 msgid "Filters"
 msgstr ""
 
 #. Playback
-#: src/view.c:441
+#: src/view.c:454
 msgid "Playback"
 msgstr ""
 
-#: src/view.c:447
+#: src/view.c:460
 msgid "Play sample"
 msgstr ""
 
-#: src/view.c:456
+#: src/view.c:469
 msgid "Loop sample"
 msgstr ""
 
-#: src/view.c:465
+#: src/view.c:478
 msgid "Play selection"
 msgstr ""
 
-#: src/view.c:474
+#: src/view.c:487
 msgid "Loop selection"
 msgstr ""
 
-#: src/view.c:487
+#: src/view.c:500
 msgid "Note"
 msgstr ""
 
-#: src/view.c:549
+#: src/view.c:562
 msgid "Stop"
 msgstr ""
 
-#: src/view.c:945
+#: src/view.c:966
 msgid "Untitled"
 msgstr ""
 
-#: src/view.c:947
+#: src/view.c:968
 msgid "Mono"
 msgstr ""
 
-#: src/view.c:947
+#: src/view.c:968
 msgid "Stereo"
 msgstr ""

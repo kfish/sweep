@@ -26,6 +26,7 @@ datadir = @datadir@
 sysconfdir = @sysconfdir@
 sharedstatedir = @sharedstatedir@
 localstatedir = @localstatedir@
+libdir = @libdir@
 infodir = @infodir@
 mandir = @mandir@
 includedir = @includedir@
@@ -106,36 +107,16 @@ sweep_SOURCES =  	main.c sweep.h 	about_dialog.c about_dialog.h 	file_dialogs.c 
 
 
 sweep_LDADD = @GTK_LIBS@ @AUDIOFILE_LIB@ $(INTLLIBS) $(PTHREAD_LIBS)
-
-libdir = @PACKAGE_PLUGIN_DIR@
-
-lib_LTLIBRARIES =  	libnormalise.la 	libreverse.la 	libecho.la
-
-
-libecho_la_SOURCES = echo.c echo.h
-libnormalise_la_SOURCES = normalise.c normalise.h
-libreverse_la_SOURCES = reverse.c reverse.h
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(lib_LTLIBRARIES)
+PROGRAMS =  $(bin_PROGRAMS)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-libnormalise_la_LDFLAGS = 
-libnormalise_la_LIBADD = 
-libnormalise_la_OBJECTS =  normalise.lo
-libreverse_la_LDFLAGS = 
-libreverse_la_LIBADD = 
-libreverse_la_OBJECTS =  reverse.lo
-libecho_la_LDFLAGS = 
-libecho_la_LIBADD = 
-libecho_la_OBJECTS =  echo.lo
-PROGRAMS =  $(bin_PROGRAMS)
-
 sweep_OBJECTS =  main.o about_dialog.o file_dialogs.o file_ops.o \
 format.o interface.o callbacks.o cursors.o driver.o edit.o filter_ops.o \
 notes.o param.o plugin.o sample.o sample-display.o undo.o view.o
@@ -153,91 +134,24 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-SOURCES = $(libnormalise_la_SOURCES) $(libreverse_la_SOURCES) $(libecho_la_SOURCES) $(sweep_SOURCES)
-OBJECTS = $(libnormalise_la_OBJECTS) $(libreverse_la_OBJECTS) $(libecho_la_OBJECTS) $(sweep_OBJECTS)
+DEP_FILES =  .deps/about_dialog.P .deps/callbacks.P .deps/cursors.P \
+.deps/driver.P .deps/edit.P .deps/file_dialogs.P .deps/file_ops.P \
+.deps/filter_ops.P .deps/format.P .deps/interface.P .deps/main.P \
+.deps/notes.P .deps/param.P .deps/plugin.P .deps/sample-display.P \
+.deps/sample.P .deps/undo.P .deps/view.P
+SOURCES = $(sweep_SOURCES)
+OBJECTS = $(sweep_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-
-mostlyclean-libLTLIBRARIES:
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-distclean-libLTLIBRARIES:
-
-maintainer-clean-libLTLIBRARIES:
-
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  if test -f $$p; then \
-	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
-	  else :; fi; \
-	done
-
-uninstall-libLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
-	done
-
-.c.o:
-	$(COMPILE) -c $<
-
-.s.o:
-	$(COMPILE) -c $<
-
-.S.o:
-	$(COMPILE) -c $<
-
-mostlyclean-compile:
-	-rm -f *.o core *.core
-
-clean-compile:
-
-distclean-compile:
-	-rm -f *.tab.c
-
-maintainer-clean-compile:
-
-.c.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
-.s.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
-.S.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-
-maintainer-clean-libtool:
-
-libnormalise.la: $(libnormalise_la_OBJECTS) $(libnormalise_la_DEPENDENCIES)
-	$(LINK) -rpath $(libdir) $(libnormalise_la_LDFLAGS) $(libnormalise_la_OBJECTS) $(libnormalise_la_LIBADD) $(LIBS)
-
-libreverse.la: $(libreverse_la_OBJECTS) $(libreverse_la_DEPENDENCIES)
-	$(LINK) -rpath $(libdir) $(libreverse_la_LDFLAGS) $(libreverse_la_OBJECTS) $(libreverse_la_LIBADD) $(LIBS)
-
-libecho.la: $(libecho_la_OBJECTS) $(libecho_la_DEPENDENCIES)
-	$(LINK) -rpath $(libdir) $(libecho_la_LDFLAGS) $(libecho_la_OBJECTS) $(libecho_la_LIBADD) $(LIBS)
 
 mostlyclean-binPROGRAMS:
 
@@ -263,6 +177,38 @@ uninstall-binPROGRAMS:
 	list='$(bin_PROGRAMS)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	done
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
 
 sweep: $(sweep_OBJECTS) $(sweep_DEPENDENCIES)
 	@rm -f sweep
@@ -302,6 +248,11 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = src
 
 distdir: $(DISTFILES)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(top_distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu src/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -312,42 +263,38 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-about_dialog.o: about_dialog.c ../config.h sweep.h about_dialog.h
-callbacks.o: callbacks.c ../config.h callbacks.h sweep.h sample.h \
-	interface.h edit.h undo.h sample-display.h view.h driver.h
-cursors.o: cursors.c
-driver.o: driver.c ../config.h sweep.h driver.h sample.h
-echo.lo echo.o : echo.c sweep.h edit.h format.h filter_ops.h sample.h \
-	undo.h
-edit.o: edit.c sweep.h edit.h format.h sample.h undo.h
-file_dialogs.o: file_dialogs.c sweep.h file_ops.h sample.h \
-	sample-display.h view.h
-file_ops.o: file_ops.c ../config.h sweep.h file_ops.h sample.h view.h
-filter_ops.o: filter_ops.c sweep.h format.h filter_ops.h edit.h sample.h \
-	undo.h
-format.o: format.c sample.h sweep.h view.h undo.h sample-display.h \
-	driver.h
-fx.o: fx.c sweep.h edit.h fx.h sample.h undo.h
-interface.o: interface.c ../config.h sweep.h callbacks.h file_dialogs.h \
-	interface.h about_dialog.h pixmaps.h
-main.o: main.c ../config.h file_ops.h sweep.h interface.h plugin.h
-normalise.lo normalise.o : normalise.c sweep.h edit.h format.h \
-	filter_ops.h sample.h undo.h
-notes.o: notes.c ../config.h callbacks.h sweep.h sample.h interface.h \
-	edit.h undo.h sample-display.h view.h driver.h
-param.o: param.c sweep.h
-plugin.o: plugin.c ../config.h sweep.h
-reverse.lo reverse.o : reverse.c sweep.h edit.h format.h filter_ops.h \
-	sample.h undo.h
-sample-display.o: sample-display.c sample-display.h sweep.h sample.h \
-	view.h cursors.h horiz.xpm horiz_plus.xpm
-sample.o: sample.c sample.h sweep.h format.h view.h undo.h \
-	sample-display.h driver.h
-undo.o: undo.c undo.h sweep.h edit.h sample.h
-view.o: view.c ../config.h view.h sweep.h callbacks.h interface.h \
-	format.h param.h sample.h sample-display.h file_dialogs.h \
-	driver.h notes.h view_pixmaps.h
 
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
+
+-include $(DEP_FILES)
+
+mostlyclean-depend:
+
+clean-depend:
+
+distclean-depend:
+	-rm -rf .deps
+
+maintainer-clean-depend:
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
 info-am:
 info: info-am
 dvi-am:
@@ -356,7 +303,7 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am: install-libLTLIBRARIES install-binPROGRAMS
+install-exec-am: install-binPROGRAMS
 install-exec: install-exec-am
 
 install-data-am:
@@ -365,14 +312,14 @@ install-data: install-data-am
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES uninstall-binPROGRAMS
+uninstall-am: uninstall-binPROGRAMS
 uninstall: uninstall-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
+all-am: Makefile $(PROGRAMS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(bindir)
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
 
 
 rpmspec:
@@ -389,43 +336,41 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-libLTLIBRARIES mostlyclean-compile \
-		mostlyclean-libtool mostlyclean-binPROGRAMS \
-		mostlyclean-tags mostlyclean-generic
+mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
+		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-libLTLIBRARIES clean-compile clean-libtool \
-		clean-binPROGRAMS clean-tags clean-generic \
-		mostlyclean-am
+clean-am:  clean-binPROGRAMS clean-compile clean-libtool clean-tags \
+		clean-depend clean-generic mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-libLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-binPROGRAMS distclean-tags \
-		distclean-generic clean-am
+distclean-am:  distclean-binPROGRAMS distclean-compile distclean-libtool \
+		distclean-tags distclean-depend distclean-generic \
+		clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-binPROGRAMS \
 		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-binPROGRAMS maintainer-clean-tags \
+		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-uninstall-libLTLIBRARIES install-libLTLIBRARIES mostlyclean-compile \
-distclean-compile clean-compile maintainer-clean-compile \
-mostlyclean-libtool distclean-libtool clean-libtool \
-maintainer-clean-libtool mostlyclean-binPROGRAMS distclean-binPROGRAMS \
-clean-binPROGRAMS maintainer-clean-binPROGRAMS uninstall-binPROGRAMS \
-install-binPROGRAMS tags mostlyclean-tags distclean-tags clean-tags \
-maintainer-clean-tags distdir info-am info dvi-am dvi check check-am \
+.PHONY: mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile mostlyclean-libtool distclean-libtool \
+clean-libtool maintainer-clean-libtool tags mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir \
+mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info-am info dvi-am dvi check check-am \
 installcheck-am installcheck install-exec-am install-exec \
 install-data-am install-data install-am install uninstall-am uninstall \
 all-redirect all-am all installdirs rpmspec mostlyclean-generic \
