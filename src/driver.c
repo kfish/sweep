@@ -198,8 +198,8 @@ setup_dev_dsp (sw_sample * s)
   AUDIO_INITINFO(&info);
   info.play.precision = 16;	/* cs4231 doesn't handle 16-bit linear PCM */
   info.play.encoding = AUDIO_ENCODING_LINEAR;
-  info.play.channels = s->sounddata->format->f_channels;
-  info.play.sample_rate = s->sounddata->format->f_rate;
+  info.play.channels = s->sounddata->format->channels;
+  info.play.sample_rate = s->sounddata->format->rate;
   if(ioctl(dev_dsp, AUDIO_SETINFO, &info) < 0)
       perror("Unable to configure audio device");
 #elif defined(DRIVER_ALSA)
