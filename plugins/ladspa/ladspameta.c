@@ -737,6 +737,7 @@ ladspa_meta_init_dir (gchar * dirname, GList ** gl)
 {
   DIR * dir;
   struct dirent * dirent;
+  char * name;
 
   if (!dirname) return;
 
@@ -746,7 +747,9 @@ ladspa_meta_init_dir (gchar * dirname, GList ** gl)
   }
 
   while ((dirent = readdir (dir)) != NULL) {
-    ladspa_meta_add_procs (dirname, dirent->d_name, gl);
+    name = dirent->d_name;
+    if (strcmp (name, ".") && strcmp (name, ".."))
+      ladspa_meta_add_procs (dirname, dirent->d_name, gl);
   }
 }
 
