@@ -1,0 +1,279 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-08-31 14:19+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: src/main.c:103
+msgid "Sweep version"
+msgstr "Sweep version"
+
+#: src/main.c:106
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Использование: %s [опция ...] [файлы ...]\n"
+
+#: src/main.c:107
+msgid "Valid options are:\n"
+msgstr "Доступные ключи:\n"
+
+#: src/main.c:108
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Вывести это сообщение.\n"
+
+#: src/main.c:109
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Напечатать версию.\n"
+
+#: src/main.c:110
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <display>      Использовать выбранный X дисплей.\n"
+
+#: src/interface.c:80
+msgid "Sweep"
+msgstr "Sweep"
+
+#. File
+#: src/interface.c:105 src/view.c:153
+msgid "File"
+msgstr "Файл"
+
+#: src/interface.c:110 src/view.c:159
+msgid "New"
+msgstr "Новый"
+
+#: src/interface.c:119
+msgid "Open"
+msgstr "Открыть"
+
+#: src/interface.c:128 src/view.c:211
+msgid "Quit"
+msgstr "Выход"
+
+#: src/interface.c:139
+msgid "Help"
+msgstr "Помощь"
+
+#: src/interface.c:144
+msgid "About..."
+msgstr "О программе..."
+
+#. Radio group
+#: src/interface.c:165 src/view.c:304
+msgid "Select"
+msgstr "Выбрать"
+
+#: src/interface.c:166
+msgid "Select regions of a sample"
+msgstr "Выбрать области записи"
+
+#: src/interface.c:167
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"Эта функция позволяет вам выбирать области записи. После этого вы сможете редактировать область или применять по отношению к ней эффекты. Удерживайте Shift для добавления новых частей к выбранной области."
+""
+
+#. Radio group
+#: src/interface.c:182
+msgid "Move"
+msgstr "Подвинуть"
+
+#: src/interface.c:183
+msgid "Move regions in a sample"
+msgstr "Подвинуть области в записи"
+
+#: src/interface.c:184
+msgid "With this tool you can move selected regions of a sample."
+msgstr "С помощью этой функции вы можете двигать выбранные области записи."
+
+#. Radio group
+#: src/interface.c:197 src/view.c:386
+msgid "Zoom"
+msgstr "Увеличить"
+
+#: src/interface.c:198
+msgid "Zoom in & out"
+msgstr "Ближе & дальше"
+
+#: src/interface.c:199
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Увеличение и уменьшение графика. Кликните где угодно для увеличения этого места. Удерживая Shift кликните по окну для уменьшения графика."
+
+#: src/view.c:168
+msgid "Open..."
+msgstr "Открыть..."
+
+#: src/view.c:177
+msgid "Save"
+msgstr "Сохранить"
+
+#: src/view.c:186
+msgid "Save As..."
+msgstr "Сохранить как..."
+
+#: src/view.c:192
+msgid "Revert"
+msgstr "Обратить"
+
+#: src/view.c:202
+msgid "Close"
+msgstr "Закрыть"
+
+#. Edit
+#: src/view.c:221
+msgid "Edit"
+msgstr "Редактировать"
+
+#: src/view.c:227
+msgid "Undo"
+msgstr "Назад"
+
+#: src/view.c:237
+msgid "Redo"
+msgstr "Вперёд"
+
+#: src/view.c:250
+msgid "Delete"
+msgstr "Удалить"
+
+#: src/view.c:256
+msgid "Cut"
+msgstr "Вырезать"
+
+#: src/view.c:265
+msgid "Copy"
+msgstr "Скопировать"
+
+#: src/view.c:274
+msgid "Paste"
+msgstr "Вставить"
+
+#: src/view.c:283
+msgid "Paste as New"
+msgstr "Вставить как новый"
+
+#: src/view.c:293
+msgid "Clear"
+msgstr "Очистить"
+
+#: src/view.c:310
+msgid "Invert"
+msgstr "Проинвертировать"
+
+#: src/view.c:318
+msgid "All"
+msgstr "Всё"
+
+#: src/view.c:326
+msgid "None"
+msgstr "Ничего"
+
+#. View
+#: src/view.c:336
+msgid "View"
+msgstr "Просмотр"
+
+#: src/view.c:342
+msgid "Zoom In"
+msgstr "Приблизить"
+
+#: src/view.c:351
+msgid "Zoom Out"
+msgstr "Удалить"
+
+#: src/view.c:360
+msgid "Zoom to selection"
+msgstr "Увеличить/уменьшить чтобы выбор был в окне"
+
+#: src/view.c:367
+msgid "Left"
+msgstr "Влево"
+
+#: src/view.c:376
+msgid "Right"
+msgstr "Вправо"
+
+#: src/view.c:392
+#, c-format
+msgid "50%"
+msgstr "50%"
+
+#: src/view.c:398
+#, c-format
+msgid "100%"
+msgstr "100%"
+
+#: src/view.c:412
+msgid "New View"
+msgstr "Новое окно"
+
+#. Sample
+#: src/view.c:419
+msgid "Sample"
+msgstr "Запись"
+
+#: src/view.c:425
+msgid "Duplicate"
+msgstr "Сдублировать"
+
+#. Filters
+#: src/view.c:435
+msgid "Filters"
+msgstr "Фильтры"
+
+#. Playback
+#: src/view.c:449
+msgid "Playback"
+msgstr "Проигрывание"
+
+#: src/view.c:455
+msgid "Play sample"
+msgstr "Проиграть"
+
+#: src/view.c:464
+msgid "Loop sample"
+msgstr "Играть запись в цикле"
+
+#: src/view.c:473
+msgid "Play selection"
+msgstr "Проиграть выбранное"
+
+#: src/view.c:482
+msgid "Loop selection"
+msgstr "Играть выбранное в цикле"
+
+#: src/view.c:495
+msgid "Note"
+msgstr "Замечание"
+
+#: src/view.c:557
+msgid "Stop"
+msgstr "Стоп"
+
+#: src/view.c:961
+msgid "Untitled"
+msgstr "Неназванный"
+
+#: src/view.c:963
+msgid "Mono"
+msgstr "Моно"
+
+#: src/view.c:963
+msgid "Stereo"
+msgstr "Стерео"
