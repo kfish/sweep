@@ -1,0 +1,357 @@
+# pl.po
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Radoslaw KORZENIEWSKI <radoslaw@korzeniewski.net>, 2001.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: sweep-0.1.1\n"
+"POT-Creation-Date: 2000-10-08 16:12+1100\n"
+"PO-Revision-Date: 2001-04-08 22:23+0200\n"
+"Last-Translator: Radoslaw Korzeniewski <radoslaw@korzeniewski.net>\n"
+"Language-Team: Poland <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: src/main.c:106
+msgid "Sweep version"
+msgstr "Sweep version"
+
+#: src/main.c:107
+msgid "Sweep plugin API version"
+msgstr "Sweep wersja API wtyczek"
+
+#: src/main.c:113
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Wywo³anie: %s [opcja ...] [plik ...]\n"
+
+#: src/main.c:114
+msgid "Valid options are:\n"
+msgstr "Poprawne opcje:\n"
+
+#: src/main.c:115
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Wy¶wietla pomoc.\n"
+
+#: src/main.c:116
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Wy¶wietla informacjê o wersji.\n"
+
+#: src/main.c:117
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <display>      U¿yje podanego ekranu X.\n"
+
+#: src/about_dialog.c:70
+msgid "About Sweep"
+msgstr "Sweep Informacje"
+
+#: src/about_dialog.c:116
+msgid "This is Sweep version"
+msgstr "To jest SWEEP w wersji"
+
+#: src/about_dialog.c:132
+msgid "http://sweep.sourceforge.net/"
+msgstr "http://sweep.sourceforge.net/"
+
+#: src/interface.c:83
+msgid "Sweep"
+msgstr "Sweep"
+
+#. File
+#: src/interface.c:108 src/view.c:165
+msgid "File"
+msgstr "Pliki"
+
+#: src/interface.c:113 src/view.c:171
+msgid "New"
+msgstr "Nowy"
+
+#: src/interface.c:122
+msgid "Open"
+msgstr "Otwórz"
+
+#: src/interface.c:131 src/view.c:223
+msgid "Quit"
+msgstr "Wyjd¼"
+
+#: src/interface.c:142
+msgid "Help"
+msgstr "Pomoc"
+
+#: src/interface.c:147
+msgid "About..."
+msgstr "O Programie..."
+
+#. Radio group
+#: src/interface.c:168 src/view.c:316
+msgid "Select"
+msgstr "Zaznaczenie"
+
+#: src/interface.c:169
+msgid "Select regions of a sample"
+msgstr "Zaznacz obszar próbki"
+
+#: src/interface.c:170
+#, fuzzy
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"To narzêdzie pozwala Ci zaznaczyæ obszar próbki. Mo¿esz wykorzystaæ to "
+"dlaedycji lub filtrów na zaznaczonym obszarze. Przytrzymaj klawisz shift "
+"podczaszaznaczania dla zaznaczenia nieci±g³o¶ci obszaru."
+
+#. Radio group
+#: src/interface.c:185
+msgid "Move"
+msgstr "Przesuñ"
+
+#: src/interface.c:186
+msgid "Move regions in a sample"
+msgstr "Przesuñ obszar próbki"
+
+#: src/interface.c:187
+msgid "With this tool you can move selected regions of a sample."
+msgstr "To narzêdzie pozwala Ci przesun±æ zaznaczony obszar próbki."
+
+#. Radio group
+#: src/interface.c:200 src/view.c:398
+msgid "Zoom"
+msgstr "Powiêkszenie"
+
+#: src/interface.c:201
+msgid "Zoom in & out"
+msgstr "Powiêkszanie i Pomniejszanie"
+
+#: src/interface.c:202
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Powiêkszanie i pomniejszanie widoku. Kliknij gdziekolwiek w widoku aby "
+"powiêkszyæ na tej czê¶ci próbki. Przytrzymaj klawisz shift i kliknij na "
+"widoku aby pomniejszyæ."
+
+#: src/param.c:566
+msgid "Suggest"
+msgstr "Sugerowanie"
+
+#: src/param.c:587
+msgid "OK"
+msgstr "OK"
+
+#: src/param.c:593
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: src/view.c:180
+msgid "Open..."
+msgstr "Otwórz..."
+
+#: src/view.c:189
+msgid "Save"
+msgstr "Zapisz..."
+
+#: src/view.c:198
+msgid "Save As..."
+msgstr "Zapisz jako..."
+
+#: src/view.c:204
+msgid "Revert"
+msgstr "Wczytaj ponownie"
+
+#: src/view.c:214
+msgid "Close"
+msgstr "Zamknij"
+
+#. Edit
+#: src/view.c:233
+msgid "Edit"
+msgstr "Edycja"
+
+#: src/view.c:239
+msgid "Undo"
+msgstr "Undo"
+
+#: src/view.c:249
+msgid "Redo"
+msgstr "Redo"
+
+#: src/view.c:262
+msgid "Delete"
+msgstr "Kasuj"
+
+#: src/view.c:268
+msgid "Cut"
+msgstr "Wytnij"
+
+#: src/view.c:277
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: src/view.c:286
+msgid "Paste"
+msgstr "Wklej"
+
+#: src/view.c:295
+msgid "Paste as New"
+msgstr "Wklej jako Nowy"
+
+#: src/view.c:305
+msgid "Clear"
+msgstr "Wyczy¶æ"
+
+#: src/view.c:322
+msgid "Invert"
+msgstr "Odwróæ"
+
+#: src/view.c:330
+msgid "All"
+msgstr "Wszystko"
+
+#: src/view.c:338
+msgid "None"
+msgstr "Brak"
+
+#. View
+#: src/view.c:348
+msgid "View"
+msgstr "Widok"
+
+#: src/view.c:354
+msgid "Zoom In"
+msgstr "Powiêkszenie"
+
+#: src/view.c:363
+msgid "Zoom Out"
+msgstr "Pomniejszenie"
+
+#: src/view.c:379
+#, fuzzy
+msgid "Zoom to selection"
+msgstr "Powiêkszenie do zaznaczenia"
+
+#: src/view.c:379
+msgid "Left"
+msgstr "Lewy"
+
+#: src/view.c:388
+msgid "Right"
+msgstr "Prawy"
+
+#: src/view.c:404
+#, c-format
+msgid "50%"
+msgstr "50%"
+
+#: src/view.c:410
+#, c-format
+msgid "100%"
+msgstr "100%"
+
+#: src/view.c:424
+msgid "New View"
+msgstr "Nowy Widok"
+
+#. Sample
+#: src/view.c:431
+msgid "Sample"
+msgstr "Próbki"
+
+#: src/view.c:437
+msgid "Duplicate"
+msgstr "Duplikuj"
+
+#. Filters
+#: src/view.c:447
+msgid "Filters"
+msgstr "Filtry"
+
+#. Playback
+#: src/view.c:461
+msgid "Playback"
+msgstr "Odtwarzanie"
+
+#: src/view.c:467
+msgid "Play sample"
+msgstr "Odtwórz próbkê"
+
+#: src/view.c:476
+msgid "Loop sample"
+msgstr "Zapêtl próbkê"
+
+#: src/view.c:485
+#, fuzzy
+msgid "Play selection"
+msgstr "Odtwórz zaznaczenie"
+
+#: src/view.c:494
+#, fuzzy
+msgid "Loop selection"
+msgstr "Zapêtl zaznaczenie"
+
+#: src/view.c:507
+msgid "Note"
+msgstr "Notacja"
+
+#: src/view.c:569
+msgid "Stop"
+msgstr "Zatrzymaj"
+
+#: src/view.c:975
+msgid "Untitled"
+msgstr "Bez Nazwy"
+
+#: src/view.c:977
+msgid "Mono"
+msgstr "Mono"
+
+#: src/view.c:977
+msgid "Stereo"
+msgstr "Stereo"
+
+#: plugins/echo/echo.c:53
+msgid "Delay"
+msgstr "Opó¼nienie"
+
+#: plugins/echo/echo.c:54
+msgid "Time to delay by"
+msgstr "Czas opó¼nienia jako"
+
+#: plugins/echo/echo.c:61
+msgid "Gain"
+msgstr "Wzmocnienie"
+
+#: plugins/echo/echo.c:62
+msgid "Gain with which to mix in delayed signal"
+msgstr "Wzmonienie z jakim miksowaæ opó¼niony sygna³"
+
+#: plugins/echo/echo.c:107 plugins/echo/echo.c:113
+msgid "Echo"
+msgstr "Echo"
+
+#: plugins/echo/echo.c:114
+#, fuzzy
+msgid "Apply an echo to selected regions of a sample"
+msgstr "Zastosuj filtr echo do zaznaczonego obszaru próbki."
+
+#: plugins/normalise/normalise.c:72 plugins/normalise/normalise.c:77
+msgid "Normalise"
+msgstr "Normalizacja"
+
+#: plugins/normalise/normalise.c:78
+msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
+msgstr "Zmodyfikuj amplitudê próbki tak aby mie¶ci³a siê pomiêdzy 1.0 a -1.0"
+
+#: plugins/reverse/reverse.c:57 plugins/reverse/reverse.c:63
+msgid "Reverse"
+msgstr "Odwrócenie"
+
+#: plugins/reverse/reverse.c:64
+#, fuzzy
+msgid "Reverse selected regions of a sample"
+msgstr "Odwróc zaznaczony obszar próbki"
+
