@@ -87,7 +87,7 @@ stripname (char * d_name)
   if (strncmp (d_name, "lib", 3)) return 0;
 
   len = strlen (d_name);
-  snprintf (buf, BUF_LEN, ".so.%d", SWEEP_PLUGIN_MAJOR);
+  snprintf (buf, BUF_LEN, ".so.%d", SWEEP_PLUGIN_API_MAJOR);
   blen = strlen (buf);
   if (strncmp (&d_name[len-blen], buf, blen)) return 0;
 

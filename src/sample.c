@@ -369,7 +369,7 @@ out:
 void
 sample_selection_invert (sw_sample * s)
 {
-  sample_register_sel_op (s, "Invert selection", ss_invert, NULL, NULL);
+  register_selection_op (s, "Invert selection", ss_invert, NULL, NULL);
 }
 
 static void
@@ -385,7 +385,7 @@ ss_select_all (sw_sample * s, sw_param_set unused, gpointer unused2)
 void
 sample_selection_select_all (sw_sample * s)
 {
-  sample_register_sel_op (s, "Select all", ss_select_all, NULL, NULL);
+  register_selection_op (s, "Select all", ss_select_all, NULL, NULL);
 }
 
 static void
@@ -401,7 +401,7 @@ ss_select_none (sw_sample * s, sw_param_set unused, gpointer unused2)
 void
 sample_selection_select_none (sw_sample * s)
 {
-  sample_register_sel_op (s, "Select none", ss_select_none, NULL, NULL);
+  register_selection_op (s, "Select none", ss_select_none, NULL, NULL);
 }
 
 /*
@@ -482,7 +482,7 @@ sample_selection_insert_tmp_sel (sw_sample * s)
   snprintf (buf, BUF_LEN, "Insert selection [%d - %d]",
 	    s->tmp_sel->sel_start, s->tmp_sel->sel_end);
 
-  sample_register_sel_op (s, buf, ssits, NULL, NULL);
+  register_selection_op (s, buf, ssits, NULL, NULL);
 }
 
 static void
@@ -509,5 +509,5 @@ sample_selection_replace_with_tmp_sel (sw_sample * s)
   snprintf (buf, BUF_LEN, "Selection [%d - %d]",
 	    s->tmp_sel->sel_start, s->tmp_sel->sel_end);
 
-  sample_register_sel_op (s, buf, ssrwts, NULL, NULL);
+  register_selection_op (s, buf, ssrwts, NULL, NULL);
 }

@@ -45,7 +45,7 @@ GList *
 sels_copy (GList * sels);
 
 sw_op_instance *
-sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
-			sw_param_set pset, gpointer custom_data);
+register_selection_op (sw_sample * s, char * desc, SweepModify func,
+		       sw_param_set pset, gpointer custom_data);
 
 #endif /* __SWEEP_SELECTION_H__ */

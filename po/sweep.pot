@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-03 10:55+1100\n"
+"POT-Creation-Date: 2000-10-03 18:21+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,24 +22,24 @@ msgstr ""
 msgid "Sweep plugin API version"
 msgstr ""
 
-#: src/main.c:112
+#: src/main.c:114
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr ""
 
-#: src/main.c:113
+#: src/main.c:115
 msgid "Valid options are:\n"
 msgstr ""
 
-#: src/main.c:114
+#: src/main.c:116
 msgid "  -h --help                Output this help.\n"
 msgstr ""
 
-#: src/main.c:115
+#: src/main.c:117
 msgid "  -v --version             Output version info.\n"
 msgstr ""
 
-#: src/main.c:116
+#: src/main.c:118
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr ""
 

@@ -26,6 +26,10 @@
  *
  * Increment this when breaking binary compatability.
  */
-#define SWEEP_PLUGIN_MAJOR 1
+#define SWEEP_PLUGIN_API_MAJOR 1
+
+#define SWEEP_PLUGIN_API_MINOR 0
+
+#define SWEEP_PLUGIN_API_REVISION 0
 
 #endif /* __SWEEP_VERSION_H__ */

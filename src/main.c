@@ -27,7 +27,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include "sweep_version.h" /* For SWEEP_PLUGIN_MAJOR */
+#include "sweep_version.h"
 
 #include "i18n.h"
 
@@ -105,7 +105,9 @@ main (int argc, char *argv[])
 
   if (show_version) {
     g_print ( "%s %s\n", _("Sweep version"), VERSION);
-    g_print ( "%s %d\n",_("Sweep plugin API version"), SWEEP_PLUGIN_MAJOR);
+    g_print ( "%s %d.%d.%d\n",_("Sweep plugin API version"),
+	      SWEEP_PLUGIN_API_MAJOR, SWEEP_PLUGIN_API_MINOR,
+	      SWEEP_PLUGIN_API_REVISION);
   }
 
   if (show_help) {

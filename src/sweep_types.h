@@ -76,7 +76,6 @@ struct _sw_sel {
 /*
  * sw_format: a sampling format.
  *
- * NB. Assumes 16 bit Signed samples.
  * Multichannel data is interleaved: Stereo is stored LR.
  */
 struct _sw_format {
