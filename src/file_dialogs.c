@@ -69,9 +69,6 @@ sample_load_cb(GtkWidget * wiget, gpointer data)
   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
 		"clicked", GTK_SIGNAL_FUNC(sample_load_cancel_cb), filesel);
 
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->help_button),
-		  "clicked", GTK_SIGNAL_FUNC(sample_load_help_cb), filesel);
-
   gtk_widget_show(filesel);
 }
 
@@ -155,9 +152,6 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 
   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
 		"clicked", GTK_SIGNAL_FUNC(sample_save_as_cancel_cb), filesel);
-
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->help_button),
-		  "clicked", GTK_SIGNAL_FUNC(sample_save_as_help_cb), data);
 
   gtk_widget_show(filesel);
 }
