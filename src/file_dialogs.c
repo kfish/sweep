@@ -115,6 +115,7 @@ sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
   filesel = gtk_widget_get_toplevel (widget);
 
   dn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filesel));
+  g_free(save_current_file);
   save_current_file = g_strdup(dn);
 
   /* remove filename from dir */
@@ -128,7 +129,6 @@ sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
 
   sample_set_pathname (sample, dn, fn);
 
-  g_free(save_current_file);
   sample_save(sample);
 
   gtk_widget_destroy(GTK_WIDGET(filesel));
