@@ -71,7 +71,7 @@ static int last_button; /* button index which started the last selection;
 			 * last_tmp_view
 			 */
 
-
+#ifdef _MUSHROOM_BROWN
 static const int default_colors[] = {
   114, 114, 98,  /* bg */
   234, 234, 25,  /* fg */
@@ -84,6 +84,21 @@ static const int default_colors[] = {
   224, 220, 172, /* highlight */
   43, 42, 33,    /* lowlight */
 };
+#else
+static const int default_colors[] = {
+  182, 178, 182,  /* bg */
+  199, 203, 158,  /* fg */
+  230, 0, 0,     /* mixerpos */
+  40, 40, 0,     /* zero */
+  240, 230, 240, /* sel */
+  255, 255, 255, /* tmp_sel */
+  10, 40, 10,    /* crossing */
+  174, 186, 174, /* minmax */
+  215, 219, 215, /* highlight */
+  81, 101, 81,   /* lowlight */
+};
+#endif
+
 
 /* Values for s->selecting */
 enum {
