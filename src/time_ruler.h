@@ -57,7 +57,7 @@ struct _TimeRuler
 {
   GtkRuler ruler;
 
-  sw_format * format;
+  gint samplerate;
 };
 
 struct _TimeRulerClass

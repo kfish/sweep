@@ -18,6 +18,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
@@ -58,5 +62,5 @@ frames_to_time (sw_format * format, sw_framecount_t nr_frames)
 sw_framecount_t
 time_to_frames (sw_format * format, sw_time_t time)
 {
-  return ((sw_framecount_t)((sw_time_t)format->rate / time));
+  return ((sw_framecount_t)((sw_time_t)format->rate * time));
 }

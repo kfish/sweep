@@ -32,11 +32,18 @@
 #include <glib.h>
 #include <gmodule.h>
 
+#include <sweep/sweep_i18n.h>
 #include <sweep/sweep_version.h>
 #include <sweep/sweep_types.h>
 
 
 GList * plugins = NULL;
+
+static gint
+cmp_proc_names (sw_procedure * a, sw_procedure * b)
+{
+  return strcmp (_(a->name), _(b->name));
+}
 
 void
 sweep_plugin_init (const gchar * name)
@@ -60,7 +67,8 @@ sweep_plugin_init (const gchar * name)
   if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
     for (gl = m_plugin->plugin_init ();
 	 gl; gl = gl->next) {
-      plugins = g_list_append (plugins, (sw_procedure *)gl->data);
+      plugins = g_list_insert_sorted (plugins, (sw_procedure *)gl->data,
+				      (GCompareFunc)cmp_proc_names);
     }
   }
 }
@@ -138,4 +146,6 @@ init_plugins (void)
   if (g_module_supported ()) {
     init_dynamic_plugins ();
   }
+
+
 }

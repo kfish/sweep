@@ -18,271 +18,66 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-
-static char *play_xpm [] =
-{
-  "12 12 55 1",
-  " 	c None",
-  ".	c #383A38",
-  "+	c #2D2F2D",
-  "@	c #7C7D7C",
-  "#	c #C5C8C4",
-  "$	c #7F867D",
-  "%	c #000000",
-  "&	c #808080",
-  "*	c #F6F9F6",
-  "=	c #EEF3ED",
-  "-	c #E2EAE1",
-  ";	c #626662",
-  ">	c #2E322D",
-  ",	c #F5F8F4",
-  "'	c #F0F4EF",
-  ")	c #EDF2EC",
-  "!	c #BFC8BD",
-  "~	c #6F736D",
-  "{	c #373A36",
-  "]	c #909090",
-  "^	c #F3F6F2",
-  "/	c #EFF3EE",
-  "(	c #E7EEE6",
-  "_	c #DFE8DD",
-  ":	c #DBE6D9",
-  "<	c #C1C6BF",
-  "[	c #6A7767",
-  "}	c #4E5E48",
-  "|	c #8CAF83",
-  "1	c #85AB7D",
-  "2	c #85AA7D",
-  "3	c #85A97A",
-  "4	c #7BA172",
-  "5	c #709367",
-  "6	c #4C6B45",
-  "7	c #23351F",
-  "8	c #4D5D48",
-  "9	c #8AAF80",
-  "0	c #84A97A",
-  "a	c #80A475",
-  "b	c #709666",
-  "c	c #52744A",
-  "d	c #263522",
-  "e	c #0E120D",
-  "f	c #495A44",
-  "g	c #86AB7C",
-  "h	c #719868",
-  "i	c #547A4A",
-  "j	c #22321D",
-  "k	c #111A0F",
-  "l	c #394C35",
-  "m	c #51714A",
-  "n	c #21351C",
-  "o	c #10190D",
-  "p	c #0D140A",
-  "            ",
-  " .+         ",
-  " @#$%       ",
-  " &*=-;>     ",
-  " &,'))!~{   ",
-  " ]^/)(_:<[% ",
-  " }|1234567% ",
-  " 890abcde   ",
-  " fghijk     ",
-  " lmn%       ",
-  " op         ",
-  "            "};
-
-
-static char *stop_xpm [] =
-{
-  "12 12 87 1",
-  " 	c None",
-  ".	c #363836",
-  "+	c #414240",
-  "@	c #414241",
-  "#	c #414341",
-  "$	c #454644",
-  "%	c #393A38",
-  "&	c #3D3E3D",
-  "*	c #969895",
-  "=	c #B3B6B2",
-  "-	c #B4B8B3",
-  ";	c #B7B9B7",
-  ">	c #B4B6B3",
-  ",	c #B8BBB7",
-  "'	c #989B98",
-  ")	c #464746",
-  "!	c #505050",
-  "~	c #C8CAC8",
-  "{	c #EFF3EE",
-  "]	c #EDF1EC",
-  "^	c #EDF2EC",
-  "/	c #F4F6F3",
-  "(	c #EEF2ED",
-  "_	c #EDF2ED",
-  ":	c #C2C5C1",
-  "<	c #5B5C5A",
-  "[	c #515151",
-  "}	c #C9CBC9",
-  "|	c #F1F5F1",
-  "1	c #F0F4EF",
-  "2	c #EEF3EE",
-  "3	c #BBBEBA",
-  "4	c #4F504F",
-  "5	c #646464",
-  "6	c #CECFCE",
-  "7	c #EAEFE8",
-  "8	c #E2EAE0",
-  "9	c #E4ECE3",
-  "0	c #E0E6DE",
-  "a	c #ADB3AC",
-  "b	c #585A58",
-  "c	c #313B2D",
-  "d	c #76926D",
-  "e	c #86AC7E",
-  "f	c #85AA7C",
-  "g	c #84A87A",
-  "h	c #80A476",
-  "i	c #81A576",
-  "j	c #80A577",
-  "k	c #6B8962",
-  "l	c #34432F",
-  "m	c #303B2D",
-  "n	c #74906B",
-  "o	c #84A97A",
-  "p	c #81A677",
-  "q	c #82A677",
-  "r	c #7FA374",
-  "s	c #66845D",
-  "t	c #303F2C",
-  "u	c #2C3729",
-  "v	c #688660",
-  "w	c #799E6F",
-  "x	c #7A9E70",
-  "y	c #7A9E6F",
-  "z	c #7FA274",
-  "A	c #7B9E70",
-  "B	c #799C6E",
-  "C	c #5A7552",
-  "D	c #273223",
-  "E	c #1B2418",
-  "F	c #435B3D",
-  "G	c #55714D",
-  "H	c #5B7753",
-  "I	c #597451",
-  "J	c #57714F",
-  "K	c #4A6243",
-  "L	c #4D6746",
-  "M	c #3B4E35",
-  "N	c #192016",
-  "O	c #192316",
-  "P	c #222D1F",
-  "Q	c #212C1E",
-  "R	c #1F2A1D",
-  "S	c #182116",
-  "T	c #141C12",
-  "U	c #182015",
-  "V	c #161D14",
-  "            ",
-  "  .+@#@+$%  ",
-  " &*==-;>,') ",
-  " !~{]^/(_:< ",
-  " [}|{{11234 ",
-  " 561(7890ab ",
-  " cdefghijkl ",
-  " mnophqqrst ",
-  " uvwxyzABCD ",
-  " EFGHIJKLMN ",
-  "  OPQRSTUV  ",
-  "            "};
-
-
-#if 0
-static char *rec_xpm [] =
-{
-  "12 12 68 1",
-  " 	c None",
-  ".	c #060102",
-  "+	c #0E0304",
-  "@	c #140405",
-  "#	c #140305",
-  "$	c #2F2B2B",
-  "%	c #6D6566",
-  "&	c #D5C6C7",
-  "*	c #DFCFD0",
-  "=	c #D6C2C3",
-  "-	c #A68B8C",
-  ";	c #5F3E40",
-  ">	c #6C6465",
-  ",	c #E6DBDC",
-  "'	c #EDE1E1",
-  ")	c #E7DCDC",
-  "!	c #E5D8D8",
-  "~	c #DBC2C2",
-  "{	c #B48C8C",
-  "]	c #583232",
-  "^	c #080102",
-  "/	c #CDC1C1",
-  "(	c #EDE2E2",
-  "_	c #E9DEDE",
-  ":	c #E8DFDE",
-  "<	c #E4D8D8",
-  "[	c #D1B9BA",
-  "}	c #C1999A",
-  "|	c #7A5355",
-  "1	c #0F0304",
-  "2	c #D9CACA",
-  "3	c #E7DDDD",
-  "4	c #E6DBDB",
-  "5	c #DFCECE",
-  "6	c #CFB4B4",
-  "7	c #C39D9D",
-  "8	c #8F6668",
-  "9	c #180507",
-  "0	c #CFB9B9",
-  "a	c #E2D3D3",
-  "b	c #E3D6D6",
-  "c	c #DCCACA",
-  "d	c #D6BDBD",
-  "e	c #CCABAB",
-  "f	c #BF9496",
-  "g	c #875C5E",
-  "h	c #190506",
-  "i	c #A58787",
-  "j	c #D2B3B4",
-  "k	c #D6BBBC",
-  "l	c #CFB1B1",
-  "m	c #C39A9B",
-  "n	c #B07F81",
-  "o	c #6E4345",
-  "p	c #684849",
-  "q	c #BF9697",
-  "r	c #C59D9E",
-  "s	c #BF9495",
-  "t	c #BE9192",
-  "u	c #B38183",
-  "v	c #946264",
-  "w	c #482526",
-  "x	c #5C3A3A",
-  "y	c #8C6363",
-  "z	c #906465",
-  "A	c #855556",
-  "B	c #6C3F40",
-  "C	c #472425",
-  "            ",
-  "    .+@#    ",
-  "  $%&*=-;   ",
-  "  >,')!~{]  ",
-  " ^/(_:<[}|  ",
-  " 12_345678  ",
-  " 90abcdefg  ",
-  " hijklemno  ",
-  "  pqrstuvw  ",
-  "   xyzABC   ",
-  "            ",
-  "            "};
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
 #endif
 
+/* Pixmaps ripped from Grip */
+#include "../pixmaps/ff.xpm"
+#include "../pixmaps/nexttrk.xpm"
+#include "../pixmaps/playpaus.xpm"
+#include "../pixmaps/prevtrk.xpm"
+#include "../pixmaps/loop.xpm"
+/*#include "../pixmaps/noloop.xpm"*/
+#include "../pixmaps/rew.xpm"
+#include "../pixmaps/stop.xpm"
+#include "../pixmaps/vol.xpm"
+#include "../pixmaps/upleft.xpm"
+#include "../pixmaps/lowleft.xpm"
+#include "../pixmaps/upright.xpm"
+#include "../pixmaps/lowright.xpm"
 
+#if 0
+#include "../pixmaps/eye.xpm" /* Hacked from the Gimp */
+#endif
 
+#include "../pixmaps/record_dialog.xpm"
 
+#include "../pixmaps/scroll.xpm"
 
+#include "../pixmaps/playrev.xpm"
+#include "../pixmaps/playpsel.xpm"
+#include "../pixmaps/mute.xpm"
+#include "../pixmaps/headphones.xpm"
 
+#include "../pixmaps/scrub.xpm"
+#include "../pixmaps/select.xpm"
+#ifdef DEVEL_CODE
+#include "../pixmaps/pencil.xpm"
+#include "../pixmaps/spraycan.xpm"
+#endif
+
+#include "../pixmaps/new.xpm"
+#include "../pixmaps/open.xpm"
+#include "../pixmaps/save.xpm"
+#include "../pixmaps/saveas.xpm"
+
+#include "../pixmaps/undo.xpm"
+#include "../pixmaps/redo.xpm"
+
+#include "../pixmaps/cut.xpm"
+#include "../pixmaps/copy.xpm"
+#include "../pixmaps/paste.xpm"
+#include "../pixmaps/pastemix.xpm"
+#include "../pixmaps/pastexfade.xpm"
+
+#include "../pixmaps/crop.xpm"
+
+#include "../pixmaps/zoom_in.xpm"
+#include "../pixmaps/zoom_out.xpm"
+#if 0
+#include "../pixmaps/zoom_all.xpm"
+#endif
+
+#include "../pixmaps/info.xpm"
+#include "../pixmaps/mouse.xpm"

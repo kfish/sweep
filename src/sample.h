@@ -25,11 +25,31 @@
 #include "sweep_app.h"
 
 void
+create_sample_new_dialog_defaults (char * pathname);
+
+void
+create_sample_new_dialog_like (sw_sample * s);
+
+void
 sample_add_view (sw_sample * s, sw_view * v);
 
 void
 sample_remove_view (sw_sample * s, sw_view * v);
 
+gint
+sample_clear_tmp_message (gpointer data);
+
+void
+sample_set_monitor (sw_sample * s, gboolean monitor);
+
+void
+sample_set_offset_next_bound_left (sw_sample * s);
+
+void
+sample_set_offset_next_bound_right (sw_sample * s);
+
+void
+sample_refresh_rec_marker (sw_sample * s);
 
 /*
  * Functions to handle the temporary selection.
@@ -53,6 +73,9 @@ sample_set_tmp_sel_1 (sw_sample * s, sw_view * tview,
 
 void
 sample_selection_insert_tmp_sel (sw_sample * s);
+
+void
+sample_selection_subtract_tmp_sel (sw_sample * s);
 
 void
 sample_selection_replace_with_tmp_sel (sw_sample * s);

@@ -28,24 +28,46 @@ Radoslaw Korzeniewski <Radoslaw.Korzeniewski@centertel.pl>
 <ben@slumber.dhs.org>
 	bug fix in save as dialog
 
+Erik de Castro Lopo <erikd@zip.com.au>
+	libsndfile-1 file import/export, random bugfixes
+
+Zenaan Harkness <zen@getsystems.com>
+	improved handling of volume and pitch sliders
+
 Borrowed Code
 =============
 
 Michael Krause <m.krause@tu=harburg.de>
-	Basic code for sample=display widget from soundtracker.
+	sample-display widget adapted from Soundtracker.
 
 Spencer Kimball and Peter Mattis
 	about_dialog.c adapted from the Gimp.
+
+Mike Oliphant
+	transport buttons, LCD screen and style handling code from Grip
+
+Christopher Montgomery
+	Ogg Vorbis encoding and decoding adapted from example code in
+	the Ogg Vorbis source (Copyright (C) 1994-2002 Xiph.Org Foundation)
+
+Robert Leslie
+	MPEG audio decoding adapted from player.c in the mad source
+
+Jean-Marc Valin
+	Speex encoding and decoding adapted from speexenc and speexdec
 
 
 Translations
 ============
 
+Dokianakis Fanis <madf@hellug.gr>
+ 	el
+
 Mathieu Roy <yeupou@altern.org>
-	fr
+	fr (Sweep 0.1.x)
 
 Gergely Nagy <mhp@lonyay.edu.hu>
-	hu
+	hu (Sweep 0.1.x)
 
 Yuri Bongiorno <yurix@tiscalinet.it>
 	it
@@ -53,17 +75,25 @@ Yuri Bongiorno <yurix@tiscalinet.it>
 Silvia Pfeiffer <silvia.pfeiffer@silvia-pfeiffer.de>
 	de
 
-Yuri Victorovich <yuri@tsoft.com>
+Alexandre Prokoudine <avp@altlinux.ru>
+Yuri Victorovich <yuri@tsoft.com> (Sweep 0.1.x)
 	ru
 
 Radoslaw Korzeniewski <Radoslaw.Korzeniewski@centertel.pl>
-	pl
+	pl (Sweep 0.1.x)
+
 
 Artwork
 =======
 
+Mike Oliphant
+	Transport button pixmaps (adapted from Grip)
+
 Mathieu Roy <yeupou@altern.org>
-	Colourful button pixmaps
+	Colourful button pixmaps in Sweep 0.1.x
+
+Conrad Parker <conrad@vergenet.net>
+	General pixmaps, Scrubby
 
 
 Package Maintainers
@@ -71,6 +101,9 @@ Package Maintainers
 
 Anand Kumria <akumria@debian.org>
 	Debian packages
+
+Julio Merino Vidal <jmmv@hispabsd.org>
+	NetBSD packages (+ contributed configure and build fixes)
 
 
 Miscellaneous

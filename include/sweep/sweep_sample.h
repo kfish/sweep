@@ -24,8 +24,8 @@
 #include <sweep/sweep_types.h>
 
 sw_sample *
-sample_new_empty(char * directory, char * filename,
-		      gint nr_channels, gint sample_rate, gint sample_length);
+sample_new_empty(char * pathname, gint nr_channels, gint sample_rate,
+		 gint sample_length);
 
 sw_sample *
 sample_new_copy(sw_sample * s);
@@ -33,8 +33,23 @@ sample_new_copy(sw_sample * s);
 void
 sample_destroy (sw_sample * s);
 
+sw_sounddata *
+sample_get_sounddata (sw_sample * s);
+
 void
-sample_set_pathname (sw_sample * s, char * directory, char * filename);
+sample_set_file_format (sw_sample * s, sw_file_format_t file_format);
+
+void
+sample_set_pathname (sw_sample * s, char * pathname);
+
+GList *
+sample_bank_list_names (void);
+
+sw_sample *
+sample_bank_find_byname (const gchar * name);
+
+gboolean
+sample_bank_contains (sw_sample *s);
 
 void
 sample_bank_add (sw_sample * s);
@@ -52,7 +67,56 @@ void
 sample_stop_marching_ants (sw_sample * s);
 
 void
-sample_set_playmarker (sw_sample * s, int offset);
+sample_set_edit_state (sw_sample * s, sw_edit_state edit_state);
+
+void
+sample_set_edit_mode (sw_sample * s, sw_edit_mode edit_mode);
+
+void
+sample_refresh_playmode (sw_sample * s);
+
+void
+sample_set_previewing (sw_sample * s, gboolean previewing);
+
+void
+sample_set_stop_offset (sw_sample * s);
+
+void
+sample_set_playmarker (sw_sample * s, sw_framecount_t offset,
+		       gboolean by_user);
+
+void
+sample_set_rec_marker (sw_sample * s, sw_framecount_t offset);
+
+void
+sample_set_scrubbing (sw_sample * s, gboolean scrubbing);
+
+void
+sample_set_looping (sw_sample * s, gboolean looping);
+
+void
+sample_set_playrev (sw_sample * s, gboolean reverse);
+
+void
+sample_set_mute (sw_sample * s, gboolean mute);
+
+void
+sample_set_color (sw_sample * s, gint color);
+
+void
+sample_set_progress_text (sw_sample * s, gchar * text);
+
+void
+sample_set_progress_percent (sw_sample * s, gint percent);
+
+void
+sample_refresh_progress_percent (sw_sample * s);
+
+int
+sample_set_progress_ready (sw_sample * s);
+
+void
+sample_set_tmp_message (sw_sample * s, const char * fmt, ...);
 
 /*
  * sample_replace_throughout (os, s)
@@ -69,6 +133,9 @@ sample_replace_throughout (sw_sample * os, sw_sample * s);
 
 
 /* Selection handling */
+
+gboolean
+sample_offset_in_sel (sw_sample * s, sw_framecount_t offset);
 
 guint
 sample_sel_nr_regions (sw_sample * s);
@@ -104,5 +171,22 @@ sample_selection_select_all (sw_sample * s);
 
 void
 sample_selection_select_none (sw_sample * s);
+
+void
+sample_selection_halve (sw_sample * s);
+
+void
+sample_selection_double (sw_sample * s);
+
+void
+sample_selection_shift_left (sw_sample * s);
+
+void
+sample_selection_shift_right (sw_sample * s);
+
+/* info dialog */
+void
+sample_show_info_dialog (sw_sample * sample);
+
 
 #endif /* __SWEEP_SAMPLE_H__ */

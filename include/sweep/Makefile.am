@@ -3,7 +3,6 @@
 sweepincludedir = $(includedir)/sweep
 
 sweepinclude_HEADERS = \
-	config.h \
 	sweep_version.h \
 	sweep_i18n.h \
 	sweep.h \

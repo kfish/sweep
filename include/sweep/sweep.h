@@ -21,8 +21,6 @@
 #ifndef __SWEEP_H__
 #define __SWEEP_H__
 
-#include <sweep/config.h>
-
 #include <sweep/sweep_version.h>
 #include <sweep/sweep_i18n.h>
 

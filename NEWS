@@ -1,3 +1,280 @@
+Wed Apr 30 2003 -- Version 0.8.2
+--------------------------------
+
+This release contains support for ALSA 0.9; this is configurable and could
+do with widespread testing.
+                                                                                
+To build with ALSA support, simply configure with:
+                                                                                
+        ./configure --enable-alsa
+                                                                                
+Note that this will build a binary which will work with ALSA only, and
+not attempt to use OSS. In future this will be replaced with plugins
+for different pcm i/o methods, which should ease binary distribution.
+
+
+Internationalization (i18n) improvements:
+
+	* a complete audit of untranslateable strings, including
+	mis-configured source files and unmarked strings, by
+	Silvia Pfeiffer.
+
+	* a new Greek translation by Dokianakis Fanis
+	* a new Russian translation by Alexandre Prokoudine
+	* an updated Italian translation by Yuri Bongiorno
+	* an updated German translation by Silvia Pfeiffer
+
+There is a new mailing list: sweep-i18n. List information is at
+http://lists.sourceforge.net/lists/listinfo/sweep-i18n
+
+
+Additional changes include:
+
+	* added VBR without DTX option for Speex 1.0 speech encoding
+	* improved accuracy of sliders in processing dialogs
+
+
+Events:
+
+Conrad will presenting and demoing Sweep at the following upcoming events:
+
+  Jul 10-13       LinuxTag 2003 (Karlsruhe, Germany)
+                  Conference and Linux Audio Dev (LAD) exhibition booth
+                  http://www.linuxtag.org/
+	
+  Jul 31 - Aug 3  UKUUG Linux Developers Conference (Edinburgh, Scotland)
+                  http://www.ukuug.org/events/linux2003/
+
+Plus, the Call for Participation for the Linux Audio Mini-Conf @ LCA2004
+(Jan 12-13 2004, Adelaide, South Australia) is announced:
+
+    http://www.metadecks.org/events/lca2004/
+
+
+Thu Feb  6 2003 -- Version 0.8.1
+--------------------------------
+
+This release contains performance improvements for basic editing operations,
+including reduced memory consumption during cut and paste insert. It also
+includes support for creation of new files on the command line, updated
+handling of raw file loading through libsndfile, and updated support for
+voice activity detection and intensity stereo coding features of the Speex
+speech codec.
+
+Sat Jan 18 2003 -- Version 0.8.0
+--------------------------------
+
+This is the first milestone release for Sweep 1. Please test it thoroughly
+for both general sample editing and live performance! For more information,
+see http://www.metadecks.org/ .
+
+New in this release:
+
+	* a new monitoring subsystem for use in DJing and live performance.
+	Users with two sound cards can use headphones for monitoring, to
+	prepare mixes and cue samples without disrupting the main output.
+
+	* A usability bug was fixed in keyboard playback controls
+
+	* the Italian translation of the user interface was updated by
+	Yuri Bongiorno.
+
+
+New at metadecks.org:
+
+    Notes for the tutorial "Using Sweep: Fun with Scrubby" are now
+    available online in HTML, PostScript and PDF formats at:
+
+        http://www.metadecks.org/software/sweep/tutorials/
+
+    This is a brief overview of the tutorial given at linux.conf.au 2003
+    in Perth, Australia; the real thing is live and very, very loud.
+
+
+Sat Jan 4 2003 -- Open Sound System's killer app of the month
+-------------------------------------------------------------
+
+Sweep has been selected as the killer app of the month for January 2003 by
+Open Sound System (OSS), developers of the most widely used digital audio
+architecture for UNIX. 
+
+
+Fri Dec 20 2002 -- Version 0.5.13
+---------------------------------
+
+This release contains build fixes for NetBSD and cleanups by Erik de
+Castro Lopo to fix preprocessor pasting warnings.
+
+It also features new fade in and fade out filters.
+
+Conrad will be presenting two sessions at linux.conf.au, January 22-25 2003
+in Perth, Australia; a tutorial titled "Using Sweep: Fun with Scrubby", and
+an overview of Sweep's internals and plugin development.
+
+
+Fri Dec  6 2002 -- Version 0.5.12
+---------------------------------
+
+New in this release:
+
+	* an updated Italian translation from Yuri Bongiorno
+
+	* resample (sample rate conversion): change the sample rate of a
+	file, for example from CD format to DAT format, or to any arbitrary
+	sample rate. This requires Erik de Castro Lopo's newly released
+	libsamplerate, available from http://www.mega-nerd.com/SRC/
+
+	* preview cut: hear how the area around the selection will sound
+	after the selection is cut out, including the parts between
+	selection regions for multi-region selections.
+
+	* preroll to cursor: play one second of sound leading up to the
+	cursor; useful for hearing the cursor position without moving it.
+
+Bugs were fixed in MP3 loading and pitched playback (using QWERTY keys).
+
+
+Thu Nov 28 2002 -- Version 0.5.11
+---------------------------------
+
+New features in this release include:
+
+	* mixing and crossfading paste methods: copy a region from one file
+	and mix or fade it into another file or elsewhere in the same file,
+	with control of source and destination levels and phase.
+
+	* navigation shortcuts to move between selection edges: move the
+	cursor between the start and end of selection regions, and to the
+	next edge of a multi-region selection, with Ctrl + Arrow Left/Right
+
+	* view memories: assign the viewable area to a number on the numeric
+	keypad with Ctrl+<Num>, and zoom back to it later by pressing that
+	number. (NB. Num Lock must be on on your keyboard).
+
+	* support for Speex 1.0beta3 ultra-wideband mode (32kHz). Speex is
+	a high quality, patent-free and open source voice codec.
+
+	* support for full-file application of Secret Rabbit Code
+
+Additionally, minor bugs were fixed affecting portability of system error
+handling and detection of MP3 files.
+
+
+Thu Oct 31 2002 -- Version 0.5.10a
+----------------------------------
+
+This is an update to 0.5.10 which fixes a compilation error in the default
+build.
+
+Wed Oct 30 2002 -- Version 0.5.10
+---------------------------------
+
+New features in this release include vertical zoom with a draggable dB scale
+and mouse wheel control, and some basic channel operations: Duplicate to
+stereo/multichannel, Swap left and right, Remove left/right, Mix down to
+mono, and Add/Remove channels.
+
+This release also includes compile fixes for Solaris, and a bug fix for
+first-time file 'save'.
+
+A new section for screenshots contributed by users was recently added to the
+screenshot tour:
+
+    http://www.metadecks.org/software/sweep/screenshots/
+
+
+Wed Oct 23 2002 -- Version 0.5.9
+--------------------------------
+
+Sweep now supports Speex, a special purpose speech codec designed for
+efficient Voice over IP (VoIP) and file-based compression. Speex is free,
+open and unpatented; more information is available at http://www.speex.org/.
+
+This release also includes improved handling of the main volume and pitch
+sliders, contributed by Zenaan Harkness.
+
+
+Thu Oct 17 2002 -- Version 0.5.8
+--------------------------------
+
+MP3 import is now supported. Minor bugs have been fixed in rendering of
+record position and playback mixing.
+
+There is a new page of audio demos made with Sweep. These demonstrate the
+sounds of Scrubby, a tool which allows vinyl-like manipulation of digital
+audio:
+
+    http://www.metadecks.org/software/sweep/demos.html
+
+
+Fri Oct 11 2002 -- Version 0.5.7
+--------------------------------
+
+This version includes support for Ogg Vorbis import and export, including
+both variable and average bitrate encoding modes. There are many other
+user interface updates, including new input controls for sample rates and
+channels, and question, information and system error dialogs.
+
+There is a new Screenshot tour of Sweep, including many screenshots of
+the new dialogs and general editing:
+
+    http://www.metadecks.org/software/sweep/screenshots/
+
+
+Wed Sep 25 2002 -- Version 0.5.6 and Sweep Demo at SLUG
+-------------------------------------------------------
+
+Changes in this version include monitoring of file modification, "are you
+sure" dialogs, file revert, and many minor bug fixes.
+
+There will be a demo of the latest Sweep features, including live DJing and
+experimental music techniques and the Sydney LUG meeting on Sep. 27 2002;
+see http://www.slug.org.au/ for details. 
+
+Fri Sep 20 2002 -- Version 0.5.5
+--------------------------------
+
+Changes since version 0.5.4 include major bugfixes for LADSPA plugin
+handling and improvements in scrubbing usability.
+
+Wed Sep 11 2002 -- Version 0.5.4
+--------------------------------
+
+Changes since version 0.5.3 (September 5 2002) include bug fixes for
+playback during destructive operations and for edits of tiny regions,
+and improvements in configuration checks for libsndfile-1.0.0.
+
+Additionally, scrubbing is now working for reverse playback, and has been
+tuned for responsiveness independent of sample rate.
+
+There is now a web page introducing Scrubby and outlining a few simple 
+editing and live performance techniques:
+
+    http://www.metadecks.org/software/sweep/scrub.html
+
+
+Thu Sep  5 2002 -- Version 0.5.3
+--------------------------------
+
+This release incorporates robust configuration checking to help new users  
+compile from source. After a long period of quiet development we are now
+beginning to roll this out for general public usage, and your testing and
+feedback is very welcome!
+
+Changes since 0.1.1 (October 2000) include interactive scrubbing, recording,
+support for LADSPA 1.1 effects plugins and multichannel sound files,
+multithreaded background rendering, unlimited undo/redo, mouse wheel zooming,
+reverse playback and overall stability and usability improvements.
+
+Changes since version 0.5.0 (August 12 2002) include preferences saving and
+support for libsndfile 1.0.0.
+
+Changes since version 0.5.1 (August 29 2002) include improved configure
+checks and porting fixes. Additionally, Sweep now remembers the last used
+file load and save directories between sessions.
+
+Changes since version 0.5.2 (September 4 2002) include the fixing of a bug
+in "save as", and (NEW) audible scrubbing when selecting regions.
 
 Mon, 1 May 2000
 ---------------

@@ -1,13 +1,80 @@
 
-Sweep, a sound wave editor.
+SWEEP, a sound wave editor, brought to you by Conrad Parker
+-----------------------------------------------------------
 
-Copyright (C) 2000 Conrad Parker
+Sweep is an audio editor and live playback tool for GNU/Linux, BSD and
+compatible systems. It supports many music and voice formats including
+WAV, AIFF, Ogg Vorbis, Speex and MP3, with multichannel editing and
+LADSPA effects plugins. Inside lives a pesky little virtual stylus called
+Scrubby who enjoys mixing around in your files.
+
+Sweep is designed to be intuitive and to give you full control. It includes
+almost everything you would expect in a sound editor, and then some:
+
+        * precise, vinyl like scrubbing
+        * looped, reverse, and pitch-controlled playback
+        * playback mixing of unlimited independent tracks
+	* monitoring support for use with multiple audio devices
+        * looped and reverse recording
+        * internationalisation
+        * multichannel and 32 bit floating point file support
+	* Ogg Vorbis, MP3 and Speex compressed formats
+	* sample rate conversion and channel operations
+        * LADSPA 1.1 effects support
+        * multiple views, discontinuous selections
+        * easy keybindings, mouse wheel zooming
+        * unlimited undo/redo with fully revertible edit history
+        * multithreaded background processing
+        * shaded peak/mean waveform rendering, multiple colour schemes
 
 
-Sweep is an editor for sound samples. It operates on files of various
-formats such as .wav, .aiff and .au, and has multiple undo/redo levels
-and filters. It is Free Software, available under the GNU General
-Public Licence. 
+Summary of library dependencies:
+--------------------------------
+
+REQUIRED:
+
+        * GTK+ 1.2, standard in most distributions and available from:
+
+	    http://www.gtk.org/
+
+        * libsndfile-1.0.x, available from:
+
+            http://www.zip.com.au/~erikd/libsndfile/
+
+        * libtdb, available in many distributions or at:
+
+            http://www.sourceforge.net/projects/tdb
+
+	* Secret Rabbit Code, aka. libsamplerate, available from:
+
+	    http://www.mega-nerd.com/SRC/
+	
+OPTIONAL:
+
+	* Ogg Vorbis libraries (high quality perceptual audio format):
+
+	    http://www.vorbis.com/
+
+	* libmad (MPEG audio loading), available from:
+
+	    http://www.mars.org/home/rob/proj/mpeg/
+	
+	* Speex library (an open speech compression format):
+
+	    http://www.speex.org/
+
+See the file INSTALL for building instructions. Generally all that is
+required, after the above libraries have been installed, is:
+
+	./configure
+	make
+	make install
+
+If you are not sure what you need, simply run ./configure and it will probe
+your system and provide a reasonably useful summary.
+
+For information on enabling and disabling optional components, run
+./configure --help
 
 Homepage
 --------
@@ -19,16 +86,19 @@ Detailed information and new releases of Sweep can be found at:
 Mailing Lists
 -------------
 
-There are two mailing lists related to sweep:
+There are three mailing lists related to sweep:
 
-sweep-announce. 
+sweep-announce
         which contains only announcements about new releases of sweep.
 This is a moderated list. 
 
-sweep-devel. 
-        For general discussion about sweep and development related issues. 
+sweep-users
+	For general discussion about using sweep
 
-Archives of both lists are available on the World Wide Web via the
+sweep-devel
+        For discussion about sweep development related issues. 
+
+Archives of each list are available on the World Wide Web via the
 Sweep homepage. You can also subscribe or unsubscribe via a web
 interface.
 
@@ -37,6 +107,8 @@ unsubscribe via an email interface, send a message with just the word
 `help' as subject or in the body, to:
 
         sweep-announce-request@lists.sourceforge.net
+  or
+        sweep-users-request@lists.sourceforge.net
   or
         sweep-devel-request@lists.sourceforge.net
 
@@ -61,10 +133,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 USA.
 
+Acknowledgements
+----------------
+
+Thanks to Pixar Animation Studios and CSIRO Australia for supporting
+the development of this project.
+
 Contact
 -------
 
-If you have any further queries about Sweep, please contact the
+If you have any further queries about Sweep, please contact the main
 author:
 
 Conrad Parker <conrad@vergenet.net>

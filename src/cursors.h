@@ -21,9 +21,26 @@
 #ifndef __CURSORS_H__
 #define __CURSORS_H__
 
+enum {
+  SWEEP_CURSOR_CROSSHAIR,
+  SWEEP_CURSOR_MOVE,
+  SWEEP_CURSOR_HORIZ,
+  SWEEP_CURSOR_HORIZ_PLUS,
+  SWEEP_CURSOR_HORIZ_MINUS,
+  SWEEP_CURSOR_ZOOM_IN,
+  SWEEP_CURSOR_ZOOM_OUT,
+  SWEEP_CURSOR_NEEDLE,
+  SWEEP_CURSOR_PENCIL,
+  SWEEP_CURSOR_NOISE,
+  SWEEP_CURSOR_MAX
+};
+
 void
 create_bitmap_and_mask_from_xpm (GdkBitmap ** bitmap,
 				 GdkBitmap ** mask,
 				 gchar ** xpm);
+
+void
+init_cursors (void);
 
 #endif

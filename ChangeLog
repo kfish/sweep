@@ -1,3 +1,328 @@
+Sat Apr 29 02:48:14 EST 2003 Silvia Pfeiffer <silvia@silvia-pfeiffer.de>
+
+	* driver_alsa.c: deleting double line #include <alsa/asoundlib.h>
+	* fixed files in src directory with config.h includes
+	* fixed inclusion of licensing info GPL in some src files
+	* fixed static string i18n also including _(...) for them
+	* added some strings to i18n
+
+Tue Apr 15 09:43:58 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* driver_alsa.c: changed alsa init to use *_near functions
+
+Tue Apr  1 18:10:06 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* driver_alsa.c: added endianness patch from Erik de Castro Lopo
+	* file_speex.c: added VBR without DTX option for speex-1.0rc3
+
+Tue Feb 18 06:59:23 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* sample-display.c: added Super_L (new Logo mapping) to scrubbing keys
+	* driver_alsa.c: merged in ALSA 0.9 code from Zenaan Harkness
+	* driver.c: abstracted out config dialog for both OSS and ALSA
+
+Tue Feb 11 22:00:36 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* el.po: new file -- Greek translation by Dokianakis Fanis
+	* param.c: fixed granularity of sliders in process dialogs
+
+Thu Feb  6 20:44:05 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* file_speex.c: added stereo handling and skipping of extra headers
+
+Mon Feb  3 22:33:04 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* edit.c: updated splice_in_eb to use realloc
+
+Wed Jan 29 23:51:02 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* edit.c: added refcounting to edit buffers
+	* edit.c: removed edit_buffer_copy calls in copy and paste insert ops
+	* edit.c: switched edit region allocations to mmap temp files
+	* file_dialogs.c: modified load to create new for nonexistant files
+	* file_dialogs.c: added pathname arg to new dialog
+	* main.c: prepended cwd to naked filenames before loading
+	* file_sndfile1.c: updated raw error string for recent libsndfile1
+
+Sat Jan 18 16:49:49 EST 2003 Conrad Parker <conrad@metadecks.org>
+
+	* added monitoring functionality
+	* it.po: updated from Yuri Bongiorno
+	* fixed wacky play/play sel keyboard interaction (thx Heimo!)
+
+Fri Dec 20 17:36:27 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* notes.c, param.c, view.c: pasting preprocessor fixes and note
+	cleanups by Erik de Castro Lopo
+	* src/Makefile.am: added EXPORT_SYMBOLS_LDFLAGS to sweep_LDFLAGS
+	for NetBSD (should be empty string on Solaris) -- by Julio Merino
+	* byenergy.c: fixed spelling error (reported by Yuri Bongiorno)
+	* fade.c: new file -- fade in and out filters
+
+Fri Dec  6 14:54:33 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* README.i18n: new file from Silvia Pfeiffer
+	* it.po: updated from Yuri Bongiorno
+	* byenergy.c: fixed typo "threshholdor"
+
+Thu Dec  5 14:47:11 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_dialogs.c: fixed stupid bug in mp3 extension checking
+	* play.c, notes.c: fixed bug in pitched playback
+	* callbacks.c, view.c: fixed overzealous setting of playmarker
+	on refresh of scrollbar adjustment
+	* play.c: fixed preview cut and preroll, moved out of experimental
+
+Thu Nov 28 14:49:48 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* about_dialogs.c, file_dialogs.c, main.c, preferences.c: applied
+	patch from Andre Pang to fix some compile warnings on OS X
+	* driver_alsa.c: removed naked #include <alsa/asoundlib.h>
+
+Wed Nov 27 23:59:00 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: fixed bug in descriptions of selection actions
+	* paste_dialogs.c, edit.c: fixed paste_mix and paste_xfade, moved
+	out of experimental
+	* sample-display.c, sweep_sample.c: added Ctrl-Arrow Left/Right
+	to move cursor between selection edges
+	* view.c: added remember/zoom to area functionality
+	* view.c: included full first word of plugin names in process menu
+
+Tue Nov 26 12:19:21 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* samplerate.c: updated for libsamplerate-0.0.11
+
+Mon Nov 25 22:44:26 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* configure.in: moved ALSA build out of experimental
+	* driver_alsa.c: updates from Zenaan Harkness
+
+Sat Nov 23 14:35:33 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_dialogs.c: added check of pathname extension before attempting
+	load as mp3; workaround inaccurate guessing of mp3 files (raw PCM
+	is sometimes guessed as mp3 otherwise)
+	* file_speex.c: updated to allow ultra wideband mode (speex-1.0beta3)
+	* sw_chooser.c: added 32 kHz (uwb) mode to samplerate chooser
+	* samplerate.c: updated for libsamplerate-0.0.9, added quality menu
+
+Fri Nov  1 23:09:12 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* question_dialogs.c: switched from syserr_r (broken in glibc) to
+	g_strerror
+
+Thu Oct 31 11:07:29 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* channelops.c: removed broken reference to <samplerate.h>
+
+Wed Oct 30 18:37:01 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* question_dialogs.c: changed syserror_dialog to use strerror_r
+	* preferences.c, driver.c: Solaris compile fixes as outlined in
+	Sourceforge bug report #625528
+	* src/Makefile.am: commented out sweep_LDFLAGS = -Wl,--export as
+	requested by #625528; this was originally in place for Solaris
+	anyway, please advise if this breaks anything.
+
+Wed Oct 30 09:45:33 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_*.c: added file_method to load functions; fixes a 'save' bug
+	* db_ruler.[ch]: new file -- dB ruler
+	* view.c, db_ruler.c: vertical zoom
+	* chanelsops.c: added channel duplicate ops
+
+Sun Oct 27 14:28:27 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* channelops.[ch]: new files -- channel operations
+	* resample.c: added undo for resampling; moved out of experimental
+
+Tue Oct 22 23:58:05 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* configure.in: fixed 'other libs' in check for libspeex
+	* resample.c: new file -- preliminary support for secret rabbit code
+
+21 Oct 2002 07:36:38 +1100 Zenaan Harkness <zen@getsystems.com>
+
+	* view.c: nicer volume & pitch slider adjustments
+
+Sat Oct 19 03:16:19 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_speex.c: new file -- Speex import/export
+
+Thu Oct 17 16:40:53 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_dialogs.c: added "MP3 export unsupported" dialog
+
+Wed Oct 16 10:16:17 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: added check for IDLE in sample_set_progress_ready()
+	* record.c: moved select out of ops_mutex lock
+	* head.c, sample-display.c: fixed tracking of record marker
+	* main.c: added initial question (new file or load file)
+	* question_dialogs.c: added quit_if_no_files stuff
+	* file_sndfile[01].c: added try_raw flags
+	* play.c: fixed rounding error in mixing files of different rate
+
+Mon Oct 14 18:58:21 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sample-display.c: added lock on ops_mutex in draw_data_channel
+
+Mon Oct 14 00:37:44 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_mad.c: new file -- mpeg audio import via libmad
+
+Thu Oct 10 11:38:24 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_sndfile0.c: backported all error checking etc.
+
+Wed Oct  9 18:14:05 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* configure: filled out ogg vorbis checks, and ov_read_float args
+	* file_vorbis.c: put metadata handling in experimental branch, put
+	  in support for old 3 arg ov_read_float ()
+
+Wed Oct 9 00:29:06 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: prettied up "new file" dialog, added remember
+	  functionality, added memory size calculation and filename input
+	* file_sndfile1.c, file_vorbis.c: moved setting of pathname to
+	  occur after a successful save only
+	* file_sndfile1.c, file_vorbis.c: added sweep_perror()s throughout
+	* file_vorbis.c: added stats on file size
+	* question_dialogs.c: added pixmap field (suggested by Silvia)
+
+Tue Oct 8 00:38:13 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: fixed mtime copying in sample_copy
+	* question_dialogs.c: added sweep_perror errno info dialog
+	* file_sndfile1.c: moved perror reporting to sweep_perror
+	* timeouts.c: new file -- thread safe wrapper around gtk_timeout
+	* sweep_sample.c, question_dialogs.c: switched tmp_message and
+	  dialogs to use sweep_timeout to invoke gtk stuff
+	* file_dialogs.c: added file access and dir existence checks
+	* sw_chooser.[ch]: new files -- widgets for choosing samplerate
+	  and channels
+	* sweep_sample.c, file_sndfile1.c: updated to use sw_chooser
+
+Sat Oct  5 11:09:07 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_vorbis.c: added full vorbis encoding options
+	* file_sndfile1.c: added logo etc., turned on DITHER_ON_WRITE
+
+Wed Oct  2 23:44:34 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_vorbis.c: new file -- added Ogg Vorbis import/export
+	* file_dialogs.c, sweep_app.h: made file handling method generic
+
+Sun Sep 29 23:27:02 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: clamped percentage between 0 and 100
+	* play.c: fixed bug in starting position of pitched playback
+	* file_sndfile[01].c: added entry for samplerate in raw PCM load
+
+Wed Sep 25 22:42:12 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* sweep_sample.c: added check for files playing to quit dialogs
+
+Wed Sep 25 17:40:55 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_sndfile0.c: updates for libsndfile0 (for purposes of
+	  backporting -- not recommended and must be explicitly enabled)
+	* edit.c: added check for format compatability in paste ops
+
+Mon Sep 23 23:13:07 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* file_sndfile1.c: fixed percent bug in load/save of very short files
+	* view.c: fixed "ruler assumes 44100 samples/sec" (Debian bug #161721)
+	* sweep_filter.c: fixed cancelling of SweepFilter plugins
+	* ladspameta.c, normalise.c, reverse.c: fixed cancelation of plugins
+
+Sat Sep 21 21:39:22 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* question_dialogs.c: new file -- dialogs for info and questions,
+	  with sample locking
+	* file_*.c: fixed revert, moved back into non-experimental mainline
+	* file_*.c: added monitoring of mtime, and dialogs on save and edit
+	  if file has changed on disk
+	* callbacks.c, view.c: added "are you sure" dialogs when closing or
+	  quitting with modified files
+
+Wed Sep 18 22:20:01 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* play.c: made scrubbing independent of nr. channels (scrub_rate)
+	* ladspameta.c: fixed segv in handling of mono files and filters
+	* callbacks.c: made scrubby stop if space is pressed (so you don't
+	  lose your position by playback continuing when scrubby is released,
+	  suggestion from swh)
+
+Tue Sep 17 21:57:52 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* ladspameta.c: fixed channel de-interleaving/interleaving
+	* ladspameta.c: switched to SweepFilter, instantiated separate
+	  LADSPA_Handle for each iteration & internalised processing loop
+	* ladspameta.c: fixed detection of upper and lower bounds
+	* param.c: changed step relative to upper and lower bounds
+	* ladspameta.c, reverse.c, normalise.c: fixed divide by 0 bug in
+	  calculating percent for regions shorter than 100(ish) samples
+
+Wed Sep 11 00:20:36 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* play.c: made scrubbing independent of sample rate (scrub_rate)
+	* play.c: fixed reverse scrubbing
+	* edit.c, record.c, sweep_filter.c: fixed divide by 0 bug in
+	  calculating percent for regions shorter than 100 samples
+	* edit.c: fixed handling of crop for selections starting at 0 and/or
+	  ending at nr_frames
+	* sweep_undo.c: fixed crash when playing during ALLOC operation
+	  (eg. crop, paste, cut) -- forced stop of sample playback before op.
+
+Sun Sep  8 11:25:43 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* configure: fixed unreported failure in libsndfile detection
+	* configure: added warning if libsndfile0 detected
+	* driver_oss.c: put DEBUG around naked g_print on GETOPTR failure
+	* sample-display.c: reverted Scrubby to always play_all, even
+	  when started within a selection (restricted scrubbing was wierd).
+	* callbacks.c: removed old play_{all,sel}_{looped,once}_cb callbacks
+	* callbacks.c: changed play callbacks to not stop if the play head
+	  is already going, ie. just changing the restriction
+
+Thu Sep  5 21:31:18 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* modified selection modification to invoke scrubbing
+
+Wed Sep  4 15:05:04 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* fixed bug in save as handling reported by Pauline Mak
+
+Tue Sep  3 20:19:49 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* changed storing of last load and save directories to use
+          preferences functions for persistence
+	* added configure summary info for GTK+ and GLib
+	* commented out pixmaps inst hook in toplevel Makefile.am
+	* added non-failing check for gnome-moz-remote
+	* added check for strchr (for NetBSD, from Julio Merino Vidal)
+
+Mon Sep  2 21:35:57 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* added missing third arg to some ioctls, required for NetBSD
+	  port (patch from Julio Merino Vidal)
+	* fixed configure.in to fail when libtdb is not found
+	* added configuration summaries to configure
+	* changed --enable-devel to --enable-experimental
+
+Sun Aug 25 20:18:25 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* added preferences loading/saving (preferences.[ch])
+	* added dependency on libtdb
+
+Tue Aug 13 02:03:08 EST 2002 Conrad Parker <conrad@metadecks.org>
+
+	* version 0.5.0
+	* Everything has changed. Scrubby has you.
+
 Sat May  5 20:51:26 -0500 2001 <ben@slumber.dhs.org>
 
 	* fixed bug in save as handling

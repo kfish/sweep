@@ -28,16 +28,25 @@
 
 sw_view *
 view_new(sw_sample * sample, sw_framecount_t start,
-	 sw_framecount_t end,gfloat vol);
+	 sw_framecount_t end, gfloat gain);
 
 sw_view *
-view_new_all(sw_sample * sample, gfloat vol);
+view_new_all(sw_sample * sample, gfloat gain);
+
+void
+view_popup_context_menu (sw_view * view, guint button, guint32 activate_time);
 
 void
 view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end);
 
 void
 view_center_on (sw_view * view, sw_framecount_t offset);
+
+void
+view_zoom_length (sw_view * view, sw_framecount_t length);
+
+void
+view_zoom_normal (sw_view * view);
 
 void
 view_zoom_in (sw_view * view, double ratio);
@@ -58,7 +67,27 @@ void
 view_zoom_all (sw_view * view);
 
 void
-view_set_playmarker (sw_view * view, int offset);
+view_vzoom_in (sw_view * view, double ratio);
+
+void
+view_vzoom_out (sw_view * view, double ratio);
+
+void
+view_refresh_edit_mode (sw_view * view);
+
+#if 0
+void
+view_set_play_marker (sw_view * view, int play_offset);
+
+void
+view_set_user_marker (sw_view * view, int user_offset);
+#endif
+
+void
+view_refresh_playmode (sw_view * view);
+
+void
+view_set_following (sw_view * view, gboolean following);
 
 void
 view_close(sw_view * view);
@@ -76,6 +105,27 @@ void
 view_default_status (sw_view * view);
 
 void
+view_refresh_tool_buttons (sw_view * v);
+
+void
+view_refresh_offset_indicators (sw_view * v);
+
+void
+view_refresh_rec_offset_indicators (sw_view * view);
+
+void
+view_set_progress_text (sw_view * view, gchar * text);
+
+void
+view_set_progress_percent (sw_view * view, gint percent);
+
+void
+view_set_progress_ready (sw_view * view);
+
+void
+view_set_tmp_message (sw_view * view, gchar * message);
+
+void
 view_refresh_hruler (sw_view * v);
 
 void
@@ -86,6 +136,18 @@ view_refresh_adjustment (sw_view * v);
 
 void
 view_refresh (sw_view * v);
+
+void
+view_refresh_looping (sw_view * v);
+
+void
+view_refresh_playrev (sw_view * view);
+
+void
+view_refresh_mute (sw_view * view);
+
+void
+view_refresh_monitor (sw_view * view);
 
 void
 view_fix_adjustment (sw_view * v);

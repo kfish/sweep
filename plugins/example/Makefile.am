@@ -8,8 +8,8 @@ libdir = $(PACKAGE_PLUGIN_DIR)
 # Here, for the example plugin, we specify the noinst prefix instead of
 # lib to stop it from actually being installed.
 #
-lib_LTLIBRARIES = libexample.la
-#noinst_LTLIBRARIES = libexample.la
+#lib_LTLIBRARIES = libexample.la
+noinst_LTLIBRARIES = libexample.la
 
 libexample_la_SOURCES = example.c
 libexample_la_LDFLAGS = -version-info 1:0:0

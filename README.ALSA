@@ -1,4 +1,28 @@
+Wed Apr 30 2003
+---------------
+
+Support for ALSA 0.9 is functional and could do with widespread testing.
+
+To build with alsa support, simply configure with:
+
+	./configure --enable-alsa
+
+Note that this will build a binary which will work with ALSA only, and
+not attempt to use OSS. In future this will be replaced with plugins
+for different pcm i/o methods, which should ease binary distribution.
+
+Wed Sep 11 2002
+---------------
+
+ALSA native support it currently not working; to even attempt to build the
+code, you must configure with:
+
+	./configure --enable-experimental --enable-alsa
+
+However, Sweep works fine with ALSA under OSS emulation.
+
 Sat Oct  7 2000
+---------------
 
 Support for ALSA (Advanced Linux Sound Architecture) version 0.6.0 was
 added by Paul Barton-Davis <pbd@op.net>.

@@ -21,8 +21,27 @@
 #ifndef __INTERFACE_H__
 #define __INTERFACE_H__
 
+#include "sweep_app.h"
+
 GtkWidget *
 create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data);
+
+GdkColor *
+create_color (int red, int green, int blue);
+
+GtkStyle *
+create_style (GdkColor * fg, GdkColor * bg, gboolean do_grade);
+
+void
+init_styles (void);
+
+GtkWidget *
+create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
+		      const gchar * tip_text, GtkStyle * style,
+		      sw_toolbar_button_type button_type,
+		      GtkSignalFunc clicked,
+		      GtkSignalFunc pressed, GtkSignalFunc released,
+		      gpointer data);
 
 GtkWidget* create_toolbox (void);
 

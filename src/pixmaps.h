@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-
+#if 0
 static char *rect_xpm [] =
 {
   "22 22 61 1",
@@ -182,3 +182,4 @@ static char *magnify_xpm [] =
   "                      ",
   "                      ",
   "                      "};
+#endif

@@ -34,17 +34,21 @@
 #include <sweep/sweep_types.h>
 #include "sweep_app.h"
 
+#include "driver.h"
 #include "callbacks.h"
 #include "file_dialogs.h"
 #include "interface.h"
 #include "about_dialog.h"
 #include "pixmaps.h"
 
-static void
-main_destroy_cb (GtkWidget * widget, gpointer data)
-{
-  gtk_main_quit();
-}
+GtkStyle * style_wb;
+GtkStyle * style_bw;
+GtkStyle * style_LCD;
+GtkStyle * style_light_grey;
+GtkStyle * style_green_grey;
+GtkStyle * style_red_grey;
+GtkStyle * style_dark_grey;
+GtkStyle * style_red;
 
 GtkWidget *
 create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data)
@@ -64,6 +68,169 @@ create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data)
   return gtk_pixmap_new (pixmap_data, mask);
 }
 
+/*
+ * create_color (r, g, b)
+ *
+ * Ripped from grip, Copyright (c) 1998-2002 Mike Oliphant
+ */
+GdkColor *
+create_color (int red, int green, int blue)
+{
+  GdkColor *c;
+
+  c=(GdkColor *)g_malloc(sizeof(GdkColor));
+  c->red=red;
+  c->green=green;
+  c->blue=blue;
+
+  gdk_color_alloc(gdk_colormap_get_system(),c);
+
+  return c;
+}
+
+static gfloat style_color_mods[5]={0.0,-0.1,0.2,-0.2};
+
+/*
+ * create_style()
+ *
+ * Ripped from grip, Copyright (c) 1998-2002 Mike Oliphant
+ */
+GtkStyle *
+create_style (GdkColor * fg, GdkColor * bg, gboolean do_grade)
+{
+  GtkStyle *def;
+  GtkStyle *sty;
+  int state;
+
+  def=gtk_widget_get_default_style();
+  sty=gtk_style_copy(def);
+
+  for(state=0;state<5;state++) {
+    if(fg) sty->fg[state]=*fg;
+
+    if(bg) sty->bg[state]=*bg;
+
+    if(bg && do_grade) {
+      sty->bg[state].red+=sty->bg[state].red*style_color_mods[state];
+      sty->bg[state].green+=sty->bg[state].green*style_color_mods[state];
+      sty->bg[state].blue+=sty->bg[state].blue*style_color_mods[state];
+    }
+  }
+
+  return sty;
+}
+
+void
+init_styles (void)
+{
+  GdkColor gdkblack;
+  GdkColor gdkwhite;
+  GdkColor * color_LCD;
+  GdkColor * color_light_grey;
+  GdkColor * color_green_grey;
+  GdkColor * color_red_grey;
+  GdkColor * color_dark_grey;
+  GdkColor * color_red;
+
+  gdk_color_white(gdk_colormap_get_system(),&gdkwhite);
+  gdk_color_black(gdk_colormap_get_system(),&gdkblack);
+  
+  color_LCD = create_color (33686,38273,29557);
+  color_light_grey = create_color (0xaaaa, 0xaaaa, 0xaaaa);
+  color_green_grey = create_color (0xaaaa, 0xbbbb, 0xaaaa);
+  color_red_grey = create_color (0xd3d3, 0x9898, 0x9898);
+  /*  color_dark_grey = create_color (0x4444,0x4444,0x4444);*/
+  color_dark_grey = create_color (0x5555, 0x5555, 0x5555);
+  color_red = create_color (0xffff, 0x0000, 0x0000);
+
+  style_wb = create_style(&gdkwhite,&gdkblack,FALSE);
+  style_bw = create_style(&gdkblack,&gdkwhite,FALSE);
+  style_LCD = create_style(color_LCD, color_LCD, FALSE);
+  style_light_grey = create_style (color_light_grey, color_light_grey, TRUE);
+#if 0
+  style_green_grey = create_style (color_green_grey, color_green_grey, TRUE);
+#else
+  style_green_grey = style_light_grey;
+#endif
+
+  style_red_grey = create_style (color_red_grey, color_red_grey, TRUE);
+
+#if 0
+  style_dark_grey = create_style(&gdkwhite, color_dark_grey, TRUE);
+#else
+  style_dark_grey = style_light_grey;
+#endif
+
+  style_red = create_style (&gdkblack, color_red, FALSE);
+}
+
+GtkWidget *
+create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
+		      const gchar * tip_text, GtkStyle * style,
+		      sw_toolbar_button_type button_type,
+		      GtkSignalFunc clicked,
+		      GtkSignalFunc pressed, GtkSignalFunc released,
+		      gpointer data)
+{
+  GtkWidget * pixmap;
+  GtkWidget * button;
+  GtkTooltips * tooltips;
+
+  switch (button_type) {
+  case SW_TOOLBAR_TOGGLE_BUTTON:
+    button = gtk_toggle_button_new ();
+    break;
+  case SW_TOOLBAR_RADIO_BUTTON:
+    button = gtk_radio_button_new (NULL);
+    break;
+  case SW_TOOLBAR_BUTTON:
+  default:
+    button = gtk_button_new ();
+    break;
+  }
+
+  if (xpm_data != NULL) {
+    pixmap = create_widget_from_xpm (widget, xpm_data);
+    gtk_widget_show (pixmap);
+    gtk_container_add (GTK_CONTAINER (button), pixmap);
+  }
+
+  if (tip_text != NULL) {
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button, tip_text, NULL);
+  }
+
+  if (style != NULL) {
+    gtk_widget_set_style (button, style);
+  }
+
+  if (clicked != NULL) {
+    gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			GTK_SIGNAL_FUNC(clicked), data);
+  }
+
+  if (pressed != NULL) {
+    gtk_signal_connect (GTK_OBJECT(button), "pressed",
+			GTK_SIGNAL_FUNC(pressed), data);
+  }
+
+  if (released != NULL) {
+    gtk_signal_connect (GTK_OBJECT(button), "released",
+			GTK_SIGNAL_FUNC(released), data);
+  }
+
+  return button;
+}
+
+
+#if 0
+static void
+main_destroy_cb (GtkWidget * widget, gpointer data)
+{
+  gtk_main_quit();
+}
+
+
 GtkWidget*
 create_toolbox (void)
 {
@@ -73,7 +240,7 @@ create_toolbox (void)
   GtkWidget *menubar1;
   GtkWidget *handlebox1;
   GtkWidget *toolbar1;
-  GtkWidget *button1,/*  *button2,*/ *button3;
+  GtkWidget *button1, * button;
   GtkWidget *pixmap1, *pixmap3;
   GtkWidget *menu;
   GtkWidget *menuitem;
@@ -113,7 +280,7 @@ create_toolbox (void)
   menuitem = gtk_menu_item_new_with_label (_("New"));
   gtk_menu_append (GTK_MENU(menu), menuitem);
   gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-		      GTK_SIGNAL_FUNC(sample_new_empty_cb), window1);
+		      GTK_SIGNAL_FUNC(sample_new_empty_cb), NULL);
   gtk_widget_show(menuitem);
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_n, GDK_CONTROL_MASK,
@@ -150,7 +317,7 @@ create_toolbox (void)
 		      GTK_SIGNAL_FUNC(about_dialog_create), NULL);
   gtk_widget_show(menuitem);
 
-
+#if 0
   handlebox1 = gtk_handle_box_new ();
   gtk_widget_show (handlebox1);
   gtk_box_pack_start (GTK_BOX (vbox1), handlebox1, FALSE, FALSE, 0);
@@ -158,6 +325,8 @@ create_toolbox (void)
   toolbar1 = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL, GTK_TOOLBAR_BOTH);
   gtk_widget_show (toolbar1);
   gtk_container_add (GTK_CONTAINER (handlebox1), toolbar1);
+
+  /* SELECT */
 
   pixmap1 = create_widget_from_xpm (toolbar1, rect_xpm);
   gtk_widget_show (pixmap1);
@@ -179,35 +348,86 @@ create_toolbox (void)
   gtk_widget_show (button1);
 
 #if 0
-  button2 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
-					GTK_TOOLBAR_CHILD_RADIOBUTTON,
-					button1, /* Radio group */
+  /* MOVE */
+
+  button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
+				       GTK_TOOLBAR_CHILD_RADIOBUTTON,
+				       button1, /* Radio group */
 					_("Move"),
-					_("Move regions in a sample"),
-					_("With this tool you can move"
-					  " selected regions of a sample."),
-					NULL, /* icon */
-					set_tool_cb, (gpointer)TOOL_MOVE);
-  gtk_widget_show (button2);
+				       _("Move regions in a sample"),
+				       _("With this tool you can move"
+					 " selected regions of a sample."),
+				       NULL, /* icon */
+				       set_tool_cb, (gpointer)TOOL_MOVE);
+  gtk_widget_show (button);
 #endif
+
+  /* SCRUB */
+
+  button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
+				       GTK_TOOLBAR_CHILD_RADIOBUTTON,
+				       button1, /* Radio group */
+				       _("Scrub"),
+				       _("Locate sounds directly"),
+				       _("Place the play marker on a sample."
+					 " Click anywhere in a view to"
+					 " instantly move the playback"
+					 " position to that part of the"
+					 " sample."),
+				       NULL, /* icon */
+				       set_tool_cb, (gpointer)TOOL_SCRUB);
+  gtk_widget_show (button);
+
+  /* ZOOM */
 
   pixmap3 = create_widget_from_xpm (window1, magnify_xpm);
   gtk_widget_show (pixmap3);
 
-  button3 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
-					GTK_TOOLBAR_CHILD_RADIOBUTTON,
-					button1, /* Radio group */
-					_("Zoom"),
-					_("Zoom in & out"),
-					_("Zoom in and out of a view. Click"
-					  " anywhere in a view to zoom in on"
-					  " that part of the sample. Hold"
-					  " down shift and click on the view"
-					  " to zoom out."),
-					pixmap3, /* icon */
-					set_tool_cb, (gpointer)TOOL_ZOOM);
-  gtk_widget_show (button3);
+  button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
+				       GTK_TOOLBAR_CHILD_RADIOBUTTON,
+				       button1, /* Radio group */
+				       _("Zoom"),
+				       _("Zoom in & out"),
+				       _("Zoom in and out of a view. Click"
+					 " anywhere in a view to zoom in on"
+					 " that part of the sample. Hold"
+					 " down shift and click on the view"
+					 " to zoom out."),
+				       pixmap3, /* icon */
+				       set_tool_cb, (gpointer)TOOL_ZOOM);
+  gtk_widget_show (button);
+
+#if 1 /* These need undos! */
+
+  /* PENCIL */
+
+  button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
+				       GTK_TOOLBAR_CHILD_RADIOBUTTON,
+				       button1, /* Radio group */
+				       _("Pencil"),
+				       _("Edit PCM sample values"),
+				       _("When zoomed down to individual "
+					 " samples, click to edit"),
+				       NULL, /* icon */
+				       set_tool_cb, (gpointer)TOOL_PENCIL);
+  gtk_widget_show (button);
+
+  /* NOISE */
+
+  button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar1),
+				       GTK_TOOLBAR_CHILD_RADIOBUTTON,
+				       button1, /* Radio group */
+				       _("Noise"),
+				       _("Add noise"),
+				       _("Randomise PCM values"),
+				       NULL, /* icon */
+				       set_tool_cb, (gpointer)TOOL_NOISE);
+  gtk_widget_show (button);
+#endif
+
+#endif /* TOOLBAR */
 
   return window1;
 }
 
+#endif

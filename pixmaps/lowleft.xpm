@@ -1,0 +1,8 @@
+/* XPM */
+static char * lowleft_xpm[] = {
+"3 3 2 1",
+" 	c None",
+".	c #dedfde",
+".  ",
+".  ",
+"..."};

@@ -24,22 +24,29 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <gtk/gtk.h>
 
 #include "callbacks.h"
 
+#include <sweep/sweep_i18n.h>
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_undo.h>
 #include <sweep/sweep_sample.h>
+#include <sweep/sweep_typeconvert.h>
 
 #include "sample.h"
 #include "interface.h"
 #include "edit.h"
+#include "head.h"
 #include "sample-display.h"
+#include "play.h"
 #include "driver.h"
-
-extern gint current_tool;
+#include "undo_dialog.h"
+#include "paste_dialogs.h"
+#include "print.h"
+#include "record.h"
 
 /*
  * Default zooming parameters.
@@ -54,37 +61,22 @@ extern gint current_tool;
  *
  * where DEFAULT_MIN_ZOOM is defined in view.c
  */
-#define DEFAULT_ZOOM 1.2
+#define DEFAULT_ZOOM 2.0
 
+#define ZOOM_FRAMERATE 10
 
 /* Sample creation */
 
 void
 sample_new_empty_cb (GtkWidget * widget, gpointer data)
 {
-  sw_sample * s;
-  char * directory, * filename;
-  gint nr_channels;
-  gint sample_rate;
-  gint sample_length;
-  sw_view * v;
+  sw_view * view = (sw_view *)data;
 
-  directory = NULL;  /* XXX: Why is this code so poxy? */
-  filename = NULL;
-  nr_channels = 2;
-  sample_rate = 44100;
-  sample_length = 2048;
-
-  s = sample_new_empty(directory,
-		       filename,
-		       nr_channels,
-		       sample_rate,
-		       sample_length);
-  
-  v = view_new_all (s, 1.0);
-  sample_add_view (s, v);
-
-  sample_bank_add(s);
+  if (view == NULL) {
+    create_sample_new_dialog_defaults (NULL);
+  } else {
+    create_sample_new_dialog_like (view->sample);
+  }
 }
 
 void
@@ -100,12 +92,40 @@ sample_new_copy_cb (GtkWidget * widget, gpointer data)
   if(!s) return;
   
   ns = sample_new_copy(s);
+
+  while (ns->color == s->color) {
+    ns->color = (random()) % VIEW_COLOR_MAX;
+  }
+
   v = view_new_all (ns, 1.0);
   sample_add_view (ns, v);
 
   sample_bank_add(ns);
 }
 
+/* Generic repeater */
+
+static void
+view_init_repeater (sw_view * view, GtkFunction function, gpointer data)
+{
+  function (data);
+
+  if (view->repeater_tag <= 0) {
+    view->repeater_tag = gtk_timeout_add ((guint32)1000/ZOOM_FRAMERATE,
+					  function, data);
+  }
+}
+
+void
+repeater_released_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  if (view->repeater_tag > 0) {
+    gtk_timeout_remove (view->repeater_tag);
+    view->repeater_tag = 0;
+  }
+}
 
 /* View */
 
@@ -123,6 +143,21 @@ view_new_all_cb (GtkWidget * widget, gpointer data)
 }
 
 void
+view_new_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+  sw_sample * s;
+  sw_view * view, * v;
+
+  v = sd->view;
+  s = v->sample;
+
+  view = view_new (s, v->start, v->end, s->play_head->gain);
+
+  sample_add_view (s, view);
+}
+
+void
 view_close_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
@@ -136,37 +171,88 @@ view_close_cb (GtkWidget * widget, gpointer data)
 void
 exit_cb (GtkWidget * widget, gpointer data)
 {
-  stop_playback();
-  gtk_main_quit();
+  sweep_quit ();
 }
 
 /* Tools */
 void
 set_tool_cb (GtkWidget * widget, gpointer data)
 {
+#if 0
   gint tool = (gint)data;
 
-  current_tool = tool;
+  /*  current_tool = tool;*/
+#endif
+  g_print ("NOOOOOOOOOOOOOO global current_tool\n");
+}
+
+void
+view_set_tool_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_tool_t tool;
+
+  tool = (sw_tool_t)
+    GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+
+  view->current_tool = tool;
+
+  view_refresh_tool_buttons (view);
 }
 
 /* Zooming */
 
+static gboolean
+zoom_in_step (gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  view_zoom_in (view, DEFAULT_ZOOM);
+
+  return TRUE;
+}
+
 void
 zoom_in_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v = sd->view;
+  sw_view * view = (sw_view *)data;
+  view_zoom_in (view, DEFAULT_ZOOM);
+}
 
-  view_zoom_in (v, DEFAULT_ZOOM);
+static gboolean
+zoom_out_step (gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  view_zoom_out (view, DEFAULT_ZOOM);
+
+  return TRUE;
 }
 
 void
 zoom_out_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v = sd->view;
+  sw_view * view = (sw_view *)data;
+  view_zoom_out (view, DEFAULT_ZOOM);
+}
 
-  view_zoom_out (v, DEFAULT_ZOOM);
+
+void
+zoom_in_pressed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  view_zoom_in (view, DEFAULT_ZOOM);
+  view_init_repeater (view, (GtkFunction)zoom_in_step, data);
+}
+
+void
+zoom_out_pressed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  view_zoom_out (view, DEFAULT_ZOOM);
+  view_init_repeater (view, (GtkFunction)zoom_out_step, data);
 }
 
 void
@@ -199,8 +285,7 @@ zoom_right_cb (GtkWidget * widget, gpointer data)
 void
 zoom_all_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v = sd->view;
+  sw_view * v = (sw_view *)data;
 
   view_zoom_all (v);
 }
@@ -223,74 +308,392 @@ void
 zoom_norm_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s;
+  sw_view * view = sd->view;
 
-  s = sd->view->sample;
-
-  view_set_ends(sd->view, 0, (sd->width) * 4096);
+  view_zoom_normal (view);
 }
 
 void
 zoom_1to1_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s;
 
-  s = sd->view->sample;
+  view_zoom_length (sd->view, sd->width);
+  view_center_on (sd->view, sd->view->sample->user_offset);
+}
 
-  view_set_ends(sd->view, 0, sd->width);
+void
+zoom_center_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+
+  view_center_on (sd->view, sd->view->sample->user_offset);
+}
+
+void
+zoom_combo_changed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  gchar * text;
+  sw_time_t zoom_time;
+  sw_framecount_t zoom_length;
+
+  text = gtk_entry_get_text (GTK_ENTRY(widget));
+
+  if (!strcmp (text, "All")) {
+    view_zoom_all (view);
+  } else {
+    zoom_time = (sw_time_t)strtime_to_seconds (text);
+    if (zoom_time != -1.0) {
+      zoom_length =
+	time_to_frames (view->sample->sounddata->format, zoom_time);
+
+      view_zoom_length (view, zoom_length);
+      
+      /* Work around a bug, probably in gtkcombo, whereby all the other
+       * widgets sometimes lost input after choosing a zoom */
+      gtk_widget_grab_focus (view->display);
+    }
+  }
+}
+
+/* Device config */
+
+void
+device_config_cb (GtkWidget * widget, gpointer data)
+{
+  device_config ();
+}
+
+/* Sample */
+
+void
+sample_set_color_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  gint color;
+
+  color = GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+  sample_set_color (view->sample, color);
 }
 
 /* Playback */
 
 void
-play_view_cb (GtkWidget * widget, gpointer data)
+follow_toggled_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v;
+  sw_view * view = (sw_view *) data;
+  gboolean active;
 
-  v = sd->view;
-
-  play_view_all (v);
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+  view_set_following (view, active);
 }
 
 void
-play_view_all_loop_cb (GtkWidget * widget, gpointer data)
+follow_toggle_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v;
+  sw_view * view = (sw_view *)data;
+  view_set_following (view, !view->following);
+}
 
-  v = sd->view;
+void
+loop_toggled_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  gboolean active;
 
-  play_view_all_loop (v);
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+  sample_set_looping (view->sample, active);
+}
+
+void
+loop_toggle_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sample_set_looping (view->sample, !view->sample->play_head->looping);
+}
+
+void
+playrev_toggled_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  gboolean active;
+
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+  sample_set_playrev (view->sample, active);
+}
+
+void
+playrev_toggle_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sample_set_playrev (view->sample, !view->sample->play_head->reverse);
+}
+
+void
+mute_toggled_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  gboolean active;
+
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+  sample_set_mute (view->sample, active);
+}
+
+void
+mute_toggle_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sample_set_mute (view->sample, !view->sample->play_head->mute);
+}
+
+void
+monitor_toggled_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  gboolean active;
+
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+  sample_set_monitor (view->sample, active);
+}
+
+void
+monitor_toggle_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sample_set_monitor (view->sample, !view->sample->play_head->monitor);
+}
+
+void
+play_view_button_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  sw_head * head = view->sample->play_head;
+  gboolean was_restricted = head->restricted;
+
+  head_set_rate (head, 1.0);
+  /*  head_set_restricted (head, FALSE);*/
+
+  if (head->going && (head->scrubbing || !was_restricted)) {
+    pause_playback_cb (widget, data);
+  } else {
+    play_view_all (view);
+  }
+}
+
+void
+play_view_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  sw_head * head = view->sample->play_head;
+
+  head_set_rate (head, 1.0);
+  /*  head_set_restricted (head, FALSE);*/
+
+  if (head->going) {
+    pause_playback_cb (widget, data);
+  } else {
+    play_view_all (view);
+  }
+}
+
+void
+play_view_sel_button_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+  sw_head * head = view->sample->play_head;
+  gboolean was_restricted = head->restricted;
+
+  if (view->sample->sounddata->sels == NULL) {
+    play_view_cb (widget, data);
+    return;
+  }
+
+  head_set_rate (head, 1.0);
+  /*  head_set_restricted (head, TRUE);*/
+
+  if (head->going && (head->scrubbing || was_restricted)) {
+    pause_playback_cb (widget, data);
+  } else {
+    play_view_sel (view);
+  }
 }
 
 void
 play_view_sel_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v;
+  sw_view * view = (sw_view *) data;
+  sw_head * head = view->sample->play_head;
 
-  v = sd->view;
+  if (view->sample->sounddata->sels == NULL) {
+    play_view_cb (widget, data);
+    return;
+  }
 
-  play_view_sel (v);
+  head_set_rate (head, 1.0);
+  /*  head_set_restricted (head, TRUE);*/
+
+  if (head->going) {
+    pause_playback_cb (widget, data);
+  } else {
+    play_view_sel (view);
+  }
 }
 
 void
-play_view_sel_loop_cb (GtkWidget * widget, gpointer data)
+pause_playback_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_view * v;
+  sw_view * view = (sw_view *)data;
 
-  v = sd->view;
-
-  play_view_sel_loop (v);
+  pause_playback (view->sample);
 }
 
 void
 stop_playback_cb (GtkWidget * widget, gpointer data)
 {
-  stop_playback ();
+  sw_view * view = (sw_view *)data;
+
+  stop_playback (view->sample);
+}
+
+void
+preview_cut_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+
+  sample_refresh_playmode (view->sample);
+
+  if (view->sample->sounddata->sels != NULL) {
+    play_preview_cut (view);
+  } else {
+    play_preroll (view);
+  }
+}
+
+void
+preroll_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *) data;
+
+  sample_refresh_playmode (view->sample);
+  
+  play_preroll (view);
+}
+
+/* Record */
+
+void
+show_rec_dialog_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  rec_dialog_create (view->sample);
+}
+
+/* Transport */
+
+static gboolean
+rewind_step (gpointer data)
+{
+  sw_sample * sample = (sw_sample *)data;
+  gint step;
+
+  step = sample->sounddata->format->rate; /* 1 second */
+  sample_set_playmarker (sample, sample->user_offset - step, TRUE);
+
+  return TRUE;
+}
+
+static gboolean
+ffwd_step (gpointer data)
+{
+  sw_sample * sample = (sw_sample *)data;
+  gint step;
+
+  step = sample->sounddata->format->rate; /* 1 second */
+  sample_set_playmarker (sample, sample->user_offset + step, TRUE);
+
+  return TRUE;
+}
+
+void
+page_back_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+  gint step;
+
+  step = MIN(sample->sounddata->format->rate, (view->end - view->start));
+  sample_set_playmarker (sample, sample->user_offset - step, TRUE);
+}
+
+void
+page_fwd_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+  gint step;
+
+  step = MIN(sample->sounddata->format->rate, (view->end - view->start));
+  sample_set_playmarker (sample, sample->user_offset + step, TRUE);
+}
+
+void
+rewind_pressed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  view_init_repeater (view, (GtkFunction)rewind_step, sample);
+}
+
+void
+ffwd_pressed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  view_init_repeater (view, (GtkFunction)ffwd_step, sample);
+}
+
+void
+goto_start_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  sample_set_scrubbing (sample, FALSE);
+  sample_set_playmarker (sample, 0, TRUE);
+}
+
+void
+goto_start_of_view_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  sample_set_scrubbing (sample, FALSE);
+  sample_set_playmarker (sample, view->start, TRUE);
+}
+
+void
+goto_end_of_view_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  sample_set_scrubbing (sample, FALSE);
+  sample_set_playmarker (sample, view->end, TRUE);
+}
+
+void
+goto_end_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * sample = view->sample;
+
+  sample_set_scrubbing (sample, FALSE);
+  sample_set_playmarker (sample, sample->sounddata->nr_frames, TRUE);
 }
 
 /* Interface elements: sample display, scrollbars etc. */
@@ -332,6 +735,30 @@ adj_changed_cb (GtkWidget * widget, gpointer data)
   view_refresh_hruler (v);
 }
 
+void
+adj_value_changed_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * v = (sw_view *)data;
+  SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
+
+  if (!v->sample->play_head->going || !v->following) {
+
+    gtk_signal_handler_block_by_data (GTK_OBJECT(sd), v);
+    sample_display_set_window(sd,
+			      (gint)adj->value,
+			      (gint)(adj->value + adj->page_size));
+    gtk_signal_handler_unblock_by_data (GTK_OBJECT(sd), v);
+  }
+
+  if (v->following) {
+    if (v->sample->user_offset < adj->value ||
+	v->sample->user_offset > adj->value + adj->page_size)
+      sample_set_playmarker (v->sample, adj->value + adj->page_size/2, TRUE);
+  }
+
+  view_refresh_hruler (v);  
+}
 
 /* Selection */
 
@@ -341,8 +768,6 @@ select_invert_cb (GtkWidget * widget, gpointer data)
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
 
   sample_selection_invert (sd->view->sample);
-
-  sample_refresh_views (sd->view->sample);
 }
 
 void
@@ -351,8 +776,6 @@ select_all_cb (GtkWidget * widget, gpointer data)
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
 
   sample_selection_select_all (sd->view->sample);
-
-  sample_refresh_views (sd->view->sample);
 }
 
 void
@@ -361,37 +784,81 @@ select_none_cb (GtkWidget * widget, gpointer data)
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
 
   sample_selection_select_none (sd->view->sample);
-
-  sample_refresh_views (sd->view->sample);
 }
 
+void
+selection_halve_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+
+  sample_selection_halve (sd->view->sample);
+}
+
+void
+selection_double_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+
+  sample_selection_double (sd->view->sample);
+}
+
+void
+select_shift_left_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+
+  sample_selection_shift_left (sd->view->sample);
+}
+
+void
+select_shift_right_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+
+  sample_selection_shift_right (sd->view->sample);
+}
 
 /* Undo / Redo */
 
 void
+show_undo_dialog_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  undo_dialog_create (view->sample);
+}
+
+void
 undo_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+  sw_view * view = (sw_view *)data;
 
-  undo_current (sd->view->sample);
+  undo_current (view->sample);
 }
 
 void
 redo_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+  sw_view * view = (sw_view *)data;
 
-  redo_current (sd->view->sample);
+  redo_current (view->sample);
 }
 
+void
+cancel_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  cancel_active_op (view->sample);
+}
 
 /* Edit */
 
 void
 copy_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s = sd->view->sample;
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
 
   do_copy (s);
 }
@@ -399,8 +866,8 @@ copy_cb (GtkWidget * widget, gpointer data)
 void
 cut_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s = sd->view->sample;
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
 
   do_cut (s);
 }
@@ -408,8 +875,8 @@ cut_cb (GtkWidget * widget, gpointer data)
 void
 clear_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s = sd->view->sample;
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
 
   do_clear (s);
 }
@@ -417,33 +884,75 @@ clear_cb (GtkWidget * widget, gpointer data)
 void
 delete_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s = sd->view->sample;
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
 
   do_delete (s);
 }
 
 void
+crop_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
+
+  do_crop (s);
+}
+
+void
 paste_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  sw_sample * s = sd->view->sample;
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
 
-  do_paste_at (s);
+  do_paste_insert (s);
+}
+
+void
+paste_mix_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
+
+  if (clipboard_width() > 0) {
+    create_paste_mix_dialog (s);
+  } else {
+    sample_set_tmp_message (s, _("Clipboard empty"));
+  }
+}
+
+void
+paste_xfade_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+  sw_sample * s = view->sample;
+
+  if (clipboard_width() > 0) {
+    create_paste_xfade_dialog (s);
+  } else {
+    sample_set_tmp_message (s, _("Clipboard empty"));
+  }
 }
 
 void
 paste_as_new_cb (GtkWidget * widget, gpointer data)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_sample * s;
   sw_view * v;
 
-  do_paste_as_new (sd->view->sample, &s);
-
+  s = do_paste_as_new ();
+  
   if (s) {
     v = view_new_all (s, 1.0);
     sample_add_view (s, v);
+    sample_bank_add (s);
   }
 }
 
+void
+show_info_dialog_cb (GtkWidget * widget, gpointer data)
+{
+  sw_view * view = (sw_view *)data;
+
+  sample_show_info_dialog (view->sample);
+}

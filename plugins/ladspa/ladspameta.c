@@ -38,6 +38,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <sweep/sweep.h>
+#include "../src/sweep_app.h"
 
 #include "ladspa.h"
 
@@ -114,18 +115,20 @@ get_valid_mask (const LADSPA_PortRangeHintDescriptor prhd)
   int ret=0;
 
   if (LADSPA_IS_HINT_BOUNDED_BELOW(prhd))
-    ret &= SW_RANGE_LOWER_BOUND_VALID;
+    ret |= SW_RANGE_LOWER_BOUND_VALID;
   if (LADSPA_IS_HINT_BOUNDED_ABOVE(prhd))
-    ret &= SW_RANGE_UPPER_BOUND_VALID;
+    ret |= SW_RANGE_UPPER_BOUND_VALID;
 
   return ret;
 }
 
 static sw_param_range *
-convert_constraint (const LADSPA_PortRangeHint * prh)
+convert_constraint ( /* sw_format * format, */
+		    const LADSPA_PortRangeHint * prh)
 {
   sw_param_range * pr;
   LADSPA_PortRangeHintDescriptor prhd = prh->HintDescriptor;
+  LADSPA_Data lower, upper;
 
   if (LADSPA_IS_HINT_TOGGLED(prhd))
     return NULL;
@@ -134,16 +137,29 @@ convert_constraint (const LADSPA_PortRangeHint * prh)
 
   pr->valid_mask = get_valid_mask (prhd);
 
+  lower = prh->LowerBound;
+  upper = prh->UpperBound;
+
+  if LADSPA_IS_HINT_SAMPLE_RATE (prhd) {
+#if 0
+    lower *= format->rate;
+    upper *= format->rate;
+#else
+    lower *= 44100;
+    upper *= 44100;
+#endif
+  }
+
   if (LADSPA_IS_HINT_INTEGER(prhd)) {
     if (LADSPA_IS_HINT_BOUNDED_BELOW(prhd))
-      pr->lower.i = (sw_int)prh->LowerBound;
+      pr->lower.i = (sw_int)lower;
     if (LADSPA_IS_HINT_BOUNDED_ABOVE(prhd))
-      pr->upper.i = (sw_int)prh->UpperBound;
+      pr->upper.i = (sw_int)upper;
   } else {
     if (LADSPA_IS_HINT_BOUNDED_BELOW(prhd))
-      pr->lower.f = (sw_float)prh->LowerBound;
+      pr->lower.f = (sw_float)lower;
     if (LADSPA_IS_HINT_BOUNDED_ABOVE(prhd))
-      pr->upper.f = (sw_float)prh->UpperBound;
+      pr->upper.f = (sw_float)upper;
   }
 
   return pr;
@@ -170,32 +186,139 @@ lm_custom_new (const LADSPA_Descriptor * d, sw_param_spec * param_specs)
   return lmc;
 }
 
+static sw_param
+convert_default (sw_format * format, const LADSPA_PortRangeHint * prh)
+{
+  LADSPA_PortRangeHintDescriptor prhd = prh->HintDescriptor;
+  LADSPA_Data lower, upper;
+  gboolean bounded = FALSE;
+  sw_float def = 0.0;
+  sw_param param;
+
+  /* Cache whether or not this port is bounded */
+  bounded = LADSPA_IS_HINT_BOUNDED_BELOW (prhd) &&
+    LADSPA_IS_HINT_BOUNDED_ABOVE (prhd);
+
+  lower = prh->LowerBound;
+  upper = prh->UpperBound;
+
+  if LADSPA_IS_HINT_SAMPLE_RATE (prhd) {
+    lower *= format->rate;
+    upper *= format->rate;
+  }
+
+  /* Determine default value, as sw_float */
+
+  if (!LADSPA_IS_HINT_HAS_DEFAULT (prhd)) {
+    def = 0.0;
+  } else if (LADSPA_IS_HINT_DEFAULT_MINIMUM (prhd)) {
+    def = prh->LowerBound;
+  } else if (bounded && LADSPA_IS_HINT_DEFAULT_LOW (prhd)) {
+    if (LADSPA_IS_HINT_LOGARITHMIC (prhd)) {
+      def = exp(log(lower) * 0.75 + log(upper) * 0.25);
+    } else {
+      def = lower * 0.75 + upper * 0.25;
+    }
+  } else if (bounded && LADSPA_IS_HINT_DEFAULT_MIDDLE (prhd)) {
+    if (LADSPA_IS_HINT_LOGARITHMIC (prhd)) {
+      exp(log(lower) * 0.5 + log(upper) * 0.5);
+    } else {
+      def = lower * 0.5 + upper * 0.5;
+    }
+  } else if (bounded && LADSPA_IS_HINT_DEFAULT_HIGH (prhd)) {
+    if (LADSPA_IS_HINT_LOGARITHMIC (prhd)) {
+      exp(log(lower) * 0.25 + log(upper) * 0.75);
+    } else {
+      def = lower * 0.25 + upper * 0.75;
+    }
+  } else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM (prhd)) {
+    def = prh->UpperBound;
+  } else if (LADSPA_IS_HINT_DEFAULT_0 (prhd)) {
+    def = 0.0;
+  } else if (LADSPA_IS_HINT_DEFAULT_1 (prhd)) {
+    def = 1.0;
+  } else if (LADSPA_IS_HINT_DEFAULT_100 (prhd)) {
+    def = 100.0;
+  } else if (LADSPA_IS_HINT_DEFAULT_440 (prhd)) {
+    def = 440.0;
+  } else {
+    def = 0.0;
+  }
+
+  /* Convert to sw_param type */
+
+  if (LADSPA_IS_HINT_TOGGLED (prhd)) {
+    param.b = (sw_bool)def;
+  } else if (LADSPA_IS_HINT_INTEGER (prhd)) {
+    param.i = (sw_int)def;
+  } else {
+    param.f = (sw_float)def;
+  }
+
+  return param;
+}
+
 static void
-ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
-			  gint nr_frames,
-			  sw_param_set pset, gpointer custom_data)
+ladspa_meta_suggest (sw_sample * sample, sw_param_set pset,
+		     gpointer custom_data)
+{
+  sw_sounddata * sounddata;
+  lm_custom * lm = (lm_custom *)custom_data;
+  const LADSPA_Descriptor * d = lm->d;
+
+  LADSPA_PortDescriptor pd;
+  int i, pset_i = 0;
+
+  sounddata = sample_get_sounddata (sample);
+
+  for (i=0; i < d->PortCount; i++) {
+    pd = d->PortDescriptors[i];
+    if (LADSPA_IS_CONTROL_INPUT(pd)) {
+      pset[pset_i] = convert_default (sounddata->format,
+				      &d->PortRangeHints[i]);
+      pset_i++;
+    }
+  }
+
+}
+
+#define BLOCK_SIZE 1024
+
+static sw_sample *
+ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
+			  gpointer custom_data)
 {
   lm_custom * lm = (lm_custom *)custom_data;
   const LADSPA_Descriptor * d = lm->d;
   sw_param_spec * param_specs = lm->param_specs;
 
-  LADSPA_Handle * handle;
-  LADSPA_Data ** input_buffers, ** output_buffers;
-  LADSPA_Data * mono_input_buffer=NULL;
-  LADSPA_Data * p;
-  LADSPA_Data * control_inputs;
-  LADSPA_Data dummy_control_output;
-  LADSPA_PortDescriptor pd;
-  glong length_b;
-  gulong port_i; /* counter for iterating over ports */
-  gint i, j, n;
+  sw_sounddata * sounddata;
+  sw_format * format;
+  sw_framecount_t op_total, run_total;
+  sw_framecount_t offset, remaining, n;
+
+  GList * gl;
+  sw_sel * sel;
+
+  gpointer pcmdata;
 
   /* The number of times the plugin will be run; ie. if the number of
    * channels in the input pcmdata is greater than the number of
    * audio ports on the ladspa plugin, the plugin will be run
    * multiple times until enough output channels have been calculated.
    */
-  gint iterations;
+  gint nr_handles;
+
+  LADSPA_Handle ** handles;
+  LADSPA_Data ** input_buffers, ** output_buffers;
+  LADSPA_Data * mono_input_buffers[1], * mono_output_buffers[1];
+  LADSPA_Data * p;
+  LADSPA_Data * control_inputs;
+  LADSPA_Data dummy_control_output;
+  LADSPA_PortDescriptor pd;
+  glong length_b;
+  gulong port_i; /* counter for iterating over ports */
+  gint h, i, j, c;
 
   /* Enumerate the numbers of each type of port on the ladspa plugin */
   gint
@@ -205,7 +328,7 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
     nr_ao=0; /* audio outputs */
 
   /* The number of audio channels to be processed */
-  gint nr_channels = format->channels;
+  gint nr_channels;
 
   /* The number of input and output buffers to use */
   gint nr_i=0, nr_o=0;
@@ -213,9 +336,17 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
   /* Counters for allocating input and output buffers */
   gint ibi=0, obi=0;
 
+  gboolean active = TRUE;
 
-  /* instantiate the ladspa plugin */
-  handle = d->instantiate (d, (long)format->rate);
+  g_return_val_if_fail (d != NULL, NULL);
+
+  sounddata = sample_get_sounddata (sample);
+  format = sounddata->format;
+  nr_channels = format->channels;
+
+  op_total = sounddata_selection_nr_frames (sounddata) / 100;
+  if (op_total == 0) op_total = 1;
+  run_total = 0;
 
   /* Cache how many of each type of port this ladspa plugin has */
   for (port_i=0; port_i < d->PortCount; port_i++) {
@@ -242,13 +373,15 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
    */
   g_assert (nr_ao > 0);
 
-  iterations = (gint) ceil(((double)nr_channels) / ((double)nr_ao));
+  nr_handles = (gint) ceil(((double)nr_channels) / ((double)nr_ao));
 
   /* Numbers of input and output buffers: ensure
    * nr_i >= nr_channels && nr_o >= nr_channels
    */
-  nr_i = iterations * nr_ai;
-  nr_o = iterations * nr_ao;
+  nr_i = nr_handles * nr_ai;
+  nr_o = nr_handles * nr_ao;
+
+  /* Create all input and output buffers */
 
   if ((nr_channels == 1) && (nr_ai == 1) && (nr_ao >= 1)) {
     /*
@@ -256,19 +389,22 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
      * Attempt to do this in place.
      */
 
-    /* Copy PCM data if this ladspa plugin cannot work inplace */
+    /* Create an input buffer if this ladspa plugin cannot work inplace */
     if (LADSPA_META_IS_INPLACE_BROKEN(d->Properties)) {
-      length_b = frames_to_bytes (format, nr_frames);
-      mono_input_buffer = g_malloc (length_b);
-      input_buffers = &mono_input_buffer;
+      length_b = frames_to_bytes (format, BLOCK_SIZE);
+      mono_input_buffers[0] = g_malloc (length_b);
     } else {
-      input_buffers = (LADSPA_Data **)&pcmdata;
+      /* Input directly from sample data; mark as NULL */
+      mono_input_buffers[0] = NULL;
     }
-    
-    output_buffers = (LADSPA_Data **)&pcmdata;
+    input_buffers = mono_input_buffers;
+
+    /* Always output directly into the sample data; mark as NULL */
+    mono_output_buffers[0] = NULL;
+    output_buffers = mono_output_buffers;
 
   } else {
-    length_b = LADSPA_frames_to_bytes (nr_frames);
+    length_b = LADSPA_frames_to_bytes (BLOCK_SIZE);
 
     /* Allocate zeroed input buffers; these will remain zeroed
      * if there aren't enough channels in the input pcmdata
@@ -301,25 +437,10 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
     }
   }
 
-  /* Copy data into input buffers */
-  if (nr_channels == 1) {
-    if (!LADSPA_META_IS_INPLACE_BROKEN(d->Properties)) {
-      length_b = frames_to_bytes (format, nr_frames);
-      memcpy (input_buffers[0], pcmdata, length_b);
-    } /* else we're processing in-place, so we haven't needed to set
-       * up a separate input buffer; input_buffers[0] actually
-       * points to pcmdata hence we don't do any copying here.
-       */
-  } else {
-    /* de-interleave multichannel data */
-
-    p = (LADSPA_Data *)pcmdata;
-
-    for (n=0; n < nr_channels; n++) {
-      for (i=0; i < nr_frames; i++) {
-	input_buffers[n][i] = *p++;
-      }
-    }
+  /* instantiate the ladspa plugin */
+  handles = g_malloc (sizeof (LADSPA_Handle *) * nr_handles);
+  for (h = 0; h < nr_handles; h++) {
+    handles[h] = d->instantiate (d, (long)format->rate);
   }
 
   /* connect control ports */
@@ -349,65 +470,143 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
 	g_assert_not_reached ();
 	break;
       }
-      d->connect_port (handle, port_i, &control_inputs[j]);
+
+      for (h = 0; h < nr_handles; h++) {
+	d->connect_port (handles[h], port_i, &control_inputs[j]);
+      }
+
       j++;
     }
     if (LADSPA_IS_CONTROL_OUTPUT(pd)) {
-      d->connect_port (handle, port_i, &dummy_control_output);
+      for (h = 0; h < nr_handles; h++) {
+	d->connect_port (handles[h], port_i, &dummy_control_output);
+      }
     }
   }
 
-  /* run the plugin as many times as necessary */
-  while (iterations--) {
-
-    /* connect input and output audio buffers to the
-     * audio ports of the ladspa plugin */
-    for (port_i=0; port_i < d->PortCount; port_i++) {
-      pd = d->PortDescriptors[(int)port_i];
-      if (LADSPA_IS_AUDIO_INPUT(pd)) {
-	d->connect_port (handle, port_i, input_buffers[ibi++]);
-      }
-      if (LADSPA_IS_AUDIO_OUTPUT(pd)) {
-	d->connect_port (handle, port_i, output_buffers[obi++]);
-      }
+  /* activate the ladspa plugin */
+  if (d->activate) {
+    for (h = 0; h < nr_handles; h++) {
+      d->activate (handles[h]);
     }
-
-    /* activate the ladspa plugin */
-    if (d->activate)
-      d->activate (handle);
-
-    /* run the ladspa plugin */
-    d->run (handle, nr_frames);
-
-    /* deactivate the ladspa plugin */
-    if (d->deactivate)
-      d->deactivate (handle);
   }
 
-  /* re-interleave data */
-  if (nr_channels > 1) {
-    p = (LADSPA_Data *)pcmdata;
+  /* run the plugin on selection regions */
+  for (gl = sounddata->sels; active && gl; gl = gl->next) {
+    sel = (sw_sel *)gl->data;
 
-    for (n=0; n < nr_channels; n++) {
-      for (i=0; i < nr_frames; i++) {
-	*p++ = output_buffers[n][i];
+    offset = 0;
+    remaining = sel->sel_end - sel->sel_start;
+
+    while (active && remaining > 0) {
+      g_mutex_lock (sample->ops_mutex);
+
+      if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
+	active = FALSE;
+      } else { /* cancel */
+	pcmdata = sounddata->data +
+	  frames_to_bytes (format, sel->sel_start + offset);
+
+	n = MIN(remaining, BLOCK_SIZE);
+
+	/* Copy data into input buffers */
+	if (nr_channels == 1) {
+	  if (LADSPA_META_IS_INPLACE_BROKEN(d->Properties)) {
+	    length_b = frames_to_bytes (format, n);
+	    memcpy (input_buffers[0], pcmdata, length_b);
+	  } else {
+	    /* we're processing in-place, so we haven't needed to set
+	     * up a separate input buffer; input_buffers[0] actually
+	     * points to pcmdata hence we don't do any copying here.
+	     */
+	    input_buffers[0] = (LADSPA_Data *)pcmdata;
+	  }
+	  
+	  output_buffers[0] = (LADSPA_Data *)pcmdata;
+	  
+	} else {
+	  /* de-interleave multichannel data */
+	  
+	  p = (LADSPA_Data *)pcmdata;
+	  
+	  for (i=0; i < n; i++) {
+	    for (c=0; c < nr_channels; c++) {
+	      input_buffers[c][i] = *p++;
+	    }
+	  }
+	}
+
+	g_assert (input_buffers[0] != NULL);
+	g_assert (output_buffers[0] != NULL);
+
+	/* connect input and output audio buffers to the
+	 * audio ports of the ladspa plugin */
+	ibi = 0; obi = 0;
+	for (h = 0; h < nr_handles; h++) {
+	  for (port_i=0; port_i < d->PortCount; port_i++) {
+	    pd = d->PortDescriptors[(int)port_i];
+	    if (LADSPA_IS_AUDIO_INPUT(pd)) {
+	      d->connect_port (handles[h], port_i, input_buffers[ibi++]);
+	    }
+	    if (LADSPA_IS_AUDIO_OUTPUT(pd)) {
+	      d->connect_port (handles[h], port_i, output_buffers[obi++]);
+	    }
+	  }
+	}
+
+	/* run the ladspa plugin */
+	for (h = 0; h < nr_handles; h++) {
+	  d->run (handles[h], n);
+	}
+
+	/* re-interleave data */
+	if (nr_channels > 1) {
+	  p = (LADSPA_Data *)pcmdata;
+	  
+	  for (i=0; i < n; i++) {
+	    for (c=0; c < nr_channels; c++) {
+	      *p++ = output_buffers[c][i];
+	    }
+	  }
+	}
+	
+	remaining -= n;
+	offset += n;
+
+	run_total += n;
+	sample_set_progress_percent (sample, run_total / op_total);
       }
+
+      g_mutex_unlock (sample->ops_mutex);
+    }
+  }
+
+  /* deactivate the ladspa plugin */
+  if (d->deactivate) {
+    for (h = 0; h < nr_handles; h++) {
+      d->deactivate (handles[h]);
     }
   }
 
   /* let the ladspa plugin clean up after itself */
-  if (d->cleanup)
-    d->cleanup (handle);
+  if (d->cleanup) {
+    for (h = 0; h < nr_handles; h++) {
+      d->cleanup (handles[h]);
+    }
+  }
 
+  /* free the array of handles */
+  g_free (handles);
+  
   /* free the input and output buffers */
   if (control_inputs) g_free (control_inputs);
-
+  
   if ((nr_channels == 1) && (nr_ai == 1) && (nr_ao >= 1)) {
     if (LADSPA_META_IS_INPLACE_BROKEN(d->Properties)) {
-      g_free (mono_input_buffer);
+      g_free (mono_input_buffers[0]);
     }
   } else {
-
+    
     /* free the output buffers */
     for (i=0; i < nr_o; i++) {
       g_free (output_buffers[i]);
@@ -429,6 +628,8 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
     }
     g_free (input_buffers);  
   }
+
+  return sample;
 }
 
 static sw_op_instance *
@@ -439,9 +640,9 @@ ladspa_meta_apply (sw_sample * sample,
   const LADSPA_Descriptor * d = lm->d;
 
   return
-    perform_filter_region_op (sample, (char *)d->Name,
-			      (SweepFilterRegion)ladspa_meta_apply_region,
-			      pset, custom_data);
+    perform_filter_op (sample, (char *)d->Name,
+		       (SweepFilter)ladspa_meta_apply_filter,
+		       pset, custom_data);
 }
 
 /*
@@ -478,9 +679,9 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 	continue;
 
       proc = g_malloc0 (sizeof (*proc));
-      proc->name = d->Name;
-      proc->author = d->Maker;
-      proc->copyright = d->Copyright;
+      proc->name = (gchar *)d->Name;
+      proc->author = (gchar *)d->Maker;
+      proc->copyright = (gchar *)d->Copyright;
 
       nr_params=0;
       for (j=0; j < d->PortCount; j++) {
@@ -498,8 +699,8 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
       for (j=0; j < d->PortCount; j++) {
 	pd = d->PortDescriptors[j];
 	if (LADSPA_IS_CONTROL_INPUT(pd)) {
-	  proc->param_specs[k].name = d->PortNames[j];
-	  proc->param_specs[k].desc = d->PortNames[j];
+	  proc->param_specs[k].name = (gchar *)d->PortNames[j];
+	  proc->param_specs[k].desc = (gchar *)d->PortNames[j];
 	  proc->param_specs[k].type =
 	    convert_type (d->PortRangeHints[j].HintDescriptor);
 	  valid_mask = get_valid_mask (d->PortRangeHints[j].HintDescriptor);
@@ -513,6 +714,8 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 	  k++;
 	}
       }
+
+      proc->suggest = ladspa_meta_suggest;
 
       proc->apply = ladspa_meta_apply;
 

@@ -28,19 +28,33 @@
 #  include <libintl.h>
 #  undef _
 #  define _(String) dgettext (PACKAGE, String)
+
+#  define gettext_noop(String) String
+#  define N_(String) gettext_noop(String)
+
+/*
 #  ifdef gettext_noop
 #    define N_(String) gettext_noop (String)
 #  else
-#    define N_(String) (String)
+#    define N_(String) ("NOT TRANSLATED")
 #  endif
+*/
+
 #else
 #  define textdomain(String) (String)
 #  define gettext(String) (String)
 #  define dgettext(Domain,Message) (Message)
 #  define dcgettext(Domain,Message,Type) (Message)
 #  define bindtextdomain(Domain,Directory) (Domain)
+
+#ifdef DEVEL_CODE
+#  define _(String) ("UNTRANSLATED")
+#  define N_(String) ("UNTRANSLATED")
+#else
 #  define _(String) (String)
 #  define N_(String) (String)
+#endif
+
 #endif
 
 #endif /* __I18N_H__ */

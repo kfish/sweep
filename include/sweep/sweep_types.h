@@ -23,6 +23,13 @@
 
 #include <glib.h>
 #include <gdk/gdktypes.h>  /* XXX: for GdkModifierType */
+#include <gtk/gtk.h> /* XXX: for info_clist widget */
+
+#include <sys/types.h>
+
+/*
+#include <config.h>
+*/
 
 /*
  * Basic types
@@ -44,7 +51,21 @@ typedef gdouble sw_audio_intermediate_t;
 typedef gfloat sw_time_t;
 
 /* Frame Counts */
-typedef gint sw_framecount_t;
+#if 0
+
+#if (SIZEOF_OFF_T == 8) 
+/* For libsndfile version 1 */
+typedef off_t sw_framecount_t;
+#else
+typedef int sw_framecount_t;
+#endif
+
+#else
+
+typedef int sw_framecount_t;
+#define FRAMECOUNT_MAX INT_MAX
+
+#endif
 
 
 /*
@@ -84,6 +105,8 @@ struct _sw_format {
 };
 
 struct _sw_sounddata {
+  int refcount;
+
   sw_format * format;
   sw_framecount_t nr_frames;    /* nr frames */
 
@@ -95,23 +118,43 @@ struct _sw_sounddata {
 
 #define SW_DIR_LEN 256
 
-/*
- * sw_sample
- */
-struct _sw_sample {
-  sw_sounddata * sounddata;
-  GList * views;
 
-  gchar * filename;
-  gchar directory[SW_DIR_LEN];
+typedef enum {
+  SWEEP_EDIT_MODE_READY,
+  SWEEP_EDIT_MODE_META, /* modifying metadata: sels etc. */
+  SWEEP_EDIT_MODE_FILTER,
+  SWEEP_EDIT_MODE_ALLOC,
+} sw_edit_mode;
 
-  GList * registered_ops;
-  GList * current_undo;
-  GList * current_redo;
+typedef enum {
+  SWEEP_EDIT_STATE_IDLE,
+  SWEEP_EDIT_STATE_PENDING,
+  SWEEP_EDIT_STATE_BUSY,
+  SWEEP_EDIT_STATE_DONE,
+  SWEEP_EDIT_STATE_CANCEL,
+} sw_edit_state;
 
-  sw_sel * tmp_sel; /* Temporary selection, used while selecting */
-  gint playmarker_tag; /* gtk_timeout tag for playmarkers */
-};
+typedef enum {
+  SWEEP_TRANSPORT_STOP,
+  SWEEP_TRANSPORT_PLAY,
+  SWEEP_TRANSPORT_PLAY_SEL,
+} sw_transport_type;
+
+/* File formats */
+typedef enum {
+  SWEEP_FILE_FORMAT_NONE=0,
+  SWEEP_FILE_FORMAT_BY_EXTENSION=0,
+  SWEEP_FILE_FORMAT_RAW,
+  SWEEP_FILE_FORMAT_WAV,
+  SWEEP_FILE_FORMAT_AIFF,
+  SWEEP_FILE_FORMAT_AU,
+  SWEEP_FILE_FORMAT_PAF,
+  SWEEP_FILE_FORMAT_SVX,
+  SWEEP_FILE_FORMAT_IRCAM,
+  SWEEP_FILE_FORMAT_VOC,
+  SWEEP_FILE_FORMAT_MAX
+} sw_file_format_t;
+
 
 typedef struct _sw_edit_region sw_edit_region;
 typedef struct _sw_edit_buffer sw_edit_buffer;
@@ -130,16 +173,21 @@ struct _sw_edit_region {
 struct _sw_edit_buffer {
   sw_format * format;
   GList * regions;
+  gint refcount;
 };
 
 
 typedef void (*SweepFunction) (gpointer data);
 typedef void (*SweepCallback) (sw_sample * sample, gpointer data);
 
+
 typedef struct _sw_operation sw_operation;
 typedef struct _sw_op_instance sw_op_instance;
 
 struct _sw_operation {
+  sw_edit_mode edit_mode;
+  SweepCallback _do_;
+  SweepFunction purge_do;
   SweepCallback undo;
   SweepFunction purge_undo;
   SweepCallback redo;
@@ -147,8 +195,10 @@ struct _sw_operation {
 };
 
 struct _sw_op_instance {
+  sw_sample * sample;
   char * description;
   sw_operation * op;
+  gpointer do_data;
   gpointer undo_data;
   gpointer redo_data;
 };
@@ -409,8 +459,10 @@ struct _sw_plugin {
   void (*plugin_cleanup) (void);
 };
 
-typedef void (*SweepModify) (sw_sample * sample, sw_param_set pset,
-			     gpointer custom_data);
+typedef sw_sample * (*SweepFilter) (sw_sample * sample,
+				    sw_param_set pset,
+				    gpointer custom_data);
+
 
 #endif  /* __SWEEP_TYPES_H__ */
 

@@ -24,11 +24,12 @@
 /*
  * The current version of Sweep's native plugin interface.
  *
- * Increment this when breaking binary compatability.
+ * See the Sweep Plugin Writer's Guide for information about the meaning
+ * of these and when to change each.
  */
 #define SWEEP_PLUGIN_API_MAJOR 1
 
-#define SWEEP_PLUGIN_API_MINOR 0
+#define SWEEP_PLUGIN_API_MINOR 1
 
 #define SWEEP_PLUGIN_API_REVISION 0
 

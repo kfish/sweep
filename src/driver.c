@@ -34,616 +34,724 @@
 #include <sys/ioctl.h>
 #include <pthread.h>
 
+#include <gtk/gtk.h>
+#include <sweep/sweep_i18n.h>
+
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_sample.h>
 
 #include "driver.h"
 
-#ifdef DRIVER_OSS
-#include <sys/soundcard.h>
-#define DEV_DSP "/dev/dsp"
-#endif
-
-#ifdef DRIVER_SOLARIS_AUDIO
-#include <sys/audioio.h>
-#include <stropts.h>
-#include <sys/conf.h>
-#define DEV_DSP "/dev/audio"
-#endif
-
-#ifdef DRIVER_ALSA
-#include <sys/asoundlib.h>
-static snd_pcm_t *pcm_handle;
-#define ALSA_PCM_NAME "sweep"
-#endif
-
-#define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
-#define PBUF_SIZE 256
-
-static int dev_dsp = -1;
-
-static sw_sample * playing = NULL;
-static pthread_t player_thread;
-
-static int playoffset = -1;
-
-/*
- * update_playmarker ()
- *
- * Update the position of the playback marker line for the sample
- * being played.
- *
- * gtk_idle will keep calling this function as long as this sample is
- * playing, unless otherwise stopped.
- */
-static gint
-update_playmarker (gpointer data)
-{
-  sw_sample * s = (sw_sample *)data;
-
-  if (s == playing) {
-    sample_set_playmarker (s, playoffset);
-    return TRUE;
-  } else {
-    sample_set_playmarker (s, -1);
-    return FALSE;
-  }
-}
-
-static void
-start_playmarker (sw_sample * s)
-{
-  s->playmarker_tag =
-    gtk_timeout_add ((guint32)100,
-		     (GtkFunction)update_playmarker,
-		     (gpointer)s);
-}
-
-static void
-stop_playmarker (sw_sample * s)
-{
-  if (s->playmarker_tag > 0)
-    gtk_timeout_remove (s->playmarker_tag);
-  s->playmarker_tag = 0;
-  sample_set_playmarker (s, -1);
-}
-
-static int
-open_dev_dsp (void)
-{
-#if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
-  if((dev_dsp = open(DEV_DSP, O_WRONLY|O_NDELAY, 0)) == -1) {
-    perror ("sweep: unable to open device " DEV_DSP);
-    return -1; /* XXX: Flag error */
-  }
-
-  return dev_dsp;
-#elif defined(DRIVER_ALSA)
-  int err;
-  char *alsa_pcm_name;
-  if ((alsa_pcm_name = getenv ("SWEEP_ALSA_PCM")) == 0) {
-        alsa_pcm_name = ALSA_PCM_NAME;
-  }
-  if ((err = snd_pcm_open(&pcm_handle, alsa_pcm_name,
-                        SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
-    fprintf (stderr, "sweep: unable to open ALSA device %s (%s)\n",
-           alsa_pcm_name, snd_strerror (err));
-    return -1; /* XXX: Flag error */
-  }
-  dev_dsp = snd_pcm_poll_descriptor (pcm_handle);
-#else
-  fprintf(stderr, "Warning: No audio device configured\n");
-  return -1;
-#endif
-  return 0;
-}
-
-static void
-setup_dev_dsp (sw_sample * s)
-{
-#ifdef DRIVER_OSS
-  int mask, format, stereo, frequency;
-
-  if(ioctl(dev_dsp, SNDCTL_DSP_GETFMTS, &mask) == -1)  {
-    perror("OSS: error getting format masks");
-    close(dev_dsp);
-    return; /* XXX: Flag error */
-  }
-
-  if(mask&AFMT_U16_LE) {
-    format=AFMT_U16_LE;
-  }
-  if(mask&AFMT_U16_BE) {
-    format=AFMT_U16_BE;
-  }
-  if(mask&AFMT_S16_BE) {
-    format=AFMT_S16_BE;
-  }
-  if(mask&AFMT_U16_LE) {
-    format=AFMT_U16_LE;
-  }
-  if(mask&AFMT_S16_LE) {
-    format=AFMT_S16_LE;
-  }
-
-  if (ioctl(dev_dsp, SNDCTL_DSP_SETFMT, &format) == -1) {
-    perror("OSS: Unable to set format");
-    exit(-1);
-    }
-
-  stereo = s->sounddata->format->channels - 1;
-  if(ioctl(dev_dsp, SNDCTL_DSP_STEREO, &stereo) == -1 ) {
-    perror("OSS: Unable to set channels");
-  }
-
-  frequency = s->sounddata->format->rate;
-  if(ioctl(dev_dsp, SNDCTL_DSP_SPEED, &frequency) == -1 ) {
-    perror("OSS: Unable to set playback frequency");
-  }
-#elif defined(DRIVER_SOLARIS_AUDIO)
-
-  audio_info_t info;
-  AUDIO_INITINFO(&info);
-  info.play.precision = 16;	/* cs4231 doesn't handle 16-bit linear PCM */
-  info.play.encoding = AUDIO_ENCODING_LINEAR;
-  info.play.channels = s->sounddata->format->channels;
-  info.play.sample_rate = s->sounddata->format->rate;
-  if(ioctl(dev_dsp, AUDIO_SETINFO, &info) < 0)
-      perror("Unable to configure audio device");
-#elif defined(DRIVER_ALSA)
-  snd_pcm_params_t params;
-  snd_pcm_params_info_t params_info;
-  int err = 0;
-
-  memset (&params, 0, sizeof(params));
-  memset (&params_info, 0, sizeof(params_info));
-
-  if (snd_pcm_params_info (pcm_handle, &params_info) < 0) {
-        fprintf(stderr, "cannot get audio interface parameters (%s)\n",
-                snd_strerror(err));
-          return;
-  }
-
-  if (params_info.formats & SND_PCM_FMT_S16_LE) {
-    params.format.sfmt = SND_PCM_SFMT_S16_LE;
-  } else {
-    fprintf (stderr, "audio interface does not support "
-	     "linear 16 bit little endian samples\n");
-    return;
-  }
-
-  switch (s->sounddata->format->rate) {
-  case 44100:
-        if (params_info.rates & SND_PCM_RATE_44100) {
-                params.format.rate = 44100;
-        } else {
-                fprintf (stderr, "audio interface does not support "
-                         "44.1kHz sample rate (0x%x)\n",
-                         params_info.rates);
-                return;
-        }
-        break;
-
-  case 48000:
-        if (params_info.rates & SND_PCM_RATE_48000) {
-                params.format.rate = 48000;
-        } else {
-                fprintf (stderr, "audio interface does not support "
-                         "48kHz sample rate\n");
-                return;
-        }
-        break;
-
-  default:
-        fprintf (stderr, "audio interface does not support "
-                 "a sample rate of %d\n",
-                 s->sounddata->format->rate);
-        return;
-  }
-
-  if (s->sounddata->format->channels < params_info.min_channels ||
-      s->sounddata->format->channels > params_info.max_channels) {
-      fprintf (stderr, "audio interface does not support %d channels\n",
-             s->sounddata->format->channels);
-      return;
-  }
-  params.format.channels = s->sounddata->format->channels;
-  params.ready_mode = SND_PCM_READY_FRAGMENT;
-  params.start_mode = SND_PCM_START_DATA;
-  params.xrun_mode = SND_PCM_XRUN_FRAGMENT;
-  params.frag_size = PBUF_SIZE / params.format.channels;
-  params.avail_min = params.frag_size;
-  // params.buffer_size = 3 * params.frag_size;
-
-  if ((err = snd_pcm_params (pcm_handle, &params)) < 0) {
-        fprintf (stderr, "audio interface could not be configured "
-                 "with the specified parameters\n");
-        return;
-  }
-
-  if (snd_pcm_prepare (pcm_handle) < 0) {
-        fprintf (stderr, "audio interface could not be prepared "
-                 "for playback\n");
-        return;
-  }
-#endif
-}
-
-static void
-reset_dev_dsp (void)
-{
-#ifdef DRIVER_OSS
-  if(ioctl (dev_dsp, SNDCTL_DSP_RESET) == -1) {
-    perror ("OSS: error resetting " DEV_DSP);
-  }
-#endif
-}
-
-static void
-flush_dev_dsp (void)
-{
-#ifdef DRIVER_SOLARIS_AUDIO
-  if (ioctl(dev_dsp, I_FLUSH, FLUSHW) == -1)
-    perror("I_FLUSH");
-#endif
-}
-
-static void
-drain_dev_dsp (void)
-{
-#ifdef DRIVER_OSS
-  if(ioctl (dev_dsp, SNDCTL_DSP_POST) == -1) {
-    perror ("OSS: POST error on " DEV_DSP);
-  }
-#endif
-
-#ifdef DRIVER_SOLARIS_AUDIO
-  if(ioctl(dev_dsp, AUDIO_DRAIN, 0) == -1)
-      perror("AUDIO_DRAIN");
-#endif
-
-#ifdef DRIVER_ALSA
-  if (snd_pcm_drop (pcm_handle) < 0) {
-        fprintf (stderr, "audio interface could not be stopped\n");
-        return;
-  }
-  if (snd_pcm_prepare (pcm_handle) < 0) {
-        fprintf (stderr, "audio interface could not be re-prepared\n");
-        return;
-  }
-#endif
-
-}
-
-/*
- * WAIT_FOR_PLAYING
- *
- * This busy waits until 'playing' is set to NULL..
- * This is done to retain control of the dev_dsp device
- * so that it can be reset to "immediately"
- * stop playback when interrupted.
- */
-#define WAIT_FOR_PLAYING \
-  while (playing) usleep (100000)
-
-static void
-close_dev_dsp (void)
-{
-#if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
-  close (dev_dsp);
-#elif defined(DRIVER_ALSA)
-  snd_pcm_close (pcm_handle);
-#endif
-  dev_dsp = -1;
-}
-
-static void
-play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat relpitch)
-{
-  sw_sample * s = view->sample;
-  fd_set fds;
-  ssize_t n = 0;
-  sw_audio_t * d;
-  gint16 pbuf[PBUF_SIZE];
-  gint sbytes, channels;
-  gdouble po = 0.0, p, endf;
-  gint i=0, si=0;
-
-  d = (sw_audio_t *)s->sounddata->data;
-
-  sbytes = 2;
- 
-  channels = s->sounddata->format->channels;
-
-  playoffset = start;
-  po = (gdouble)(start);
-  endf = (gdouble)(end);
-
-  while ((po <= endf) && playing) {
-    FD_ZERO (&fds);
-    FD_SET (dev_dsp, &fds);
-    
-    if (select (dev_dsp+1, NULL, &fds, NULL, NULL) == 0);
-
-    memset (pbuf, 0, sizeof (pbuf));
-
-    switch (channels) {
-    case 1:
-      for (i = 0; i < PBUF_SIZE; i++) {
-	si = (int)floor(po);
-	p = po - (gdouble)si;
-	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->vol *
-		   (d[si] * p + d[si+channels] * (1 - p)));
-	po += relpitch;
-	if (po > endf) break;
-      }
-      
-      break;
-    case 2:
-      for (i = 0; i < PBUF_SIZE; i++) {
-	si = (int)floor(po);
-	p = po - (gdouble)si;
-	si *= 2;
-	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->vol *
-		   (d[si] * p + d[si+channels] * (1 - p)));
-	i++; si++;
-	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->vol *
-		   (d[si] * p + d[si+channels] * (1 - p)));
-	po += relpitch;
-	if (po > endf) break;
-      }
-      
-      break;
-    }
-
-    /* Only write if still playing */
-    if (playing) {
-#if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
-      n = write (dev_dsp, pbuf, i*sbytes);
-#elif defined(DRIVER_ALSA)
-      n = snd_pcm_write (pcm_handle, pbuf, PBUF_SIZE/channels);
-#endif
-    }
-
-    playoffset += (int)(n * relpitch / (sbytes * channels));
-  }
-}
-
-static void
-pva (sw_view * view)
-{
-  sw_sample * s = view->sample;
-
-  setup_dev_dsp (s);
-
-  play_view (view, 0, s->sounddata->nr_frames, 1.0);
-
-  drain_dev_dsp ();
-
-  stop_playmarker (s);
-
-  WAIT_FOR_PLAYING;
-
-  reset_dev_dsp ();
-  close_dev_dsp ();
-}
-
-void
-play_view_all (sw_view * view)
-{
-  sw_sample * s = view->sample;
-
-  stop_playback ();
-
-  playing = s;
-  if (open_dev_dsp () >= 0) {
-    pthread_create (&player_thread, NULL, (void *) (*pva), view);
-    start_playmarker (s);
-  }
-}
-
-void
-pval (sw_view * view)
-{
-  sw_sample * s = view->sample;
-
-  setup_dev_dsp (s);
-
-  while (playing)
-    play_view (view, 0, s->sounddata->nr_frames, 1.0);
-
-  reset_dev_dsp ();
-  close_dev_dsp ();
-}
-
-void
-play_view_all_loop (sw_view * view)
-{
-  sw_sample * s = view->sample;
-
-  stop_playback ();
-
-  playing = s;
-  if (open_dev_dsp () >= 0) {
-    pthread_create (&player_thread, NULL, (void *) (*pval), view);
-    start_playmarker (s);
-  }
-}
-
-static void
-pvs (sw_view * view)
-{
-  sw_sample * s = view->sample;
-  GList * gl, * gl_next;
-  sw_sel * sel;
-  sw_framecount_t start, end;
-
-  setup_dev_dsp (s);
-
-  for (gl = s->sounddata->sels; gl; ) {
-
-    /* Hold sels_mutex for as little time as possible */
-    g_mutex_lock (s->sounddata->sels_mutex);
-
-    /* if gl is no longer in sels, break out */
-    if (g_list_position (s->sounddata->sels, gl) == -1) {
-      g_mutex_unlock (s->sounddata->sels_mutex);
-      break;
-    }
-
-    sel = (sw_sel *)gl->data;
-    start = sel->sel_start;
-    end = sel->sel_end;
-    gl_next = gl->next;
-
-    g_mutex_unlock (s->sounddata->sels_mutex);
-
-    play_view (view, start, end, 1.0);
-
-    gl = gl_next;
-  }
-  
-  drain_dev_dsp ();
-
-  stop_playmarker (s);
-
-  WAIT_FOR_PLAYING; 
-
-  reset_dev_dsp ();
-  close_dev_dsp ();
-}
-
-void
-play_view_sel (sw_view * view)
-{
-  sw_sample * s = view->sample;
-
-  stop_playback ();
-
-  playing = s;
-  if (open_dev_dsp () >= 0) {
-    pthread_create (&player_thread, NULL, (void *) (*pvs), view);
-    start_playmarker (s);
-  }
-}
-
-static void
-pvsl (sw_view * view)
-{
-  sw_sample * s = view->sample;
-  GList * gl, * gl_next;
-  sw_sel * sel;
-  sw_framecount_t start, end;
-
-  setup_dev_dsp (s);
-
-  while (playing) {
-
-    for (gl = s->sounddata->sels; gl; ) {
-      
-      /* Hold sels_mutex for as little time as possible */
-      g_mutex_lock (s->sounddata->sels_mutex);
-
-      /* if gl is no longer in sels, break out */
-      if (g_list_position (s->sounddata->sels, gl) == -1) {
-	g_mutex_unlock (s->sounddata->sels_mutex);
-	break;
-      }
-
-      sel = (sw_sel *)gl->data;
-      start = sel->sel_start;
-      end = sel->sel_end;
-      gl_next = gl->next;
-      
-      g_mutex_unlock (s->sounddata->sels_mutex);
-      
-      play_view (view, start, end, 1.0);
-      
-      gl = gl_next;
-    }
-  }
-
-  reset_dev_dsp ();
-
-  close_dev_dsp ();
-}
-
-void
-play_view_sel_loop (sw_view * view)
-{
-  sw_sample * s = view->sample;
-  stop_playback ();
-
-  playing = s;
-  if (open_dev_dsp () >= 0) {
-    pthread_create (&player_thread, NULL, (void *) (*pvsl), view);
-    start_playmarker (s);
-  }
-}
-
-typedef struct _pvap_data pvap_data;
-struct _pvap_data {
-  sw_view * view;
-  gfloat pitch;
+extern sw_driver * driver_alsa;
+extern sw_driver * driver_oss;
+extern sw_driver * driver_solaris;
+
+extern GMutex * play_mutex;
+
+/* preferred driver */
+static sw_driver _driver_null = {
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-static void
-pvap (pvap_data * p)
+static sw_driver * pref = &_driver_null;
+
+#include "preferences.h"
+#include "pcmio.h"
+
+char *
+pcmio_get_default_main_dev (void)
 {
-  sw_sample * s = p->view->sample;
+  GList * names = NULL, * gl;
 
-  setup_dev_dsp (s);
+  if (pref->get_names)
+    names = pref->get_names ();
 
-  play_view (p->view, 0, s->sounddata->nr_frames, p->pitch);
+  if ((gl = names) != NULL) {
+    return (char *)gl->data;
+  }
 
-  drain_dev_dsp ();
+  return NULL;
+}
 
-  stop_playmarker (s);
+char *
+pcmio_get_default_monitor_dev (void)
+{
+  GList * names = NULL, * gl;
 
-  WAIT_FOR_PLAYING;
+  if (pref->get_names)
+    names = pref->get_names ();
 
-  reset_dev_dsp ();
-  close_dev_dsp ();
+  if ((gl = names) != NULL) {
+    if ((gl = gl->next) != NULL) {
+      return (char *)gl->data;
+    }
+  }
 
-  g_free (p);
+  return NULL;
+}
+
+char *
+pcmio_get_main_dev (void)
+{
+  char * main_dev;
+
+  main_dev = prefs_get_string (DEV_KEY);
+
+  if (main_dev == NULL) return pcmio_get_default_main_dev();
+  
+  return main_dev;
+}
+
+char *
+pcmio_get_monitor_dev (void)
+{
+  char * monitor_dev;
+
+  monitor_dev = prefs_get_string (MONITOR_DEV_KEY);
+
+  if (monitor_dev == NULL) return pcmio_get_default_monitor_dev ();
+  
+  return monitor_dev;
+}
+
+gboolean
+pcmio_get_use_monitor (void)
+{
+  int * use_monitor;
+
+  use_monitor = prefs_get_int (USE_MONITOR_KEY);
+
+  if (use_monitor == NULL) return DEFAULT_USE_MONITOR;
+  else return (*use_monitor != 0);
+}
+
+int
+pcmio_get_log_frags (void)
+{
+  int * log_frags;
+
+  log_frags = prefs_get_int (LOG_FRAGS_KEY);
+
+  if (log_frags == NULL) return DEFAULT_LOG_FRAGS;
+  else return (*log_frags);
+}
+
+extern GtkStyle * style_bw;
+static GtkWidget * dialog = NULL;
+static GtkWidget * main_combo;
+static GtkWidget * monitor_combo;
+static GtkObject * adj;
+
+
+static gboolean
+monitor_checked (GtkWidget * dialog)
+{
+  GtkWidget * monitor_chb;
+
+  monitor_chb =
+    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "monitor_chb"));
+
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (monitor_chb));
+}
+
+static void
+config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+  GtkAdjustment * adj;
+  char * main_dev, * monitor_dev;
+
+  adj = gtk_object_get_data (GTK_OBJECT(dialog), "buff_adj");
+
+  prefs_set_int (LOG_FRAGS_KEY, adj->value);
+
+  main_dev =
+    gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
+
+  prefs_set_string (DEV_KEY, main_dev);
+
+  if (monitor_checked (dialog)) {
+    monitor_dev =
+      gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry)); 
+    prefs_set_string (MONITOR_DEV_KEY, monitor_dev);
+
+    prefs_set_int (USE_MONITOR_KEY, 1);
+  } else {
+    prefs_set_int (USE_MONITOR_KEY, 0);
+  }
+
+  gtk_widget_hide (dialog);
+}
+
+static void
+config_dev_dsp_dialog_cancel_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog;
+
+  dialog = gtk_widget_get_toplevel (widget);
+  gtk_widget_hide (dialog);
+}
+
+static void
+update_ok_button (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET(data);
+  GtkWidget * ok_button;
+  gchar * main_devname, * monitor_devname;
+  gboolean ok = FALSE;
+
+  ok_button =
+    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "ok_button"));
+
+  if (monitor_checked (dialog)) {
+    main_devname =
+      gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
+    monitor_devname =
+      gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
+
+    ok = (strcmp (main_devname, monitor_devname) != 0);
+  } else {
+    ok = TRUE;
+  }
+
+  gtk_widget_set_sensitive (ok_button, ok);
+}
+
+static void
+set_monitor_widgets (GtkWidget * dialog, gboolean use_monitor)
+{
+  GtkWidget * monitor_chb, * monitor_widget, * swap;
+
+  monitor_chb =
+    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "monitor_chb"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(monitor_chb), use_monitor);
+
+  monitor_widget = gtk_object_get_data (GTK_OBJECT(dialog), "monitor_widget");
+  gtk_widget_set_sensitive (monitor_widget, use_monitor);
+
+  swap = gtk_object_get_data (GTK_OBJECT(dialog), "swap");
+  gtk_widget_set_sensitive (swap, use_monitor);
+
+}
+
+static void
+set_buff_adj (GtkWidget * dialog, gint logfrags)
+{
+  GtkAdjustment * adj;
+
+  adj = gtk_object_get_data (GTK_OBJECT(dialog), "buff_adj");
+  gtk_adjustment_set_value (adj, logfrags);
+}
+
+static void
+pcmio_devname_swap_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+  char * main_dev, * monitor_dev;
+
+  main_dev =
+    g_strdup (gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry)));
+  monitor_dev = gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
+
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), monitor_dev);
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry), main_dev);
+
+  g_free (main_dev);
+
+  set_monitor_widgets (dialog, pcmio_get_use_monitor());
+
+  update_ok_button (widget, data);
+}
+
+static void
+pcmio_devname_reset_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+  char * main_dev, * monitor_dev;
+
+  main_dev = pcmio_get_main_dev ();
+  monitor_dev = pcmio_get_monitor_dev ();
+
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), main_dev);
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry), monitor_dev);
+
+  set_monitor_widgets (dialog, pcmio_get_use_monitor());
+
+  update_ok_button (widget, data);
+}
+
+static void
+pcmio_devname_default_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+  char * name;
+
+  if ((name = pcmio_get_default_main_dev ()) != NULL) {
+    gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), name);
+  }
+
+  if ((name = pcmio_get_default_monitor_dev ()) != NULL) {
+    gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry), name);
+  }
+
+  set_monitor_widgets (dialog, DEFAULT_USE_MONITOR);
+
+  update_ok_button (widget, data);
+}
+
+static void
+monitor_enable_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+  gboolean active;
+
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
+
+  set_monitor_widgets (dialog, active);
+}
+
+static void
+pcmio_buffering_reset_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+
+  set_buff_adj (dialog, pcmio_get_log_frags());
+}
+
+static void
+pcmio_buffering_default_cb (GtkWidget * widget, gpointer data)
+{
+  GtkWidget * dialog = GTK_WIDGET (data);
+
+  set_buff_adj (dialog, DEFAULT_LOG_FRAGS);
+}
+
+static GtkWidget *
+create_devices_combo (void)
+{
+  GtkWidget * combo;
+  GList * cbitems = NULL;
+
+  if (pref->get_names)
+    cbitems = pref->get_names();
+  
+  combo = gtk_combo_new ();
+  
+  gtk_combo_set_popdown_strings (GTK_COMBO(combo), cbitems);
+
+  return combo;
 }
 
 void
-play_view_all_pitch (sw_view * view, gfloat pitch)
+device_config (void)
 {
-  sw_sample * s = view->sample;
-  pvap_data * p;
+  GtkWidget * ebox;
+  GtkWidget * notebook;
+  GtkWidget * separator;
+  GtkWidget * hbox, * hbox2;
+  GtkWidget * vbox;
+  GtkWidget * label;
+  GtkWidget * checkbutton;
+  GtkWidget * hscale;
+  GtkWidget * ok_button;
+  GtkWidget * button;
 
-  p = g_malloc (sizeof (*p));
-  p->view = view;
-  p->pitch = pitch;
+  GtkTooltips * tooltips;
 
-  stop_playback ();
+  if (dialog == NULL) {
 
-  playing = s;
-  if (open_dev_dsp () >= 0) {
-    pthread_create (&player_thread, NULL, (void *) (*pvap), p);
-    start_playmarker (s);
+    dialog = gtk_dialog_new ();
+    gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: audio device configuration"));
+    gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+
+    /* OK */
+
+    ok_button = gtk_button_new_with_label (_("OK"));
+    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
+    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
+			TRUE, TRUE, 0);
+    gtk_widget_show (ok_button);
+    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
+			GTK_SIGNAL_FUNC (config_dev_dsp_dialog_ok_cb),
+			dialog);
+
+    gtk_object_set_data (GTK_OBJECT (dialog), "ok_button", ok_button);
+
+    /* Cancel */
+
+    button = gtk_button_new_with_label (_("Cancel"));
+    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
+    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
+			TRUE, TRUE, 0);
+    gtk_widget_show (button);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC (config_dev_dsp_dialog_cancel_cb),
+			NULL);
+
+    gtk_widget_grab_default (ok_button);
+
+
+    ebox = gtk_event_box_new ();
+    gtk_box_pack_start (GTK_BOX(GTK_DIALOG(dialog)->vbox), ebox,
+			TRUE, TRUE, 0);
+    gtk_widget_set_style (ebox, style_bw);
+    gtk_widget_show (ebox);
+
+    vbox = gtk_vbox_new (FALSE, 0);
+    gtk_container_add (GTK_CONTAINER(ebox), vbox);
+    gtk_widget_show (vbox);
+
+    /* Changes ... info */
+    label = gtk_label_new (_("Changes to device settings will take effect on"
+			     " next playback."));
+    gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, TRUE, 8);
+    gtk_widget_show (label);
+
+
+    /* Notebook */
+
+    notebook = gtk_notebook_new ();
+    gtk_box_pack_start (GTK_BOX(GTK_DIALOG(dialog)->vbox), notebook,
+			TRUE, TRUE, 4);
+    gtk_widget_show (notebook);
+
+    /* Device name */
+    label = gtk_label_new (_("Device name"));
+    vbox = gtk_vbox_new (FALSE, 0);
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, label);
+    gtk_container_set_border_width (GTK_CONTAINER(vbox), 4);
+    gtk_widget_show (vbox);
+
+    label = gtk_label_new (_("Set the main device for playback and recording"));
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 4);
+    gtk_widget_show (label);
+
+    /* Main output */ 
+    hbox = gtk_hbox_new (FALSE, 8);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
+    gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
+    gtk_widget_show (hbox);
+      
+    label = gtk_label_new (_("Main device:"));
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+      
+    main_combo = create_devices_combo ();
+    gtk_box_pack_start (GTK_BOX(hbox), main_combo, TRUE, TRUE, 0);
+    gtk_widget_show (main_combo);
+
+    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(main_combo)->entry), "changed",
+			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+
+    gtk_object_set_data (GTK_OBJECT (dialog), "main_combo", main_combo);
+
+#if 0
+    button = gtk_button_new_with_label (_("Default"));
+    gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
+    gtk_widget_show (button);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(default_devicename_cb), NULL);
+#endif
+
+    separator = gtk_hseparator_new ();
+    gtk_box_pack_start (GTK_BOX (vbox), separator, FALSE, FALSE, 8);
+    gtk_widget_show (separator);
+
+    /* Monitor */
+    checkbutton =
+      gtk_check_button_new_with_label (_("Use a different device for monitoring"));
+    gtk_box_pack_start (GTK_BOX(vbox), checkbutton, FALSE, FALSE, 4);
+    gtk_widget_show (checkbutton);
+
+    gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
+			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+
+    hbox = gtk_hbox_new (FALSE, 8);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
+    gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
+    gtk_widget_show (hbox);
+      
+    label = gtk_label_new (_("Monitor output:"));
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+
+    monitor_combo = create_devices_combo ();
+    gtk_box_pack_start (GTK_BOX(hbox), monitor_combo, TRUE, TRUE, 0);
+    gtk_widget_show (monitor_combo);
+
+    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(monitor_combo)->entry), "changed",
+			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+
+    gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
+			GTK_SIGNAL_FUNC(monitor_enable_cb), dialog);
+
+    gtk_object_set_data (GTK_OBJECT (dialog), "monitor_chb", checkbutton);
+    gtk_object_set_data (GTK_OBJECT (dialog), "monitor_widget", hbox);
+
+
+    /* Swap / Remember / Reset device names*/
+
+    hbox = gtk_hbox_new (FALSE, 4);
+    gtk_box_pack_end (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+    gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
+    gtk_widget_show (hbox);
+
+    button = gtk_button_new_with_label (_("Swap"));
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 4);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(pcmio_devname_swap_cb), dialog);
+    gtk_widget_show (button);
+
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button,
+			  _("Swap main and monitor devices."),
+			  NULL);
+
+    gtk_object_set_data (GTK_OBJECT (dialog), "swap", button);
+
+    hbox2 = gtk_hbox_new (TRUE, 4);
+    gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
+    gtk_widget_show (hbox2);
+
+    button = gtk_button_new_with_label (_("Reset"));
+    gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(pcmio_devname_reset_cb), dialog);
+    gtk_widget_show (button);
+
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button,
+			  _("Reset to the last remembered device names."),
+			  NULL);
+
+    /* Call the reset callback now to set remembered options */
+    pcmio_devname_reset_cb (button, dialog);
+
+    button = gtk_button_new_with_label (_("Defaults"));
+    gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(pcmio_devname_default_cb), dialog);
+    gtk_widget_show (button);
+
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button,
+			  _("Set to default device names."),
+			  NULL);
+
+
+    separator = gtk_hseparator_new ();
+    gtk_box_pack_end (GTK_BOX (vbox), separator, FALSE, FALSE, 8);
+    gtk_widget_show (separator);
+
+
+    /* Buffering */
+
+    label = gtk_label_new (_("Device buffering"));
+    vbox = gtk_vbox_new (FALSE, 0);
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, label);
+    gtk_container_set_border_width (GTK_CONTAINER(vbox), 4);
+    gtk_widget_show (vbox);
+
+    hbox = gtk_hbox_new (FALSE, 8);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, TRUE, TRUE, 8);
+    gtk_widget_show (hbox);
+
+    label = gtk_label_new (_("Low latency /\nMore dropouts"));
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 8);
+    gtk_widget_show (label);
+
+    adj = gtk_adjustment_new (pcmio_get_log_frags (), /* value */
+			      LOG_FRAGS_MIN, /* lower */
+			      LOG_FRAGS_MAX+1, /* upper */
+			      1, /* step incr */
+			      1, /* page incr */
+			      1  /* page size */
+			      );
+
+    gtk_object_set_data (GTK_OBJECT(dialog), "buff_adj", adj);
+
+    hscale = gtk_hscale_new (GTK_ADJUSTMENT(adj));
+    gtk_box_pack_start (GTK_BOX(hbox), hscale, TRUE, TRUE, 4);
+    gtk_scale_set_draw_value (GTK_SCALE(hscale), TRUE);
+    gtk_scale_set_digits (GTK_SCALE(hscale), 0);
+    gtk_range_set_update_policy (GTK_RANGE(hscale), GTK_UPDATE_CONTINUOUS);
+    gtk_widget_set_usize (hscale, 160, -1);
+    gtk_widget_show (hscale);
+
+    label = gtk_label_new (_("High latency /\nFewer dropouts"));
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 8);
+    gtk_widget_show (label);
+
+    label = gtk_label_new (_("Varying this slider controls the lag between "
+			     "cursor movements and playback. This is "
+			     "particularly noticeable when \"scrubbing\" "
+			     "during playback.\n\nLower values improve "
+			     "responsiveness but may degrade audio quality "
+			     "on heavily-loaded systems."));
+    gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 8);
+    gtk_widget_show (label);
+
+    /* Remember / Reset device buffering */
+
+    hbox = gtk_hbox_new (FALSE, 4);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+    gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
+    gtk_widget_show (hbox);
+
+#if 0
+    checkbutton =
+      gtk_check_button_new_with_label (_("Remember these options"));
+    gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
+    gtk_widget_show (checkbutton);
+
+    gtk_object_set_data (GTK_OBJECT (dialog), "rem_options_chb", checkbutton);
+
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
+#endif
+
+    hbox2 = gtk_hbox_new (TRUE, 4);
+    gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
+    gtk_widget_show (hbox2);
+
+    button = gtk_button_new_with_label (_("Reset"));
+    gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(pcmio_buffering_reset_cb), dialog);
+    gtk_widget_show (button);
+
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button,
+			  _("Reset to the last remembered device buffering."),
+			  NULL);
+
+    /* Call the reset callback now to set remembered options */
+    pcmio_buffering_reset_cb (button, dialog);
+
+    button = gtk_button_new_with_label (_("Default"));
+    gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(pcmio_buffering_default_cb), dialog);
+    gtk_widget_show (button);
+
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button,
+			  _("Set to default device buffering."),
+			  NULL);
+  }
+
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry),
+		      pcmio_get_main_dev ());
+
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry),
+		      pcmio_get_monitor_dev ());
+
+  gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), pcmio_get_log_frags ());
+
+  if (!GTK_WIDGET_VISIBLE(dialog)) {
+    gtk_widget_show(dialog);
+  } else {
+    gdk_window_raise(dialog->window);
   }
 }
 
-void
-stop_playback (void)
+sw_handle *
+device_open (int cueing, int flags)
 {
-  if (!playing) return;
-
-  playing = NULL;
-
-  flush_dev_dsp ();
-
-  pthread_join (player_thread, NULL);
+  if (pref->open)
+    return pref->open (cueing, flags);
+  else
+    return NULL;
 }
 
 void
-sample_stop_playback (sw_sample * sample)
+device_setup (sw_handle * handle, sw_format * format)
 {
-  if (playing == sample) stop_playback();
+  if (pref->setup)
+    pref->setup (handle, format);
+}
+
+int
+device_wait (sw_handle * handle)
+{
+  if (pref->wait)
+    return pref->wait (handle);
+  else
+    return 0;
+}
+
+ssize_t
+device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
+{
+  if (pref->read)
+    return pref->read (handle, buf, count);
+  else
+    return -1;
+}
+
+ssize_t
+device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
+	      sw_framecount_t offset)
+{
+#ifdef DEBUG
+  printf ("device_write: %d from %d\n", count, offset);
+#endif
+
+  if (pref->write)
+    return pref->write (handle, buf, count, offset);
+  else
+    return -1;
+}
+
+sw_framecount_t
+device_offset (sw_handle * handle)
+{
+  if (pref->offset)
+    return pref->offset (handle);
+  else
+    return -1;
+}
+
+void
+device_reset (sw_handle * handle)
+{
+  if (pref->reset)
+    pref->reset (handle);
+}
+
+void
+device_flush (sw_handle * handle)
+{
+  if (pref->flush)
+    pref->flush (handle);
+}
+
+void
+device_drain (sw_handle * handle)
+{
+  if (pref->drain)
+    pref->drain (handle);
+}
+
+void
+device_close (sw_handle * handle)
+{
+  if (pref->close)
+    pref->close (handle);
+
+  handle->driver_fd = -1;
+}
+
+void
+init_devices (void)
+{
+#if defined(DRIVER_ALSA)
+  pref = driver_alsa;
+#elif defined(DRIVER_OSS)
+  pref = driver_oss;
+#elif defined(DRIVER_SOLARIS_AUDIO)
+  pref = driver_solaris;
+#endif
+
+  play_mutex = g_mutex_new ();
 }

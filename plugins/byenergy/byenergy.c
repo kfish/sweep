@@ -56,7 +56,7 @@ static sw_param_range max_interruption_range = {
 static sw_param_spec param_specs[] = {
   {
     N_("Select regions above threshold"),
-    N_("Whether to select those regions lying above a given threshhold"
+    N_("Whether to select those regions lying above a given threshold "
        "or below it."),
     SWEEP_TYPE_BOOL,
     SW_PARAM_CONSTRAINED_NOT,
@@ -111,6 +111,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
   gfloat min_duration_f = pset[3].f;
   gfloat max_interruption_f = pset[4].f;
 
+  sw_sounddata * sounddata;
   sw_audio_t * d;
   glong window, win_s;
   gint i, doff;
@@ -119,28 +120,30 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
   glong start=-1, end=-1;
   sw_audio_intermediate_t di, energy, max_energy=0, factor=1.0;
 
-  window = (glong)(resolution * (gfloat)s->sounddata->format->rate);
-  length = s->sounddata->nr_frames;
-  min_duration = (glong)(min_duration_f * (gfloat)s->sounddata->format->rate);
+  sounddata = sample_get_sounddata (s);
+
+  window = (glong)(resolution * (gfloat)sounddata->format->rate);
+  length = sounddata->nr_frames;
+  min_duration = (glong)(min_duration_f * (gfloat)sounddata->format->rate);
 
   /* check (end-1 - (start+1)) > 0 */
   min_duration = MAX(2*window, min_duration);
-  max_interruption = (glong)(max_interruption_f * (gfloat)s->sounddata->format->rate);
+  max_interruption = (glong)(max_interruption_f * (gfloat)sounddata->format->rate);
 
-  d = (sw_audio_t *)s->sounddata->data;
+  d = (sw_audio_t *)sounddata->data;
 
-  sounddata_lock_selection (s->sounddata);
+  sounddata_lock_selection (sounddata);
 
-  sounddata_clear_selection (s->sounddata);
+  sounddata_clear_selection (sounddata);
 
   /* Find max for normalisation */
 
-  length = s->sounddata->nr_frames;
+  length = sounddata->nr_frames;
   doff = 0;
   while (length > 0) {
     energy = 0;
 
-    win_s = frames_to_samples (s->sounddata->format, MIN(length, window));
+    win_s = frames_to_samples (sounddata->format, MIN(length, window));
 
     /* calculate avg. for this window */
     for (i=0; i<win_s; i++) {
@@ -165,12 +168,12 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
 
   threshold *= (gfloat)max_energy;
 
-  length = s->sounddata->nr_frames;
+  length = sounddata->nr_frames;
   doff = 0;
   while (length > 0) {
     energy = 0;
 
-    win_s = frames_to_samples (s->sounddata->format, MIN(length, window));
+    win_s = frames_to_samples (sounddata->format, MIN(length, window));
 
     /* calculate RMS energy for this window */
     for (i=0; i<win_s; i++) {
@@ -197,7 +200,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
     } else if (end != -1) {
       if (loc - end > max_interruption) {
 	if (end - start > min_duration) {
-	  sounddata_add_selection_1 (s->sounddata, start+1, end-1);
+	  sounddata_add_selection_1 (sounddata, start+1, end-1);
 	}
 	end = start = -1;
       }
@@ -210,15 +213,11 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
 
   if (start != -1) {
     if (end - start > min_duration) {
-      sounddata_add_selection_1 (s->sounddata, start, end);
+      sounddata_add_selection_1 (sounddata, start, end);
     }
   }
 
-  if (s->sounddata->sels == NULL) {
-    sample_stop_marching_ants(s);
-  }
-
-  sounddata_unlock_selection (s->sounddata);
+  sounddata_unlock_selection (sounddata);
 }
 
 static sw_op_instance *
@@ -226,14 +225,14 @@ apply_by_energy(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   return
     perform_selection_op (sample, _("Select by energy"),
-			  (SweepModify)select_by_energy, pset, NULL);
+			  (SweepFilter)select_by_energy, pset, NULL);
 }
 
 static sw_procedure proc_by_energy = {
   N_("Select by energy"),
   N_("Select loud or quiet regions"),
-  "Conrad Parker",
-  "Copyright (C) 2000",
+  "C. Parker, S. Pfeiffer",
+  "Copyright (C) 2000 CSIRO Australia",
   "http://sweep.sourceforge.net/plugins/byenergy",
   "Filters/Select by energy", /* identifier */
   0, /* accel_key */

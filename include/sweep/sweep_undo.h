@@ -23,11 +23,22 @@
 
 #include "sweep_types.h"
 
+gint
+update_edit_progress (gpointer data);
+
 sw_op_instance *
-sw_op_instance_new (char * desc, sw_operation * op);
+sw_op_instance_new (sw_sample * sample, char * description,
+		    sw_operation * operation);
+
+void
+schedule_operation (sw_sample * sample, char * description,
+		    sw_operation * operation, void * do_data);
 
 void
 register_operation (sw_sample * s, sw_op_instance * inst);
+
+void
+trim_registered_ops (sw_sample * s, int length);
 
 void
 undo_current (sw_sample * s);
@@ -35,6 +46,14 @@ undo_current (sw_sample * s);
 void
 redo_current (sw_sample * s);
 
+void
+revert_op (sw_sample * sample, GList * op_gl);
+
+void
+set_active_op (sw_sample * s, sw_op_instance * inst);
+
+void
+cancel_active_op (sw_sample * s);
 
 /* Stock undo functions */
 
@@ -55,6 +74,29 @@ undo_by_replace (replace_data * r);
 void
 redo_by_replace (replace_data * r);
 #endif
+
+typedef struct _sounddata_replace_data sounddata_replace_data;
+
+struct _sounddata_replace_data {
+  sw_sample * sample;
+  sw_sounddata * old_sounddata;
+  sw_sounddata * new_sounddata;
+};
+
+sounddata_replace_data *
+sounddata_replace_data_new (sw_sample * sample,
+			    sw_sounddata * old_sounddata,
+			    sw_sounddata * new_sounddata);
+
+void
+sounddata_replace_data_destroy (sounddata_replace_data * sr);
+
+void
+undo_by_sounddata_replace (sw_sample * s, sounddata_replace_data * sr);
+
+void
+redo_by_sounddata_replace (sw_sample * s, sounddata_replace_data * sr);
+
 
 typedef struct _paste_over_data paste_over_data;
 
@@ -82,10 +124,11 @@ typedef struct _splice_data splice_data;
 struct _splice_data {
   sw_sample * sample;
   sw_edit_buffer * eb;
+  GList * sels; /* Previous sels of sounddata */
 };
 
 splice_data *
-splice_data_new (sw_edit_buffer * eb);
+splice_data_new (sw_edit_buffer * eb, GList * sels);
 
 void
 splice_data_destroy (splice_data * s);
@@ -102,5 +145,16 @@ undo_by_splice_out (sw_sample * s, splice_data * sp);
 void
 redo_by_splice_in (sw_sample * s, splice_data * sp);
 
+void
+undo_by_splice_over (sw_sample * s, splice_data * sp);
+
+void
+redo_by_splice_over (sw_sample * s, splice_data * sp);
+
+void
+undo_by_crop_in (sw_sample * s, splice_data * sp);
+
+void
+redo_by_crop_out (sw_sample * s, splice_data * sp);
 
 #endif /* __SWEEP_UNDO_H__ */

@@ -1,4 +1,3 @@
-
 /*
  * Sweep, a sound wave editor
  *
@@ -39,7 +38,8 @@ typedef struct _SampleDisplayClass  SampleDisplayClass;
 enum {
   SAMPLE_DISPLAYCOL_BG,
   SAMPLE_DISPLAYCOL_FG,
-  SAMPLE_DISPLAYCOL_MIXERPOS,
+  SAMPLE_DISPLAYCOL_PLAY,
+  SAMPLE_DISPLAYCOL_PAUSE,
   SAMPLE_DISPLAYCOL_ZERO,
   SAMPLE_DISPLAYCOL_SEL,
   SAMPLE_DISPLAYCOL_TMP_SEL,
@@ -47,6 +47,7 @@ enum {
   SAMPLE_DISPLAYCOL_MINMAX,
   SAMPLE_DISPLAYCOL_HIGHLIGHT,
   SAMPLE_DISPLAYCOL_LOWLIGHT,
+  SAMPLE_DISPLAYCOL_REC,
   SAMPLE_DISPLAYCOL_LAST
 };
 
@@ -54,8 +55,12 @@ struct _SampleDisplay
 {
   GtkWidget widget;
 
-  GdkGC *bg_gc, *fg_gc, *mixerpos_gc, *sel_gc, *tmp_sel_gc, *crossing_gc;
+  GdkGC *bg_gc, *fg_gc, *play_gc, *user_gc, *rec_gc, *sel_gc, *tmp_sel_gc,
+    *crossing_gc;
   GdkGC *minmax_gc, *zeroline_gc, *highlight_gc, *lowlight_gc;
+
+  GdkGC * bg_gcs[VIEW_COLOR_MAX];
+  GdkGC * fg_gcs[VIEW_COLOR_MAX];
 
   GdkPixmap * backing_pixmap;
 
@@ -63,14 +68,14 @@ struct _SampleDisplay
 
   sw_view * view; /* The view (and hence, sample) we're displaying */
 
-  int mixerpos, old_mixerpos; /* current playing offset of the sample */
+  /* current user offset of the sample */
+  int user_offset_x, old_user_offset_x;
 
-#if 0 /* only used in optimised ST-style drawing routine (hashed out) */
-  int complete_redraw; /* bool: whether or not to do a complete redraw
-			  on the next call to _draw() */
+  /* previous play_offset drawn */
+  int play_offset_x, old_play_offset_x;
 
-  int old_ss, old_se;
-#endif
+  /* current recording offset */
+  int rec_offset_x, old_rec_offset_x;
 
   gint mouse_x;
   glong mouse_offset; /* what the pointer is currently pointing to */
@@ -79,12 +84,21 @@ struct _SampleDisplay
   int selection_mode; /* Mode of selection: replace or intersect */
 
   gint marching_tag; /* gtk_timeout tag for marching ants */
-  gboolean marching_offset; /* dash offset of marching ants */
+  gboolean marching; /* whether or not ants are marching */
+
+  gint pulsing_tag; /* gtk_timeout tag for cursor pulse */
+  gboolean pulse;
 
   /* Window panning */
   int selecting_x0;  /* the coordinate where the mouse was clicked */
   int selecting_wins0; /* stored value of view->v_start when the mouse
 			* was clicked */
+
+  /* Scrolling timeout tags */
+  gint scroll_left_tag, scroll_right_tag;
+
+  /* Meta key down? */
+  gboolean meta_down;
 };
 
 struct _SampleDisplayClass
@@ -92,9 +106,8 @@ struct _SampleDisplayClass
   GtkWidgetClass parent_class;
 
   GdkColor colors[SAMPLE_DISPLAYCOL_LAST];
-
-  /* Cursors */
-  GdkCursor * crosshair_cr, * move_cr, * horiz_cr, * horiz_plus_cr;
+  GdkColor bg_colors[VIEW_COLOR_MAX];
+  GdkColor fg_colors[VIEW_COLOR_MAX];
 
   void (*selection_changed)(SampleDisplay *s, int start, int end);
   void (*window_changed)(SampleDisplay *s, int start, int end);
@@ -110,11 +123,23 @@ sample_display_new (void);
 void
 sample_display_refresh (SampleDisplay *s);
 
+sw_framecount_t
+sample_display_get_mouse_offset (SampleDisplay * s);
+
 void
 sample_display_set_view (SampleDisplay *s, sw_view *view);
 
 void
-sample_display_set_playmarker (SampleDisplay *s, int offset);
+sample_display_refresh_user_marker (SampleDisplay *s);
+
+void
+sample_display_refresh_play_marker (SampleDisplay *s);
+
+void
+sample_display_refresh_rec_marker (SampleDisplay *s);
+
+void
+sample_display_set_cursor (SampleDisplay * s, GdkCursor * cursor);
 
 void
 sample_display_set_window (SampleDisplay *s, sw_framecount_t start,

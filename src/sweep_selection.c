@@ -18,10 +18,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
-
 
 #include <sweep/sweep_sample.h>
 #include <sweep/sweep_typeconvert.h>
@@ -71,22 +74,22 @@ sel_cmp (sw_sel * s1, sw_sel * s2)
   else return 0;
 }
 
-#ifdef DEBUG
 static void
 dump_sels (GList * sels, char * desc)
 {
+#ifdef DEBUG
   GList * gl;
   sw_sel * sel;
 
-  printf ("<dump %s>\n", desc);
+  printf ("<dump %s (%p)>\n", desc, sels);
   for (gl = sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
     printf ("\t[%ld - %ld]\n", sel->sel_start, sel->sel_end);
   }
   printf ("</dump>\n");
-
-}
 #endif
+}
+
 
 /*
  * sels_copy (sels)
@@ -102,13 +105,72 @@ sels_copy (GList * sels)
   for (gl = sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
     nsel = sel_copy (sel);
-    nsels = g_list_insert_sorted(nsels, sel, (GCompareFunc)sel_cmp);
+    nsels = g_list_insert_sorted(nsels, nsel, (GCompareFunc)sel_cmp);
   }
 
   return nsels;
 }
 
+GList *
+sels_add_selection (GList * sels, sw_sel * sel)
+{
+  return g_list_insert_sorted (sels, sel, (GCompareFunc)sel_cmp);
+}
 
+GList *
+sels_add_selection_1 (GList * sels, sw_framecount_t start, sw_framecount_t end)
+{
+  sw_sel * sel;
+
+  sel = sel_new (start, end);
+
+  return sels_add_selection (sels, sel);
+}
+
+/*
+ * sels_invert (sels, nr_frames)
+ *
+ * inverts sels in place
+ */
+GList *
+sels_invert (GList * sels, sw_framecount_t nr_frames)
+{
+  GList * gl;
+  GList * osels;
+  sw_sel * osel, * sel;
+
+  if (!sels) {
+    g_list_free (sels);
+    sel = sel_new (0, nr_frames);
+    sels = NULL;
+    sels = g_list_append (sels, sel);
+    return sels;
+  }
+
+  gl = osels = sels;
+  sels = NULL;
+
+  sel = osel = (sw_sel *)gl->data;
+  if (osel->sel_start > 0) {
+    sels = sels_add_selection_1 (sels, 0, osel->sel_start - 1);
+  }
+
+  gl = gl->next;
+
+  for (; gl; gl = gl->next) {
+    sel = (sw_sel *)gl->data;
+    sels = sels_add_selection_1 (sels, osel->sel_end, sel->sel_start - 1);
+    osel = sel;
+  }
+
+  if (sel->sel_end != nr_frames) {
+    sels = sels_add_selection_1 (sels, sel->sel_end, nr_frames);
+  }
+
+  g_list_free (osels);
+
+  return sels;
+}
 
 /*
  * sel_replace: undo/redo functions for changing selection
@@ -142,12 +204,48 @@ sel_replace_data_destroy (sel_replace_data * s)
 static void
 do_by_sel_replace (sw_sample * s, sel_replace_data * sr)
 {
+  dump_sels (sr->sels, "at replace action");
   sample_set_selection (s, sr->sels);
 
-  sample_refresh_views (s);
+  /*  sample_refresh_views (s);*/
 }
 
-static sw_operation sel_op = {
+static void
+do_selection_op_thread (sw_op_instance * inst)
+{
+  sw_sample * sample = inst->sample;
+  sw_perform_data * pd = (sw_perform_data *)inst->do_data;
+  
+  SweepFilter func = (SweepFilter)pd->func;
+  sw_param_set pset = pd->pset;
+  void * custom_data = pd->custom_data;
+
+  GList * sels;
+
+  sels = sels_copy (sample->sounddata->sels);
+  dump_sels (sels, "copied for undo data");
+  inst->undo_data = sel_replace_data_new (sels);
+  set_active_op (sample, inst);
+
+  func (sample, pset, custom_data);
+
+  if (sample->edit_state == SWEEP_EDIT_STATE_BUSY) {
+    sels = sels_copy (sample->sounddata->sels);
+    dump_sels (sels, "copied for redo data");
+    inst->redo_data = sel_replace_data_new (sels);
+
+    register_operation (sample, inst);
+  }
+
+#if 0
+  sample_set_edit_state (sample, SWEEP_EDIT_STATE_DONE);
+#endif
+}
+
+static sw_operation selection_op = {
+  SWEEP_EDIT_MODE_META,
+  (SweepCallback)do_selection_op_thread,
+  (SweepFunction)NULL,
   (SweepCallback)do_by_sel_replace,
   (SweepFunction)sel_replace_data_destroy,
   (SweepCallback)do_by_sel_replace,
@@ -155,25 +253,16 @@ static sw_operation sel_op = {
 };
 
 sw_op_instance *
-perform_selection_op (sw_sample * s, char * desc, SweepModify func,
+perform_selection_op (sw_sample * sample, char * desc, SweepFilter func,
 		      sw_param_set pset, gpointer custom_data)
 {
-  sw_op_instance * inst;
-  GList * sels;
+  sw_perform_data * pd = (sw_perform_data *)g_malloc (sizeof(*pd));
 
-  inst = sw_op_instance_new (desc, &sel_op);
+  pd->func = (SweepFunction)func;
+  pd->pset = pset;
+  pd->custom_data = custom_data;
 
-  sels = sels_copy (s->sounddata->sels);
-  inst->undo_data = sel_replace_data_new (sels);
+  schedule_operation (sample, desc, &selection_op, pd);
 
-  func (s, pset, custom_data);
-
-  sels = sels_copy (s->sounddata->sels);
-  inst->redo_data = sel_replace_data_new (sels);
-
-  sample_refresh_views (s);
-
-  register_operation (s, inst);
-
-  return inst;
+  return NULL;
 }

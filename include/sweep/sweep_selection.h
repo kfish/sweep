@@ -27,6 +27,12 @@ sel_new (sw_framecount_t start, sw_framecount_t end);
 sw_sel *
 sel_copy (sw_sel * sel);
 
+GList *
+sels_add_selection (GList * sels, sw_sel * sel);
+
+GList *
+sels_add_selection_1 (GList * sels, sw_framecount_t start, sw_framecount_t end);
+
 /*
  * sel_cmp (s1, s2)
  *
@@ -44,8 +50,16 @@ sel_cmp (sw_sel * s1, sw_sel * s2);
 GList *
 sels_copy (GList * sels);
 
+/*
+ * sels_invert (sels, nr_frames)
+ *
+ * inverts sels in place
+ */
+GList *
+sels_invert (GList * sels, sw_framecount_t nr_frames);
+
 sw_op_instance *
-perform_selection_op (sw_sample * s, char * desc, SweepModify func,
+perform_selection_op (sw_sample * s, char * desc, SweepFilter func,
 		      sw_param_set pset, gpointer custom_data);
 
 #endif /* __SWEEP_SELECTION_H__ */

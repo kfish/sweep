@@ -27,19 +27,25 @@
  * Print a number of bytes to 3 significant figures
  * using standard abbreviations (GB, MB, kB, byte[s])
  */
-void
+int
 snprint_bytes (gchar * s, gint n, glong nr_bytes);
 
 /*
  * Print a time in the format HH:MM:SS.sss
  */
-void
+int
 snprint_time (gchar * s, gint n, sw_time_t time);
 
 /*
  * Print a time in SMPTE format
  */
-void
+int
 snprint_time_smpte (gchar * s, gint n, sw_time_t time, gint F);
+
+/*
+ * Parse a time format string (eg. 1:30:43.34) to a double
+ */
+double
+strtime_to_seconds (char * str);
 
 #endif /* __PRINT_H__ */

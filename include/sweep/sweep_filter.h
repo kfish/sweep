@@ -30,10 +30,6 @@ perform_filter_region_op (sw_sample * sample, char * desc,
 			  SweepFilterRegion func, sw_param_set pset,
 			  gpointer custom_data);
 
-typedef sw_sounddata * (*SweepFilter) (sw_sounddata * sounddata,
-				       sw_param_set pset,
-				       gpointer custom_data);
-
 sw_op_instance *
 perform_filter_op (sw_sample * sample, char * desc, SweepFilter func,
 		   sw_param_set pset, gpointer custom_data);

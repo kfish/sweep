@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include <gtk/gtk.h>
@@ -52,6 +53,12 @@ static int logo_width = 0;
 static int logo_height = 0;
 #endif
 
+static void
+sweep_homepage (GtkWidget * widget, gpointer data)
+{
+  system ("gnome-moz-remote http://sweep.sourceforge.net/");
+}
+
 void
 about_dialog_create()
 {
@@ -63,6 +70,7 @@ about_dialog_create()
   GtkWidget *label;
 #define BUF_LEN 64
   gchar buf[BUF_LEN];
+  GtkWidget * button;
 
   if (!about_dialog) {
     about_dialog = gtk_window_new(GTK_WINDOW_DIALOG);
@@ -122,9 +130,11 @@ about_dialog_create()
     label = gtk_label_new("Copyright (c) 2000 Conrad Parker, conrad@vergenet.net");
     gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
     gtk_widget_show(label);
+#endif
 
     gtk_widget_pop_style();
 
+#if 0
     alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
     gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
     gtk_widget_show(alignment);
@@ -134,6 +144,11 @@ about_dialog_create()
     gtk_widget_show(label);
 #endif
 
+    button = gtk_button_new_with_label ("http://sweep.sourceforge.net/");
+    gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, TRUE, 0);
+    gtk_widget_show (button);
+    gtk_signal_connect (GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC(sweep_homepage), NULL);
   }
   if (!GTK_WIDGET_VISIBLE(about_dialog)) {
     gtk_widget_show(about_dialog);

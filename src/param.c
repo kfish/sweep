@@ -18,10 +18,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
+
 #include <sweep/sweep_i18n.h>
 #include <sweep/sweep_types.h>
 #include "sweep_app.h"
+#include "interface.h"
+
+#include "../pixmaps/ladlogo.xpm"
+
+extern GtkStyle * style_bw;
 
 static gint
 param_cmp (sw_param_type type, sw_param p1, sw_param p2)
@@ -102,8 +114,8 @@ snprint_param (gchar * s, gint n, sw_param_type type, sw_param p)
 {
   switch (type) {
   case SWEEP_TYPE_BOOL:
-    if (p.b) snprintf (s, n, "TRUE");
-    else snprintf (s, n, "FALSE");
+    if (p.b) snprintf (s, n, _("TRUE"));
+    else snprintf (s, n, _("FALSE"));
     break;
   case SWEEP_TYPE_INT:
     snprintf (s, n, "%d", p.i);
@@ -204,8 +216,8 @@ struct _sw_ps_adjuster {
   sw_view * view;
   sw_param_set pset;
   GtkWidget * window;
-  GtkWidget * frame;
-  GtkWidget * vbox;
+  GtkWidget * scrolled;
+  GtkWidget * table;
   sw_ps_widget * widgets;
   GList * plsk_list;
 };
@@ -223,8 +235,8 @@ ps_adjuster_new (sw_procedure * proc, sw_view * view, sw_param_set pset,
   ps->pset = pset;
   ps->window = window;
 
-  ps->frame = NULL;
-  ps->vbox = NULL;
+  ps->scrolled = NULL;
+  ps->table = NULL;
 
   ps->widgets = g_malloc (sizeof (sw_ps_widget) * proc->nr_params);
   ps->plsk_list = NULL;
@@ -347,7 +359,7 @@ param_list_set_known_cb (GtkWidget * widget, gpointer data)
 }
 
 static GtkWidget *
-create_param_set_vbox (sw_ps_adjuster * ps)
+create_param_set_table (sw_ps_adjuster * ps)
 {
   gint i, j;
 
@@ -362,7 +374,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 #define BUF_LEN 64
   gchar buf[BUF_LEN];
 
-  GtkWidget * vbox;
+  GtkWidget * table;
   GtkWidget * hbox;
   GtkWidget * label;
   GtkWidget * optionmenu;
@@ -373,20 +385,18 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 
   GtkObject * adj;
   gfloat value, lower, upper, step_inc, page_inc, page_size;
+  gint digits = 1; /* nr. of decimal places to show on hscale */
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  table = gtk_table_new (proc->nr_params, 2, FALSE);
 
-  for (i=0; i < proc->nr_params; i++) {
-    hbox = gtk_hbox_new (FALSE, 4);
-    gtk_box_pack_start (GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
-    gtk_widget_show (hbox);
-    
+  for (i=0; i < proc->nr_params; i++) {    
     pspec = &proc->param_specs[i];
 
     if (pspec->type == SWEEP_TYPE_BOOL) {
 
-      checkbutton = gtk_check_button_new_with_label (pspec->name);
-      gtk_box_pack_start (GTK_BOX(hbox), checkbutton, FALSE, TRUE, 0);
+      checkbutton = gtk_check_button_new_with_label (_(pspec->name));
+      gtk_table_attach (GTK_TABLE (table), checkbutton, 0, 2, i, i+1,
+			GTK_FILL, GTK_FILL, 0, 0);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton),
 				    pset[i].b);
@@ -402,14 +412,20 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 
     } else {
 
-      label = gtk_label_new (pspec->name);
-      gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
+      hbox = gtk_hbox_new (FALSE, 0);
+      gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, i, i+1,
+			GTK_FILL|GTK_SHRINK, GTK_SHRINK, 4, 4);
+      gtk_widget_show (hbox);
+
+      label = gtk_label_new (_(pspec->name));
+      gtk_box_pack_end (GTK_BOX(hbox), label, FALSE, FALSE, 4);
       gtk_widget_show (label);
 
       if (pspec->constraint_type == SW_PARAM_CONSTRAINED_LIST) {
 
 	optionmenu = gtk_option_menu_new ();
-	gtk_box_pack_start (GTK_BOX(hbox), optionmenu, FALSE, FALSE, 0);
+	gtk_table_attach (GTK_TABLE (table), optionmenu, 1, 2, i, i+1,
+			  GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
 	gtk_widget_show (optionmenu);
 
 	menu = gtk_menu_new ();
@@ -448,7 +464,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 
 #define ADJUSTER_NUMERIC(T, DIGITS) \
                                                                            \
-	value = (gfloat) pset[i].##T##;                                    \
+	value = (gfloat) pset[i].T;                                        \
                                                                            \
         if (pspec->constraint_type == SW_PARAM_CONSTRAINED_NOT) {          \
           valid = 0;                                                       \
@@ -457,32 +473,42 @@ create_param_set_vbox (sw_ps_adjuster * ps)
         }                                                                  \
 	                                                                   \
 	if (valid & SW_RANGE_LOWER_BOUND_VALID) {                          \
-	  lower = (gfloat) pspec->constraint.range->lower.##T##;           \
+	  lower = (gfloat) pspec->constraint.range->lower.T;               \
 	} else {                                                           \
 	  lower = G_MINFLOAT;                                              \
 	}                                                                  \
 	                                                                   \
 	if (valid & SW_RANGE_UPPER_BOUND_VALID) {                          \
-	  upper = (gfloat) pspec->constraint.range->upper.##T##;           \
+	  upper = (gfloat) pspec->constraint.range->upper.T;               \
 	} else {                                                           \
 	  upper = G_MAXFLOAT;                                              \
 	}                                                                  \
 	                                                                   \
 	if (valid & SW_RANGE_STEP_VALID) {                                 \
-	  step_inc = (gfloat) pspec->constraint.range->step.##T##;         \
-	} else {                                                           \
+	  step_inc = (gfloat) pspec->constraint.range->step.T;             \
+	} else if (lower != G_MINFLOAT && upper != G_MAXFLOAT) {           \
+          step_inc = (upper - lower) / 100.0;                              \
+        } else {                                                           \
 	  step_inc = (gfloat) 0.01;                                        \
 	}                                                                  \
 	page_inc = step_inc;                                               \
 	page_size = step_inc;                                              \
+        if (step_inc < 1.0)                                                \
+          digits = - (gint)ceil(log10((double)step_inc));                  \
+        else                                                               \
+          digits = 1;                                                      \
                                                                            \
 	adj = gtk_adjustment_new (value, lower, upper, step_inc,           \
 				  page_inc, page_size);                    \
                                                                            \
 	if ( (valid & SW_RANGE_LOWER_BOUND_VALID) &&                       \
 	     (valid & SW_RANGE_UPPER_BOUND_VALID)) {                       \
+          GTK_ADJUSTMENT(adj)->upper += step_inc;                          \
 	  num_widget = gtk_hscale_new (GTK_ADJUSTMENT(adj));               \
-	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, TRUE, 0);   \
+          gtk_scale_set_digits (GTK_SCALE(num_widget), digits);            \
+          gtk_widget_set_usize (num_widget, 75, -1);                       \
+	  gtk_table_attach (GTK_TABLE (table), num_widget, 1, 2, i, i+1,   \
+			    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);        \
 	} else {                                                           \
 	  num_widget = gtk_spin_button_new (GTK_ADJUSTMENT(adj),           \
 					    10.0, /* climb_rate */         \
@@ -492,7 +518,8 @@ create_param_set_vbox (sw_ps_adjuster * ps)
           gtk_spin_button_set_snap_to_ticks (GTK_SPIN_BUTTON(num_widget),  \
                                          TRUE);                            \
           gtk_widget_set_usize (num_widget, 75, -1);                       \
-	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, TRUE, 0);   \
+	  gtk_table_attach (GTK_TABLE (table), num_widget, 1, 2, i, i+1,   \
+			    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);        \
 	}                                                                  \
                                                                            \
 	gtk_widget_show (num_widget);                                      \
@@ -507,7 +534,9 @@ create_param_set_vbox (sw_ps_adjuster * ps)
     }
   }
 
-  return vbox;
+  return table;
+
+#undef BUF_LEN
 }
 
 /*
@@ -518,20 +547,21 @@ param_set_suggest_cb (GtkWidget * widget, gpointer data)
 {
   sw_ps_adjuster * ps = (sw_ps_adjuster *)data;
 
-  GtkWidget * vbox;
+  GtkWidget * table;
 
   if (ps->proc->suggest) {
     ps->proc->suggest (ps->view->sample,
 		       ps->pset, ps->proc->custom_data);
   }
 
-  gtk_widget_destroy (ps->vbox);
+  gtk_widget_destroy (ps->table);
 
-  vbox = create_param_set_vbox (ps);
-  gtk_container_add (GTK_CONTAINER(ps->frame), vbox);
-  gtk_widget_show (vbox);
+  table = create_param_set_table (ps);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (ps->scrolled),
+					 table);
+  gtk_widget_show (table);
 
-  ps->vbox = vbox;
+  ps->table = table;
 }
 
 gint
@@ -540,61 +570,232 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 {
   sw_ps_adjuster * ps;
 
+  GtkStyle * style;
+
   GtkWidget * window;
   GtkWidget * main_vbox;
-  GtkWidget * vbox;
+  GtkWidget * pixmap;
+  GtkWidget * label;
+  GtkWidget * scrolled;
+  GtkWidget * ebox;
   GtkWidget * hbox;
+  GtkWidget * vbox;
+  GtkWidget * table;
   GtkWidget * frame;
-  GtkWidget * button;
+  GtkWidget * button, * ok_button;
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW(window), proc->name);
+  /* Place the meta info about the plugin in a text widget (white background)
+   *  aligned to the left of the parameter settings by defining _USE_TEXT
+   */
+/*#define _USE_TEXT*/
+
+#ifdef _USE_TEXT
+  GtkWidget * text;
+  GdkFont * font;
+
+#define BUF_LEN 1024
+  gchar buf[BUF_LEN];
+  gint n;
+
+#endif /* _USE_TEXT */
+
+  window = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW(window), _(proc->name));
+  /*  gtk_container_border_width (GTK_CONTAINER (window), 8);*/
 
   ps = ps_adjuster_new (proc, view, pset, window);
 
   gtk_signal_connect (GTK_OBJECT(window), "destroy",
 		      GTK_SIGNAL_FUNC(param_set_cancel_cb), ps);
-  
-  main_vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER(window), main_vbox);
-  gtk_widget_show (main_vbox);
 
+#ifdef _USE_TEXT
   hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->vbox), hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
-  button = gtk_button_new_with_label (_("Suggest"));
-  gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
+  text = gtk_text_new (NULL, NULL);
+  gtk_text_set_editable (GTK_TEXT (text), FALSE);
+  gtk_text_set_word_wrap (GTK_TEXT (text), FALSE);
+  gtk_widget_set_usize (text, 320, -1);
+  gtk_box_pack_start (GTK_BOX (hbox), text, FALSE, FALSE, 0);
+  gtk_widget_show (text);
+
+  main_vbox = gtk_vbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), main_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (main_vbox);
+
+  vbox = main_vbox;
+
+  gtk_text_freeze (GTK_TEXT (text));
+
+#else
+
+  main_vbox = GTK_DIALOG(window)->vbox;
+
+  ebox = gtk_event_box_new ();
+  gtk_box_pack_start (GTK_BOX(main_vbox), ebox, FALSE, FALSE, 0);
+  gtk_widget_set_style (ebox, style_bw);
+  gtk_widget_show (ebox);
+
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER(ebox), hbox);  
+  gtk_container_set_border_width (GTK_CONTAINER(hbox), 4);
+  gtk_widget_show (hbox);
+
+  pixmap = create_widget_from_xpm (window, ladlogo_xpm);
+  gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 0);
+  gtk_widget_show (pixmap);
+
+  vbox = gtk_vbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
+  gtk_widget_show (vbox);
+
+
+#endif
+
+  if (proc->name != NULL) {
+
+#ifdef _USE_TEXT
+    font =
+      gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
+
+    n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
+
+    gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
+
+#else
+
+    style = gtk_style_new ();
+    gdk_font_unref (style->font);
+    style->font =
+      gdk_font_load("-adobe-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+    gtk_widget_push_style (style);
+
+    label = gtk_label_new (_(proc->name));
+    gtk_misc_set_padding (GTK_MISC (label), 10, 10);
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+
+    gtk_widget_pop_style ();
+
+#endif
+  }
+
+#ifdef _USE_TEXT
+  n = 0;
+
+  if (proc->description != NULL) {
+    n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->description));
+  }
+
+  if (proc->author != NULL) {
+    n += snprintf (buf+n, BUF_LEN, "by %s", proc->author);
+  }
+
+  if (proc->copyright != NULL) {
+    n += snprintf (buf+n, BUF_LEN, ", %s.\n", proc->copyright);
+  }
+
+  if (proc->url != NULL) {
+    n += snprintf (buf+n, BUF_LEN, "\nFor more information see\n%s\n",
+		   proc->url);
+  }
+
+  if (n > 0) {
+    gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL, buf, n);
+  }
+
+  gtk_text_thaw (GTK_TEXT (text));
+
+#else
+  if (proc->description != NULL) {
+    label = gtk_label_new (_(proc->description));
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+  }
+
+  if (proc->author != NULL) {
+    label = gtk_label_new (proc->author);
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+  }
+
+  if (proc->copyright != NULL) {
+    label = gtk_label_new (proc->copyright);
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+  }
+
+  if (proc->url != NULL) {
+    label = gtk_label_new (proc->url);
+    gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+  }
+#endif
+
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(main_vbox), hbox, TRUE, TRUE, 8);
+  gtk_widget_show (hbox);
+
+  frame = gtk_frame_new (_("Parameters"));
+  gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 8);
+  gtk_widget_show (frame);
+
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_container_set_border_width (GTK_CONTAINER(vbox), 8);
+  gtk_widget_show (vbox);
+
+  button = gtk_button_new_with_label (_("Defaults"));
+  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 8);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",
 		      GTK_SIGNAL_FUNC (param_set_suggest_cb), ps);
 
-  frame = gtk_frame_new (NULL);
-  gtk_box_pack_start (GTK_BOX(main_vbox), frame, FALSE, FALSE, 0);
+  scrolled = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_set_usize (scrolled, -1, 240);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_box_pack_start (GTK_BOX (vbox), scrolled, TRUE, TRUE, 8);
+  gtk_widget_show (scrolled);
+
+  table = create_param_set_table (ps);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
+					 table);
+  gtk_widget_show (table);
+
+  ps->scrolled = scrolled;
+  ps->table = table;
+
+#if 0
+  frame = gtk_frame_new (_("Preview"));
+  gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 8);
   gtk_widget_show (frame);
 
-  vbox = create_param_set_vbox (ps);
-  gtk_container_add (GTK_CONTAINER(frame), vbox);
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_container_set_border_width (GTK_CONTAINER(vbox), 8);
   gtk_widget_show (vbox);
+#endif
 
-  ps->frame = frame;
-  ps->vbox = vbox;
-
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 4);
-  gtk_widget_show (hbox);
-
-  button = gtk_button_new_with_label (_("OK"));
-  gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
-  gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
+  ok_button = gtk_button_new_with_label (_("OK"));
+  GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), ok_button,
+		      TRUE, TRUE, 0);
+  gtk_widget_show (ok_button);
+  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
 		      GTK_SIGNAL_FUNC (param_set_apply_cb), ps);
+  
 
   button = gtk_button_new_with_label (_("Cancel"));
-  gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
+  GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), button,
+		      TRUE, TRUE, 0);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",
 		      GTK_SIGNAL_FUNC (param_set_cancel_cb), ps);
+
+  gtk_widget_grab_default (ok_button);
 
   gtk_widget_show (window);
 

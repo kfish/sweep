@@ -63,8 +63,14 @@ sounddata_selection_nr_regions (sw_sounddata * sounddata);
 gint
 sounddata_selection_nr_frames (sw_sounddata * sounddata);
 
+gint
+sounddata_selection_width (sw_sounddata * sounddata);
+
 void
 sounddata_selection_translate (sw_sounddata * sounddata, gint delta);
+
+void
+sounddata_selection_scale (sw_sounddata * sounddata, gfloat scale);
 
 /*
  * sounddata_copyin_selection (sounddata, sounddata2)

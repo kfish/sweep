@@ -32,6 +32,10 @@
  */
 
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -51,6 +55,8 @@
 
 static void time_ruler_class_init    (TimeRulerClass *klass);
 static void time_ruler_init          (TimeRuler      *time_ruler);
+static gint time_ruler_button_press  (GtkWidget * widget,
+				      GdkEventButton * event);
 static gint time_ruler_motion_notify (GtkWidget      *widget,
 				      GdkEventMotion *event);
 static void time_ruler_draw_ticks    (GtkRuler       *ruler);
@@ -92,16 +98,17 @@ time_ruler_class_init (TimeRulerClass *klass)
   widget_class = (GtkWidgetClass*) klass;
   ruler_class = (GtkRulerClass*) klass;
 
+  /*  widget_class->realize = time_ruler_realize;*/
+  widget_class->button_press_event = time_ruler_button_press;
   widget_class->motion_notify_event = time_ruler_motion_notify;
 
   ruler_class->draw_ticks = time_ruler_draw_ticks;
   ruler_class->draw_pos = time_ruler_draw_pos;
 }
 
-static sw_format default_format = { 1, 44100 };
-
 static gfloat ruler_scale[MAXIMUM_SCALES] =
-{ 0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 30, 60, 300, 600, 1800, 3600, 18000, 36000 };
+{ 0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1,
+  2.5, 5, 10, 15, 30, 60, 300, 600, 1800, 3600, 18000, 36000 };
 
 static gint subdivide[MAXIMUM_SUBDIVIDE] = { 1, 2, 5, 10, 100 };
 
@@ -110,10 +117,7 @@ time_ruler_init (TimeRuler *time_ruler)
 {
   GtkWidget *widget;
 
-  time_ruler->format = &default_format;
-
-  GTK_RULER(time_ruler)->metric->pixels_per_unit =
-    (gfloat)time_to_frames (&default_format, 1.0);
+  time_ruler->samplerate = 44100;
 
   widget = GTK_WIDGET (time_ruler);
   widget->requisition.width = widget->style->klass->xthickness * 2 + 1;
@@ -128,8 +132,7 @@ time_ruler_new (void)
 }
 
 static gint
-time_ruler_motion_notify (GtkWidget      *widget,
-			  GdkEventMotion *event)
+time_ruler_motion_notify (GtkWidget *widget, GdkEventMotion *event)
 {
   GtkRuler *ruler;
   gint x;
@@ -154,6 +157,17 @@ time_ruler_motion_notify (GtkWidget      *widget,
   return FALSE;
 }
 
+static gint
+time_ruler_button_press (GtkWidget * widget, GdkEventButton * event)
+{
+  GdkModifierType state;
+  int x, y;
+
+  gdk_window_get_pointer (event->window, &x, &y, &state);
+
+  return TRUE;
+}
+
 static void
 time_ruler_draw_ticks (GtkRuler *ruler)
 {
@@ -166,7 +180,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   gint ythickness;
   gint length, ideal_length;
   gfloat lower, upper;		/* Upper and lower limits, in ruler units */
-  gfloat increment;		/* Number of pixels per unit */
+  gfloat increment, abs_increment; /* Number of pixels per unit */
   gint scale;			/* Number of units per major unit */
   gfloat subd_incr;
   gfloat start, end, cur;
@@ -209,26 +223,28 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 		 widget->allocation.width - xthickness,
 		 height + ythickness);
 
-  upper = ruler->upper / ruler->metric->pixels_per_unit;
-  lower = ruler->lower / ruler->metric->pixels_per_unit;
+  upper = ruler->upper / TIME_RULER(ruler)->samplerate;
+  lower = ruler->lower / TIME_RULER(ruler)->samplerate;
 
   if ((upper - lower) == 0) 
     return;
+
   increment = (gfloat) width / (upper - lower);
+  abs_increment = (gfloat) fabs((double)increment);
 
   /* determine the scale
    *  We calculate the text size as for the vruler instead of using
    *  text_width = gdk_string_width(font, unit_str), so that the result
    *  for the scale looks consistent with an accompanying vruler
    */
-  scale = ceil (ruler->max_size / ruler->metric->pixels_per_unit);
+  scale = ceil (ruler->max_size / TIME_RULER(ruler)->samplerate);
   snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)scale);
   /*  snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)scale, 10.0);*/
   /*  text_width = strlen (unit_str) * digit_height + 1;*/
   text_width = gdk_string_width (font, unit_str);
 
   for (scale = 0; scale < MAXIMUM_SCALES; scale++)
-    if (ruler_scale[scale] * fabs(increment) > 2 * text_width)
+    if (ruler_scale[scale] * abs_increment > 2 * text_width)
       break;
 
   if (scale == MAXIMUM_SCALES)
@@ -273,8 +289,11 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	  /* draw label */
 	  if (i == 0)
 	    {
+#if 1
 	      snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)cur);
-	      /* snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);*/
+#else
+	      snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);
+#endif
 	      gdk_draw_string (ruler->backing_store, font, gc,
 			       pos + 2, ythickness + font->ascent - 1,
 			       unit_str);
@@ -345,7 +364,5 @@ time_ruler_draw_pos (GtkRuler *ruler)
 void
 time_ruler_set_format (TimeRuler * time_ruler, sw_format * f)
 {
-  time_ruler->format = f;
-  GTK_RULER(time_ruler)->metric->pixels_per_unit =
-    (gfloat)time_to_frames (f, 1.0);
+  time_ruler->samplerate = f->rate;
 }

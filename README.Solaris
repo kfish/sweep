@@ -1,4 +1,12 @@
+Wed Oct 30 2002
+---------------
+
+Some compile fixes were applied as listed in Sourceforge bug #625528.
+Please contact sweep-devel@lists.sf.net if you have any problems building
+or running Sweep on Solaris.
+
 Fri May 12 2000
+---------------
 
 Solaris audio support was added in sweep version 0.0.9 by Mattias
 Engdegård <f91-men@nada.kth.se>. It is configured in automatically
@@ -18,4 +26,3 @@ Mattias writes:
         should be no problem in practice, but if someone is
         displeased with the behaviour, I could outline a way to
         solve it.
-

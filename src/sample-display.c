@@ -21,22 +21,41 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
 #include "sample-display.h"
 
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+
+#include <sweep/sweep_i18n.h>
 
 #include "sweep_app.h"
 #include "sample.h"
+#include "head.h"
 #include "cursors.h"
+#include "play.h"
+#include "callbacks.h"
+#include "edit.h"
+#include "undo_dialog.h"
 
-/* static cursor definitions */
-#include "horiz.xpm"
-#include "horiz_plus.xpm"
+/*#define DEBUG*/
 
+#define DOUBLE_BUFFER
 
-gint current_tool = TOOL_SELECT;
+/*#define ALWAYS_REDRAW_ALL*/
+
+/*#define LEGACY_DRAW_MODE*/
+
+#define SEL_SCRUBS
+
+extern GdkCursor * sweep_cursors[];
 
 /* Maximum number of samples to consider per pixel */
 #define STEP_MAX 32
@@ -51,7 +70,7 @@ gint current_tool = TOOL_SELECT;
   ((sw_framecount_t)(((gdouble)(p)) * (((gdouble)(s->view->end - s->view->start)) / ((gdouble)s->width))))
 
 #define XPOS_TO_OFFSET(x) \
-  (s->view->start + PIXEL_TO_OFFSET(x))
+  CLAMP(s->view->start + PIXEL_TO_OFFSET(x), 0, s->view->sample->sounddata->nr_frames)
 
 #define SAMPLE_TO_PIXEL(n) \
   ((sw_framecount_t)((gdouble)(n) * (gdouble)s->width / (gdouble)(s->view->end - s->view->start)))
@@ -62,9 +81,36 @@ gint current_tool = TOOL_SELECT;
 #define OFFSET_RANGE(l, x) ((x) < 0 ? 0 : ((x) >= (l) ? (l) - 1 : (x)))
 
 #define SET_CURSOR(w, c) \
-  gdk_window_set_cursor (##w##->window, SAMPLE_DISPLAY_CLASS(GTK_OBJECT(##w##)->klass)->##c##)
+  gdk_window_set_cursor ((w)->window, sweep_cursors[SWEEP_CURSOR_##c])
+
+#define YPOS_TO_CHANNEL(y) \
+  (s->view->sample->sounddata->format->channels * y / s->height)
+
+#define CHANNEL_HEIGHT \
+  (s->height / s->view->sample->sounddata->format->channels)
+
+#define YPOS_TO_VALUE(y) \
+  ((sw_audio_t)(CHANNEL_HEIGHT/2 - (y - (YPOS_TO_CHANNEL(y) * CHANNEL_HEIGHT)))/(CHANNEL_HEIGHT/2))
+
+#if 0
+#define YPOS_TO_CHANNEL(y) \
+  (s->view->sample->sounddata->format->channels == 2 ? (y > s->height/2) : 0)
+
+#define YPOS_TO_VALUE_1(y) \
+  ((sw_audio_t)(s->height/2 - y)/(s->height/2))
+
+#define YPOS_TO_VALUE_L(y) \
+  ((sw_audio_t)(s->height/4 - y)/(s->height/4))
+
+#define YPOS_TO_VALUE_R(y) \
+  ((sw_audio_t)(3*s->height/4 - y)/(s->height/4))
+
+#define YPOS_TO_VALUE_2(y) \
+  (YPOS_TO_CHANNEL(y) ? YPOS_TO_VALUE_R(y) : YPOS_TO_VALUE_L(y))
+#endif
 
 #define MARCH_INTERVAL 300
+#define PULSE_INTERVAL 450
 
 extern sw_view * last_tmp_view;
 
@@ -73,34 +119,76 @@ static int last_button; /* button index which started the last selection;
 			 * last_tmp_view
 			 */
 
-#ifdef _MUSHROOM_BROWN
+#if 1
+
 static const int default_colors[] = {
-  114, 114, 98,  /* bg */
-  234, 234, 25,  /* fg */
-  230, 0, 0,     /* mixerpos */
-  40, 40, 0,     /* zero */
-  240, 230, 240, /* sel */
-  255, 255, 255, /* tmp_sel */
-  10, 40, 10,    /* crossing */
-  170, 169, 134, /* minmax */
-  224, 220, 172, /* highlight */
-  43, 42, 33,    /* lowlight */
-};
-#else
-static const int default_colors[] = {
-  182, 178, 182,  /* bg */
+  200, 200, 193,  /* bg */
   199, 203, 158,  /* fg */
-  230, 0, 0,     /* mixerpos */
-  40, 40, 0,     /* zero */
-  240, 230, 240, /* sel */
-  255, 255, 255, /* tmp_sel */
-  10, 40, 10,    /* crossing */
-  174, 186, 174, /* minmax */
-  215, 219, 215, /* highlight */
+  0, 0xaa, 0, /* play (mask) */
+  220, 230, 255, /* user */
+  100, 100, 100, /* zero */
+  240, 230, 240, /* sel box */
+  110, 110, 100, /* tmp_sel XOR mask */
+#if 1
+  108, 115, 134,    /* sel bg */
+#else
+  62, 68, 118,  /* sel bg */
+#endif
+  166, 166, 154, /* minmax */
+  240, 250, 240, /* highlight */
   81, 101, 81,   /* lowlight */
+  230, 0, 0,     /* rec */
+};
+
+#else
+
+static const int default_colors[] = {
+#if 0
+  86, 86, 80,    /* bg */
+#elif 0
+  220, 220, 210, /* bg */
+#else
+  200, 200, 193,    /* bg */
+#endif
+  199, 203, 158, /* fg */
+  20, 230, 0,    /* play */
+  200, 200, 200, /* user */
+  200, 200, 200, /* zero */
+  240, 230, 240, /* sel box */
+  110, 110, 100, /* tmp_sel XOR mask */
+  118, 118, 108, /* sel bg XOR mask */
+  154, 166, 154, /* minmax */
+  219, 219, 211, /* highlight */
+  81, 101, 81,   /* lowlight */
+  240, 0, 0,     /* rec */
 };
 #endif
 
+static const int bg_colors[] = {
+  250, 250, 237,    /* black bg */
+  200, 200, 193,    /* red bg */
+  147, 147, 140,    /* orange bg */
+  160, 160, 150,    /* yellow bg */
+#if 0
+  210, 210, 193,    /* blue bg */
+#else
+  250, 250, 237,    /* blue bg */
+#endif
+  160, 160, 150,    /* white bg */
+  0, 0, 0,          /* greenscreen bg */
+  60, 70, 170,          /* bluescreen bg */
+};
+
+static const int fg_colors[] = {
+  80, 80, 60,    /* black fg */
+  220, 80, 40,   /* red fg */
+  220, 170, 120, /* orange fg */
+  199, 203, 158, /* yellow fg */
+  128, 138, 184, /* blue fg */
+  230, 240, 255, /* white fg */
+  0, 220, 0,     /* greenscreen fg */
+  240, 240, 240,     /* bluescreen fg */
+};
 
 /* Values for s->selecting */
 enum {
@@ -108,20 +196,31 @@ enum {
   SELECTING_SELECTION_START,
   SELECTING_SELECTION_END,
   SELECTING_PAN_WINDOW,
+  SELECTING_PLAYMARKER,
+  SELECTING_PENCIL,
+  SELECTING_NOISE,
 };
 
 enum {
   SELECTION_MODE_NONE = 0, /* Not selecting; used for consistency check. */
   SELECTION_MODE_REPLACE,
   SELECTION_MODE_INTERSECT,
+  SELECTION_MODE_SUBTRACT,
+  SELECTION_MODE_MAX
 };
-
 
 enum {
   SIG_SELECTION_CHANGED,
   SIG_WINDOW_CHANGED,
   SIG_MOUSE_OFFSET_CHANGED,
   LAST_SIGNAL
+};
+
+static gchar * selection_mode_names[SELECTION_MODE_MAX] = {
+  N_(""), /* NONE */
+  N_("New selection"), /* REPLACE */
+  N_("Selection: add/modify region"), /* INTERSECT */
+  N_("Selection: subtract region"), /* SUBTRACT */
 };
 
 #define IS_INITIALIZED(s) (s->view != NULL)
@@ -135,7 +234,39 @@ static gchar sel_dash_list[2] = { 4, 4 }; /* Equivalent to GDK's default
 void
 sample_display_refresh (SampleDisplay *s)
 {
-  gtk_widget_queue_draw(GTK_WIDGET(s));
+  sw_sample * sample;
+
+  g_return_if_fail(s != NULL);
+  g_return_if_fail(IS_SAMPLE_DISPLAY(s));
+
+  if(!IS_INITIALIZED(s))
+    return;
+
+  sample = s->view->sample;
+
+  s->old_user_offset_x = s->user_offset_x =
+    OFFSET_TO_XPOS(sample->user_offset);
+
+  s->old_play_offset_x = s->play_offset_x =
+    OFFSET_TO_XPOS(sample->play_head->offset);
+
+  if (sample->rec_head != NULL) {
+    s->old_rec_offset_x = s->rec_offset_x =
+      OFFSET_TO_XPOS(sample->rec_head->offset);
+  }
+
+  gtk_widget_queue_draw_area (GTK_WIDGET(s), 0, 0, s->width, s->height);
+}
+
+sw_framecount_t
+sample_display_get_mouse_offset (SampleDisplay * s)
+{
+  int x, y;
+  GdkModifierType state;
+
+  gdk_window_get_pointer (GTK_WIDGET(s)->window, &x, &y, &state);
+
+  return XPOS_TO_OFFSET(x);
 }
 
 void
@@ -145,14 +276,13 @@ sample_display_set_view (SampleDisplay *s, sw_view *view)
   g_return_if_fail(IS_SAMPLE_DISPLAY(s));
 
   s->view = view;
-  s->old_mixerpos = -1;
-  s->mixerpos = -1;
-	
+  s->old_user_offset_x = -1;
+  s->user_offset_x = -1;
+  s->old_play_offset_x = -1;
+  s->play_offset_x = -1;
+
   /*  gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->view->start, s->view->start + (s->view->end - s->view->start));*/
 	
-#if 0
-  s->old_ss = s->old_se = -1;
-#endif
   s->selecting = SELECTING_NOTHING;
   s->selection_mode = SELECTION_MODE_NONE;
 
@@ -160,21 +290,243 @@ sample_display_set_view (SampleDisplay *s, sw_view *view)
 }
 
 void
-sample_display_set_playmarker (SampleDisplay *s,
-			       int offset)
+sample_display_refresh_user_marker (SampleDisplay *s)
 {
+  sw_sample * sample;
+  gint x, width;
+
   g_return_if_fail(s != NULL);
   g_return_if_fail(IS_SAMPLE_DISPLAY(s));
 
   if(!IS_INITIALIZED(s))
     return;
 
-  if(offset != s->mixerpos) {
-    s->mixerpos = offset;
-    gtk_widget_queue_draw(GTK_WIDGET(s));
+  sample = s->view->sample;
+
+  s->user_offset_x = OFFSET_TO_XPOS(sample->user_offset);
+
+  /* paint changed user cursor pos */
+  if (s->old_user_offset_x != s->user_offset_x) {
+    x = CLAMP (s->old_user_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+  }
+  
+  /* paint cursor */
+  if (s->user_offset_x >= 0 && s->user_offset_x <= s->width) {
+    x = CLAMP (s->user_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+
+    s->old_user_offset_x = s->user_offset_x;
   }
 }
 
+void
+sample_display_refresh_play_marker (SampleDisplay *s)
+{
+  sw_sample * sample;
+  sw_head * head;
+  gint x, width;
+
+  g_return_if_fail(s != NULL);
+  g_return_if_fail(IS_SAMPLE_DISPLAY(s));
+
+  if(!IS_INITIALIZED(s))
+    return;
+
+  sample = s->view->sample;
+  head = sample->play_head;
+
+  s->play_offset_x = OFFSET_TO_XPOS(head->offset);
+
+  /* paint play offset */
+  if (s->old_play_offset_x != s->play_offset_x) {
+    x = CLAMP (s->old_play_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+  }
+  
+  if (s->play_offset_x >= 0 && s->play_offset_x <= s->width) {
+    x = CLAMP (s->play_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+
+    s->old_play_offset_x = s->play_offset_x;
+  }
+}
+
+void
+sample_display_refresh_rec_marker (SampleDisplay *s)
+{
+  sw_sample * sample;
+  sw_head * rec_head;
+  gint x, width;
+
+  g_return_if_fail(s != NULL);
+  g_return_if_fail(IS_SAMPLE_DISPLAY(s));
+
+  if(!IS_INITIALIZED(s))
+    return;
+
+  sample = s->view->sample;
+  rec_head = sample->rec_head;
+
+  if (rec_head == NULL) return;
+
+  s->rec_offset_x = OFFSET_TO_XPOS(rec_head->offset);
+
+  /* paint rec offset */
+  if (s->old_rec_offset_x != s->rec_offset_x) {
+    x = CLAMP (s->old_rec_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+  }
+  
+  if (s->rec_offset_x >= 0 && s->rec_offset_x <= s->width) {
+    x = CLAMP (s->rec_offset_x - 15, 0, s->width);
+    width = MIN (s->width - x, 29);
+    gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, width, s->height);
+
+    s->old_rec_offset_x = s->rec_offset_x;
+  }
+}
+
+static void
+sample_display_refresh_sels (SampleDisplay * s)
+{
+  int x, x2;
+  sw_sample * sample;
+  GList * gl;
+  sw_sel * sel;
+
+  g_return_if_fail(s != NULL);
+  g_return_if_fail(IS_SAMPLE_DISPLAY(s));
+
+  if(!IS_INITIALIZED(s))
+    return;
+
+  sample = s->view->sample;
+
+  /* paint marching ants */
+    
+  /* real selection */
+  for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+    sel = (sw_sel *)gl->data;
+      
+    x = OFFSET_TO_XPOS(sel->sel_start);
+    x2 = OFFSET_TO_XPOS(sel->sel_end);
+
+    if ((x >= 0) && (x <= s->width)) {
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, 1, s->height);
+    }
+    if ((x2 >= 0) && (x2 <= s->width)) {
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x2, 0, 1, s->height);
+    }
+
+    if ((x <= s->width) && (x2 >= 0)) {
+      x = CLAMP (x, 0, s->width);
+      x2 = CLAMP (x2, 0, s->width);
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, x2 - x, 1);
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, s->height - 1, x2 - x, 1);
+    }
+  }
+    
+  /* temporary selection */
+  sel = sample->tmp_sel;
+
+  if (sel) {
+    x = OFFSET_TO_XPOS(sel->sel_start);
+    x2 = OFFSET_TO_XPOS(sel->sel_end);
+
+    if ((x >= 0) && (x <= s->width)) {
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, 1, s->height);
+    }
+    if ((x2 >= 0) && (x2 <= s->width)) {
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x2, 0, 1, s->height);
+    }
+
+    if ((x <= s->width) && (x2 >= 0)) {
+      x = CLAMP (x, 0, s->width);
+      x2 = CLAMP (x2, 0, s->width);
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, 0, x2 - x, 1);
+      gtk_widget_queue_draw_area (GTK_WIDGET(s), x, s->height - 1, x2 - x, 1);
+    }
+  }
+}
+
+void
+sample_display_set_cursor (SampleDisplay * s, GdkCursor * cursor)
+{
+  gdk_window_set_cursor (GTK_WIDGET(s)->window, cursor);
+}
+
+void
+sample_display_set_default_cursor (SampleDisplay * s)
+{
+  GdkCursor * cursor;
+
+  switch (s->view->current_tool) {
+  case TOOL_SELECT:
+    cursor = sweep_cursors[SWEEP_CURSOR_CROSSHAIR];
+    break;
+  case TOOL_ZOOM:
+    cursor = sweep_cursors[SWEEP_CURSOR_ZOOM_IN];
+    break;
+  case TOOL_MOVE:
+    cursor = sweep_cursors[SWEEP_CURSOR_MOVE];
+    break;
+  case TOOL_SCRUB:
+    cursor = sweep_cursors[SWEEP_CURSOR_NEEDLE];
+    break;
+  case TOOL_PENCIL:
+    cursor = sweep_cursors[SWEEP_CURSOR_PENCIL];
+    break;
+  case TOOL_NOISE:
+    cursor = sweep_cursors[SWEEP_CURSOR_NOISE];
+    break;
+  default:
+    cursor = NULL;
+    break;
+  }
+
+  gdk_window_set_cursor (GTK_WIDGET(s)->window, cursor);
+}
+
+static void
+sample_display_set_intersect_cursor (SampleDisplay * s)
+{
+  sw_sample * sample = s->view->sample;
+  GtkWidget * widget = GTK_WIDGET(s);
+
+  /* Check if there are other selection regions.
+   * NB. This assumes that tmp_sel has already been
+   * set.
+   */
+  if (sample_sel_nr_regions(sample) > 0) {
+    SET_CURSOR(widget, HORIZ_PLUS);
+  } else {
+    SET_CURSOR(widget, HORIZ);
+  }
+}
+
+static void
+sample_display_set_subtract_cursor (SampleDisplay * s)
+{
+  sw_sample * sample = s->view->sample;
+  GtkWidget * widget = GTK_WIDGET(s);
+
+  /* Check if there are other selection regions.
+   * NB. This assumes that tmp_sel has already been
+   * set.
+   */
+  if (sample_sel_nr_regions(sample) > 0) {
+    SET_CURSOR(widget, HORIZ_MINUS);
+  } else {
+    SET_CURSOR(widget, HORIZ);
+  }
+}
 
 void
 sample_display_set_window (SampleDisplay *s,
@@ -188,17 +540,25 @@ sample_display_set_window (SampleDisplay *s,
 
   len = s->view->sample->sounddata->nr_frames;
   vlen = end - start;
+  
+  g_return_if_fail(end >= start);
 
-  g_return_if_fail(end > start);
 
-  /* Align to middle if entire length of sample is visible */
   if (vlen > len) {
+    /* Align to middle if entire length of sample is visible */
     start = (len - vlen) / 2;
     end = start + vlen;
+  } else if (vlen == 0 && len > 0) {
+    /* Zoom normal if window is zero but there is data; eg. after pasting
+     * into an empty buffer */
+    start = 0;
+    end = MIN (len, s->width * 1024);
   }
 
   s->view->start = start;
   s->view->end = end;
+
+  sample_display_refresh_user_marker (s);
 
   gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED]);
 
@@ -319,6 +679,7 @@ sample_display_realize (GtkWidget *widget)
   GdkWindowAttr attributes;
   gint attributes_mask;
   SampleDisplay *s;
+  gint i;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (IS_SAMPLE_DISPLAY (widget));
@@ -332,16 +693,22 @@ sample_display_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
+#if 0
   attributes.event_mask = gtk_widget_get_events (widget)
     | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
     | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK
-    | GDK_LEAVE_NOTIFY_MASK;
+    | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
+    GDK_FOCUS_CHANGE_MASK | GDK_KEY_PRESS_MASK;
+#else
+  attributes.event_mask = GDK_ALL_EVENTS_MASK;
+#endif
 
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
+  widget->window = gdk_window_new (widget->parent->window,
+				   &attributes, attributes_mask);
 
   widget->style = gtk_style_attach (widget->style, widget->window);
 
@@ -356,9 +723,16 @@ sample_display_realize (GtkWidget *widget)
   s->zeroline_gc = gdk_gc_new(widget->window);
   gdk_gc_set_foreground(s->zeroline_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_ZERO]);
 
-  s->mixerpos_gc = gdk_gc_new(widget->window);
-  gdk_gc_set_foreground(s->mixerpos_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_MIXERPOS]);
+  s->play_gc = gdk_gc_new(widget->window);
+  gdk_gc_set_foreground(s->play_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_PLAY]);
+  gdk_gc_set_function (s->play_gc, GDK_OR_REVERSE);
 
+  s->user_gc = gdk_gc_new(widget->window);
+  gdk_gc_set_foreground(s->user_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_PAUSE]);
+
+  s->rec_gc = gdk_gc_new(widget->window);
+  gdk_gc_set_foreground(s->rec_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_REC]);
+  
   s->sel_gc = gdk_gc_new(widget->window);
   gdk_gc_set_foreground(s->sel_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_SEL]);
   gdk_gc_set_line_attributes(s->sel_gc, 1 /* line width */,
@@ -382,10 +756,17 @@ sample_display_realize (GtkWidget *widget)
   s->lowlight_gc = gdk_gc_new (widget->window);
   gdk_gc_set_foreground(s->lowlight_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_LOWLIGHT]);
 
+  for (i = 0; i < VIEW_COLOR_MAX; i++) {
+    s->bg_gcs[i] = gdk_gc_new (widget->window);
+    gdk_gc_set_foreground(s->bg_gcs[i], &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->bg_colors[i]);
+
+    s->fg_gcs[i] = gdk_gc_new (widget->window);
+    gdk_gc_set_foreground(s->fg_gcs[i], &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->fg_colors[i]);
+  }
 
   sample_display_init_display(s, attributes.width, attributes.height);
 
-  SET_CURSOR(widget, crosshair_cr);
+  sample_display_set_default_cursor (s);
 
   gdk_window_set_user_data (widget->window, widget);
 }
@@ -400,25 +781,126 @@ sample_display_draw_data_channel (GdkDrawable * win,
 				  int height,
 				  int channel)
 {
-  GdkGC *gc;
+  GList * gl;
+  GdkGC * gc, * fg_gc;
+  sw_sel * sel;
+  int x1, x2, y1;
+  sw_audio_t vhigh, vlow;
   sw_audio_intermediate_t totpos, totneg;
   sw_audio_t d, maxpos, avgpos, minneg, avgneg;
   sw_audio_t prev_maxpos, prev_minneg;
-  sw_framecount_t i, step, nr_pos, nr_neg;
+  sw_framecount_t i, step, nr_frames, nr_pos, nr_neg;
   sw_sample * sample;
   const int channels = s->view->sample->sounddata->format->channels;
 
   sample = s->view->sample;
 
-  gdk_draw_rectangle(win, s->bg_gc,
+  fg_gc = s->fg_gcs[sample->color];
+
+  gdk_draw_rectangle(win, s->bg_gcs[sample->color],
 		     TRUE, x, y, width, height);
 
+  /* Draw real selection */
+  for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+    sel = (sw_sel *)gl->data;
+
+    x1 = OFFSET_TO_XPOS(sel->sel_start);
+    x1 = CLAMP(x1, x, x+width);
+
+    x2 = OFFSET_TO_XPOS(sel->sel_end);
+    x2 = CLAMP(x2, x, x+width);
+
+    if (x2 - x1 > 1){ 
+      gdk_draw_rectangle (win, s->crossing_gc, TRUE,
+			  x1, y, x2 - x1, y + height -1);
+    }
+  }
+
+  /* Draw temporary selection */
+  sel = sample->tmp_sel;
+
+  if (sel) {
+    if (sel->sel_start != sel->sel_end) {
+      x1 = OFFSET_TO_XPOS(sel->sel_start);
+      x1 = CLAMP(x1, x, x+width);
+      
+      x2 = OFFSET_TO_XPOS(sel->sel_end);
+      x2 = CLAMP(x2, x, x+width);
+      
+      if (x2 - x1 > 1) {
+	gdk_draw_rectangle (win, s->tmp_sel_gc, TRUE,
+			    x1, y, x2 - x1, y + height -1);
+      }
+    }
+  }
+
+  vhigh = s->view->vhigh;
+  vlow = s->view->vlow;
+
+#define YPOS(v) CLAMP(y + height - ((((v) - vlow) * height) \
+		               / (vhigh - vlow)), y, y+height)
+
+  /* Draw zero and 6db lines */
+  y1 = YPOS(0.5);
   gdk_draw_line(win, s->zeroline_gc,
-		x, y + height/2,
-		x + width - 1, y + height/2);
+		x, y1, x + width - 1, y1);
+
+  y1 = YPOS(0.0);
+  gdk_draw_line(win, s->zeroline_gc,
+		x, y1, x + width - 1, y1);
+
+  y1 = YPOS(-0.5);
+  gdk_draw_line(win, s->zeroline_gc,
+		x, y1, x + width - 1, y1);
 
   totpos = totneg = 0.0;
   maxpos = minneg = prev_maxpos = prev_minneg = 0.0;
+
+  nr_frames = sample->sounddata->nr_frames;
+
+  /* 'step' ensures that no more than STEP_MAX values get looked at
+   * per pixel */
+  step = MAX (1, PIXEL_TO_OFFSET(1)/STEP_MAX);
+
+#ifdef LEGACY_DRAW_MODE
+  {
+    int py, ty;
+    sw_audio_t peak;
+
+    py = y+height/2;
+
+    while (width >= 0) {
+      peak = 0;
+      for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
+	   i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
+	   i+=step) {
+	d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
+	if (fabs(d) > fabs(peak)) peak = d;
+      }
+
+      ty = YPOS(peak);
+
+      gdk_draw_line (win, fg_gc, x-1, py, x, ty);
+
+      py = ty;
+
+      x++;
+      width--;
+    }
+  }
+
+#else
+
+  for (i = OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x-1));
+       i < OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x));
+       i += step) {
+    d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
+    if (d >= 0) {
+      if (d > prev_maxpos) prev_maxpos = d;
+    } else {
+      if (d < prev_minneg) prev_minneg = d;
+    }
+  }
 
   while(width >= 0) {
     nr_pos = nr_neg = 0;
@@ -426,12 +908,12 @@ sample_display_draw_data_channel (GdkDrawable * win,
     
     maxpos = minneg = 0;
 
-    /* 'step' ensures that no more than STEP_MAX values get looked at
-     * per pixel */
-    step = MAX (1, PIXEL_TO_OFFSET(1)/STEP_MAX);
+    /* lock the sounddata against destructive ops to make sure
+     * sounddata->data doesn't change under us */
+    g_mutex_lock (sample->ops_mutex);
 
-    for (i = OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x));
-	 i < OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x+1));
+    for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
+	 i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
 	 i+=step) {
       d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
       if (d >= 0) {
@@ -444,6 +926,8 @@ sample_display_draw_data_channel (GdkDrawable * win,
 	nr_neg++;
       }
     }
+
+    g_mutex_unlock (sample->ops_mutex);
     
     if (nr_pos > 0) {
       avgpos = totpos / nr_pos;
@@ -456,9 +940,6 @@ sample_display_draw_data_channel (GdkDrawable * win,
     } else {
       avgneg = 0;
     }
-
-#define YPOS(v) (y + ((((v) - SW_AUDIO_T_MIN) * height) \
-		       / (SW_AUDIO_T_MAX - SW_AUDIO_T_MIN)))
 
     gdk_draw_line(win, s->minmax_gc,
 		  x, YPOS(maxpos),
@@ -473,9 +954,8 @@ sample_display_draw_data_channel (GdkDrawable * win,
     gdk_draw_line(win, gc,
 		  x, YPOS(prev_minneg),
 		  x, YPOS(minneg));
-	      
 
-    gdk_draw_line(win, s->fg_gc,
+    gdk_draw_line(win, fg_gc,
 		  x, YPOS(avgpos),
 		  x, YPOS(avgneg));
 
@@ -485,26 +965,25 @@ sample_display_draw_data_channel (GdkDrawable * win,
     x++;
     width--;
   }
+#endif
 
 }
 
 static void
-sample_display_draw_data (GdkDrawable *win,
-			  const SampleDisplay *s,
-			  int x,
-			  int width)
+sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
+			  int x, int width)
 {
   const int sh = s->height;
-  int start_x, end_x;
+  int start_x, end_x, i, cy, cheight, cerr;
   const int channels = s->view->sample->sounddata->format->channels;
 
-  if(width == 0)
+  if (width == 0)
     return;
 
   g_return_if_fail(x >= 0);
   g_return_if_fail(x + width <= s->width);
 
-#if 0
+#ifdef DEBUG
   g_print("draw_data: view %u --> %u, drawing x=%d, width=%d\n",
 	  s->view->start, s->view->end, x, width);
 #endif
@@ -547,23 +1026,56 @@ sample_display_draw_data (GdkDrawable *win,
     width = end_x - x;
   }
 
-  if (channels == 1) {
-    sample_display_draw_data_channel (win, s, x, 0, width, sh, 0);
-  } else if (channels == 2) {
+#if 0
+  cheight = (sh+3)/channels;
+  cerr = (sh+3) - (channels * cheight);
+  if (cerr == channels - 1) {
+    cheight++;
+    cerr = 0;
+  }
+  cy = 0;
+#else
+  cheight = sh / channels;
+  cerr = sh - (channels * cheight);
+  if (cerr == channels - 1) {
+    cheight++;
+    cerr = 0;
+  }
+  cy = 0;
+#endif
+
+  for (i = 0; i < channels; i++) {
+    if (i >= 0) {
+      gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
+					  TRUE, GTK_STATE_NORMAL, NULL,
+					  x, cy, width, 1);
+      cy += 1;
+
+#if 0
+      if (i == channels/2) {
+	gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
+					    TRUE, GTK_STATE_NORMAL, NULL,
+					    x, cy, width, cerr);
+	cy += cerr;
+      }
+#endif
+    }
+
+    sample_display_draw_data_channel (win, s,
+				      x, cy, width, cheight-2, i);
+    cy += cheight-2;
 
     gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
-					TRUE, GTK_STATE_NORMAL,
-					NULL,
-					x, (sh/2)-1,
-					width, 3);
+					TRUE, GTK_STATE_NORMAL, NULL,
+					x, cy, width, 1);
+    cy += 1;
 
-    sample_display_draw_data_channel (win, s,
-				      x, 0,
-				      width, (sh/2)-1, 0);
-    sample_display_draw_data_channel (win, s,
-				      x, sh-((sh/2)-1),
-				      width, (sh/2)-1, 1);
+  }
 
+  if (cy < sh) {
+    gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
+					TRUE, GTK_STATE_NORMAL, NULL,
+					x, cy, width, sh-cy);
   }
 
 }
@@ -590,7 +1102,7 @@ sample_display_draw_crossing_vector (GdkDrawable * win,
   cy1 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) - cx1];
   cy2 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) + cx2];
   
-  gdk_draw_line(s->backing_pixmap, s->crossing_gc,
+  gdk_draw_line(win, s->crossing_gc,
 		x - cx1, (((cy1 + 1.0) * sh) / 2.0),
 		x + cx2, (((cy2 + 1.0) * sh) / 2.0));
 }	
@@ -617,26 +1129,43 @@ sd_march_ants (gpointer data)
   dash_offset++;
   dash_offset %= 8;
 
-  gtk_widget_queue_draw (GTK_WIDGET(s));
+  sample_display_refresh_sels (s);
 
   return TRUE;
 }
 
-void
-sample_display_start_marching_ants (SampleDisplay * s)
+static void
+sd_start_marching_ants_timeout (SampleDisplay * s)
 {
+  if (s->marching_tag > 0)
+    gtk_timeout_remove (s->marching_tag);
+
   s->marching_tag = gtk_timeout_add (MARCH_INTERVAL,
 				     (GtkFunction)sd_march_ants,
 				     s);
 }
 
 void
-sample_display_stop_marching_ants (SampleDisplay * s)
+sample_display_start_marching_ants (SampleDisplay * s)
+{
+  sd_start_marching_ants_timeout (s);
+  s->marching = TRUE;
+}
+
+static void
+sd_stop_marching_ants_timeout (SampleDisplay * s)
 {
   if (s->marching_tag > 0)
     gtk_timeout_remove (s->marching_tag);
 
   s->marching_tag = 0;
+}
+
+void
+sample_display_stop_marching_ants (SampleDisplay * s)
+{
+  sd_stop_marching_ants_timeout (s);
+  s->marching = FALSE;
 }
 
 /*** SELECTION BOXES ***/
@@ -703,13 +1232,19 @@ sample_display_draw_sel (GdkDrawable * win,
     sel = (sw_sel *)gl->data;
 
     x = OFFSET_TO_XPOS(sel->sel_start);
-    l_end = (x >= x_min) && (x <= x_max);
-    
     x2 = OFFSET_TO_XPOS(sel->sel_end);
+
+    if (x > x_max) break;
+    if (x2 < x_min) continue;
+
+    l_end = (x >= x_min) && (x <= x_max);
+    x = CLAMP (x, x_min, x_max);
+    
     r_end = (x2 >= x_min) && (x2 <= x_max);
+    x2 = CLAMP (x2, x_min, x_max);
     
     /* draw the selection */
-    sample_display_draw_sel_box(s->backing_pixmap, s->sel_gc,
+    sample_display_draw_sel_box(win, s->sel_gc,
 				s, x, x2 - x - 1,
 				l_end, r_end /* draw_ends */);
 
@@ -722,19 +1257,21 @@ sample_display_draw_sel (GdkDrawable * win,
   if (sel) {
     x = OFFSET_TO_XPOS(sel->sel_start);
     l_end = (x >= x_min) && (x <= x_max);
-  
+    x = CLAMP (x, x_min, x_max);
+
     x2 = OFFSET_TO_XPOS(sel->sel_end);
     r_end = (x2 >= x_min) && (x2 <= x_max);
-  
+    x2 = CLAMP (x2, x_min, x_max);
+
     /* draw the selection */
-    sample_display_draw_sel_box(s->backing_pixmap, s->tmp_sel_gc,
+    sample_display_draw_sel_box(win, s->tmp_sel_gc,
 				s, x, x2 - x - 1,
 				l_end, r_end /* draw_ends */);
   }
 }
 
 
-/*** PLAY MARKER ***/
+/*** PLAY MARKER, CURSOR ***/
 
 #if 0
 static int
@@ -776,44 +1313,209 @@ sample_display_endoffset_to_xpos (SampleDisplay *s,
 }
 #endif /* _{start,end}offset_to_xpos */
 
-static void
-sample_display_do_marker_line (GdkDrawable *win,
-			       GdkGC *gc,
-			       SampleDisplay *s,
-			       int endoffset,
-			       int offset,
-			       int x_min,
-			       int x_max)
+static gint
+sd_pulse_cursor (gpointer data)
 {
-  int x;
+  SampleDisplay * s = (SampleDisplay *)data;
 
-  if(offset >= s->view->start && offset <= s->view->end) {
-#if 0
-    if(!endoffset)
-      x = sample_display_startoffset_to_xpos(s, offset);
-    else
-      x = sample_display_endoffset_to_xpos(s, offset);
-#endif
-    x = OFFSET_TO_XPOS (offset);
+  if (s->pulse)
+    gdk_gc_set_function (s->user_gc, GDK_NOOP);
+  else
+    gdk_gc_set_function (s->user_gc, GDK_COPY);
 
-    if(x >= x_min && x < x_max) {
-      gdk_draw_line(win, gc,
-		    x, 0, 
-		    x, s->height);
+  s->pulse = (!s->pulse);
+
+  sample_display_refresh_user_marker (s);
+
+  return TRUE;
+}
+
+void
+sample_display_start_cursor_pulse (SampleDisplay * s)
+{
+  gdk_gc_set_function (s->user_gc, GDK_NOOP);
+
+  sample_display_refresh_user_marker (s);
+
+  s->pulsing_tag = gtk_timeout_add (PULSE_INTERVAL,
+				    (GtkFunction)sd_pulse_cursor, s);
+}
+
+void
+sample_display_stop_cursor_pulse (SampleDisplay * s)
+{
+  if (s->pulsing_tag > 0)
+    gtk_timeout_remove (s->pulsing_tag);
+
+  s->pulsing_tag = 0;
+
+  gdk_gc_set_function (s->user_gc, GDK_COPY);
+
+  sample_display_refresh_user_marker (s);
+}
+
+static void
+sample_display_draw_user_offset (GdkDrawable * win, GdkGC * gc,
+				 SampleDisplay * s, int x,
+				 int x_min, int x_max)
+{
+  GdkPoint poly[4];
+  gboolean fill;
+
+  if(x >= x_min && x <= x_max) {
+    gdk_draw_line(win, s->zeroline_gc,
+		  x-2, 0, 
+		  x-2, s->height);
+
+    gdk_draw_line(win, gc,
+		  x-1, 0, 
+		  x-1, s->height);
+    gdk_draw_line(win, gc,
+		  x+1, 0, 
+		  x+1, s->height);
+
+    gdk_draw_line(win, s->zeroline_gc,
+		  x+2, 0, 
+		  x+2, s->height);
+
+
+
+    if (!s->view->sample->play_head->going) {
+      fill = !s->view->sample->play_head->mute;
+
+      if (x < 20) {
+	poly[0].x = 11;
+	poly[1].x = 11;
+	poly[2].x = 14;
+	poly[3].x = 14;
+      } else {
+	poly[0].x = x - 8;
+	poly[1].x = x - 8;
+	poly[2].x = x - 5;
+	poly[3].x = x - 5;
+      }
+
+      poly[0].y = 4;
+      poly[1].y = 14;
+      poly[2].y = 14;
+      poly[3].y = 4;
+
+      gdk_draw_polygon (win, gc, fill, poly, 4);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 4);
+
+      poly[0].x -= 5;
+      poly[1].x -= 5;
+      poly[2].x -= 5;
+      poly[3].x -= 5;
+
+      gdk_draw_polygon (win, gc, fill, poly, 4);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 4);
     }
   }
 }
 
+static void
+sample_display_draw_play_offset (GdkDrawable * win, GdkGC * gc,
+				 SampleDisplay * s, int x,
+				 int x_min, int x_max)
+{
+  sw_sample * sample;
+  GdkPoint poly[4];
+  sw_head * head;
 
-/*** DRAW_MAIN ***/
+  if(x >= x_min && x <= x_max) {
+    gdk_draw_rectangle(win, gc, TRUE,
+		       x-1, 0, 
+		       3, s->height);
+
+    sample = s->view->sample;
+    head = sample->play_head;
+
+    if (head->going) {
+      if (x < 20) {
+	if (head->reverse) {
+	  poly[0].x = 14;
+	  poly[1].x = 14;
+	  poly[2].x = 6;
+	} else {
+	  poly[0].x = 6;
+	  poly[1].x = 6;
+	  poly[2].x = 14;
+	}
+      } else {
+	if (head->reverse) {
+	  poly[0].x = x - 5;
+	  poly[1].x = x - 5;
+	  poly[2].x = x - 13;
+	} else {
+	  poly[0].x = x - 13;
+	  poly[1].x = x - 13;
+	  poly[2].x = x - 5;
+	}
+      }
+
+      poly[0].y = 4;
+      poly[1].y = 14;
+      poly[2].y = 9;
+      
+      gdk_draw_polygon (win, gc, !head->mute, poly, 3);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 3);
+    }
+  }
+}
 
 static void
-sample_display_draw_main (GtkWidget *widget,
-			  GdkRectangle *area)
+sample_display_draw_rec_offset (GdkDrawable * win, GdkGC * gc,
+				SampleDisplay * s, int x,
+				int x_min, int x_max)
+{
+  sw_sample * sample;
+
+  if(x >= x_min && x <= x_max) {
+#if 0
+    gdk_draw_rectangle(win, gc, TRUE,
+		       x-1, 0, 
+		       3, s->height);
+#endif
+
+    gdk_draw_line(win, s->zeroline_gc,
+		  x-2, 0, 
+		  x-2, s->height);
+#if 1
+    gdk_draw_line(win, gc,
+		  x-1, 0, 
+		  x-1, s->height);
+    gdk_draw_line(win, gc,
+		  x+1, 0, 
+		  x+1, s->height);
+#endif
+
+    gdk_draw_line(win, s->zeroline_gc,
+		  x+2, 0, 
+		  x+2, s->height);
+
+    sample = s->view->sample;
+
+    if (x < 20) x = 19;
+    gdk_draw_arc (win, gc, TRUE, x-14, 15, 8, 8, 0, 360 * 64);
+    gdk_draw_arc (win, s->zeroline_gc, FALSE, x-14, 15, 8, 8, 0, 360 * 64);
+
+  }
+}
+
+
+/*** DRAW ***/
+
+static void
+sample_display_draw (GtkWidget *widget, GdkRectangle *area)
 {
   SampleDisplay *s = SAMPLE_DISPLAY(widget);
+  sw_sample * sample = s->view->sample;
+  GdkDrawable * drawable;
 
-  g_return_if_fail(area->x >= 0);
+  /*  g_return_if_fail(area->x >= 0);*/
+  if (area->x < 0) return;
+  if (area->y < 0) return;
 
   if(area->width == 0)
     return;
@@ -821,137 +1523,202 @@ sample_display_draw_main (GtkWidget *widget,
   if(area->x + area->width > s->width)
     return;
 
+#ifdef DEBUG
+    g_print ("sample_display_draw: (%d, %d) [%d, %d]\n",
+	     area->x, area->y, area->width, area->height);
+#endif
+
   if(!IS_INITIALIZED(s)) {
     gtk_style_apply_default_background (GTK_WIDGET(s)->style, widget->window,
 					TRUE, GTK_STATE_NORMAL,
-					NULL,
+					NULL, 0, 0, s->width, s->height);
+#if 0
 					area->x, area->y,
 					area->width, area->height);
+#endif
   } else {
     const int x_min = area->x;
     const int x_max = area->x + area->width;
 
+#ifdef DOUBLE_BUFFER
+    drawable = s->backing_pixmap;
+#else
+    drawable = widget->window;
+#endif
+
     /* draw the sample graph */
-    sample_display_draw_data(s->backing_pixmap, s, x_min, x_max - x_min);
+    sample_display_draw_data(drawable, s, x_min, x_max - x_min);
 
-    sample_display_draw_sel (s->backing_pixmap, s, x_min, x_max);
-      
-    if(s->mixerpos != -1) {
-      sample_display_do_marker_line(s->backing_pixmap, s->mixerpos_gc,
-				    s,
-				    0, s->mixerpos, x_min, x_max);
+    /* draw the selection bounds */
+    sample_display_draw_sel (drawable, s, x_min, x_max);
 
-    }
 
-    gdk_draw_pixmap(widget->window, s->fg_gc, s->backing_pixmap,
-                    area->x, area->y,
-                    area->x, area->y,
-                    area->width, area->height);
+    /* draw the offset cursors */
 
-  }
-}
-
-static void
-sample_display_draw (GtkWidget *widget,
-		     GdkRectangle *area)
-{
-#if 0
-  SampleDisplay *s = SAMPLE_DISPLAY(widget);
-  GdkRectangle area2 = { 0, 0, 0, s->height };
-  int i, x;
-  const int x_min = area->x;
-  const int x_max = area->x + area->width;
-#endif
-
-  sample_display_draw_main(widget, area);
-  return;
-
-#if 0
-  if(s->complete_redraw) {
-    s->complete_redraw = 0;
-    sample_display_draw_main(widget, area);
-    return;
-  }
-
-  if(s->view->sample->sel_start != s->old_ss || s->view->sample->sel_end != s->old_se) {
-    if(s->view->sample->sel_start == -1 || s->old_ss == -1) {
-      sample_display_draw_main(widget, area);
+    if(!sample->play_head->going) {
+      /* Draw user offset */
+      sample_display_draw_user_offset (drawable, s->user_gc,
+				       s, s->user_offset_x,
+				       x_min, x_max);
     } else {
-      if(s->view->sample->sel_start < s->old_ss) {
-	/* repaint left additional side */
-	x = sample_display_startoffset_to_xpos(s, s->view->sample->sel_start);
-	area2.x = MIN(x_max, MAX(x_min, x));
-	x = sample_display_startoffset_to_xpos(s, s->old_ss);
-	area2.width = MIN(x_max, MAX(x_min, x+2)) - area2.x;
-      } else {
-	/* repaint left removed side */
-	x = sample_display_startoffset_to_xpos(s, s->old_ss);
-	area2.x = MIN(x_max, MAX(x_min, x));
-	x = sample_display_startoffset_to_xpos(s, s->view->sample->sel_start);
-	area2.width = MIN(x_max, MAX(x_min, x)) - area2.x;
-      }
-      sample_display_draw_main(widget, &area2);
+#if 1
+      /* Draw play offset */
+      sample_display_draw_play_offset (drawable, s->play_gc,
+				       s, s->play_offset_x,
+				       x_min, x_max);
+#endif
+      /* Draw user offset */
+      sample_display_draw_user_offset (drawable, s->user_gc,
+				       s, s->user_offset_x,
+				       x_min, x_max);
 
-      if(s->view->sample->sel_end < s->old_se) {
-	/* repaint right removed side */
-	x = sample_display_endoffset_to_xpos(s, s->view->sample->sel_end);
-	area2.x = MIN(x_max, MAX(x_min, x));
-	x = sample_display_endoffset_to_xpos(s, s->old_se);
-	area2.width = MIN(x_max, MAX(x_min, x+1)) - area2.x;
-      } else {
-	/* repaint right additional side */
-	x = sample_display_endoffset_to_xpos(s, s->old_se);
-	area2.x = MIN(x_max, MAX(x_min, x-2));
-	x = sample_display_endoffset_to_xpos(s, s->view->sample->sel_end);
-	area2.width = MIN(x_max, MAX(x_min, x)) - area2.x;
-      }
-      sample_display_draw_main(widget, &area2);
     }
 
-    s->old_ss = s->view->sample->sel_start;
-    s->old_se = s->view->sample->sel_end;
-  }
-
-  if(s->mixerpos != s->old_mixerpos) {
-    for(i = 0; i < 2; i++) {
-      if(s->old_mixerpos >= s->view->start &&
-	 s->old_mixerpos < s->view->start + (s->view->end - s->view->start)) {
-	x = sample_display_startoffset_to_xpos(s, s->old_mixerpos);
-	area2.x = MIN(x_max - 1, MAX(x_min, x - 3));
-	area2.width = 7;
-	sample_display_draw_main(widget, &area2);
-      }
-      s->old_mixerpos = s->mixerpos;
+    /* Draw rec offset */
+    if (sample->rec_head /*&& sample->rec_head->transport_mode != SWEEP_TRANSPORT_STOP*/ ) {
+      sample_display_draw_rec_offset (drawable, s->rec_gc,
+				      s, s->rec_offset_x,
+				      x_min, x_max);
     }
-  }
+
+#if 0
+    /* Draw focus indicator */
+    if (GTK_WIDGET_HAS_FOCUS(widget)) {
+      /* ??? */
+    }
 #endif
 
+#ifdef DOUBLE_BUFFER
+    gdk_draw_pixmap(widget->window, s->fg_gc, s->backing_pixmap,
+		    area->x, area->y,
+		    area->x, area->y,
+		    area->width, area->height);
+#endif
+  }
 }
-
 
 /*** EVENT HANDLERS ***/
+
 
 static gint
 sample_display_expose (GtkWidget *widget,
 		       GdkEventExpose *event)
 {
-  sample_display_draw_main(widget, &event->area);
+  SampleDisplay * s = (SampleDisplay *)widget;
+  GdkRectangle * a;
+
+  a = &event->area;
+
+#ifdef DEBUG
+  g_print ("received expose event for (%d, %d) [%d, %d]; %d follow\n",
+	   a->x, a->y, a->width, a->height, event->count);
+#endif
+
+
+#ifdef DOUBLE_BUFFER
+  gdk_draw_pixmap(widget->window, s->fg_gc, s->backing_pixmap,
+		  a->x, a->y,
+		  a->x, a->y,
+		  a->width, a->height);
+#else
+  gtk_widget_queue_draw_area (GTK_WIDGET(s), a->x, a->y, a->width, a->height);
+
+  area.x = a->x;
+  area.y = a->y;
+  area.width = a->width;
+  area.height = a->height;
+
+  gtk_widget_draw (widget, &area);
+#endif
+
   return FALSE;
 }
 
+static gint
+sample_display_scroll_left (gpointer data)
+{
+  SampleDisplay * s = (SampleDisplay *)data;
+  int new_win_start, win_length;
+  
+  win_length = s->view->end - s->view->start;
+  new_win_start = s->view->start - win_length/8;
+  
+  new_win_start = CLAMP(new_win_start, 0,
+			s->view->sample->sounddata->nr_frames -
+			(s->view->end - s->view->start));
+  
+  if(new_win_start != s->view->start) {
+    sample_display_set_window (s,
+			       new_win_start,
+			       new_win_start + win_length);
+  }
+
+  s->view->sample->tmp_sel->sel_start = new_win_start;
+
+  return (new_win_start > 0);
+}
+
+static gint
+sample_display_scroll_right (gpointer data)
+{
+  SampleDisplay * s = (SampleDisplay *)data;
+  int new_win_start, win_length;
+  
+  win_length = s->view->end - s->view->start;
+  new_win_start = s->view->start + win_length/8;
+  
+  new_win_start = CLAMP(new_win_start, 0,
+			s->view->sample->sounddata->nr_frames -
+			(s->view->end - s->view->start));
+  
+  if(new_win_start != s->view->start) {
+    sample_display_set_window (s,
+			       new_win_start,
+			       new_win_start + win_length);
+  }
+
+  s->view->sample->tmp_sel->sel_end = s->view->end;
+
+  return (new_win_start >= (s->view->end - win_length));
+}
+
 static void
-sample_display_handle_motion (SampleDisplay *s,
+sample_display_handle_playmarker_motion (SampleDisplay * s, int x, int y)
+{
+  sw_sample * sample;
+  sw_framecount_t offset;
+
+  sample = s->view->sample;
+  offset = XPOS_TO_OFFSET(x);
+
+  sample_set_playmarker (sample, offset, TRUE);
+}
+
+void
+sample_display_clear_sel (SampleDisplay * s)
+{
+  sample_clear_tmp_sel (s->view->sample);
+  s->selecting = SELECTING_NOTHING;
+  s->selection_mode = SELECTION_MODE_NONE;
+  sample_display_set_default_cursor (s);
+  sample_clear_tmp_message (s->view->sample);
+  gtk_signal_emit(GTK_OBJECT(s),
+		  sample_display_signals[SIG_SELECTION_CHANGED]);
+}
+
+static void
+sample_display_handle_sel_motion (SampleDisplay *s,
 			      int x,
 			      int y,
 			      int just_clicked)
 {
   sw_sample * sample;
   sw_sel * sel;
-  int ol, or;
+  int o;
   int ss, se;
+  gboolean scroll_left = FALSE, scroll_right = FALSE;
 
-  /* ignore non select motion on button 1 for now */
-  if (current_tool != TOOL_SELECT) return;
+  if (s->view->current_tool != TOOL_SELECT) return;
 
   if(!s->selecting)
     return;
@@ -964,82 +1731,62 @@ sample_display_handle_motion (SampleDisplay *s,
 
   sample = s->view->sample;
 
+  if (sample->edit_mode != SWEEP_EDIT_MODE_READY) {
+    sample_display_clear_sel (s);
+    return;
+  }
+
+  o = XPOS_TO_OFFSET(x);
+
+#ifdef DEBUG
+  if (o < 0) {
+    g_print ("OI! setting an offset < 0!\n");
+  }
+#endif
+
+  if (!sample->play_head->going) {
+    sample_set_playmarker (sample, o, TRUE);
+  }
+
   sel = sample->tmp_sel;
 
   ss = sel->sel_start;
   se = sel->sel_end;
 
-  /* XXX: Could scroll here ... which should be hooked up to a timeout */
-  if(x < 0)
+  if(x < 0) {
+    scroll_left = TRUE;
     x = 0;
-  else if(x >= s->width)
+  } else if(x >= s->width - 1) {
+    scroll_right = TRUE;
     x = s->width - 1;
-
-  /* Set: ol to the offset of the current mouse position x
-   * Set: or to the next useful value: if we're zoomed in beyond
-   *         dot-for-sample, then the next sample value;
-   *         otherwise the offset corresponding to the next pixel x+1.
-   */
-  ol = XPOS_TO_OFFSET(x);
-  if((s->view->end - s->view->start) < s->width) {
-    or = XPOS_TO_OFFSET(x) + 1;
-  } else {
-    or = XPOS_TO_OFFSET(x + 1);
   }
 
-  if (ol < 0 || ol >= s->view->sample->sounddata->nr_frames) return;
-  if (or < 0 || or >= s->view->sample->sounddata->nr_frames) return;
-#if 0
-  g_return_if_fail(ol >= 0 && ol < s->view->sample->sounddata->nr_frames);
-  g_return_if_fail(or > 0 && or <= s->view->sample->sounddata->nr_frames);
-#endif
-
-  g_return_if_fail(ol < or);
-
-  switch(s->selecting) {
-  case SELECTING_SELECTION_START:
-    if(just_clicked) {
-#if 0
-      if(ss != -1 && ol < se) {
-	ss = ol;
+  if (just_clicked) {
+    ss = o;
+    se = o+1;
+  } else {
+    switch (s->selecting) {
+    case SELECTING_SELECTION_START:
+      if (o < se) {
+	ss = o;
       } else {
-#endif
-	ss = ol;
-	se = ol + 1;
-#if 0
-      }
-#endif
-    } else {
-      if(ol < se) {
-	ss = ol;
-      } else { /* swap start,end */
-	ss = se - 1;
-	se = or;
-	s->selecting = SELECTING_SELECTION_END;
-      }
-    }
-    break;
-  case SELECTING_SELECTION_END:
-    if(just_clicked) {
-      if(ss != -1 && or > ss) {
-	se = or;
+	if (o != ss+1) ss = se;
+	se = o;
+	s->selecting = SELECTING_SELECTION_END;      }
+      break;
+    case SELECTING_SELECTION_END:
+      if (o > ss) {
+	se = o;
       } else {
-	ss = or - 1;
-	se = or;
-      }
-    } else {
-      if(or > ss) {
-	se = or;
-      } else { /* swap end,start */
-	se = ss + 1;
-	ss = ol;
+	if (o != se-1) se = ss;
+	ss = o;
 	s->selecting = SELECTING_SELECTION_START;
       }
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
     }
-    break;
-  default:
-    g_assert_not_reached();
-    break;
   }
 
   if(sel->sel_start != ss || sel->sel_end != se || just_clicked) {
@@ -1048,255 +1795,254 @@ sample_display_handle_motion (SampleDisplay *s,
     gtk_signal_emit(GTK_OBJECT(s),
 		    sample_display_signals[SIG_SELECTION_CHANGED]);
   }
+
+  if (scroll_left && s->scroll_left_tag == 0) {
+    if (s->scroll_right_tag != 0) {
+      gtk_timeout_remove (s->scroll_right_tag);
+      s->scroll_right_tag = 0;
+    }
+
+    s->scroll_left_tag = gtk_timeout_add (100, sample_display_scroll_left,
+					  (gpointer)s);
+
+  } else if (scroll_right && s->scroll_right_tag == 0) {
+    if (s->scroll_left_tag != 0) {
+      gtk_timeout_remove (s->scroll_left_tag);
+      s->scroll_left_tag = 0;
+    }
+
+    s->scroll_right_tag = gtk_timeout_add (100, sample_display_scroll_right,
+					   (gpointer)s);
+
+  } else if (!scroll_right && !scroll_left) {
+    if (s->scroll_right_tag != 0) {
+      gtk_timeout_remove (s->scroll_right_tag);
+      s->scroll_right_tag = 0;
+    }
+    if (s->scroll_left_tag != 0) {
+      gtk_timeout_remove (s->scroll_left_tag);
+      s->scroll_left_tag = 0;
+    }
+  }
 }
 
 /* Handle middle mousebutton display window panning */
 static void
-sample_display_handle_motion_2 (SampleDisplay *s,
-				int x,
-				int y)
+sample_display_handle_move_motion (SampleDisplay *s, int x, int y)
 {
-  int new_win_start =
-    s->selecting_wins0 + (s->selecting_x0 - x) *
-    (s->view->end - s->view->start) / s->width;
+  sw_sample * sample = s->view->sample;
+  sw_framecount_t vlen, offset_xpos, new_offset;
+  int new_win_start;
+
+  vlen = s->view->end - s->view->start;
+
+  offset_xpos = OFFSET_TO_XPOS(sample->user_offset);
+
+  new_win_start =
+    s->selecting_wins0 + (s->selecting_x0 - x) * vlen / s->width;
 
   new_win_start = CLAMP(new_win_start, 0,
-			s->view->sample->sounddata->nr_frames -
-			(s->view->end - s->view->start));
+			sample->sounddata->nr_frames - vlen);
+
+  new_offset = new_win_start + offset_xpos * vlen / s->width;
+  
+  sample_set_scrubbing (sample, TRUE);
+  sample_set_playmarker (sample, new_offset, TRUE);
 
   if(new_win_start != s->view->start) {
     sample_display_set_window (s,
 			       new_win_start,
-			       new_win_start +
-			       (s->view->end - s->view->start));
+			       new_win_start + vlen);
   }
-}
-
-void
-sample_display_clear_sel (SampleDisplay * s)
-{
-  GtkWidget * widget = GTK_WIDGET(s);
-
-  sample_clear_tmp_sel (s->view->sample);
-  s->selecting = SELECTING_NOTHING;
-  s->selection_mode = SELECTION_MODE_NONE;
-  SET_CURSOR(widget, crosshair_cr);
-  gtk_signal_emit(GTK_OBJECT(s),
-		  sample_display_signals[SIG_SELECTION_CHANGED]);
 }
 
 static void
-sample_display_set_intersect_cursor (SampleDisplay * s)
+sample_display_handle_pencil_motion (SampleDisplay * s, int x, int y)
 {
-  sw_sample * sample = s->view->sample;
-  GtkWidget * widget = GTK_WIDGET(s);
+  sw_sample * sample;
+  sw_framecount_t offset;
+  int channel, channels;
+  sw_audio_t value;
+  sw_audio_t * sampledata;
 
-  /* Check if there are other selection regions.
-   * NB. This assumes that tmp_sel has already been
-   * set.
-   */
-  if (sample_sel_nr_regions(sample) > 0) {
-    SET_CURSOR(widget, horiz_plus_cr);
+  offset = XPOS_TO_OFFSET(x);
+
+  if (offset < s->view->start || offset > s->view->end) return;
+
+  sample = s->view->sample;
+  sampledata = (sw_audio_t *)sample->sounddata->data;
+  channels = sample->sounddata->format->channels;
+
+  y = CLAMP (y, 0, s->height);
+
+  channel = YPOS_TO_CHANNEL(y);
+  value = YPOS_TO_VALUE(y);
+  sampledata[offset*channels + channel] = value;
+
+#if 0
+  if (sample->sounddata->format->channels == 1) {
+    value = YPOS_TO_VALUE_1(y);
+    sampledata[offset] = value;
   } else {
-    SET_CURSOR(widget, horiz_cr);
+    channel = YPOS_TO_CHANNEL(y);
+    value = YPOS_TO_VALUE_2(y);
+    sampledata[offset*2 + channel] = value;
   }
+#endif
+
+  sample_refresh_views (sample);
 }
 
-static gint
-sample_display_button_press (GtkWidget      *widget,
-			     GdkEventButton *event)
+static void
+sample_display_handle_noise_motion (SampleDisplay * s, int x, int y)
 {
-  SampleDisplay *s;
-  GdkModifierType state;
-  GList * gl;
-  sw_sel * sel;
   sw_sample * sample;
-  int x, y;
+  sw_framecount_t offset;
+  int channel;
+  sw_audio_t value, oldvalue;
+  sw_audio_t * sampledata;
+
+  offset = XPOS_TO_OFFSET(x);
+
+  if (offset < s->view->start || offset > s->view->end) return;
+
+  sample = s->view->sample;
+  sampledata = (sw_audio_t *)sample->sounddata->data;
+
+  y = CLAMP (y, 0, s->height);
+
+  value = 2.0 * (random() - RAND_MAX/2) / (sw_audio_t)RAND_MAX;
+
+  if (sample->sounddata->format->channels == 1) {
+    oldvalue = sampledata[offset];
+  } else {
+    channel = YPOS_TO_CHANNEL(y);
+    offset = offset*2 + channel;
+    oldvalue = sampledata[offset];
+  }
+
+  sampledata[offset] = CLAMP(oldvalue * 0.8 + value * 0.2,
+			     SW_AUDIO_T_MIN, SW_AUDIO_T_MAX);
+
+  sample_refresh_views (sample);
+}
+
+static void
+sample_display_handle_sel_button_press (SampleDisplay * s, int x, int y,
+					GdkModifierType state)
+{
+  sw_sample * sample;
+  GList * gl;
+  sw_sel * sel, * tmp_sel = NULL;
   int xss, xse;
-  int o;
-
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (IS_SAMPLE_DISPLAY (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
-
-  s = SAMPLE_DISPLAY(widget);
-  
-  if(!IS_INITIALIZED(s))
-    return TRUE;
+  int min_xs;
+  gboolean just_clicked = TRUE;
 
   sample = s->view->sample;
 
-  /* Deal with buttons 4 & 5 (mouse wheel) separately */
-  if (event->button == 4) {
-    /* mouse wheel up */
-    view_volume_increase (s->view);
-    return TRUE;
-  } else if (event->button == 5) {
-    /* mouse wheel down */
-    view_volume_decrease (s->view);
-    return TRUE;
-  }
-
-  /* Cancel the current operation if a different button is pressed. */
-  if(s->selecting && event->button != last_button) {
+  if (sample->edit_mode != SWEEP_EDIT_MODE_READY) {
     sample_display_clear_sel (s);
-  } else if (last_tmp_view && last_tmp_view != s->view &&
-	     event->button != last_button) {
-    view_clear_last_tmp_view ();
-  } else {
-    last_button = event->button;
-    gdk_window_get_pointer (event->window, &x, &y, &state);
-    
-    if(last_button == 1) {
-
-      if (XPOS_TO_OFFSET(x) < 0 ||
-	  XPOS_TO_OFFSET(x) > sample->sounddata->nr_frames)
-	return TRUE;
-
-      switch (current_tool) {
-      case TOOL_SELECT:
-
-	for (gl = sample->sounddata->sels; gl; gl = gl->next) {
-	  sel = (sw_sel *)gl->data;
-	  
-	  xss = OFFSET_TO_XPOS(sel->sel_start);
-	  xse = OFFSET_TO_XPOS(sel->sel_end);
-	  
-	  /* If the cursor is near the current start or end of
-	   * the selection, move that.
-	   */
-	  if(abs(x-xss) < 3) {
-	    sample_set_tmp_sel (sample, s->view, sel);
-	    s->selecting = SELECTING_SELECTION_START;
-	    s->selection_mode = SELECTION_MODE_INTERSECT;
-	    sample_display_set_intersect_cursor (s);
-	    sample_display_handle_motion(s, x, y, FALSE);
-	    return TRUE;
-	  } else if(abs(x-xse) < 3) {
-	    sample_set_tmp_sel (sample, s->view, sel);
-	    s->selecting = SELECTING_SELECTION_END;
-	    s->selection_mode = SELECTION_MODE_INTERSECT;
-	    sample_display_set_intersect_cursor (s);
-	    sample_display_handle_motion(s, x, y, FALSE);
-	    return TRUE;
-	  }
-	}
-	
-	/* Otherwise, start a new selection. */
-	
-	sample_set_tmp_sel_1(sample, s->view,
-			     XPOS_TO_OFFSET(x),
-			     XPOS_TO_OFFSET(x)+1);
-	
-	s->selecting = SELECTING_SELECTION_START;
-	
-	if(state & GDK_SHIFT_MASK) {
-	  s->selection_mode = SELECTION_MODE_INTERSECT;
-	  sample_display_set_intersect_cursor (s);
-	} else {
-	  s->selection_mode = SELECTION_MODE_REPLACE;
-	  SET_CURSOR(widget, horiz_cr);
-	}
-	
-	sample_display_handle_motion(s, x, y, TRUE);
-	break;
-
-      case TOOL_ZOOM:
-	o = XPOS_TO_OFFSET(x);
-	view_center_on (s->view, o);
-	if (state & GDK_SHIFT_MASK) {
-	  view_zoom_out (s->view, 2.0);
-	} else {
-	  view_zoom_in (s->view, 2.0);
-	}
-	return TRUE;
-	
-	break;
-
-      default:
-	break;
-      }
-
-    } else if(last_button == 2) {
-      s->selecting = SELECTING_PAN_WINDOW;
-      gdk_window_get_pointer (event->window, &s->selecting_x0, NULL, NULL);
-      s->selecting_wins0 = s->view->start;
-      SET_CURSOR(widget, move_cr);
-    } else if(last_button == 3) {
-      if(s->view && s->view->menu) {
-	gtk_menu_popup(GTK_MENU(s->view->menu),
-		       NULL, NULL, NULL,
-		       NULL, 3, event->time);
-      }
-    }
-  }
-	    
-  return TRUE;
-}
-
-void
-sample_display_sink_tmp_sel (SampleDisplay * s)
-{
-  sw_sample * sample = s->view->sample;
-  
-  if (!(s->selecting == SELECTING_SELECTION_START ||
-	s->selecting == SELECTING_SELECTION_END)) {
     return;
   }
-  s->selecting = SELECTING_NOTHING;
 
-  if(s->selection_mode == SELECTION_MODE_REPLACE) {
-    sample_selection_replace_with_tmp_sel (sample);
-  } else {
-    sample_selection_insert_tmp_sel (sample);
+  for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+
+    /* If the cursor is near the current start or end of
+     * the selection, move that.
+     */
+
+    sel = (sw_sel *)gl->data;
+	  
+    xss = OFFSET_TO_XPOS(sel->sel_start);
+    xse = OFFSET_TO_XPOS(sel->sel_end);
+	  
+    if(abs(x-xss) < 5) {
+      sample_set_tmp_sel (sample, s->view, sel);
+      s->selecting = SELECTING_SELECTION_START;
+      s->selection_mode = SELECTION_MODE_INTERSECT;
+      sample_display_set_intersect_cursor (s);
+      just_clicked = FALSE;
+      goto motion;
+    } else if(abs(x-xse) < 5) {
+      sample_set_tmp_sel (sample, s->view, sel);
+      s->selecting = SELECTING_SELECTION_END;
+      s->selection_mode = SELECTION_MODE_INTERSECT;
+      sample_display_set_intersect_cursor (s);
+      just_clicked = FALSE;
+      goto motion;
+    }
   }
-  s->selection_mode = SELECTION_MODE_NONE;
 
-  gtk_signal_emit(GTK_OBJECT(s),
-		  sample_display_signals[SIG_SELECTION_CHANGED]);
+  /* If shift is held down, move the closest selection edge to the mouse */
+
+  if ((state & GDK_SHIFT_MASK) && (sample->sounddata->sels != NULL)) {
+    min_xs = G_MAXINT;
+
+    for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+      sel = (sw_sel *)gl->data;
+      
+      xss = OFFSET_TO_XPOS(sel->sel_start);
+      xse = OFFSET_TO_XPOS(sel->sel_end);
+
+      if (abs(x-xss) > min_xs) break;
+
+      tmp_sel = sel;
+
+      min_xs = abs(x-xss);
+
+      s->selecting = SELECTING_SELECTION_START;
+
+      if (abs(x-xse) > min_xs) break;
+
+      min_xs = abs(x-xse);
+
+      s->selecting = SELECTING_SELECTION_END;
+    }
+
+    sample_set_tmp_sel (sample, s->view, tmp_sel);
+    s->selection_mode = SELECTION_MODE_INTERSECT;
+    sample_display_set_intersect_cursor (s);
+    just_clicked = FALSE;
+    goto motion;
+  }
+
+  /* Otherwise, start a new selection region. */
+	
+  sample_set_tmp_sel_1(sample, s->view,
+		       XPOS_TO_OFFSET(x),
+		       XPOS_TO_OFFSET(x)+1);
+	
+  s->selecting = SELECTING_SELECTION_END;
+
+  if(state & GDK_CONTROL_MASK) {
+    s->selection_mode = SELECTION_MODE_INTERSECT;
+    sample_display_set_intersect_cursor (s);
+  } else if (state & GDK_MOD1_MASK) /* how to get ALT? */{
+    s->selection_mode = SELECTION_MODE_SUBTRACT;
+    sample_display_set_subtract_cursor (s);
+  } else {
+    s->selection_mode = SELECTION_MODE_REPLACE;
+    SET_CURSOR(GTK_WIDGET(s), HORIZ);
+  }
+
+  just_clicked = TRUE;
+
+ motion:
+
+  sample_set_tmp_message (sample, _(selection_mode_names[s->selection_mode]));
+  sample_set_progress_ready (sample);
+
+  sample_display_handle_sel_motion (s, x, y, just_clicked);
 }
 
 static gint
-sample_display_button_release (GtkWidget      *widget,
-			       GdkEventButton *event)
+sample_display_on_playmarker (SampleDisplay * s, gint x, gint y)
 {
-  SampleDisplay *s;
+  gint xp = OFFSET_TO_XPOS(s->view->sample->user_offset);
 
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (IS_SAMPLE_DISPLAY (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
-    
-  s = SAMPLE_DISPLAY(widget);
-
-  switch (current_tool) {
-  case TOOL_SELECT:
-    
-    /* If the user has released the button they were selecting with,
-     * sink this sample's temporary selection.
-     */
-    if (s->selecting && event->button == last_button) {
-      sample_display_sink_tmp_sel (s);
-    }
-    
-    /* If the user has released the button in a sweep window different
-     * to that used for selection, then sink the appropriate temporary
-     * selection.
-     */
-    if (last_tmp_view != s->view) {
-      view_sink_last_tmp_view();
-    }
-
-    break;
-  case TOOL_MOVE:
-    break;
-  case TOOL_ZOOM:
-    break;
-  default:
-    break;
-  }
-
-  SET_CURSOR(widget, crosshair_cr);
-    
+  if (abs(x-xp) < 5 || ((abs(x-xp) < 15) && (y < 17)))
+    return TRUE;
+  
   return FALSE;
 }
 
@@ -1313,10 +2059,268 @@ sample_display_on_sel (SampleDisplay * s, gint x, gint y)
     xss = OFFSET_TO_XPOS(sel->sel_start);
     xse = OFFSET_TO_XPOS(sel->sel_end);
 
-    if(abs(x-xss) < 3 || abs(x-xse) < 3)
+    if(abs(x-xss) < 5 || abs(x-xse) < 5)
       return TRUE;    
   }
 
+  return FALSE;
+}
+
+static gint
+sample_display_button_press (GtkWidget      *widget,
+			     GdkEventButton *event)
+{
+  SampleDisplay *s;
+  GdkModifierType state;
+  sw_sample * sample;
+  int x, y;
+  int o;
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (IS_SAMPLE_DISPLAY (widget), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  s = SAMPLE_DISPLAY(widget);
+  
+  if(!IS_INITIALIZED(s))
+    return TRUE;
+
+  gtk_widget_grab_focus (widget);
+
+  sample = s->view->sample;
+
+  /* Deal with buttons 4 & 5 (mouse wheel) separately */
+  if (event->button == 4) {
+    /* mouse wheel up */
+    view_zoom_in (s->view, 2.0);
+    return TRUE;
+  } else if (event->button == 5) {
+    /* mouse wheel down */
+    view_zoom_out (s->view, 2.0);
+    return TRUE;
+  }
+
+  if (s->meta_down && s->view->current_tool == TOOL_SCRUB &&
+      s->selecting == SELECTING_PLAYMARKER) {
+    gdk_window_get_pointer (event->window, &x, &y, &state);
+    sample_display_handle_playmarker_motion (s, x, y);
+  } else if(s->selecting && event->button != last_button) {
+    /* Cancel the current operation if a different button is pressed. */
+    sample_display_clear_sel (s);
+  } else if (last_tmp_view && last_tmp_view != s->view &&
+	     event->button != last_button) {
+    view_clear_last_tmp_view ();
+  } else {
+    last_button = event->button;
+    gdk_window_get_pointer (event->window, &x, &y, &state);
+    
+    if(last_button == 1) {
+
+      if (XPOS_TO_OFFSET(x) < 0 ||
+	  XPOS_TO_OFFSET(x) > sample->sounddata->nr_frames)
+	return TRUE;
+
+      switch (s->view->current_tool) {
+      case TOOL_SCRUB:
+	s->selecting = SELECTING_PLAYMARKER;
+	SET_CURSOR(widget, NEEDLE);
+	sample_set_scrubbing (s->view->sample, TRUE);
+	if (sample->play_head->going) {
+	  head_set_restricted (sample->play_head, FALSE);
+	  sample_refresh_playmode (sample);
+	} else {
+	  play_view_all (s->view);
+	}
+	sample_display_handle_playmarker_motion (s, x, y);
+	return TRUE;
+	break;
+      case TOOL_SELECT:
+	/* If the cursor is near a sel, move that */
+	if (sample_display_on_sel (s, x, y)) {
+	  sample_display_handle_sel_button_press (s, x, y, state);
+#if 0
+	} else if (sample_display_on_playmarker (s, x, y)) {
+	  /* If the cursor is near the play marker, move that */
+	  s->selecting = SELECTING_PLAYMARKER;
+	  SET_CURSOR(widget, NEEDLE);
+#ifndef SEL_SCRUBS
+	  sample_set_scrubbing (sample, TRUE);
+	  sample_display_handle_playmarker_motion (s, x, y);
+#endif
+#endif
+	} else {
+	  sample_display_handle_sel_button_press (s, x, y, state);
+	}
+#ifdef SEL_SCRUBS
+	/* scrub along the changing selection edge, unless we're already
+	 * playing. NB. the play_head->scrubbing state is used by the
+	 * motion and release callbacks here to determine whether or not
+	 * to scrub the moving edge, and whether or not to stop playback
+	 * upon release. */
+	if (sample->play_head->going) {
+	  sample_set_scrubbing (sample, FALSE);
+	  sample_refresh_playmode (sample);
+	} else {
+	  /*sample_set_monitor (sample, TRUE);*/
+	  sample_set_scrubbing (sample, TRUE);
+	  play_view_all (s->view);
+	  sample_display_handle_playmarker_motion (s, x, y);
+	}
+#endif
+	break;
+      case TOOL_ZOOM:
+	o = XPOS_TO_OFFSET(x);
+	view_center_on (s->view, o);
+	if (state & GDK_SHIFT_MASK) {
+	  view_zoom_out (s->view, 2.0);
+	} else {
+	  view_zoom_in (s->view, 2.0);
+	}
+	break;
+      case TOOL_PENCIL:
+	s->selecting = SELECTING_PENCIL;
+	sample_display_handle_pencil_motion (s, x, y);
+	break;
+      case TOOL_NOISE:
+	s->selecting = SELECTING_NOISE;
+	sample_display_handle_noise_motion (s, x, y);
+	break;
+      default:
+	break;
+      }
+
+    } else if(last_button == 2) {
+      s->selecting = SELECTING_PAN_WINDOW;
+      gdk_window_get_pointer (event->window, &s->selecting_x0, NULL, NULL);
+      s->selecting_wins0 = s->view->start;
+      SET_CURSOR(widget, MOVE);
+      sample_set_scrubbing (s->view->sample, TRUE);
+    } else if(last_button == 3) {
+      if(s->view && s->view->menu) {
+	view_popup_context_menu (s->view, 3, event->time);
+      }
+    }
+  }
+	    
+  return TRUE;
+}
+
+void
+sample_display_sink_tmp_sel (SampleDisplay * s)
+{
+  sw_sample * sample = s->view->sample;
+  sw_sel * t;
+
+  s->selecting = SELECTING_NOTHING;
+
+  if (s->scroll_right_tag != 0) {
+    gtk_timeout_remove (s->scroll_right_tag);
+    s->scroll_right_tag = 0;
+  }
+  if (s->scroll_left_tag != 0) {
+    gtk_timeout_remove (s->scroll_left_tag);
+    s->scroll_left_tag = 0;
+  }
+
+  t = sample->tmp_sel;
+
+  if (t->sel_end == (t->sel_start + 1)) {
+    if (!sample->play_head->going) {
+      sample_set_playmarker (sample, t->sel_start, TRUE);
+    }
+    sample_clear_tmp_sel (sample);
+  } else {
+
+    if (s->selecting == SELECTING_SELECTION_START) {
+      sample_set_playmarker (sample, t->sel_start, TRUE);
+    } else if (s->selecting == SELECTING_SELECTION_END) {
+      sample_set_playmarker (sample, t->sel_end, TRUE);
+    }
+
+    if(s->selection_mode == SELECTION_MODE_REPLACE) {
+      sample_selection_replace_with_tmp_sel (sample);
+    } else if (s->selection_mode == SELECTION_MODE_SUBTRACT) {
+      sample_selection_subtract_tmp_sel (sample); 
+    } else {
+      sample_selection_insert_tmp_sel (sample);
+    }
+    s->selection_mode = SELECTION_MODE_NONE;
+
+    gtk_signal_emit(GTK_OBJECT(s),
+		    sample_display_signals[SIG_SELECTION_CHANGED]);
+  }
+}
+
+static gint
+sample_display_button_release (GtkWidget      *widget,
+			       GdkEventButton *event)
+{
+  SampleDisplay *s;
+#ifdef SEL_SCRUBS
+  GdkModifierType state;
+  int x, y;
+#endif
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (IS_SAMPLE_DISPLAY (widget), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+    
+  s = SAMPLE_DISPLAY(widget);
+
+  switch (s->view->current_tool) {
+  case TOOL_SELECT:
+    
+    /* If the user has released the button they were selecting with,
+     * sink this sample's temporary selection.
+     */
+    if (s->selecting && event->button == last_button) {
+      switch (s->selecting) {
+      case SELECTING_SELECTION_START:
+      case SELECTING_SELECTION_END:
+	sample_display_sink_tmp_sel (s);
+	break;
+      default:
+	break;
+      }
+    }
+    
+    /* If the user has released the button in a sweep window different
+     * to that used for selection, then sink the appropriate temporary
+     * selection.
+     */
+    if (last_tmp_view != s->view) {
+      view_sink_last_tmp_view();
+    }
+
+#ifdef SEL_SCRUBS
+    if (s->view->sample->play_head->scrubbing) {
+      gdk_window_get_pointer (event->window, &x, &y, &state);
+      pause_playback (s->view->sample);
+      sample_display_handle_playmarker_motion (s, x, y);
+    }
+#endif
+
+    break;
+  case TOOL_SCRUB:
+    if (s->meta_down) return TRUE;
+    break;
+  case TOOL_MOVE:
+    break;
+  case TOOL_ZOOM:
+    break;
+  default:
+    break;
+  }
+
+  if (s->meta_down && s->selecting == SELECTING_PLAYMARKER)
+    return TRUE;
+
+  s->selecting = SELECTING_NOTHING;
+
+  sample_set_scrubbing (s->view->sample, FALSE);
+
+  sample_display_set_default_cursor (s);
+    
   return FALSE;
 }
 
@@ -1348,12 +2352,55 @@ sample_display_motion_notify (GtkWidget *widget,
   gtk_signal_emit(GTK_OBJECT(s),
 		  sample_display_signals[SIG_MOUSE_OFFSET_CHANGED]);
 
-  if(!s->selecting) {
-    if (current_tool == TOOL_SELECT && sample_display_on_sel (s, x, y)) {
-      SET_CURSOR(widget, horiz_cr);
+  if (s->selecting) {
+    if (s->meta_down && s->selecting == SELECTING_PLAYMARKER) {
+      sample_display_handle_playmarker_motion (s, x, y);
+    } else if((state & GDK_BUTTON1_MASK) && last_button == 1) {
+      switch (s->selecting) {
+      case SELECTING_PLAYMARKER:
+	sample_display_handle_playmarker_motion (s, x, y);
+	break;
+      case SELECTING_PENCIL:
+	sample_display_handle_pencil_motion (s, x, y);
+	break;
+      case SELECTING_NOISE:
+	sample_display_handle_noise_motion (s, x, y);
+	break;
+      default:
+	sample_display_handle_sel_motion(s, x, y, 0);
+#ifdef SEL_SCRUBS
+	if (s->view->sample->play_head->scrubbing) {
+	  sample_display_handle_playmarker_motion (s, x, y);
+	}
+#endif
+	break;
+      }
+    } else if((state & GDK_BUTTON2_MASK) && last_button == 2) {
+      sample_display_handle_move_motion (s, x, y);
     } else {
+      /*    sample_display_clear_sel (s);*/
+      if (s->selecting == SELECTING_SELECTION_START ||
+	  s->selecting == SELECTING_SELECTION_END) {
+	/* XXX: Need to sink_tmp_sel here instead for consistency ??? 
+	 *  It seems to be clearing fast tmp_sels now, but at least not
+	 * leaving them lying around.*/
+	sample_display_sink_tmp_sel (s);
+
+	sample_display_set_default_cursor (s);
+      }
+    }
+
+  } else {
+    if (s->view->current_tool == TOOL_SELECT &&
+	sample_display_on_sel (s, x, y)) {
+      SET_CURSOR(widget, HORIZ);
+    } else if (s->view->current_tool == TOOL_SELECT &&
+	       sample_display_on_playmarker (s, x, y)) {
+      SET_CURSOR(widget, NEEDLE);
+    } else {
+
       if (o > 0 && o < s->view->sample->sounddata->nr_frames)
-	SET_CURSOR(widget, crosshair_cr);
+	sample_display_set_default_cursor (SAMPLE_DISPLAY(widget));
       else
 	gdk_window_set_cursor (widget->window, NULL);
     }
@@ -1367,23 +2414,17 @@ sample_display_motion_notify (GtkWidget *widget,
       sample_display_sink_tmp_sel (s);
     }
 #endif
-
-    return FALSE;
-  }
-
-  if((state & GDK_BUTTON1_MASK) && last_button == 1) {
-    sample_display_handle_motion(s, x, y, 0);
-  } else if((state & GDK_BUTTON2_MASK) && last_button == 2) {
-    sample_display_handle_motion_2(s, x, y);
-  } else {
-    /*    sample_display_clear_sel (s);*/
-    sample_display_sink_tmp_sel (s);
-    /* XXX: Need to sink_tmp_sel here instead for consistency ??? 
-     *  It seems to be clearing fast tmp_sels now, but at least not
-     * leaving them lying around.*/
   }
     
   return FALSE;
+}
+
+static gint
+sample_display_enter_notify (GtkWidget *widget,
+			     GdkEventCrossing *event)
+{
+  gtk_widget_grab_focus (widget);
+  return TRUE;
 }
 
 static gint
@@ -1400,6 +2441,319 @@ sample_display_leave_notify (GtkWidget *widget,
   return TRUE;
 }
 
+static gint
+sample_display_focus_in (GtkWidget * widget, GdkEventFocus * event)
+{
+  SampleDisplay * s;
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (IS_SAMPLE_DISPLAY(widget), FALSE);
+
+  GTK_WIDGET_SET_FLAGS (widget, GTK_HAS_FOCUS);
+  gtk_widget_draw_focus (widget);
+
+  s = SAMPLE_DISPLAY(widget);
+
+  if (s->marching) {
+    sd_start_marching_ants_timeout (s);
+  }
+
+  sample_display_start_cursor_pulse (s);
+
+  undo_dialog_set_sample (s->view->sample);
+
+  return FALSE;
+}
+
+static gint
+sample_display_focus_out (GtkWidget * widget, GdkEventFocus * event)
+{
+  SampleDisplay * s;
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (IS_SAMPLE_DISPLAY(widget), FALSE);
+
+  GTK_WIDGET_UNSET_FLAGS (widget, GTK_HAS_FOCUS);
+  gtk_widget_draw_focus (widget);
+
+  s = SAMPLE_DISPLAY(widget);
+
+  sd_stop_marching_ants_timeout (s);
+
+  sample_display_stop_cursor_pulse (s);
+
+  return FALSE;  
+}
+
+static gint
+sample_display_key_press (GtkWidget * widget, GdkEventKey * event)
+{
+  SampleDisplay * s = SAMPLE_DISPLAY(widget);
+  sw_view * view = s->view;
+  sw_sample * sample;
+  sw_framecount_t vlen, move_delta = 0, sel_t;
+  GList * gl;
+  sw_sel * sel;
+  int x, y, xss, xse;
+
+  sample = view->sample;
+  vlen = view->end - view->start;
+
+  /*g_print ("key 0x%X pressed\n", event->keyval);*/
+
+  switch (event->keyval) {
+  case GDK_Meta_L:
+  case GDK_Super_L:
+  case GDK_Multi_key:
+    if (sample->edit_mode == SWEEP_EDIT_MODE_ALLOC) break;
+
+    s->meta_down = TRUE;
+
+    if (s->selecting == SELECTING_NOTHING) {
+      s->selecting = SELECTING_PLAYMARKER;
+      SET_CURSOR(widget, NEEDLE);
+      sample_set_scrubbing (sample, TRUE);
+    }
+
+    if (s->selecting == SELECTING_PLAYMARKER) {
+      gdk_window_get_pointer (widget->window, &x, &y, NULL);
+      sample_display_handle_playmarker_motion (s, x, y);
+      if (!sample->play_head->going) {
+	play_view_all (s->view);
+      }
+    }
+
+    return TRUE;
+    break;
+  case GDK_Menu:
+    if(view->menu) {
+      gtk_menu_popup(GTK_MENU(view->menu),
+		     NULL, NULL, NULL,
+		     NULL, 3, event->time);
+    }
+    return TRUE;
+    break;
+  case GDK_BackSpace:
+    if (sample->edit_mode == SWEEP_EDIT_MODE_READY)
+      do_clear (sample);
+    return TRUE;
+    break;
+  case GDK_Delete:
+    if (sample->edit_mode == SWEEP_EDIT_MODE_READY)
+      do_delete (sample);
+    return TRUE;
+    break;
+  case GDK_less:
+    if (sample->edit_mode == SWEEP_EDIT_MODE_READY)
+      select_shift_left_cb (widget, s);
+    return TRUE;
+  case GDK_greater:
+    if (sample->edit_mode == SWEEP_EDIT_MODE_READY)
+      select_shift_right_cb (widget, s);
+    return TRUE;
+  case GDK_Up:
+  case GDK_KP_Up:
+    if (event->state & GDK_CONTROL_MASK) {
+      zoom_1to1_cb (GTK_WIDGET(s), s);
+    } else if (event->state & GDK_SHIFT_MASK) {
+      view_vzoom_in (view, 1.2);
+    } else {
+      view_zoom_in (view, 2.0);
+    }
+    return TRUE;
+    break;
+  case GDK_Down:
+  case GDK_KP_Down:
+    if (event->state & GDK_CONTROL_MASK) {
+      zoom_norm_cb (GTK_WIDGET(s), s);
+    } else if (event->state & GDK_SHIFT_MASK) {
+      view_vzoom_out (view, 1.2);
+    } else {
+      view_zoom_out (view, 2.0);
+    }
+    return TRUE;
+    break;
+  case GDK_Left:
+  case GDK_KP_Left:
+    move_delta = MIN(-1,  -vlen/s->width);
+    if (event->state & GDK_CONTROL_MASK) {
+      if (!(event->state & GDK_SHIFT_MASK)) {
+	sample_set_offset_next_bound_left (sample);
+	return TRUE;
+      }
+      move_delta *= 10;
+    }
+    break;
+  case GDK_Right:
+  case GDK_KP_Right:
+    move_delta = MAX(1,  vlen/s->width);
+    if (event->state & GDK_CONTROL_MASK) {
+      if (!(event->state & GDK_SHIFT_MASK)) {
+	sample_set_offset_next_bound_right (sample);
+	return TRUE;
+      }
+      move_delta *= 10;
+    }
+    break;
+  default: /* Random other key pressed */
+    return FALSE;
+    break;
+  }
+
+  /* Handle movement only from here on */
+
+  if ((event->state & GDK_SHIFT_MASK) &&
+      (sample->edit_mode == SWEEP_EDIT_MODE_READY)) {
+    sel = sample->tmp_sel;
+    
+    switch (s->selecting) {
+    case SELECTING_SELECTION_START:
+      sel->sel_start += move_delta;
+      if (sel->sel_start > sel->sel_end) {
+	sel_t = sel->sel_start;
+	sel->sel_start = sel->sel_end;
+	sel->sel_end = sel_t;
+	s->selecting = SELECTING_SELECTION_END;
+      }
+      break;
+    case SELECTING_SELECTION_END:
+      sample->tmp_sel->sel_end += move_delta;
+      if (sel->sel_start > sel->sel_end) {
+	sel_t = sel->sel_start;
+	sel->sel_start = sel->sel_end;
+	sel->sel_end = sel_t;
+	s->selecting = SELECTING_SELECTION_START;
+      }
+      break;
+    default:
+      last_button = 0;
+
+      x = OFFSET_TO_XPOS(sample->user_offset);
+
+      if ((sel = sample->tmp_sel) != NULL) {
+
+	xss = OFFSET_TO_XPOS(sel->sel_start);
+	xse = OFFSET_TO_XPOS(sel->sel_end);
+	  
+	if(abs(x-xss) < 5) {
+	  s->selecting = SELECTING_SELECTION_START;
+	  sel->sel_start += move_delta;
+	  if (sel->sel_start > sel->sel_end) {
+	    sel_t = sel->sel_start;
+	    sel->sel_start = sel->sel_end;
+	    sel->sel_end = sel_t;
+	    s->selecting = SELECTING_SELECTION_END;
+	  }
+	  break;
+	} else if(abs(x-xse) < 5) {
+	  s->selecting = SELECTING_SELECTION_END;
+	  sel->sel_end += move_delta;
+	  if (sel->sel_start > sel->sel_end) {
+	    sel_t = sel->sel_start;
+	    sel->sel_start = sel->sel_end;
+	    sel->sel_end = sel_t;
+	    s->selecting = SELECTING_SELECTION_START;
+	  }
+	  break;
+	}
+      }
+
+      if (s->selecting != SELECTING_SELECTION_START &&
+	  s->selecting != SELECTING_SELECTION_END) {
+	
+	for (gl = sample->sounddata->sels; gl; gl = gl->next) {
+	  
+	  
+	  /* If the cursor is near the current start or end of
+	   * the selection, move that.
+	   */
+	  
+	  sel = (sw_sel *)gl->data;
+	  
+	  xss = OFFSET_TO_XPOS(sel->sel_start);
+	  xse = OFFSET_TO_XPOS(sel->sel_end);
+	  
+	  if(abs(x-xss) < 5) {
+	    sample_set_tmp_sel (sample, s->view, sel);
+	    s->selecting = SELECTING_SELECTION_START;
+	    s->selection_mode = SELECTION_MODE_INTERSECT;
+	    sample_display_set_intersect_cursor (s);
+	    break;
+	  } else if(abs(x-xse) < 5) {
+	    sample_set_tmp_sel (sample, s->view, sel);
+	    s->selecting = SELECTING_SELECTION_END;
+	    s->selection_mode = SELECTION_MODE_INTERSECT;
+	    sample_display_set_intersect_cursor (s);
+	    break;
+	  }
+	}
+      }
+      
+      if (s->selecting != SELECTING_SELECTION_START &&
+	  s->selecting != SELECTING_SELECTION_END) {
+
+	sample_set_tmp_sel_1 (sample, view, sample->user_offset,
+			      sample->user_offset + move_delta);
+	s->selecting = SELECTING_SELECTION_START;
+	s->selection_mode = SELECTION_MODE_REPLACE;
+	SET_CURSOR (GTK_WIDGET(s), HORIZ);
+      }
+      break;
+    } 
+    gtk_signal_emit(GTK_OBJECT(s),
+		    sample_display_signals[SIG_SELECTION_CHANGED]);
+  } else if (s->selecting == SELECTING_SELECTION_START ||
+	     s->selecting == SELECTING_SELECTION_END) {
+    sample_display_sink_tmp_sel (s);
+    s->selecting = SELECTING_NOTHING;
+    sample_display_set_default_cursor (s);
+  }
+
+  sample_set_playmarker (sample, sample->user_offset + move_delta, TRUE);
+
+  return TRUE;
+}
+
+static gint
+sample_display_key_release (GtkWidget * widget, GdkEventKey * event)
+{
+  SampleDisplay * s = SAMPLE_DISPLAY(widget);
+  GdkModifierType state;
+
+  switch (event->keyval) {
+  case GDK_Meta_L:
+  case GDK_Super_L:
+  case GDK_Multi_key:
+    s->meta_down = FALSE;
+
+    gdk_window_get_pointer (widget->window, NULL, NULL, &state);
+
+    /* Don't cancel scrubbing if the mouse is down for it */
+    if ((state & GDK_BUTTON1_MASK) && s->view->current_tool == TOOL_SCRUB)
+      return TRUE;
+
+    if (s->selecting == SELECTING_PLAYMARKER) {
+      s->selecting = SELECTING_NOTHING;
+      sample_set_scrubbing (s->view->sample, FALSE);
+      sample_display_set_default_cursor (s);
+    }
+
+    return TRUE;
+    break;
+  default:
+    break;
+  }
+
+  return FALSE;
+}
+
+static gint
+sample_display_destroy (GtkWidget * widget, GdkEventAny * event)
+{
+  gtk_widget_queue_clear (widget);
+  return 0;
+}
+
 static void
 sample_display_class_init (SampleDisplayClass *class)
 {
@@ -1408,10 +2762,6 @@ sample_display_class_init (SampleDisplayClass *class)
   int n;
   const int *p;
   GdkColor *c;
-  GdkBitmap * bitmap;
-  GdkBitmap * mask;
-  GdkColor white = {0, 0xffff, 0xffff, 0xffff};
-  GdkColor black = {0, 0x0000, 0x0000, 0x0000};
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
@@ -1424,7 +2774,14 @@ sample_display_class_init (SampleDisplayClass *class)
   widget_class->button_press_event = sample_display_button_press;
   widget_class->button_release_event = sample_display_button_release;
   widget_class->motion_notify_event = sample_display_motion_notify;
+  widget_class->enter_notify_event = sample_display_enter_notify;
   widget_class->leave_notify_event = sample_display_leave_notify;
+  widget_class->key_press_event = sample_display_key_press;
+  widget_class->key_release_event = sample_display_key_release;
+  widget_class->focus_in_event = sample_display_focus_in;
+  widget_class->focus_out_event = sample_display_focus_out;
+
+  widget_class->destroy_event = sample_display_destroy;
 
   sample_display_signals[SIG_SELECTION_CHANGED] =
     gtk_signal_new ("selection-changed",
@@ -1469,33 +2826,46 @@ sample_display_class_init (SampleDisplayClass *class)
     gdk_color_alloc(gdk_colormap_get_system(), c);
   }
 
-  class->crosshair_cr = gdk_cursor_new(GDK_CROSSHAIR);
-  class->move_cr = gdk_cursor_new(GDK_FLEUR);
+  for(n = 0, p = bg_colors, c = class->bg_colors;
+      n < VIEW_COLOR_MAX; n++, c++) {
+    c->red = *p++ * 65535 / 255;
+    c->green = *p++ * 65535 / 255;
+    c->blue = *p++ * 65535 / 255;
+    c->pixel = (glong)((c->red & 0xff00)*256 +
+			(c->green & 0xff00) +
+			(c->blue & 0xff00)/256);
+    gdk_color_alloc(gdk_colormap_get_system(), c);
+  }
 
-  create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_xpm);
-  
-  class->horiz_cr = gdk_cursor_new_from_pixmap (bitmap, mask,
-						&white, &black,
-						8, 8);
-
-  create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_plus_xpm);
-  
-  class->horiz_plus_cr = gdk_cursor_new_from_pixmap (bitmap, mask,
-						     &white, &black,
-						     8, 8);
-
+  for(n = 0, p = fg_colors, c = class->fg_colors;
+      n < VIEW_COLOR_MAX; n++, c++) {
+    c->red = *p++ * 65535 / 255;
+    c->green = *p++ * 65535 / 255;
+    c->blue = *p++ * 65535 / 255;
+    c->pixel = (glong)((c->red & 0xff00)*256 +
+			(c->green & 0xff00) +
+			(c->blue & 0xff00)/256);
+    gdk_color_alloc(gdk_colormap_get_system(), c);
+  }
 }
 
 static void
 sample_display_init (SampleDisplay *s)
 {
+  GTK_WIDGET_SET_FLAGS (GTK_WIDGET(s), GTK_CAN_FOCUS);
+
   s->backing_pixmap = NULL;
   s->view = NULL;
   s->selecting = SELECTING_NOTHING;
   s->selection_mode = SELECTION_MODE_NONE;
   s->marching_tag = 0;
+  s->marching = FALSE;
+  s->pulsing_tag = 0;
+  s->pulse = FALSE;
   s->mouse_x = 0;
   s->mouse_offset = 0;
+  s->scroll_left_tag = 0;
+  s->scroll_right_tag = 0;
 }
 
 guint
