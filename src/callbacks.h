@@ -63,6 +63,12 @@ void
 zoom_2_1_cb (GtkWidget * widget, gpointer data);
 
 void
+zoom_norm_cb (GtkWidget * widget, gpointer data);
+
+void
+zoom_1to1_cb (GtkWidget * widget, gpointer data);
+
+void
 play_view_cb (GtkWidget * widget, gpointer data);
 
 void

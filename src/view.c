@@ -18,6 +18,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Thu Oct 22 2000 - Added 1:1 and Normal zooms from
+ *                   Steve Harris <steve@totl.net>
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -416,6 +421,17 @@ create_view_menu (sw_view * view, GtkWidget * m)
 			      GDK_1, GDK_CONTROL_MASK,
 			      GTK_ACCEL_VISIBLE);
 
+  menuitem = gtk_menu_item_new_with_label(_("Normal"));
+  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
+  gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
+                    GTK_SIGNAL_FUNC(zoom_norm_cb), s);
+  gtk_widget_show(menuitem);
+
+  menuitem = gtk_menu_item_new_with_label(_("1:1"));
+  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
+  gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
+                    GTK_SIGNAL_FUNC(zoom_1to1_cb), s);
+  gtk_widget_show(menuitem);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);

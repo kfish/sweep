@@ -273,6 +273,27 @@ zoom_2_1_cb (GtkWidget * widget, gpointer data)
 		3 * s->sounddata->nr_frames / 4);
 }
 
+void
+zoom_norm_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+  sw_sample * s;
+
+  s = sd->view->sample;
+
+  view_set_ends(sd->view, 0, (sd->width) * 4096);
+}
+
+void
+zoom_1to1_cb (GtkWidget * widget, gpointer data)
+{
+  SampleDisplay * sd = SAMPLE_DISPLAY(data);
+  sw_sample * s;
+
+  s = sd->view->sample;
+
+  view_set_ends(sd->view, 0, sd->width);
+}
 
 /* Playback */
 
