@@ -110,7 +110,7 @@ echo_apply (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 }
 
 
-static sw_proc proc_echo = {
+static sw_procedure proc_echo = {
   N_("Echo"),
   N_("Apply an echo to selected regions of a sample"),
   "Conrad Parker",

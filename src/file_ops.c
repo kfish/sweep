@@ -36,6 +36,7 @@
 #include <sweep/sweep_typeconvert.h>
 #include <sweep/sweep_sample.h>
 
+#include "sample.h"
 #include "file_ops.h"
 #include "view.h"
 

@@ -359,17 +359,17 @@ struct _sw_param_spec {
  * Plugins and procedures
  */
 
-typedef struct _sw_proc sw_proc;
+typedef struct _sw_procedure sw_procedure;
 typedef struct _sw_plugin sw_plugin;
 
-struct _sw_proc {
+struct _sw_procedure {
   gchar * name;
-  gchar * desc;
+  gchar * description;
   gchar * author;
   gchar * copyright;
   gchar * url;
 
-  gchar * category;
+  gchar * identifier;
 
   /* Key bindings */
   guint accel_key;
@@ -378,11 +378,8 @@ struct _sw_proc {
   gint nr_params;
   sw_param_spec * param_specs;
 
-  /* proc_suggest sets suggested values for the members of pset,
+  /* suggest sets suggested values for the members of pset,
    * possibly using the sample.
-   *
-   * It is assumed that proc_suggest() knows nr_params because
-   * it is part of the whole proc's code.
    *
    * If nr_params is 0 then this function will not be called.
    * If this function is NULL then default values (zero,FALSE,"")
@@ -393,10 +390,7 @@ struct _sw_proc {
 
   /* This is the function that actually does the work!
    *
-   * proc_apply applies the parameter set pset to a sample
-   *
-   * It is assumed that this "apply" function knows nr_params,
-   * because it is part of this whole proc's code.
+   * apply applies the parameter set pset to a sample
    *
    * If nr_params is 0 then this function will be passed a NULL pset.
    */
@@ -408,7 +402,7 @@ struct _sw_proc {
 };
 
 struct _sw_plugin {
-  /* plugin_init () returns a list of procs */
+  /* plugin_init () returns a list of procedures */
   GList * (*plugin_init) (void);
 
   /* plugin_cleanup() frees the plugin's private data structures */

@@ -229,7 +229,7 @@ apply_by_energy(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 			  (SweepModify)select_by_energy, pset, NULL);
 }
 
-sw_proc proc_by_energy = {
+static sw_procedure proc_by_energy = {
   N_("Select by energy"),
   N_("Select loud or quiet regions"),
   "Conrad Parker",

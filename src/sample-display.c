@@ -28,7 +28,7 @@
 #include <gtk/gtk.h>
 
 #include "sweep_app.h"
-
+#include "sample.h"
 #include "cursors.h"
 
 /* static cursor definitions */

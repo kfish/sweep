@@ -67,7 +67,7 @@ param_copy (sw_param * p1, sw_param * p2)
 }
 
 sw_param *
-sw_param_set_new (sw_proc * proc)
+sw_param_set_new (sw_procedure * proc)
 {
   sw_param * p;
 
@@ -131,7 +131,7 @@ print_param (sw_param_type type, sw_param p)
 }
 
 void
-print_param_set (sw_proc * proc, sw_param_set pset)
+print_param_set (sw_procedure * proc, sw_param_set pset)
 {
   int i, j;
   sw_param_spec * ps;
@@ -200,7 +200,7 @@ struct _sw_ps_widget {
 };
 
 struct _sw_ps_adjuster {
-  sw_proc * proc;
+  sw_procedure * proc;
   sw_view * view;
   sw_param_set pset;
   GtkWidget * window;
@@ -211,7 +211,7 @@ struct _sw_ps_adjuster {
 };
 
 static sw_ps_adjuster *
-ps_adjuster_new (sw_proc * proc, sw_view * view, sw_param_set pset,
+ps_adjuster_new (sw_procedure * proc, sw_view * view, sw_param_set pset,
 		 GtkWidget * window)
 {
   sw_ps_adjuster * ps;
@@ -247,7 +247,7 @@ ps_adjuster_destroy (sw_ps_adjuster * ps)
 }
 
 static void
-get_param_values (sw_proc * proc, sw_param_set pset, sw_ps_widget * widgets)
+get_param_values (sw_procedure * proc, sw_param_set pset, sw_ps_widget * widgets)
 {
   gint i;
   sw_param_spec * pspec;
@@ -351,7 +351,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 {
   gint i, j;
 
-  sw_proc * proc = ps->proc;
+  sw_procedure * proc = ps->proc;
   sw_param_set pset = ps->pset;
 
   sw_param_spec * pspec;
@@ -535,7 +535,7 @@ param_set_suggest_cb (GtkWidget * widget, gpointer data)
 }
 
 gint
-create_param_set_adjuster (sw_proc * proc, sw_view * view,
+create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 			   sw_param_set pset)
 {
   sw_ps_adjuster * ps;

@@ -60,7 +60,7 @@ sweep_plugin_init (const gchar * name)
   if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
     for (gl = m_plugin->plugin_init ();
 	 gl; gl = gl->next) {
-      plugins = g_list_append (plugins, (sw_proc *)gl->data);
+      plugins = g_list_append (plugins, (sw_procedure *)gl->data);
     }
   }
 }

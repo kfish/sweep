@@ -60,7 +60,7 @@ apply_reverse (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 }
 
 
-sw_proc proc_reverse = {
+static sw_procedure proc_reverse = {
   N_("Reverse"),
   N_("Reverse selected regions of a sample"),
   "Conrad Parker",

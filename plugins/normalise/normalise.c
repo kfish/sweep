@@ -74,7 +74,7 @@ apply_normalise(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 		       pset, NULL);
 }
 
-sw_proc proc_normalise = {
+static sw_procedure proc_normalise = {
   N_("Normalise"),
   N_("Alter the sample's amplitude to lie between 1.0 and -1.0"),
   "Conrad Parker",

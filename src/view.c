@@ -34,6 +34,7 @@
 
 #include "view.h"
 
+#include "sample.h"
 #include "callbacks.h"
 #include "interface.h"
 #include "print.h"
@@ -73,12 +74,12 @@ sw_view * last_tmp_view = NULL; /* last used tmp_view */
 typedef struct _sw_proc_instance sw_proc_instance;
 
 struct _sw_proc_instance {
-  sw_proc * proc;
+  sw_procedure * proc;
   sw_view * view;
 };
 
 static sw_proc_instance *
-sw_proc_instance_new (sw_proc * proc, sw_view * view)
+sw_proc_instance_new (sw_procedure * proc, sw_view * view)
 {
   sw_proc_instance * pi;
 
@@ -94,7 +95,7 @@ static void
 apply_procedure_cb (GtkWidget * widget, gpointer data)
 {
   sw_proc_instance * pi = (sw_proc_instance *)data;
-  sw_proc * proc = pi->proc;
+  sw_procedure * proc = pi->proc;
   sw_sample * sample = pi->view->sample;
   sw_param_set pset;
 
@@ -111,7 +112,7 @@ apply_procedure_cb (GtkWidget * widget, gpointer data)
 }
 
 static void
-create_proc_menuitem (sw_proc * proc, sw_view * view,
+create_proc_menuitem (sw_procedure * proc, sw_view * view,
 		      GtkWidget * submenu, GtkAccelGroup * accel_group)
 {
   sw_proc_instance * pi;
@@ -147,7 +148,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   /* Plugin handling */
   GList * gl;
-  sw_proc * proc;
+  sw_procedure * proc;
 
 #define MENU_APPEND(w,c) \
   if (GTK_IS_MENU_BAR(##w##)) {                               \
@@ -451,7 +452,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   /* Filter plugins */
   for (gl = plugins; gl; gl = gl->next) {
-    proc = (sw_proc *)gl->data;
+    proc = (sw_procedure *)gl->data;
 
     create_proc_menuitem (proc, view, submenu, accel_group);
   }

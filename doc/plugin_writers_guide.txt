@@ -291,8 +291,8 @@ SW_PARAM_HINT_FILENAME indicates that the parameter should be
 interpreted as a valid filename on the user's system.
 
 
-2.8 Procs
----------
+2.8 Procedures
+--------------
 <sweep/sweep_types.h>
 
 A proc object ties together all the aspects of a particular plugin
@@ -330,27 +330,27 @@ parameter values set by the last invocation of this proc. This can
 simply be done by keeping these values in static variables within the
 plugin file.
 
-typedef struct _sw_proc sw_proc;
 
-struct _sw_proc {
+typedef struct _sw_procedure sw_procedure;
+
+struct _sw_procedure {
   gchar * name;
-  gchar * desc;
+  gchar * description;
   gchar * author;
   gchar * copyright;
   gchar * url;
 
-  gchar * category;
+  gchar * identifier;
+
+  /* Key bindings */
   guint accel_key;
   GdkModifierType accel_mods;
 
   gint nr_params;
   sw_param_spec * param_specs;
 
-  /* proc_suggest sets suggested values for the members of pset,
+  /* suggest sets suggested values for the members of pset,
    * possibly using the sample.
-   *
-   * It is assumed that proc_suggest() knows nr_params because
-   * it is part of the whole proc's code.
    *
    * If nr_params is 0 then this function will not be called.
    * If this function is NULL then default values (zero,FALSE,"")
@@ -361,10 +361,7 @@ struct _sw_proc {
 
   /* This is the function that actually does the work!
    *
-   * proc_apply applies the parameter set pset to a sample
-   *
-   * It is assumed that this "apply" function knows nr_params,
-   * because it is part of this whole proc's code.
+   * apply applies the parameter set pset to a sample
    *
    * If nr_params is 0 then this function will be passed a NULL pset.
    */

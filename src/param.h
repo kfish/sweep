@@ -22,13 +22,13 @@
 #define __PARAM_H__
 
 sw_param *
-sw_param_set_new (sw_proc * proc);
+sw_param_set_new (sw_procedure * proc);
 
 void
-print_param_set (sw_proc * proc, sw_param_set pset);
+print_param_set (sw_procedure * proc, sw_param_set pset);
 
 gint
-create_param_set_adjuster (sw_proc * proc, sw_view * view,
+create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 			   sw_param_set pset);
 
 #endif /* __PARAM_H__ */

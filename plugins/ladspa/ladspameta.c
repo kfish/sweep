@@ -462,7 +462,7 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
   LADSPA_PortDescriptor pd;
   gint i, j, k, nr_params;
   int valid_mask;
-  sw_proc * proc;
+  sw_procedure * proc;
 
   snprintf (path, PATH_LEN, "%s/%s", dir, name);
 
