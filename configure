@@ -715,7 +715,7 @@ fi
 
 PACKAGE=sweep
 
-VERSION=0.0.9-k1
+VERSION=0.0.9-k3
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -4555,6 +4555,11 @@ ac_given_INSTALL="$INSTALL"
 trap 'rm -fr `echo "
 Makefile
 src/Makefile
+plugins/Makefile
+plugins/echo/Makefile
+plugins/normalise/Makefile
+plugins/reverse/Makefile
+plugins/ladspa/Makefile
 doc/Makefile
 intl/Makefile
 po/Makefile.in
@@ -4687,6 +4692,11 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Makefile
 src/Makefile
+plugins/Makefile
+plugins/echo/Makefile
+plugins/normalise/Makefile
+plugins/reverse/Makefile
+plugins/ladspa/Makefile
 doc/Makefile
 intl/Makefile
 po/Makefile.in

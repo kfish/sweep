@@ -206,14 +206,14 @@ struct _sw_op_instance {
 };
 
 /*
- * Basic types
+ * Basic types for parameters
  */
 typedef enum {
   SWEEP_TYPE_BOOL = 0,
   SWEEP_TYPE_INT,
   SWEEP_TYPE_FLOAT,
   SWEEP_TYPE_STRING,
-} sw_type;
+} sw_param_type;
 
 typedef enum {
   SWEEP_UNIT_NONE = 0,
@@ -249,53 +249,89 @@ union _sw_param {
  */
 
 /*
- * SW_PARAM_CONSTRAINED_LIST indicates that the parameter is constrained
- * to values given in a param list. If SW_PARAM_CONSTRAINED_LIST is
- * set, then the following three constraints are ignored.
+ * Constraint types. These are used within the param_spec to indicate
+ * the usage of the sw_constraint.
  */
-#define SW_PARAM_CONSTRAINED_LIST  (1<<0)
+typedef enum {
+/*
+ * SW_PARAM_CONSTRAINED_NOT indicates that the parameter is completely
+ * unconstrained.
+ *
+ * Useful in verse; with iambic pentameter, accent the "-ED" eg.
+ *
+ *     This 'x' is SW_CONSTRAINED_NOT!
+ *     How free is its life, how wretched its lot!
+ */
+  SW_PARAM_CONSTRAINED_NOT=0,
 
 /*
- * SW_PARAM_CONSTRAINED_BELOW indicates that the 'lower' field
+ * SW_PARAM_CONSTRAINED_LIST indicates that the parameter is constrained
+ * to values given in a param list.
+ */
+  SW_PARAM_CONSTRAINED_LIST,
+
+/*
+ * SW_PARAM_CONSTRAINED_RANGE indicates that the parameter is constrained
+ * to a given range.
+ */
+  SW_PARAM_CONSTRAINED_RANGE,
+
+} sw_constraint_type;
+
+
+/* VALID PORTIONS OF RANGES */
+
+/*
+ * SW_RANGE_LOWER_BOUND_VALID indicates that the 'lower' field
  * of the constraint, if interpreted as a range, is valid. If this bit
  * is not set, then the parameter is known to have no lower bound.
  * If the constraint is valid and the 'step' field is set, then the
  * value of 'lower' is used to determine a basis for the parameter,
- * even if SW_PARAM_CONSTRAINED_BELOW is not set.
+ * even if SW_RANGE_LOWER_BOUND_VALID is not set.
  *
  * Note that the constraint is not interpreted as a range if
  * SW_PARAM_CONSTRAINED_LIST is set.
  */
-#define SW_PARAM_CONSTRAINED_BELOW (1<<1)
+#define SW_RANGE_LOWER_BOUND_VALID (1<<0)
 
 /*
- * SW_PARAM_CONSTRAINED_ABOVE indicates that the 'upper' field
+ * SW_RANGE_UPPER_BOUND_VALID indicates that the 'upper' field
  * of the constraint, if interpreted as a range, is valid. If this bit
  * is not set, then the parameter is known to have no upper bound.
- *
- * Note that the constraint is not interpreted as a range if
- * SW_PARAM_CONSTRAINED_LIST is set.
  */
-#define SW_PARAM_CONSTRAINED_ABOVE (1<<2)
+#define SW_RANGE_UPPER_BOUND_VALID (1<<1)
 
 /*
- * SW_PARAM_CONSTRAINED_STEPS indicates that the 'step' field of
+ * SW_RANGE_STEP_VALID indicates that the 'step' field of
  * the constraint, if interpreted as a range, is valid. If this bit
  * is not set, then the parameter is assumed to be continuous.
  * If this field is valid, then the parameter will only have values
  * equal to  (lower + n*step) for integer n.
  *
- * Note that the constraint is not interpreted as a range if
- * SW_PARAM_CONSTRAINED_LIST is set.
+ * This constraint is ignored for string paramters.
  */
-#define SW_PARAM_CONSTRAINED_STEPS (1<<3)
+#define SW_RANGE_STEP_VALID (1<<2)
  
+
+/*
+ * HINTS for user interface semantics
+ */
+
+typedef int sw_hints;
+
 /*
  * SW_PARAM_HINT_LOGARITHMIC indicates that the parameter should be
  * interpreted as logarithmic.
  */
-#define SW_PARAM_HINT_LOGARITHMIC  (1<<4)
+#define SW_PARAM_HINT_LOGARITHMIC  (1<<1)
+
+/*
+ * SW_PARAM_HINT_FILENAME indicates that the parameter should be
+ * interpreted as a valid filename on the user's system.
+ */
+#define SW_PARAM_HINT_FILENAME     (1<<2)
  
+
 typedef struct _sw_param_spec sw_param_spec;
 typedef struct _sw_param_range sw_param_range;
 typedef union _sw_constraint sw_constraint;
@@ -306,11 +342,16 @@ typedef union _sw_constraint sw_constraint;
  * NB: this is a hard limit. Values <lower and values >upper
  * need not be expected by plugins.
  *
- * All three parameters are interpreted as the type of the
- * parameter they constrain. The 'step' parameter is not valid
- * for string parameters.
+ * The first parameter is a mask consisting of a bitwise or of between
+ * zero and three of SW_RANGE_LOWER_BOUND_VALID,
+ * SW_RANGE_UPPER_BOUND_VALID, and SW_RANGE_STEP_VALID.
+ *
+ * The three following parameters are interpreted as the type of the
+ * parameter they constrain. The 'step' parameter is never valid for
+ * string parameters.
  */
 struct _sw_param_range {
+  int valid_mask;
   sw_param lower;
   sw_param upper;
   sw_param step;
@@ -319,8 +360,9 @@ struct _sw_param_range {
 /*
  * sw_constraint
  *
- * Constraints on parameters. All values are disregarded for
- * boolean parameters.
+ * Constraints on parameters. Constraints, if valid, are hard limits.
+ *
+ * All constraints are disregarded for boolean parameters.
  */
 union _sw_constraint {
   /*
@@ -342,14 +384,24 @@ union _sw_constraint {
  * sw_param_spec: specification for a parameter.
  */
 struct _sw_param_spec {
+  /* A short name for this parameter */
   gchar * name;
+
+  /* A longer description of the parameter's purpose and usage */
   gchar * desc;
-  sw_type type;
-  int flags;
+
+  /* The type of the parameter */
+  sw_param_type type;
+
+  /* Constraints */
+  sw_constraint_type constraint_type;
   sw_constraint constraint;
+
+  /* Hints */
+  sw_hints hints;
 };
 
- 
+
 /*
  * Plugins and procedures
  */

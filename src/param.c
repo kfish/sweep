@@ -22,7 +22,7 @@
 #include "sweep.h"
 
 static gint
-param_cmp (sw_type type, sw_param p1, sw_param p2)
+param_cmp (sw_param_type type, sw_param p1, sw_param p2)
 {
   switch (type) {
   case SWEEP_TYPE_BOOL:
@@ -75,7 +75,7 @@ sw_param_set_new (sw_proc * proc)
 }
 
 static void
-print_type (sw_type type)
+print_type (sw_param_type type)
 {
   switch (type) {
   case SWEEP_TYPE_BOOL:
@@ -96,7 +96,7 @@ print_type (sw_type type)
 }
 
 static void
-snprint_param (gchar * s, gint n, sw_type type, sw_param p)
+snprint_param (gchar * s, gint n, sw_param_type type, sw_param p)
 {
   switch (type) {
   case SWEEP_TYPE_BOOL:
@@ -118,7 +118,7 @@ snprint_param (gchar * s, gint n, sw_type type, sw_param p)
 }
 
 static void
-print_param (sw_type type, sw_param p)
+print_param (sw_param_type type, sw_param p)
 {
 #define BUF_LEN 64
   gchar buf[BUF_LEN];
@@ -133,6 +133,7 @@ print_param_set (sw_proc * proc, sw_param_set pset)
 {
   int i, j;
   sw_param_spec * ps;
+  int valid_mask;
 
   printf ("\"%s\" has %d params.\n\n", proc->proc_name, proc->nr_params);
 
@@ -142,7 +143,9 @@ print_param_set (sw_proc * proc, sw_param_set pset)
     printf ("\tType: ");
     print_type (ps->type);
     printf ("\n");
-    if (ps->flags & SW_PARAM_CONSTRAINED_LIST) {
+    if (ps->constraint_type == SW_PARAM_CONSTRAINED_NOT) {
+      printf ("\tUnconstrained.\n");
+    } else if (ps->constraint_type == SW_PARAM_CONSTRAINED_LIST) {
       printf ("\tConstrained to ");
       print_param (SWEEP_TYPE_INT, ps->constraint.list[0]);
       printf (" list values.");
@@ -151,18 +154,20 @@ print_param_set (sw_proc * proc, sw_param_set pset)
 	print_param (ps->type, ps->constraint.list[j]);
       }
       printf ("\n");
-    } else {
-      if (ps->flags & SW_PARAM_CONSTRAINED_BELOW) {
+    } else if (ps->constraint_type == SW_PARAM_CONSTRAINED_RANGE) {
+      valid_mask = ps->constraint.range->valid_mask;
+
+      if (valid_mask & SW_RANGE_LOWER_BOUND_VALID) {
 	printf ("\tBounded below by ");
 	print_param (ps->type, ps->constraint.range->lower);
 	printf ("\n");
       }
-      if (ps->flags & SW_PARAM_CONSTRAINED_ABOVE) {
+      if (valid_mask & SW_RANGE_UPPER_BOUND_VALID) {
 	printf ("\tBounded above by ");
 	print_param (ps->type, ps->constraint.range->upper);
 	printf ("\n");
       }
-      if (ps->flags & SW_PARAM_CONSTRAINED_STEPS) {
+      if (valid_mask & SW_RANGE_STEP_VALID) {
 	printf ("\tValues quantised by ");
 	print_param (ps->type, ps->constraint.range->step);
 	printf ("\n");
@@ -171,7 +176,6 @@ print_param_set (sw_proc * proc, sw_param_set pset)
     printf ("\tCURRENT VALUE ");
     print_param (ps->type, pset[i]);
     printf ("\n");
-
   }
 }
 
@@ -350,6 +354,8 @@ create_param_set_vbox (sw_ps_adjuster * ps)
   sw_param_spec * pspec;
   sw_pl_set_known * plsk;
   gint nr_options;
+  int valid=0;
+
 #define BUF_LEN 64
   gchar buf[BUF_LEN];
 
@@ -365,11 +371,11 @@ create_param_set_vbox (sw_ps_adjuster * ps)
   GtkObject * adj;
   gfloat value, lower, upper, step_inc, page_inc, page_size;
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (FALSE, 2);
 
   for (i=0; i < proc->nr_params; i++) {
-    hbox = gtk_hbox_new (FALSE, 0);
-    gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+    hbox = gtk_hbox_new (FALSE, 4);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
     gtk_widget_show (hbox);
     
     pspec = &proc->param_specs[i];
@@ -377,7 +383,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
     if (pspec->type == SWEEP_TYPE_BOOL) {
 
       checkbutton = gtk_check_button_new_with_label (pspec->name);
-      gtk_box_pack_start (GTK_BOX(hbox), checkbutton, FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX(hbox), checkbutton, FALSE, TRUE, 0);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton),
 				    pset[i].b);
@@ -397,10 +403,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
       gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
       gtk_widget_show (label);
 
-      if (pspec->flags & SW_PARAM_CONSTRAINED_LIST) {
-	if (ps->plsk_list == NULL) {
-	  ps->plsk_list = g_list_alloc (); /* XXX: new? */
-	}
+      if (pspec->constraint_type == SW_PARAM_CONSTRAINED_LIST) {
 
 	optionmenu = gtk_option_menu_new ();
 	gtk_box_pack_start (GTK_BOX(hbox), optionmenu, FALSE, FALSE, 0);
@@ -413,7 +416,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 	nr_options = pspec->constraint.list[0].i;
 	plsk = g_malloc (sizeof (sw_pl_set_known) * nr_options);
 
-	g_list_append (ps->plsk_list, plsk);
+	ps->plsk_list = g_list_append (ps->plsk_list, plsk);
 
 	for (j=0; j < nr_options; j++) {
 	  plsk[j].p1 = &ps->widgets[i].w.known_param;
@@ -441,46 +444,56 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 
 
 #define ADJUSTER_NUMERIC(T, DIGITS) \
-                                                                          \
-	value = (gfloat) pset[i].##T##;                                   \
-	                                                                  \
-	if (pspec->flags & SW_PARAM_CONSTRAINED_BELOW) {                  \
-	lower = (gfloat) pspec->constraint.range->lower.##T##;            \
-	} else {                                                          \
-	  lower = G_MINFLOAT;                                             \
-	}                                                                 \
-	                                                                  \
-	if (pspec->flags & SW_PARAM_CONSTRAINED_ABOVE) {                  \
-	  upper = (gfloat) pspec->constraint.range->upper.##T##;          \
-	} else {                                                          \
-	  upper = G_MAXFLOAT;                                             \
-	}                                                                 \
-	                                                                  \
-	if (pspec->flags & SW_PARAM_CONSTRAINED_STEPS) {                  \
-	  step_inc = (gfloat) pspec->constraint.range->step.##T##;        \
-	} else {                                                          \
-	  step_inc = (gfloat) 1.0;                                        \
-	}                                                                 \
-	page_inc = step_inc;                                              \
-	page_size = step_inc;                                             \
-                                                                          \
-	adj = gtk_adjustment_new (value, lower, upper, step_inc,          \
-				  page_inc, page_size);                   \
-                                                                          \
-	if ( (pspec->flags & SW_PARAM_CONSTRAINED_BELOW) &&               \
-	     (pspec->flags & SW_PARAM_CONSTRAINED_ABOVE)) {               \
-	  num_widget = gtk_hscale_new (GTK_ADJUSTMENT(adj));              \
-	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, TRUE, 0);  \
-	} else {                                                          \
-	  num_widget = gtk_spin_button_new (GTK_ADJUSTMENT(adj),          \
-					    1.0, /* climb_rate */         \
-					    (DIGITS)/* digits */          \
-					    );                            \
-	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, FALSE, 0); \
-	}                                                                 \
-                                                                          \
-	gtk_widget_show (num_widget);                                     \
-        ps->widgets[i].type = SW_PS_ADJUSTMENT;                           \
+                                                                           \
+	value = (gfloat) pset[i].##T##;                                    \
+                                                                           \
+        if (pspec->constraint_type == SW_PARAM_CONSTRAINED_NOT) {          \
+          valid = 0;                                                       \
+        } else if (pspec->constraint_type == SW_PARAM_CONSTRAINED_RANGE) { \
+          valid = pspec->constraint.range->valid_mask;                     \
+        }                                                                  \
+	                                                                   \
+	if (valid & SW_RANGE_LOWER_BOUND_VALID) {                          \
+	  lower = (gfloat) pspec->constraint.range->lower.##T##;           \
+	} else {                                                           \
+	  lower = G_MINFLOAT;                                              \
+	}                                                                  \
+	                                                                   \
+	if (valid & SW_RANGE_UPPER_BOUND_VALID) {                          \
+	  upper = (gfloat) pspec->constraint.range->upper.##T##;           \
+	} else {                                                           \
+	  upper = G_MAXFLOAT;                                              \
+	}                                                                  \
+	                                                                   \
+	if (valid & SW_RANGE_STEP_VALID) {                                 \
+	  step_inc = (gfloat) pspec->constraint.range->step.##T##;         \
+	} else {                                                           \
+	  step_inc = (gfloat) 1.0;                                         \
+	}                                                                  \
+	page_inc = step_inc;                                               \
+	page_size = step_inc;                                              \
+                                                                           \
+	adj = gtk_adjustment_new (value, lower, upper, step_inc,           \
+				  page_inc, page_size);                    \
+                                                                           \
+	if ( (valid & SW_RANGE_LOWER_BOUND_VALID) &&                       \
+	     (valid & SW_RANGE_UPPER_BOUND_VALID)) {                       \
+	  num_widget = gtk_hscale_new (GTK_ADJUSTMENT(adj));               \
+	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, TRUE, 0);   \
+	} else {                                                           \
+	  num_widget = gtk_spin_button_new (GTK_ADJUSTMENT(adj),           \
+					    10.0, /* climb_rate */         \
+					    (DIGITS)/* digits */           \
+					    );                             \
+          gtk_spin_button_set_numeric (GTK_SPIN_BUTTON(num_widget), TRUE); \
+          gtk_spin_button_set_snap_to_ticks (GTK_SPIN_BUTTON(num_widget),  \
+                                         TRUE);                            \
+          gtk_widget_set_usize (num_widget, 75, -1);                       \
+	  gtk_box_pack_start (GTK_BOX(hbox), num_widget, TRUE, TRUE, 0);   \
+	}                                                                  \
+                                                                           \
+	gtk_widget_show (num_widget);                                      \
+        ps->widgets[i].type = SW_PS_ADJUSTMENT;                            \
         ps->widgets[i].w.adjustment = adj;
 
       } else if (pspec->type == SWEEP_TYPE_INT) {
@@ -532,7 +545,6 @@ create_param_set_adjuster (sw_proc * proc, sw_view * view,
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW(window), proc->proc_name);
-  gtk_widget_show (window);
 
   ps = ps_adjuster_new (proc, view, pset, window);
 
@@ -565,20 +577,22 @@ create_param_set_adjuster (sw_proc * proc, sw_view * view,
   ps->vbox = vbox;
 
   hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 4);
   gtk_widget_show (hbox);
 
+  button = gtk_button_new_with_label ("OK");
+  gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
+  gtk_widget_show (button);
+  gtk_signal_connect (GTK_OBJECT(button), "clicked",
+		      GTK_SIGNAL_FUNC (param_set_apply_cb), ps);
+
   button = gtk_button_new_with_label ("Cancel");
-  gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",
 		      GTK_SIGNAL_FUNC (param_set_cancel_cb), ps);
 
-  button = gtk_button_new_with_label ("OK");
-  gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (param_set_apply_cb), ps);
+  gtk_widget_show (window);
 
   return 1;
 }

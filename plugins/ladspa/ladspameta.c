@@ -108,7 +108,7 @@ is_usable(const LADSPA_Descriptor * d)
   return (nr_ai == nr_ao);
 }
 
-static sw_type
+static sw_param_type
 convert_type (const LADSPA_PortRangeHintDescriptor prhd)
 {
   if (LADSPA_IS_HINT_TOGGLED(prhd))
@@ -120,14 +120,14 @@ convert_type (const LADSPA_PortRangeHintDescriptor prhd)
 }
 
 static int
-convert_flags (const LADSPA_PortRangeHintDescriptor prhd)
+get_valid_mask (const LADSPA_PortRangeHintDescriptor prhd)
 {
   int ret=0;
 
   if (LADSPA_IS_HINT_BOUNDED_BELOW(prhd))
-    ret &= SW_PARAM_CONSTRAINED_BELOW;
+    ret &= SW_RANGE_LOWER_BOUND_VALID;
   if (LADSPA_IS_HINT_BOUNDED_ABOVE(prhd))
-    ret &= SW_PARAM_CONSTRAINED_ABOVE;
+    ret &= SW_RANGE_UPPER_BOUND_VALID;
 
   return ret;
 }
@@ -142,6 +142,8 @@ convert_constraint (const LADSPA_PortRangeHint * prh)
     return NULL;
 
   pr = g_malloc0 (sizeof (*pr));
+
+  pr->valid_mask = get_valid_mask (prhd);
 
   if (LADSPA_IS_HINT_INTEGER(prhd)) {
     if (LADSPA_IS_HINT_BOUNDED_BELOW(prhd))
@@ -467,6 +469,7 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
   const LADSPA_Descriptor * d;
   LADSPA_PortDescriptor pd;
   gint i, j, k, nr_params;
+  int valid_mask;
   sw_proc * proc;
 
   snprintf (path, PATH_LEN, "%s/%s", dir, name);
@@ -507,9 +510,11 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 	  proc->param_specs[k].desc = d->PortNames[j];
 	  proc->param_specs[k].type =
 	    convert_type (d->PortRangeHints[j].HintDescriptor);
-	  proc->param_specs[k].flags =
-	    convert_flags (d->PortRangeHints[j].HintDescriptor);
-	  if (proc->param_specs[k].flags) {
+	  valid_mask = get_valid_mask (d->PortRangeHints[j].HintDescriptor);
+	  if (valid_mask == 0) {
+	    proc->param_specs[k].constraint_type = SW_PARAM_CONSTRAINED_NOT;
+	  } else {
+	    proc->param_specs[k].constraint_type = SW_PARAM_CONSTRAINED_RANGE;
 	    proc->param_specs[k].constraint.range =
 	      convert_constraint (&d->PortRangeHints[j]);
 	  }

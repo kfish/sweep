@@ -38,49 +38,15 @@ and your operating system and compiler.
 #endif
 
 
-#if 0
-
-/* OTHER WAY OF DOING IT:
- *
- * specify ranges as a list of values, where each is a parameter
- * tagged by what type of constraint it is.
- *
- * This couples the idea of "which constraints are valid" with their
- * actual values, as opposed to the current method which is
- * decoupled (flags + values elsewhere);
- *
- * This introduces possible inconsistencies (eg. multiple lower bounds)
- * which can then be checked for consistency at plugin_init time, or
- * given an interpretation (eg. MIN/MAX values for bounds and steps)
- *
- */
-
 static sw_param_range delay_range = {
-  {i: 1},
-  { SW_CONSTRAINT_BELOW, {i: 0} }
-};
-
-/* OR perhaps, to make it a consistent array */
-
-static sw_param_range delay_range = {
-  { SW_CONSTRAINT_NR, {i: 1} },  /* <-- This can be nicely macroed */
-  { SW_CONSTRAINT_BELOW, {i: 0} }
-};
-
-/* Deal with multiple ranges? Uggh, no! */
-
-#endif
-
-static sw_param_range delay_range = {
-  {i: 0},
-  {i: 0},
-  {i: 0}
+  SW_RANGE_LOWER_BOUND_VALID,
+  lower: {i: 0},
 };
 
 static sw_param_range gain_range = {
-  {f: 0.0},
-  {f: 1.0},
-  {f: 0}
+  SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_UPPER_BOUND_VALID,
+  lower: {f: 0.0},
+  upper: {f: 1.0},
 };
 
 static sw_param stix_list[] = {
@@ -107,21 +73,21 @@ static sw_param_spec param_specs[] = {
     "Delay",
     "Number of frames to delay by",
     SWEEP_TYPE_INT,
-    SW_PARAM_CONSTRAINED_BELOW,
+    SW_PARAM_CONSTRAINED_RANGE,
     {range: &delay_range}
   },
   {
     "Gain",
     "Gain with which to mix in delayed signal",
     SWEEP_TYPE_FLOAT,
-    SW_PARAM_CONSTRAINED_BELOW | SW_PARAM_CONSTRAINED_ABOVE,
+    SW_PARAM_CONSTRAINED_RANGE,
     {range: &gain_range}
   },
   {
     "Flim",
     "Should you manage your flim?",
     SWEEP_TYPE_BOOL,
-    0,
+    SW_PARAM_CONSTRAINED_NOT,
     {NULL}
   },
   {
