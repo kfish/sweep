@@ -115,7 +115,7 @@ static sw_procedure proc_echo = {
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/echo",
-  "Filters/Echo", /* category */
+  "Filters/Echo", /* identifier */
   GDK_e, /* accel_key */
   GDK_SHIFT_MASK, /* accel_mods */
   NR_PARAMS, /* nr_params */

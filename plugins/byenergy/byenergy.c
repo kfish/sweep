@@ -235,7 +235,7 @@ static sw_procedure proc_by_energy = {
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/byenergy",
-  "Filters/Select by energy", /* category */
+  "Filters/Select by energy", /* identifier */
   0, /* accel_key */
   0, /* accel_mods */
   NR_PARAMS, /* nr_params */

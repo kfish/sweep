@@ -79,7 +79,7 @@ static sw_procedure proc_normalise = {
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/normalise",
-  "Filters/Normalise", /* category */
+  "Filters/Normalise", /* identifier */
   GDK_n, /* accel_key */
   GDK_SHIFT_MASK, /* accel_mods */
   0, /* nr_params */
