@@ -74,7 +74,7 @@ sample_new_empty(char * directory, char * filename,
   s->views = NULL;
 
   if (directory)
-    strncpy(s->directory, directory, MIN(SW_DIR_LEN, strlen(directory)));
+    strncpy(s->directory, directory, MIN(SW_DIR_LEN, strlen(directory) + 1));
   else
     s->directory[0] = '\0';
 

@@ -102,17 +102,15 @@ sample_load(char * pathname)
 	 framecount, framesize);
 #endif
 
-  /* Split directory and file names */
-  fn = strrchr (pathname, '/');
-  if (fn) {
-    *fn++ = '\0';
-    dn = pathname;
-  } else {
-    fn = pathname;
-    dn = NULL;
-  }
+  /* Split directory and file names
+   * RPK: I use pure GLib functions. Its more clear. */
+  fn = g_basename(pathname);
+  dn = g_dirname(pathname);
 
   s = sample_new_empty(dn, fn, channelcount, (int)rate, framecount);
+
+  /* Clean up some stuff ... */
+  g_free(dn);
 
   if(!s) return NULL;
 
