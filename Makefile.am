@@ -10,7 +10,14 @@ desktopdir = $(datadir)/gnome/apps/Multimedia
 icon_DATA = sweep.png
 icondir = $(datadir)/pixmaps
 
-EXTRA_DIST = CREDITS $(desktop_DATA) $(icon_DATA) $(pkgdata_DATA) sweep.spec README.Solaris
+EXTRA_DIST = CREDITS $(desktop_DATA) $(icon_DATA) $(pkgdata_DATA) \
+             sweep.spec README.Solaris
+
+MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
+                       stamp-h.in \
+                       config.guess mkinstalldirs \
+                       missing install-sh config.sub ltconfig \
+                       ltmain.sh acinclude.m4
 
 install-data-local:
 	@$(NORMAL_INSTALL)
