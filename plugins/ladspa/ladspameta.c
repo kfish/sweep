@@ -446,9 +446,12 @@ static sw_op_instance *
 ladspa_meta_apply (sw_sample * sample,
 		   sw_param_set pset, gpointer custom_data)
 {
+  lm_custom * lm = (lm_custom *)custom_data;
+  const LADSPA_Descriptor * d = lm->d;
+
   return
     register_filter_region_op
-    (sample, _("Echo"), (SweepFilterRegion)ladspa_meta_apply_region,
+    (sample, (char *)d->Name, (SweepFilterRegion)ladspa_meta_apply_region,
      pset, custom_data);
 }
 
