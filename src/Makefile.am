@@ -25,12 +25,12 @@ sweep_SOURCES = \
 	plugin.c plugin.h \
 	print.c print.h \
 	sample-display.c sample-display.h \
-	sweep_filter.c sweep_filter.h \
-	sweep_sample.c sweep_sample.h sample.h \
-	sweep_sounddata.c sweep_sounddata.h \
-	sweep_selection.c sweep_selection.h \
-	sweep_typeconvert.c sweep_typeconvert.h \
-	sweep_undo.c sweep_undo.h \
+	sweep_filter.c \
+	sweep_sample.c sample.h \
+	sweep_sounddata.c \
+	sweep_selection.c \
+	sweep_typeconvert.c \
+	sweep_undo.c \
 	time_ruler.c time_ruler.h \
 	view.c view.h \
 	pixmaps.h \
