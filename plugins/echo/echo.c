@@ -28,7 +28,7 @@
 #include "i18n.h"
 
 
-#define NR_PARAMS 5
+#define NR_PARAMS 2
 
 #ifndef __GNUC__
 #error GCCisms used here. Please report this error to \
@@ -38,104 +38,70 @@ and your operating system and compiler.
 
 
 static sw_param_range delay_range = {
-  SW_RANGE_LOWER_BOUND_VALID,
-  lower: {i: 0},
+  SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_STEP_VALID,
+  lower: {f: 0.0},
+  step:  {f: 0.001}
 };
 
 static sw_param_range gain_range = {
-  SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_UPPER_BOUND_VALID,
+  SW_RANGE_ALL_VALID,
   lower: {f: 0.0},
   upper: {f: 1.0},
+  step: {f: 0.01}
 };
 
-static sw_param stix_list[] = {
-  {i: 4},
-  {s: "With a fork"},
-  {s: "With a spoon"},
-  {s: "With false teeth"},
-  {s: "With Nigel's bum"}
-};
-
-static sw_param pants_list[] = {
-  {i: 7},
-  {i: 0},
-  {i: 1},
-  {i: 2},
-  {i: 7},
-  {i: 42},
-  {i: 44100},
-  {i: 1000000}
-};
 
 static sw_param_spec param_specs[] = {
   {
     "Delay",
-    "Number of frames to delay by",
-    SWEEP_TYPE_INT,
+    "Time to delay by",
+    SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
-    {range: &delay_range}
+    {range: &delay_range},
+    SW_PARAM_HINT_TIME
   },
   {
     "Gain",
     "Gain with which to mix in delayed signal",
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
-    {range: &gain_range}
+    {range: &gain_range},
+    SW_PARAM_HINT_DEFAULT
   },
-  {
-    "Flim",
-    "Should you manage your flim?",
-    SWEEP_TYPE_BOOL,
-    SW_PARAM_CONSTRAINED_NOT,
-    {NULL}
-  },
-  {
-    "Stix",
-    "Method of eating beans",
-    SWEEP_TYPE_STRING,
-    SW_PARAM_CONSTRAINED_LIST,
-    {list: &stix_list}
-  },
-  {
-    "Pants methodology",
-    "How many pants should you wear per day?",
-    SWEEP_TYPE_INT,
-    SW_PARAM_CONSTRAINED_LIST,
-    {list: &pants_list}
-  }
 };
 
 static void
 echo_suggest (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
-  pset[0].i = 2000;
-  pset[1].f = 0.4;
-  pset[2].b = TRUE;
-  pset[3].s = "With a fork";
+  pset[0].f = 0.0;
+  pset[1].f = 0.0;
 }
 
 static void
-region_echo (gpointer data, sw_format * format, gint nr_frames,
+region_echo (gpointer data, sw_format * format, sw_framecount_t nr_frames,
 	     sw_param_set pset, gpointer custom_data)
 {
-  glong i, sw;
-  sw_audio_t * d, * e;
-  gpointer ep;
-  gint dlen;
-  gint delay = pset[0].i;
+  gfloat delay = pset[0].f;
   gfloat gain = pset[1].f;
 
-  sw = frames_to_bytes (format, 1);
+  sw_framecount_t i, delay_f, dlen_s;
+  /*  glong sw;*/
+  sw_audio_t * d, * e;
+  gpointer ep;
+
+  /*  sw = frames_to_bytes (format, 1);*/
+
+  delay_f = time_to_frames (format, delay);
 
   d = (sw_audio_t *)data;
-  ep = data + frames_to_bytes (format, delay);
+  ep = data + frames_to_bytes (format, delay_f);
   e = (sw_audio_t *)ep;
 
   if (delay > nr_frames) return;
 
-  dlen = frames_to_samples (format, nr_frames - delay);
+  dlen_s = frames_to_samples (format, nr_frames - delay_f);
 
-  for (i = 0; i < dlen; i++) {
+  for (i = 0; i < dlen_s; i++) {
     e[i] += (sw_audio_t)((gfloat)(d[i]) * gain);
   }
 }
