@@ -25,6 +25,8 @@
 
 #include "sample.h"
 #include "sweep_typeconvert.h"
+#include "sweep_sounddata.h"
+#include "sweep_selection.h"
 #include "format.h"
 #include "view.h"
 #include "sweep_undo.h"
@@ -35,45 +37,6 @@ extern sw_view * last_tmp_view;
 
 static GList * sample_bank = NULL;
 
-
-/* Soundfile functions */
-
-sw_sounddata *
-sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
-{
-  sw_sounddata *s;
-  sw_framecount_t len;
-
-  s = g_malloc (sizeof(sw_sounddata));
-  if (!s)
-    return NULL;
-
-  s->format = format_new (nr_channels, sample_rate);
-
-  s->nr_frames = (sw_framecount_t) sample_length;
-
-  len = frames_to_bytes (s->format, sample_length);
-  s->data = g_malloc0 (len);
-  if (!(s->data)) {
-    fprintf(stderr, "Unable to allocate %d bytes for sample data.\n", len);
-    g_free(s);
-    return NULL;
-  }
-
-  s->sels = NULL;
-
-  s->sels_mutex = g_mutex_new();
-
-  return s;
-}
-
-void
-sounddata_destroy (sw_sounddata * sounddata)
-{
-  g_free (sounddata->data);
-  sounddata_clear_selection (sounddata);
-  g_free (sounddata);
-}
 
 /* Sample functions */
 
@@ -276,7 +239,7 @@ sample_set_playmarker (sw_sample * s, int offset)
  *
  * Destroys os.
  *
- * This function is ot needed in general filters because sw_sample
+ * This function is not needed in general filters because sw_sample
  * pointers are persistent across sounddata modifications.
  * However, this function is still required where the entire sample
  * changes but the view must stay the same, eg. for File->Revert.
@@ -304,159 +267,10 @@ sample_replace_throughout (sw_sample * os, sw_sample * s)
 }
 
 
-
-/* 
- * Selection handling
- */
-
-static sw_sel *
-sel_new (sw_framecount_t start, sw_framecount_t end)
-{
-  sw_framecount_t s, e;
-  sw_sel * sel;
-
-  if (end>start) { s = start; e = end; }
-  else { s = end; e = start; }
-
-  sel = g_malloc (sizeof(sw_sel));
-  sel->sel_start = s;
-  sel->sel_end = e;
-
-  return sel;
-}
-
-static sw_sel *
-sel_copy (sw_sel * sel)
-{
-  sw_sel * nsel;
-
-  nsel = sel_new (sel->sel_start, sel->sel_end);
-
-  return nsel;
-}
-
-/*
- * sel_cmp (s1, s2)
- *
- * Compares two sw_sel's for g_list_insert_sorted() --
- * return > 0 if s1 comes after s2 in the sort order.
- */
-static gint
-sel_cmp (sw_sel * s1, sw_sel * s2)
-{
-  if (s1->sel_start > s2->sel_start) return 1;
-  else return 0;
-}
-
-#ifdef DEBUG
-static void
-dump_sels (GList * sels, char * desc)
-{
-  GList * gl;
-  sw_sel * sel;
-
-  printf ("<dump %s>\n", desc);
-  for (gl = sels; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-    printf ("\t[%ld - %ld]\n", sel->sel_start, sel->sel_end);
-  }
-  printf ("</dump>\n");
-
-}
-#endif
-
-/*
- * sels_copy (sels)
- *
- * returns a copy of sels
- */
-static GList *
-sels_copy (GList * sels)
-{
-  GList * gl, * nsels = NULL;
-  sw_sel * sel, * nsel;
-
-  for (gl = sels; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-    nsel = sel_copy (sel);
-    nsels = g_list_insert_sorted(nsels, sel, (GCompareFunc)sel_cmp);
-  }
-
-  return nsels;
-}
-
-/*
- * sel_replace: undo/redo functions for changing selection
- */
-
-sel_replace_data *
-sel_replace_data_new (GList * sels)
-{
-  sel_replace_data * s;
-
-  s = g_malloc (sizeof(sel_replace_data));
-
-  s->sels = sels;
-
-  return s;
-}
-
-void
-sel_replace_data_destroy (sel_replace_data * s)
-{
-  g_list_free (s->sels);
-}
-
-void
-do_by_sel_replace (sw_sample * s, sel_replace_data * sr)
-{
-  sample_set_selection (s, sr->sels);
-
-  sample_refresh_views (s);
-}
-
-static sw_operation sel_op = {
-  (SweepCallback)do_by_sel_replace,
-  (SweepFunction)sel_replace_data_destroy,
-  (SweepCallback)do_by_sel_replace,
-  (SweepFunction)sel_replace_data_destroy
-};
-
-sw_op_instance *
-sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
-			sw_param_set pset, gpointer custom_data)
-{
-  sw_op_instance * inst;
-  GList * sels;
-
-  inst = sw_op_instance_new (desc, &sel_op);
-
-  sels = sels_copy (s->sounddata->sels);
-  inst->undo_data = sel_replace_data_new (sels);
-
-  func (s, pset, custom_data);
-
-  sels = sels_copy (s->sounddata->sels);
-  inst->redo_data = sel_replace_data_new (sels);
-
-  register_operation (s, inst);
-
-  return inst;
-}
-
-
 guint
 sample_sel_nr_regions (sw_sample * s)
 {
   return g_list_length (s->sounddata->sels);
-}
-
-void
-sounddata_clear_selection (sw_sounddata * sounddata)
-{
-  g_list_free(sounddata->sels);
-
-  sounddata->sels = NULL;
 }
 
 void
@@ -467,99 +281,10 @@ sample_clear_selection (sw_sample * s)
   sample_stop_marching_ants (s);
 }
 
-static gint
-sounddata_sel_needs_normalising (sw_sounddata *sounddata)
-{
-  GList * gl;
-  sw_sel * osel = NULL, * sel;
-
-  if(!sounddata->sels) return FALSE;
-  
-  /* Seed osel with 'fake' iteration of following loop */
-  gl = sounddata->sels;
-  osel = (sw_sel *)gl->data;
-  gl = gl->next;
-  for(; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    if(osel->sel_end > sel->sel_start) {
-      return TRUE;
-    }
-
-    if(osel->sel_end < sel->sel_end) {
-      osel = sel;
-    }
-  }
-
-  return FALSE;
-}
-
-/*
- * sounddata_normalise_selection(sounddata)
- *
- * normalise the selection of sounddata, ie. make sure there's
- * no overlaps and merge adjoining sections.
- */
-
-static void
-sounddata_normalise_selection (sw_sounddata * sounddata)
-{
-  GList * gl;
-  GList * nsels = NULL;
-  sw_sel * osel = NULL, * sel; 
-
-  if (!sounddata_sel_needs_normalising(sounddata)) return;
-
-  /* Seed osel with 'fake' iteration of following loop */
-  gl = sounddata->sels;
-  osel = sel_copy((sw_sel *)gl->data);
-  gl = gl->next;
-
-  for (; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    /* Check for an overlap */
-    if(osel->sel_end > sel->sel_start) {
-
-      /* If sel is completely contained in osel, ignore it. */
-      if(osel->sel_end > sel->sel_end) {
-	continue;
-      }
-
-      /* Set: osel = osel INTERSECT sel
-       * we already know osel->sel_start <= sel->sel_start */
-      osel->sel_end = sel->sel_end;
-
-    } else {
-      /* No more overlaps with osel; insert it in nsels, and
-       * reset osel. */
-      nsels = g_list_insert_sorted(nsels, osel, (GCompareFunc)sel_cmp);
-      osel = sel_copy(sel);
-    }
-  }
-
-  /* Insert the last created osel */
-  nsels = g_list_insert_sorted(nsels, osel, (GCompareFunc)sel_cmp);
-
-  /* Clear the old selection */
-  g_list_free (sounddata->sels);
-
-  /* Set the newly created (normalised) selection */
-  sounddata->sels = nsels;
-
-}
-
 static void
 sample_normalise_selection (sw_sample * s)
 {
   sounddata_normalise_selection (s->sounddata);
-}
-
-void
-sounddata_add_selection (sw_sounddata * sounddata, sw_sel * sel)
-{
-  sounddata->sels =
-    g_list_insert_sorted(sounddata->sels, sel, (GCompareFunc)sel_cmp);
 }
 
 void
@@ -569,18 +294,6 @@ sample_add_selection (sw_sample * s, sw_sel * sel)
     sample_start_marching_ants (s);
 
   sounddata_add_selection (s->sounddata, sel);
-}
-
-sw_sel *
-sounddata_add_selection_1 (sw_sounddata * sounddata, sw_framecount_t start, sw_framecount_t end)
-{
-  sw_sel * sel;
-
-  sel = sel_new (start, end);
-
-  sounddata_add_selection(sounddata, sel);
-
-  return sel;
 }
 
 sw_sel *
@@ -598,21 +311,14 @@ sample_set_selection (sw_sample * s, GList * gl)
 }
 
 sw_sel *
-sounddata_set_selection_1 (sw_sounddata * sounddata, sw_framecount_t start, sw_framecount_t end)
-{
-  sounddata_clear_selection (sounddata);
-
-  return sounddata_add_selection_1 (sounddata, start, end);
-}
-
-sw_sel *
 sample_set_selection_1 (sw_sample * s, sw_framecount_t start, sw_framecount_t end)
 {
   return sounddata_set_selection_1 (s->sounddata, start, end);
 }
 
 void
-sel_modify (sw_sample * s, sw_sel * sel, sw_framecount_t new_start, sw_framecount_t new_end)
+sample_selection_modify (sw_sample * s, sw_sel * sel,
+			 sw_framecount_t new_start, sw_framecount_t new_end)
 {
   sel->sel_start = new_start;
   sel->sel_end = new_end;
@@ -697,61 +403,6 @@ sample_selection_select_none (sw_sample * s)
 {
   sample_register_sel_op (s, "Select none", ss_select_none, NULL, NULL);
 }
-
-
-gint
-sounddata_selection_length (sw_sounddata * sounddata)
-{
-  gint length = 0;
-  GList * gl;
-  sw_sel * sel;
-
-  for (gl = sounddata->sels; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    length += sel->sel_end - sel->sel_start;
-  }
-
-  return length;
-}
-
-void
-sounddata_selection_translate (sw_sounddata * sounddata, gint delta)
-{
-  GList * gl;
-  sw_sel * sel;
-
-  for (gl = sounddata->sels; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    sel->sel_start += delta;
-    sel->sel_end += delta;
-  }
-}
-
-
-/*
- * sounddata_copyin_selection (sounddata1, sounddata2)
- *
- * copies the selection of sounddata1 into sounddata2. If sounddata2 previously
- * had a selection, the two are merged.
- */
-void
-sounddata_copyin_selection (sw_sounddata * sounddata1, sw_sounddata * sounddata2)
-{
-  GList * gl;
-  sw_sel * sel, *sel2;
-
-  for (gl = sounddata1->sels; gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    sel2 = sel_copy (sel);
-    sounddata_add_selection (sounddata2, sel2);
-  }
-
-  sounddata_normalise_selection (sounddata2);
-}
-
 
 /*
  * Functions to handle the temporary selection

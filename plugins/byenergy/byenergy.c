@@ -26,7 +26,8 @@
 
 #include "sweep_types.h"
 #include "sweep_typeconvert.h"
-#include "sweep_filter.h"
+#include "sweep_selection.h"
+#include "sweep_sounddata.h"
 #include "i18n.h"
 
 #include "sample.h"
@@ -134,7 +135,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
 
   d = (sw_audio_t *)s->sounddata->data;
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  sounddata_lock_selection (s->sounddata);
 
   sounddata_clear_selection (s->sounddata);
 
@@ -223,7 +224,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
     sample_stop_marching_ants(s);
   }
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  sounddata_unlock_selection (s->sounddata);
 }
 
 static sw_op_instance *

@@ -25,6 +25,7 @@
 #include "sweep_undo.h"
 #include "edit.h"
 #include "sample.h"
+#include "sweep_sounddata.h"
 
 /* Nr. of undo operations remembered */
 #define UNDO_LEVELS 7

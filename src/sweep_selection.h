@@ -18,22 +18,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SWEEP_H__
-#define __SWEEP_H__
+#ifndef __SWEEP_SELECTION_H__
+#define __SWEEP_SELECTION_H__
 
-#include <sweep/sweep_version.h>
+sw_sel *
+sel_new (sw_framecount_t start, sw_framecount_t end);
 
-#include <sweep/sweep_types.h>
-#include <sweep/sweep_typeconvert.h>
-#include <sweep/sweep_undo.h>
-#include <sweep/sweep_sounddata.h>
-#include <sweep/sweep_selection.h>
-#include <sweep/sweep_filter.h>
+sw_sel *
+sel_copy (sw_sel * sel);
 
-#endif  /* __SWEEP_H__ */
+/*
+ * sel_cmp (s1, s2)
+ *
+ * Compares two sw_sel's for g_list_insert_sorted() --
+ * return > 0 if s1 comes after s2 in the sort order.
+ */
+gint
+sel_cmp (sw_sel * s1, sw_sel * s2);
 
+/*
+ * sels_copy (sels)
+ *
+ * returns a copy of sels
+ */
+GList *
+sels_copy (GList * sels);
 
+sw_op_instance *
+sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
+			sw_param_set pset, gpointer custom_data);
 
-
-
-
+#endif /* __SWEEP_SELECTION_H__ */

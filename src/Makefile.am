@@ -33,6 +33,8 @@ sweep_SOURCES = \
 	sample.c sample.h \
 	sample-display.c sample-display.h \
 	sweep_filter.c sweep_filter.h \
+	sweep_sounddata.c sweep_sounddata.h \
+	sweep_selection.c sweep_selection.h \
 	sweep_typeconvert.c sweep_typeconvert.h \
 	sweep_undo.c sweep_undo.h \
 	time_ruler.c time_ruler.h \

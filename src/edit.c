@@ -24,6 +24,7 @@
 #include "sweep_types.h"
 #include "sweep_typeconvert.h"
 #include "sweep_undo.h"
+#include "sweep_sounddata.h"
 #include "edit.h"
 #include "format.h"
 #include "sample.h"
@@ -248,7 +249,7 @@ splice_out_sel (sw_sounddata * sounddata)
     return sounddata;
   }
 
-  length = sounddata->nr_frames - sounddata_selection_length (sounddata);
+  length = sounddata->nr_frames - sounddata_selection_nr_frames (sounddata);
 
 #ifdef DEBUG
   printf("Splice out: remaining length %d\n", length);

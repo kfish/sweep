@@ -24,12 +24,6 @@
 #include "sweep_types.h"
 #include "sweep_app.h"
 
-sw_sounddata *
-sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length);
-
-void
-sounddata_destroy (sw_sounddata * sounddata);
-
 sw_sample *
 sample_new_empty(char * directory, char * filename,
 		      gint nr_channels, gint sample_rate, gint sample_length);
@@ -87,41 +81,27 @@ guint
 sample_sel_nr_regions (sw_sample * s);
 
 void
-sounddata_clear_selection (sw_sounddata * sounddata);
-
-void
 sample_clear_selection (sw_sample * s);
-
-void
-sounddata_add_selection (sw_sounddata * sounddata, sw_sel * sel);
 
 void
 sample_add_selection (sw_sample * s, sw_sel * sel);
 
 sw_sel *
-sounddata_add_selection_1 (sw_sounddata * sounddata,
-			   sw_framecount_t start, sw_framecount_t end);
-
-sw_sel *
 sample_add_selection_1 (sw_sample * s,
-			     sw_framecount_t start, sw_framecount_t end);
+			sw_framecount_t start, sw_framecount_t end);
 
 void
 sample_set_selection (sw_sample * s, GList * gl);
 
 sw_sel *
-sounddata_set_selection_1 (sw_sounddata * sounddata,
-			   sw_framecount_t start, sw_framecount_t end);
-
-sw_sel *
 sample_set_selection_1 (sw_sample * s,
-			     sw_framecount_t start, sw_framecount_t end);
+			sw_framecount_t start, sw_framecount_t end);
 
 
 /* Modify a given existing selection */
 void
-sel_modify (sw_sample * s, sw_sel * sel,
-	    sw_framecount_t new_start, sw_framecount_t new_end);
+sample_selection_modify (sw_sample * s, sw_sel * sel,
+			 sw_framecount_t new_start, sw_framecount_t new_end);
 
 void
 sample_selection_invert (sw_sample * s);
@@ -131,46 +111,6 @@ sample_selection_select_all (sw_sample * s);
 
 void
 sample_selection_select_none (sw_sample * s);
-
-gint
-sounddata_selection_length (sw_sounddata * sounddata);
-
-void
-sounddata_selection_translate (sw_sounddata * sounddata, gint delta);
-
-/*
- * sounddata_copyin_selection (sounddata, sounddata2)
- *
- * copies the selection of sounddata1 into sounddata2. If sounddata2 previously
- * had a selection, the two are merged.
- */
-void
-sounddata_copyin_selection (sw_sounddata * sounddata1,
-			    sw_sounddata * sounddata2);
-
-/*
- * sel_replace: undo/redo functions for changing selection
- */
-
-typedef struct _sel_replace_data sel_replace_data;
-
-struct _sel_replace_data {
-  GList * sels;
-};
-
-sel_replace_data *
-sel_replace_data_new (GList * sels);
-
-void
-sel_replace_data_destroy (sel_replace_data * s);
-
-void
-do_by_sel_replace (sw_sample * s, sel_replace_data * sr);
-
-
-sw_op_instance *
-sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
-			sw_param_set pset, gpointer custom_data);
 
 /*
  * Functions to handle the temporary selection.
