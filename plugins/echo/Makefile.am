@@ -5,7 +5,7 @@ INCLUDES = -I$(top_srcdir)/include
 libdir = @PACKAGE_PLUGIN_DIR@
 
 lib_LTLIBRARIES = \
-	libexample.la
+	libecho.la
 
-libexample_la_SOURCES = example.c
-libexample_la_LDFLAGS = -version-info 1:0:0
+libecho_la_SOURCES = echo.c
+libecho_la_LDFLAGS = -version-info 1:0:0
