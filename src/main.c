@@ -66,6 +66,7 @@ main (int argc, char *argv[])
 
   gboolean show_version = FALSE;
   gboolean show_help = FALSE;
+  gboolean show_toolbox = TRUE;
 
 #ifdef HAVE_PUTENV
   gchar *display_env;
@@ -94,6 +95,9 @@ main (int argc, char *argv[])
     } else if ((strcmp (argv[i], "--version") == 0) ||
 	       (strcmp (argv[i], "-v") == 0)) {
       show_version = TRUE;
+      argv[i] = NULL;
+    } else if (strcmp (argv[i], "--no-toolbox") == 0) {
+      show_toolbox = FALSE;
       argv[i] = NULL;
     } else if (argv[i][0] == '-') {
       show_help = TRUE;
@@ -124,8 +128,10 @@ main (int argc, char *argv[])
   /* initialise plugins */
   init_plugins ();
 
-  toolbox = create_toolbox ();
-  gtk_widget_show (toolbox);
+  if (show_toolbox) {
+    toolbox = create_toolbox ();
+    gtk_widget_show (toolbox);
+  }
 
   gtk_main ();
   return 0;
