@@ -94,7 +94,7 @@ else
 fi
 
 dnl Set PACKAGE_PLUGIN_DIR in Makefiles and config.h.
-PACKAGE_PLUGIN_DIR="${ac_default_prefix}/lib/${PACKAGE}"
+PACKAGE_PLUGIN_DIR=$libdir/sweep
 AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "${PACKAGE_PLUGIN_DIR}")
 AC_SUBST(PACKAGE_PLUGIN_DIR)
 
