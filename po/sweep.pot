@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-25 22:13+1100\n"
+"POT-Creation-Date: 2001-01-31 08:01-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,33 +14,37 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: src/main.c:106
+#: src/main.c:110
 msgid "Sweep version"
 msgstr ""
 
-#: src/main.c:107
+#: src/main.c:111
 msgid "Sweep plugin API version"
 msgstr ""
 
-#: src/main.c:113
+#: src/main.c:117
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr ""
 
-#: src/main.c:114
+#: src/main.c:118
 msgid "Valid options are:\n"
 msgstr ""
 
-#: src/main.c:115
+#: src/main.c:119
 msgid "  -h --help                Output this help.\n"
 msgstr ""
 
-#: src/main.c:116
+#: src/main.c:120
 msgid "  -v --version             Output version info.\n"
 msgstr ""
 
-#: src/main.c:117
+#: src/main.c:121
 msgid "  --display <display>      Use the designated X display.\n"
+msgstr ""
+
+#: src/main.c:122
+msgid "  --no-toolbox             Do not show the toolbox window.\n"
 msgstr ""
 
 #: src/about_dialog.c:70

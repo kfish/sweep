@@ -119,6 +119,7 @@ main (int argc, char *argv[])
     g_print (_("  -h --help                Output this help.\n"));
     g_print (_("  -v --version             Output version info.\n"));
     g_print (_("  --display <display>      Use the designated X display.\n"));
+    g_print (_("  --no-toolbox             Do not show the toolbox window.\n"));
   }
 
   if (show_version || show_help) {
