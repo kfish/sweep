@@ -114,14 +114,6 @@ sample_load(char * pathname)
 
   if(!s) return NULL;
 
-  s->sounddata->data =
-    g_malloc(frames_to_bytes(s->sounddata->format, framecount));
-
-  if (s->sounddata->data == NULL) {
-    fprintf(stderr,  "s->sounddata->data NULL");
-    return NULL;
-  }
-
   copydata = s->sounddata->data;
 
   load_buffer = g_malloc (LOAD_BUFFER_LEN * (samplewidth / 8) * channelcount);
