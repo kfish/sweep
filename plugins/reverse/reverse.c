@@ -65,7 +65,7 @@ static sw_procedure proc_reverse = {
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/reverse",
-  "Filters/Reverse", /* category */
+  "Filters/Reverse", /* identifier */
   GDK_f, /* accel_key */
   GDK_SHIFT_MASK, /* accel_mods */
   0, /* nr_params */

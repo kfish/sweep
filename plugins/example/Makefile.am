@@ -4,8 +4,12 @@ INCLUDES = -I$(top_srcdir)/include
 
 libdir = @PACKAGE_PLUGIN_DIR@
 
-lib_LTLIBRARIES = \
-	libexample.la
+# Use lib_LTLIBRARIES to create a plugin that you actually want installed;
+# Here, for the example plugin, we specify the noinst prefix instead of
+# lib to stop it from actually being installed.
+#
+#lib_LTLIBRARIES = libexample.la
+noinst_LTLIBRARIES = libexample.la
 
 libexample_la_SOURCES = example.c
 libexample_la_LDFLAGS = -version-info 1:0:0

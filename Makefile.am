@@ -11,7 +11,7 @@ icon_DATA = sweep.png
 icondir = $(datadir)/pixmaps
 
 EXTRA_DIST = $(desktop_DATA) $(icon_DATA) $(pkgdata_DATA) \
-             sweep.spec README.Solaris README.ALSA
+             sweep.spec README.Solaris README.ALSA acconfig.h
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
                        stamp-h.in \
