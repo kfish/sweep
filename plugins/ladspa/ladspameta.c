@@ -43,12 +43,6 @@
 
 #include "ladspa.h"
 
-#ifndef __GNUC__
-#error GCCisms used here. Please report this error to \
-sweep-devel@lists.sourceforge.net stating your versions of sweep \
-and your operating system and compiler.
-#endif
-
 /* Compile in support for inplace processing? */
 #define _PROCESS_INPLACE
 
