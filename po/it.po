@@ -1,16 +1,15 @@
 # Sweep Italian Translation.
-# Copyright @ 2003 Free Software Foundation, Inc.
-# Yuri Bongiorno <yuri.bongiorno AT libero.it>, 2000-2003.
+# Copyright @ 2004 Free Software Foundation, Inc.
+# Current translator: Yuri Bongiorno http://yuri.webhop.org, 2004.
 # Traduttori Italiani GNU:   http://www.linux.it/tp
 #
 #: src/sample-display.c:220
 msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-23 12:36+1000\n"
-"PO-Revision-Date: 2003-08-15 12:31+0200\n"
-"Last-Translator: Yuri Bongiorno <yuri.bongiorno AT libero.it>\n"
+"POT-Creation-Date: 2004-04-25 18:27+1000\n"
+"PO-Revision-Date: 2004-04-26 12:31+0200\n"
+"Last-Translator: Yuri Bongiorno http://yuri.webhop.org\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +64,8 @@ msgstr "  -h --help                mostra questo aiuto.\n"
 
 #: src/main.c:193
 msgid "  -v --version             Output version info.\n"
-msgstr "  -v --version             mostra le informazioni sulla versione.\n"
+msgstr ""
+"  -v --version             mostra le informazioni sulla versione.\n"
 
 #: src/main.c:194
 msgid "  --display <display>      Use the designated X display.\n"
@@ -325,11 +325,11 @@ msgstr "Incolla mescolando"
 msgid "Paste xfade"
 msgstr "Incolla con dissolvenza incrociata"
 
-#: src/file_dialogs.c:77
+#: src/file_dialogs.c:71
 msgid "MP3 export unsupported"
 msgstr "esportazione in MP3 non supportata"
 
-#: src/file_dialogs.c:78
+#: src/file_dialogs.c:72
 msgid ""
 "Export to MP3 format cannot legally be supported in free software\n"
 "due to patent licensing restrictions.\n"
@@ -343,20 +343,20 @@ msgstr ""
 "Il formato Ogg Vorbis fornisce una qualità migliore ed è libero.\n"
 " "
 
-#: src/file_dialogs.c:103
+#: src/file_dialogs.c:97
 msgid "Raw PCM (headerless)"
 msgstr "Raw PCM (senza intestazione)"
 
-#: src/file_dialogs.c:161
+#: src/file_dialogs.c:155
 #, c-format
 msgid "%s does not exist."
 msgstr "%s non esiste."
 
-#: src/file_dialogs.c:162
+#: src/file_dialogs.c:156
 msgid "Directory does not exist"
 msgstr "La directory non esiste"
 
-#: src/file_dialogs.c:271
+#: src/file_dialogs.c:255
 #, c-format
 msgid ""
 "Unable to read\n"
@@ -365,11 +365,11 @@ msgstr ""
 "Impossibile leggere\n"
 "%s"
 
-#: src/file_dialogs.c:319
+#: src/file_dialogs.c:303
 msgid "Sweep: Load file"
 msgstr "Sweep: carica file"
 
-#: src/file_dialogs.c:385
+#: src/file_dialogs.c:369
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -382,24 +382,24 @@ msgstr ""
 "\n"
 "Si perdono tutti i cambiamenti e le informazioni di annullamento."
 
-#: src/file_dialogs.c:389
+#: src/file_dialogs.c:373
 msgid "Revert file"
 msgstr "ripristina il file"
 
-#: src/file_dialogs.c:390 src/view.c:457
+#: src/file_dialogs.c:374 src/view.c:457
 msgid "Revert"
 msgstr "Ripristina"
 
-#: src/file_dialogs.c:390
+#: src/file_dialogs.c:374
 msgid "Don't revert"
 msgstr "Non ripristinare"
 
-#: src/file_dialogs.c:560
+#: src/file_dialogs.c:544
 #, c-format
 msgid "Save as %s cancelled"
 msgstr "Salvataggio come %s annullato"
 
-#: src/file_dialogs.c:610
+#: src/file_dialogs.c:594
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
@@ -408,45 +408,45 @@ msgstr ""
 "Non ci sono i permessi per scrivere\n"
 "%s"
 
-#: src/file_dialogs.c:613
+#: src/file_dialogs.c:597
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr "%s esiste. Sovrascrivere?"
 
-#: src/file_dialogs.c:614
+#: src/file_dialogs.c:598
 msgid "File exists"
 msgstr "il file esiste"
 
-#: src/file_dialogs.c:615
+#: src/file_dialogs.c:599
 msgid "Overwrite"
 msgstr "Sovrascrivi"
 
-#: src/file_dialogs.c:615
+#: src/file_dialogs.c:599
 msgid "Don't overwrite"
 msgstr "Non sovrascrivere"
 
-#: src/file_dialogs.c:660
+#: src/file_dialogs.c:644
 msgid "By extension"
 msgstr "Per estensione"
 
 #. MP3 (encoding not supported due to patent restrictions)
-#: src/file_dialogs.c:718
+#: src/file_dialogs.c:702
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr "MP3 (usa invece Ogg Vorbis)"
 
-#: src/file_dialogs.c:777
+#: src/file_dialogs.c:761
 msgid "Sweep: Save file"
 msgstr "Sweep: salva file"
 
-#: src/file_dialogs.c:805
+#: src/file_dialogs.c:789
 msgid "Save Options"
 msgstr "Salva le opzioni"
 
-#: src/file_dialogs.c:814
+#: src/file_dialogs.c:798
 msgid "Determine File Type:"
 msgstr "Determina il tipo di file:"
 
-#: src/file_dialogs.c:891
+#: src/file_dialogs.c:875
 #, c-format
 msgid ""
 "%s\n"
@@ -459,18 +459,18 @@ msgstr ""
 "\n"
 "Salvare veramente?"
 
-#: src/file_dialogs.c:895 src/sweep_undo.c:331 src/view.c:3507
+#: src/file_dialogs.c:879 src/sweep_undo.c:331 src/view.c:3507
 msgid "File modified"
 msgstr "File modificato"
 
 #. OK
-#: src/file_dialogs.c:896 src/file_speex.c:2142 src/file_vorbis.c:1631
+#: src/file_dialogs.c:880 src/file_speex.c:2142 src/file_vorbis.c:1631
 #: src/view.c:438 src/view.c:1924
 msgid "Save"
 msgstr "Salva"
 
 #. Cancel
-#: src/file_dialogs.c:896 src/file_speex.c:2153 src/file_vorbis.c:1642
+#: src/file_dialogs.c:880 src/file_speex.c:2153 src/file_vorbis.c:1642
 msgid "Don't save"
 msgstr "Non salvare"
 
@@ -1827,7 +1827,8 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Alcuni file non sono stati salvati. Uscendo, si perdono tutte le modifiche.\n"
+"Alcuni file non sono stati salvati. Uscendo, si perdono "
+"tutte le modifiche.\n"
 "\n"
 "Uscire veramente?"
 
