@@ -18,33 +18,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifndef __PRINT_H__
+#define __PRINT_H__
+
 #include "sweep_types.h"
 
-sw_format *
-format_new (gint nr_channels, gint frame_rate)
-{
-  sw_format * format;
+/*
+ * Print a number of bytes to 3 significant figures
+ * using standard abbreviations (GB, MB, kB, byte[s])
+ */
+void
+snprint_bytes (gchar * s, gint n, glong nr_bytes);
 
-  format = g_malloc (sizeof(sw_format));
-  format->channels = nr_channels;
-  format->rate = frame_rate;
+/*
+ * Print a time in the format HH:MM:SS.sss
+ */
+void
+snprint_time (gchar * s, gint n, sw_time_t time);
 
-  return format;
-}
+/*
+ * Print a time in SMPTE format
+ */
+void
+snprint_time_smpte (gchar * s, gint n, sw_time_t time, gint F);
 
-sw_format *
-format_copy (sw_format * f)
-{
-  sw_format * format;
-
-  format = format_new (f->channels, f->rate);
-
-  return format;
-}
-
-gint
-format_equal (sw_format * f1, sw_format * f2)
-{
-  return (f1->channels == f2->channels &&
-	  f1->rate == f2->rate);
-}
+#endif /* __PRINT_H__ */

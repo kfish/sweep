@@ -29,6 +29,7 @@ sweep_SOURCES = \
 	notes.c notes.h \
 	param.c param.h \
 	plugin.c plugin.h \
+	print.c print.h \
 	sample.c sample.h \
 	sample-display.c sample-display.h \
 	sweep_filter.c sweep_filter.h \

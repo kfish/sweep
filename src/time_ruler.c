@@ -38,7 +38,7 @@
 #include "time_ruler.h"
 
 #include "sweep_typeconvert.h"
-#include "format.h"
+#include "print.h"
 
 #define RULER_HEIGHT          14
 #define MINIMUM_INCR          5
@@ -221,7 +221,8 @@ time_ruler_draw_ticks (GtkRuler *ruler)
    *  for the scale looks consistent with an accompanying vruler
    */
   scale = ceil (ruler->max_size / ruler->metric->pixels_per_unit);
-  snprint_time (unit_str, UNIT_STR_LEN, (sw_framecount_t)scale);
+  snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)scale);
+  /*  snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)scale, 10.0);*/
   /*  text_width = strlen (unit_str) * digit_height + 1;*/
   text_width = gdk_string_width (font, unit_str);
 
@@ -272,6 +273,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	  if (i == 0)
 	    {
 	      snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)cur);
+	      /* snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);*/
 	      gdk_draw_string (ruler->backing_store, font, gc,
 			       pos + 2, ythickness + font->ascent - 1,
 			       unit_str);

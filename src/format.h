@@ -23,19 +23,6 @@
 
 #include "sweep_types.h"
 
-/*
- * Print a number of bytes to 3 significant figures
- * using standard abbreviations (GB, MB, kB, byte[s])
- */
-void
-snprint_bytes (gchar * s, gint n, glong nr_bytes);
-
-/*
- * Print a time in the format HH:MM:SS.sss
- */
-void
-snprint_time (gchar * s, gint n, sw_time_t time);
-
 gint
 format_equal (sw_format * f1, sw_format * f2);
 
