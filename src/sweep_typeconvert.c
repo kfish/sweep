@@ -24,21 +24,12 @@
 
 #include "sweep_types.h"
 
-#if 0
-#include "sample.h"
-#include "view.h"
-#include "undo.h"
-#include "sample-display.h"
-#include "driver.h"
-#endif
-
-
 /*
  * Determine the number of samples occupied by a number of frames
  * in a given format.
  */
 glong
-frames_to_samples (sw_format * format, glong nr_frames)
+frames_to_samples (sw_format * format, sw_framecount_t nr_frames)
 {
   return (nr_frames * (glong)format->channels);
 }
@@ -47,7 +38,7 @@ frames_to_samples (sw_format * format, glong nr_frames)
  * Determine the size in bytes of a number of frames of a given format.
  */
 glong
-frames_to_bytes (sw_format * format, glong nr_frames)
+frames_to_bytes (sw_format * format, sw_framecount_t nr_frames)
 {
   return (nr_frames * (glong)format->channels * sizeof(sw_audio_t));
 }
@@ -55,8 +46,8 @@ frames_to_bytes (sw_format * format, glong nr_frames)
 /*
  * Convert a number of frames to seconds
  */
-gfloat
-frames_to_time (sw_format * format, glong nr_frames)
+sw_time_t
+frames_to_time (sw_format * format, sw_framecount_t nr_frames)
 {
   return ((gfloat)nr_frames / (gfloat)format->rate);
 }

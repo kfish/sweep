@@ -27,13 +27,14 @@
 #include "sweep_app.h"
 
 sw_view *
-view_new(sw_sample * sample, glong start, glong end, gfloat vol);
+view_new(sw_sample * sample, sw_framecount_t start,
+	 sw_framecount_t end,gfloat vol);
 
 sw_view *
 view_new_all(sw_sample * sample, gfloat vol);
 
 void
-view_set_ends (sw_view * view, glong start, glong end);
+view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end);
 
 void
 view_set_playmarker (sw_view * view, int offset);

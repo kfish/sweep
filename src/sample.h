@@ -24,16 +24,16 @@
 #include "sweep_types.h"
 #include "sweep_app.h"
 
-sw_sdata *
-sdata_new_empty(char * directory, char * filename,
-		gint nr_channels, gint sample_rate, gint sample_length);
+sw_soundfile *
+soundfile_new_empty(char * directory, char * filename,
+		    gint nr_channels, gint sample_rate, gint sample_length);
 
 void
-sdata_destroy (sw_sdata * sdata);
+soundfile_destroy (sw_soundfile * soundfile);
 
 sw_sample *
 sample_new_empty(char * directory, char * filename,
-		 gint nr_channels, gint sample_rate, gint sample_length);
+		      gint nr_channels, gint sample_rate, gint sample_length);
 
 sw_sample *
 sample_new_copy(sw_sample * s);
@@ -48,7 +48,8 @@ void
 sample_destroy (sw_sample * s);
 
 void
-sample_set_pathname (sw_sample * s, char * directory, char * filename);
+sample_set_pathname (sw_sample * s, char * directory,
+			  char * filename);
 
 void
 sample_bank_add (sw_sample * s);
@@ -82,36 +83,41 @@ guint
 sample_sel_nr_regions (sw_sample * s);
 
 void
-sdata_clear_selection (sw_sdata * sdata);
+soundfile_clear_selection (sw_soundfile * soundfile);
 
 void
 sample_clear_selection (sw_sample * s);
 
 void
-sdata_add_selection (sw_sdata * sdata, sw_sel * sel);
+soundfile_add_selection (sw_soundfile * soundfile, sw_sel * sel);
 
 void
 sample_add_selection (sw_sample * s, sw_sel * sel);
 
 sw_sel *
-sdata_add_selection_1 (sw_sdata * sdata, glong start, glong end);
+soundfile_add_selection_1 (sw_soundfile * soundfile,
+			   sw_framecount_t start, sw_framecount_t end);
 
 sw_sel *
-sample_add_selection_1 (sw_sample * s, glong start, glong end);
+sample_add_selection_1 (sw_sample * s,
+			     sw_framecount_t start, sw_framecount_t end);
 
 void
 sample_set_selection (sw_sample * s, GList * gl);
 
 sw_sel *
-sdata_set_selection_1 (sw_sdata * sdata, glong start, glong end);
+soundfile_set_selection_1 (sw_soundfile * soundfile,
+			   sw_framecount_t start, sw_framecount_t end);
 
 sw_sel *
-sample_set_selection_1 (sw_sample * s, glong start, glong end);
+sample_set_selection_1 (sw_sample * s,
+			     sw_framecount_t start, sw_framecount_t end);
 
 
 /* Modify a given existing selection */
 void
-sel_modify (sw_sample * s, sw_sel * sel, glong new_start, glong new_end);
+sel_modify (sw_sample * s, sw_sel * sel,
+	    sw_framecount_t new_start, sw_framecount_t new_end);
 
 void
 sample_selection_invert (sw_sample * s);
@@ -123,19 +129,20 @@ void
 sample_selection_select_none (sw_sample * s);
 
 gint
-sdata_selection_length (sw_sdata * sdata);
+soundfile_selection_length (sw_soundfile * soundfile);
 
 void
-sdata_selection_translate (sw_sdata * sdata, gint delta);
+soundfile_selection_translate (sw_soundfile * soundfile, gint delta);
 
 /*
- * sdata_copyin_selection (sdata, sdata2)
+ * soundfile_copyin_selection (soundfile, soundfile2)
  *
- * copies the selection of sdata1 into sdata2. If sdata2 previously
+ * copies the selection of soundfile1 into soundfile2. If soundfile2 previously
  * had a selection, the two are merged.
  */
 void
-sdata_copyin_selection (sw_sdata * sdata1, sw_sdata * sdata2);
+soundfile_copyin_selection (sw_soundfile * soundfile1,
+			    sw_soundfile * soundfile2);
 
 /*
  * sel_replace: undo/redo functions for changing selection
@@ -174,7 +181,8 @@ void
 sample_set_tmp_sel (sw_sample * s, sw_view * tview, sw_sel * tsel);
 
 void
-sample_set_tmp_sel_1 (sw_sample * s, sw_view * tview, glong start, glong end);
+sample_set_tmp_sel_1 (sw_sample * s, sw_view * tview,
+			   sw_framecount_t start, sw_framecount_t end);
 
 void
 sample_selection_insert_tmp_sel (sw_sample * s);

@@ -153,10 +153,10 @@ zoom_in_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_view * v = sd->view;
-  glong nstart, nlength, olength;
+  sw_framecount_t nstart, nlength, olength;
 
   olength = v->end - v->start;
-  nlength = (glong)((double)olength / DEFAULT_ZOOM);
+  nlength = (sw_framecount_t)((double)olength / DEFAULT_ZOOM);
 
   if (nlength < olength) {
     nstart = v->start + (olength - nlength) / 2UL;
@@ -174,12 +174,12 @@ zoom_out_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_view * v = sd->view;
-  glong nstart, nlength, olength;
+  sw_framecount_t nstart, nlength, olength;
 
   olength = v->end - v->start;
-  nlength = (glong)((double)olength * DEFAULT_ZOOM);
+  nlength = (sw_framecount_t)((double)olength * DEFAULT_ZOOM);
 
-  if (nlength < 0) return; /* glong multiplication overflow */
+  if (nlength < 0) return; /* sw_framecount_t multiplication overflow */
 
   if (nlength > olength) {
     nstart = v->start - (nlength - olength) / 2UL;
@@ -203,9 +203,9 @@ zoom_to_sel_cb (GtkWidget * widget, gpointer data)
 
   if(!sd) return;
 
-  if(!sd->view->sample->sdata->sels) return;
+  if(!sd->view->sample->soundfile->sels) return;
 
-  gl = sd->view->sample->sdata->sels;
+  gl = sd->view->sample->soundfile->sels;
 
   sel = (sw_sel *)gl->data;
   sel_min = sel->sel_start;
@@ -255,7 +255,7 @@ zoom_1_1_cb (GtkWidget * widget, gpointer data)
 
   s = sd->view->sample;
 
-  view_set_ends(sd->view, 0, s->sdata->s_length);
+  view_set_ends(sd->view, 0, s->soundfile->nr_frames);
 }
 
 void
@@ -267,8 +267,8 @@ zoom_2_1_cb (GtkWidget * widget, gpointer data)
   s = sd->view->sample;
 
   view_set_ends(sd->view,
-		s->sdata->s_length / 4,
-		3 * s->sdata->s_length / 4);
+		s->soundfile->nr_frames / 4,
+		3 * s->soundfile->nr_frames / 4);
 }
 
 

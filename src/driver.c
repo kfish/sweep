@@ -83,16 +83,16 @@ update_playmarker (gpointer data)
 static void
 start_playmarker (sw_sample * s)
 {
-  s->sdata->playmarker_tag =
+  s->playmarker_tag =
     gtk_idle_add ((GtkFunction)update_playmarker, s);
 }
 
 static void
 stop_playmarker (void)
 {
-  if (playing->sdata->playmarker_tag > 0)
-    gtk_idle_remove (playing->sdata->playmarker_tag);
-  playing->sdata->playmarker_tag = 0;
+  if (playing->playmarker_tag > 0)
+    gtk_idle_remove (playing->playmarker_tag);
+  playing->playmarker_tag = 0;
   sample_set_playmarker (playing, -1);
 }
 
@@ -162,12 +162,12 @@ setup_dev_dsp (sw_sample * s)
     exit(-1);
     }
 
-  stereo = s->sdata->format->channels - 1;
+  stereo = s->soundfile->format->channels - 1;
   if(ioctl(dev_dsp, SNDCTL_DSP_STEREO, &stereo) == -1 ) {
     perror("OSS: Unable to set channels");
   }
 
-  frequency = s->sdata->format->rate;
+  frequency = s->soundfile->format->rate;
   if(ioctl(dev_dsp, SNDCTL_DSP_SPEED, &frequency) == -1 ) {
     perror("OSS: Unable to set playback frequency");
   }
@@ -177,8 +177,8 @@ setup_dev_dsp (sw_sample * s)
   AUDIO_INITINFO(&info);
   info.play.precision = 16;	/* cs4231 doesn't handle 16-bit linear PCM */
   info.play.encoding = AUDIO_ENCODING_LINEAR;
-  info.play.channels = s->sdata->format->f_channels;
-  info.play.sample_rate = s->sdata->format->f_rate;
+  info.play.channels = s->soundfile->format->f_channels;
+  info.play.sample_rate = s->soundfile->format->f_rate;
   if(ioctl(dev_dsp, AUDIO_SETINFO, &info) < 0)
       perror("Unable to configure audio device");
 
@@ -229,7 +229,7 @@ close_dev_dsp (void)
 }
 
 static void
-play_view(sw_view * view, glong start, glong end, gfloat relpitch)
+play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat relpitch)
 {
   sw_sample * s = view->sample;
   fd_set fds;
@@ -241,11 +241,11 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
   gdouble po = 0.0, p, endf;
   gint i=0, si=0;
 
-  d = (sw_audio_t *)s->sdata->data;
+  d = (sw_audio_t *)s->soundfile->data;
 
   sbytes = 2;
  
-  channels = s->sdata->format->channels;
+  channels = s->soundfile->format->channels;
 
   playoffset = start;
   po = (gdouble)(start);
@@ -302,7 +302,7 @@ pva (sw_view * view)
 
   setup_dev_dsp (s);
 
-  play_view (view, 0, s->sdata->s_length, 1.0);
+  play_view (view, 0, s->soundfile->nr_frames, 1.0);
 
   flush_dev_dsp ();
 
@@ -334,7 +334,7 @@ pval (sw_view * view)
   setup_dev_dsp (s);
 
   while (playing)
-    play_view (view, 0, s->sdata->s_length, 1.0);
+    play_view (view, 0, s->soundfile->nr_frames, 1.0);
 
   reset_dev_dsp ();
   close_dev_dsp ();
@@ -360,18 +360,18 @@ pvs (sw_view * view)
   sw_sample * s = view->sample;
   GList * gl, * gl_next;
   sw_sel * sel;
-  glong start, end;
+  sw_framecount_t start, end;
 
   setup_dev_dsp (s);
 
-  for (gl = s->sdata->sels; gl; ) {
+  for (gl = s->soundfile->sels; gl; ) {
 
     /* Hold sels_mutex for as little time as possible */
-    g_mutex_lock (s->sdata->sels_mutex);
+    g_mutex_lock (s->soundfile->sels_mutex);
 
     /* if gl is no longer in sels, break out */
-    if (g_list_position (s->sdata->sels, gl) == -1) {
-      g_mutex_unlock (s->sdata->sels_mutex);
+    if (g_list_position (s->soundfile->sels, gl) == -1) {
+      g_mutex_unlock (s->soundfile->sels_mutex);
       break;
     }
 
@@ -380,7 +380,7 @@ pvs (sw_view * view)
     end = sel->sel_end;
     gl_next = gl->next;
 
-    g_mutex_unlock (s->sdata->sels_mutex);
+    g_mutex_unlock (s->soundfile->sels_mutex);
 
     play_view (view, start, end, 1.0);
 
@@ -415,20 +415,20 @@ pvsl (sw_view * view)
   sw_sample * s = view->sample;
   GList * gl, * gl_next;
   sw_sel * sel;
-  glong start, end;
+  sw_framecount_t start, end;
 
   setup_dev_dsp (s);
 
   while (playing) {
 
-    for (gl = s->sdata->sels; gl; ) {
+    for (gl = s->soundfile->sels; gl; ) {
       
       /* Hold sels_mutex for as little time as possible */
-      g_mutex_lock (s->sdata->sels_mutex);
+      g_mutex_lock (s->soundfile->sels_mutex);
 
       /* if gl is no longer in sels, break out */
-      if (g_list_position (s->sdata->sels, gl) == -1) {
-	g_mutex_unlock (s->sdata->sels_mutex);
+      if (g_list_position (s->soundfile->sels, gl) == -1) {
+	g_mutex_unlock (s->soundfile->sels_mutex);
 	break;
       }
 
@@ -437,7 +437,7 @@ pvsl (sw_view * view)
       end = sel->sel_end;
       gl_next = gl->next;
       
-      g_mutex_unlock (s->sdata->sels_mutex);
+      g_mutex_unlock (s->soundfile->sels_mutex);
       
       play_view (view, start, end, 1.0);
       
@@ -476,7 +476,7 @@ pvap (pvap_data * p)
 
   setup_dev_dsp (s);
 
-  play_view (p->view, 0, s->sdata->s_length, p->pitch);
+  play_view (p->view, 0, s->soundfile->nr_frames, p->pitch);
 
   flush_dev_dsp ();
 

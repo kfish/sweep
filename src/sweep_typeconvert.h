@@ -26,18 +26,18 @@
  * in a given format.
  */
 glong
-frames_to_samples (sw_format * format, glong nr_frames);
+frames_to_samples (sw_format * format, sw_framecount_t nr_frames);
 
 /*
  * Determine the size in bytes of a number of frames of a given format.
  */
 glong
-frames_to_bytes (sw_format * format, glong nr_frames);
+frames_to_bytes (sw_format * format, sw_framecount_t nr_frames);
 
 /*
  * Convert a number of frames to seconds
  */
-gfloat
-frames_to_time (sw_format * format, glong nr_frames);
+sw_time_t
+frames_to_time (sw_format * format, sw_framecount_t nr_frames);
 
 #endif /* __SWEEP_TYPE_CONVERT_H__ */

@@ -51,14 +51,14 @@ snprint_bytes (gchar * s, gint n, glong nr_bytes)
  * Print a time in the format HH:MM:SS.sss
  */
 void
-snprint_time (gchar * s, gint n, gfloat time)
+snprint_time (gchar * s, gint n, sw_time_t time)
 {
   int hrs, min;
   gfloat sec;
 
   hrs = (int) (time/3600.0);
-  min = (int) ((time - ((gfloat)hrs * 3600.0)) / 60.0);
-  sec = time - ((gfloat)min * 60.0);
+  min = (int) ((time - ((sw_time_t)hrs * 3600.0)) / 60.0);
+  sec = time - ((sw_time_t)min * 60.0);
 
   snprintf (s, n, "%d:%02d:%5.3f", hrs, min, sec);
 }

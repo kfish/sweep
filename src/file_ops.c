@@ -118,12 +118,12 @@ sample_load(char * pathname)
   if(!s)
     return NULL;
 
-  s->sdata->data = g_malloc(frames_to_bytes(s->sdata->format, framecount));
-  if (s->sdata->data == NULL) {
-    fprintf(stderr,  "s->sdata->data NULL");
+  s->soundfile->data = g_malloc(frames_to_bytes(s->soundfile->format, framecount));
+  if (s->soundfile->data == NULL) {
+    fprintf(stderr,  "s->soundfile->data NULL");
     return NULL;
   }
-  copydata = s->sdata->data;
+  copydata = s->soundfile->data;
 
   load_buffer = g_malloc (LOAD_BUFFER_LEN * (samplewidth / 8) * channelcount);
 
@@ -144,7 +144,7 @@ sample_load(char * pathname)
 	  (((guint8 *)load_buffer)[i] - 128) / 128.0;
       }
     }
-    copydata += frames_to_bytes (s->sdata->format, buffer_frames);
+    copydata += frames_to_bytes (s->soundfile->format, buffer_frames);
     framecount -= buffer_frames;
   }
 
@@ -178,7 +178,7 @@ sample_load_with_view (char * pathname)
 int
 sample_save (sw_sample * s, char * directory, char * filename)
 {
-  sw_format * f = s->sdata->format;
+  sw_format * f = s->soundfile->format;
   char pathname [SW_DIR_LEN];
 
   /* Length in frames of temporary loading buffer */
@@ -191,7 +191,7 @@ sample_save (sw_sample * s, char * directory, char * filename)
 #ifdef HAVE_LIBAUDIOFILE
   AFfilehandle outputFile;
   AFfilesetup outputSetup;
-  AFframecount framecount;
+  AFframecount framecount=0;
   int file_format;
   int channelcount=1, samplewidth=16;
 
@@ -221,12 +221,12 @@ sample_save (sw_sample * s, char * directory, char * filename)
   afSetVirtualByteOrder(outputFile, AF_DEFAULT_TRACK,
 			AF_BYTEORDER_LITTLEENDIAN);
 
-  copydata = s->sdata->data;
+  copydata = s->soundfile->data;
 
-  channelcount = s->sdata->format->channels;
+  channelcount = s->soundfile->format->channels;
   save_buffer = g_malloc (SAVE_BUFFER_LEN * (samplewidth / 8) * channelcount);
 
-  framecount = s->sdata->s_length;
+  framecount = s->soundfile->nr_frames;
   while (framecount > 0) {
     buffer_frames = MIN(framecount, SAVE_BUFFER_LEN);
 
@@ -237,7 +237,7 @@ sample_save (sw_sample * s, char * directory, char * filename)
     }
     afWriteFrames(outputFile, AF_DEFAULT_TRACK, save_buffer, buffer_frames);
 
-    copydata += frames_to_bytes (s->sdata->format, buffer_frames);
+    copydata += frames_to_bytes (s->soundfile->format, buffer_frames);
     framecount -= buffer_frames;
   }
 

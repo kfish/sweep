@@ -29,11 +29,11 @@ edit_buffer_from_sample (sw_sample * sample);
 void
 edit_buffer_destroy (edit_buffer * eb);
 
-sw_sdata *
-splice_out_sel (sw_sdata * sdata);
+sw_soundfile *
+splice_out_sel (sw_soundfile * soundfile);
 
-sw_sdata *
-splice_in_eb (sw_sdata * sdata, edit_buffer * eb);
+sw_soundfile *
+splice_in_eb (sw_soundfile * soundfile, edit_buffer * eb);
 
 sw_sample *
 paste_over (sw_sample * sample, edit_buffer * eb);

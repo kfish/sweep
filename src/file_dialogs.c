@@ -28,11 +28,6 @@
 #include "sample.h"
 #include "sample-display.h"
 
-#if 0
-extern GtkWidget *master_daddy;
-extern gint master_signals[];
-#endif
-
 static void
 sample_load_ok_cb(GtkWidget * widget, gpointer data)
 {
@@ -89,7 +84,8 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
 
   sample = s->view->sample;
   snprintf (pathname, SW_DIR_LEN,
-	    "%s/%s", sample->sdata->directory, sample->sdata->filename);
+	    "%s/%s", sample->soundfile->directory,
+	    sample->soundfile->filename);
 
   g_print ("Attempting to revert >>%s<<\n", pathname);
 
@@ -149,7 +145,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 
   sample = s->view->sample;
 
-  chdir(sample->sdata->directory);
+  chdir(sample->soundfile->directory);
 
   filesel = gtk_file_selection_new("Save Sample");
   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
@@ -172,9 +168,10 @@ sample_save_cb(GtkWidget * widget, gpointer data)
 
   sample = s->view->sample;
 
-  if (!sample->sdata->filename) {
+  if (!sample->soundfile->filename) {
     sample_save_as_cb (widget, data);
   } else {
-    sample_save (sample, sample->sdata->directory, sample->sdata->filename);
+    sample_save (sample, sample->soundfile->directory,
+		 sample->soundfile->filename);
   }
 }

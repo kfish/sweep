@@ -34,12 +34,13 @@ enum {
   TOOL_CROP
 };
 
+
 typedef struct _sw_view sw_view;
 
 struct _sw_view {
   sw_sample * sample;
 
-  glong start, end; /* bounds of visible frames */
+  sw_framecount_t start, end; /* bounds of visible frames */
   gfloat vol;
 
   GtkWidget * window;

@@ -117,7 +117,8 @@ void
 sample_display_set_playmarker (SampleDisplay *s, int offset);
 
 void
-sample_display_set_window (SampleDisplay *s, glong start, glong end);
+sample_display_set_window (SampleDisplay *s, sw_framecount_t start,
+			   sw_framecount_t end);
 
 void
 sample_display_clear_sel (SampleDisplay * s);

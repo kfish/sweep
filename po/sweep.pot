@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-09-30 21:01+1100\n"
+"POT-Creation-Date: 2000-09-30 23:12+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,28 +14,32 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: src/main.c:105
+#: src/main.c:107
 msgid "Sweep version"
 msgstr ""
 
 #: src/main.c:108
+msgid "Sweep plugin API version"
+msgstr ""
+
+#: src/main.c:112
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr ""
 
-#: src/main.c:109
+#: src/main.c:113
 msgid "Valid options are:\n"
 msgstr ""
 
-#: src/main.c:110
+#: src/main.c:114
 msgid "  -h --help                Output this help.\n"
 msgstr ""
 
-#: src/main.c:111
+#: src/main.c:115
 msgid "  -v --version             Output version info.\n"
 msgstr ""
 
-#: src/main.c:112
+#: src/main.c:116
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr ""
 
@@ -263,14 +267,14 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: src/view.c:968
+#: src/view.c:970
 msgid "Untitled"
 msgstr ""
 
-#: src/view.c:970
+#: src/view.c:972
 msgid "Mono"
 msgstr ""
 
-#: src/view.c:970
+#: src/view.c:972
 msgid "Stereo"
 msgstr ""

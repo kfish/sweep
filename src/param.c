@@ -305,7 +305,8 @@ param_set_apply_cb (GtkWidget * widget, gpointer data)
 #endif
 
   if (ps->proc->apply) {
-    ps->proc->apply (ps->view->sample, ps->pset, ps->proc->custom_data);
+    ps->proc->apply (ps->view->sample,
+		     ps->pset, ps->proc->custom_data);
   }
 
   gtk_widget_destroy (ps->window);
@@ -519,7 +520,8 @@ param_set_suggest_cb (GtkWidget * widget, gpointer data)
   GtkWidget * vbox;
 
   if (ps->proc->suggest) {
-    ps->proc->suggest (ps->view->sample, ps->pset, ps->proc->custom_data);
+    ps->proc->suggest (ps->view->sample,
+		       ps->pset, ps->proc->custom_data);
   }
 
   gtk_widget_destroy (ps->vbox);

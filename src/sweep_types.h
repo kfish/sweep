@@ -24,38 +24,37 @@
 #include <glib.h>
 #include <gdk/gdktypes.h>  /* XXX: for GdkModifierType */
 
-/* Sweep internal audio representation
- *
- * gfloats in the range [-1.0, 1.0]
+/*
+ * Basic types
  */
+
+/* Audio data representation */
+
+/* gfloats in the range [-1.0, 1.0] */
 typedef gfloat sw_audio_t;
 
 /* Intermediate audio representation format:
- * Use this for intermediate values for mixing etc.
- */
+ * Use this for intermediate values for mixing etc. */
 typedef gdouble sw_audio_intermediate_t;
 
 #define SW_AUDIO_T_MAX (1.0)
 #define SW_AUDIO_T_MIN (-1.0)
 
-/* Sweep datatypes */
+/* Time, in seconds */
+typedef gfloat sw_time_t;
+
+/* Frame Counts */
+typedef gint sw_framecount_t;
+
+
+/*
+ * Core datatypes
+ */
 
 typedef struct _sw_sel sw_sel;
 typedef struct _sw_format sw_format;
+typedef struct _sw_soundfile sw_soundfile;
 typedef struct _sw_sample sw_sample;
-typedef struct _sw_sdata sw_sdata;
-
-/*
- * sw_sample
- */
-struct _sw_sample {
-  sw_sdata * sdata;
-  GList * views;
-
-  GList * registered_ops;
-  GList * current_undo;
-  GList * current_redo;
-};
 
 /*
  * sw_sel: a region in a selection.
@@ -70,15 +69,15 @@ struct _sw_sample {
  *
  */
 struct _sw_sel {
-  glong sel_start;
-  glong sel_end;
+  sw_framecount_t sel_start;
+  sw_framecount_t sel_end;
 };
 
 /*
  * sw_format: a sampling format.
  *
  * NB. Assumes 16 bit Signed samples.
- * Stereo is stored LR.
+ * Multichannel data is interleaved: Stereo is stored LR.
  */
 struct _sw_format {
   gint channels;  /* nr channels per frame */
@@ -87,22 +86,33 @@ struct _sw_format {
 
 #define SW_DIR_LEN 256
 
-struct _sw_sdata {
+struct _sw_soundfile {
+  gchar * filename;
+  gchar directory[SW_DIR_LEN];
+
   sw_format * format;
-  glong s_length;    /* nr frames */
+  sw_framecount_t nr_frames;    /* nr frames */
 
   gpointer data;
 
   GList * sels;     /* selection: list of sw_sels */
-  sw_sel * tmp_sel; /* Temporary selection */
   GMutex * sels_mutex; /* Mutex for access to sels */
-
-  gint playmarker_tag; /* gtk_timeout tag for playmarkers */
-
-  gchar * filename;
-  gchar directory[SW_DIR_LEN];
 };
 
+/*
+ * sw_sample
+ */
+struct _sw_sample {
+  sw_soundfile * soundfile;
+  GList * views;
+
+  GList * registered_ops;
+  GList * current_undo;
+  GList * current_redo;
+
+  sw_sel * tmp_sel; /* Temporary selection, used while selecting */
+  gint playmarker_tag; /* gtk_timeout tag for playmarkers */
+};
 
 typedef struct _edit_region edit_region;
 typedef struct _edit_buffer edit_buffer;
@@ -112,8 +122,8 @@ typedef struct _edit_buffer edit_buffer;
  * The length of data available *data is (end - start)
  */
 struct _edit_region {
-  glong start;
-  glong end;
+  sw_framecount_t start;
+  sw_framecount_t end;
 
   gpointer data;
 };
@@ -355,7 +365,7 @@ struct _sw_proc {
   sw_param_spec * param_specs;
 
   /* proc_suggest sets suggested values for the members of pset,
-   * using sample if necessary.
+   * possibly using the sample.
    *
    * It is assumed that proc_suggest() knows nr_params because
    * it is part of the whole proc's code.
@@ -365,7 +375,7 @@ struct _sw_proc {
    * will be used.
    */
   void (*suggest) (sw_sample * sample, sw_param_set pset,
-			gpointer custom_data);
+		   gpointer custom_data);
 
   /* This is the function that actually does the work!
    *
@@ -377,7 +387,7 @@ struct _sw_proc {
    * If nr_params is 0 then this function will be passed a NULL pset.
    */
   sw_op_instance * (*apply) (sw_sample * sample,
-				  sw_param_set pset, gpointer custom_data);
+			     sw_param_set pset, gpointer custom_data);
 
   /* custom data to pass to the suggest and apply functions */
   gpointer custom_data;

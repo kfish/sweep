@@ -600,7 +600,7 @@ view_set_pos_indicator_cb (GtkWidget * widget, gpointer data)
 
   if (sd->mouse_offset >= 0) {
     snprint_time (buf, BUF_LEN,
-		  frames_to_time (view->sample->sdata->format,
+		  frames_to_time (view->sample->soundfile->format,
 				  sd->mouse_offset));
     gtk_label_set_text (GTK_LABEL(view->pos), buf);
   } else {
@@ -634,7 +634,8 @@ menu_button_handler (GtkWidget * widget, GdkEvent * event)
 }
 
 sw_view *
-view_new(sw_sample * sample, glong start, glong end, gfloat vol)
+view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
+	 gfloat vol)
 {
   sw_view * view;
 
@@ -663,19 +664,15 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   view->end = end;
   view->vol = vol;
 
-  win_width = CLAMP (sample->sdata->s_length / 150,
+  win_width = CLAMP (sample->soundfile->nr_frames / 150,
 		     VIEW_MIN_WIDTH, VIEW_MAX_WIDTH);
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW(window),
 			       win_width, VIEW_DEFAULT_HEIGHT);
-  gtk_widget_show(window);
   view->window = window;
 
   gtk_signal_connect (GTK_OBJECT(window), "destroy",
-		      GTK_SIGNAL_FUNC(view_destroy_cb), view);
-
-  gtk_signal_connect (GTK_OBJECT(window), "delete",
 		      GTK_SIGNAL_FUNC(view_destroy_cb), view);
 
   main_vbox = gtk_vbox_new (FALSE, 0);
@@ -769,7 +766,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   /* scrollbar */
   view->adj = gtk_adjustment_new((gfloat)start,            /* value */
 				   (gfloat)0.0,              /* start */
-				   (gfloat)sample->sdata->s_length, /* end */
+				   (gfloat)sample->soundfile->nr_frames, /* end */
 				   1.0,                      /* step_incr */
 				   (gfloat)(end-start),      /* page_incr */
 				   (gfloat)(end-start)       /* page_size */
@@ -873,12 +870,14 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 			     GTK_OBJECT(view->display));
 #endif
 
-  if (sample->sdata->sels)
+  if (sample->soundfile->sels)
     sample_display_start_marching_ants (SAMPLE_DISPLAY(view->display));
 
   view_refresh_title(view);
 
   view_default_status(view);
+
+  gtk_widget_show(window);
 
   return view;
 }
@@ -886,7 +885,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 sw_view *
 view_new_all(sw_sample * sample, gfloat vol)
 {
-  return view_new(sample, 0, sample->sdata->s_length, vol);
+  return view_new(sample, 0, sample->soundfile->nr_frames, vol);
 }
 
 /*
@@ -895,13 +894,13 @@ view_new_all(sw_sample * sample, gfloat vol)
  * set the endpoints shown by this view.
  */
 void
-view_set_ends (sw_view * view, glong start, glong end)
+view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
 {
   GtkAdjustment * adj = GTK_ADJUSTMENT(view->adj);
 
   /*
   if(start < 0) start = 0;
-  if(end > view->sample->sdata->s_length) end = view->sample->sdata->s_length;
+  if(end > view->sample->soundfile->nr_frames) end = view->sample->soundfile->nr_frames;
   */
 
   adj->value = (gfloat)start;
@@ -967,11 +966,11 @@ view_refresh_title (sw_view * view)
 
 
   snprintf(buf, BUF_LEN,
-	   "%s (%dHz %s) %0ld%%",
-	   s->sdata->filename ? s->sdata->filename : _("Untitled"),
-	   s->sdata->format->rate,
-	   s->sdata->format->channels == 1 ? _("Mono") : _("Stereo"),
-	   100 * (view->end - view->start) / s->sdata->s_length);
+	   "%s (%dHz %s) %0d%%",
+	   s->soundfile->filename ? s->soundfile->filename : _("Untitled"),
+	   s->soundfile->format->rate,
+	   s->soundfile->format->channels == 1 ? _("Mono") : _("Stereo"),
+	   100 * (view->end - view->start) / s->soundfile->nr_frames);
 
   gtk_window_set_title (GTK_WINDOW(view->window), buf);
 #undef BUF_LEN
@@ -981,7 +980,7 @@ void
 view_default_status (sw_view * view)
 {
   sw_sample * s = (sw_sample *)view->sample;
-  sw_sdata * sdata = s->sdata;
+  sw_soundfile * soundfile = s->soundfile;
 
 #define BYTE_BUF_LEN 16
   char byte_buf[BYTE_BUF_LEN];
@@ -993,10 +992,10 @@ view_default_status (sw_view * view)
   char buf [BUF_LEN];
 
   snprint_bytes (byte_buf, BYTE_BUF_LEN,
-		 frames_to_bytes (sdata->format, sdata->s_length));
+		 frames_to_bytes (soundfile->format, soundfile->nr_frames));
   
   snprint_time (time_buf, TIME_BUF_LEN,
-		frames_to_time (sdata->format, sdata->s_length));
+		frames_to_time (soundfile->format, soundfile->nr_frames));
 
   snprintf (buf, BUF_LEN,
 	    "%s [%s]",
@@ -1030,13 +1029,13 @@ view_refresh_adjustment (sw_view * v)
 {
   GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
-  adj->upper = (gfloat)v->sample->sdata->s_length;
+  adj->upper = (gfloat)v->sample->soundfile->nr_frames;
   if (adj->page_size > adj->upper - adj->value)
     adj->page_size = adj->upper - adj->value;
 
 #if 0
-  if (v->end > v->sample->sdata->s_length)
-    v->end = v->sample->sdata->s_length;
+  if (v->end > v->sample->soundfile->nr_frames)
+    v->end = v->sample->soundfile->nr_frames;
 #endif 
 
   gtk_adjustment_changed (adj);
@@ -1049,7 +1048,7 @@ view_fix_adjustment (sw_view * v)
 
   adj->value = (gfloat)v->start;
   adj->lower = (gfloat)0.0;
-  adj->upper = (gfloat)v->sample->sdata->s_length;
+  adj->upper = (gfloat)v->sample->soundfile->nr_frames;
   adj->page_increment = (gfloat)(v->end - v->start);
   adj->page_size = (gfloat)(v->end - v->start);
 
@@ -1061,7 +1060,7 @@ view_refresh (sw_view * v)
 {
   GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
-  if (adj->upper != v->sample->sdata->s_length) {
+  if (adj->upper != v->sample->soundfile->nr_frames) {
     view_refresh_adjustment (v);
     view_refresh_title (v);
     view_default_status (v);
