@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-03 20:00+1100\n"
+"POT-Creation-Date: 2000-10-05 18:41+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,18 @@ msgstr ""
 
 #: src/main.c:118
 msgid "  --display <display>      Use the designated X display.\n"
+msgstr ""
+
+#: src/about_dialog.c:69
+msgid "About Sweep"
+msgstr ""
+
+#: src/about_dialog.c:115
+msgid "This is Sweep version"
+msgstr ""
+
+#: src/about_dialog.c:131
+msgid "http://sweep.sourceforge.net/"
 msgstr ""
 
 #: src/interface.c:82
@@ -114,6 +126,18 @@ msgstr ""
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+
+#: src/param.c:565
+msgid "Suggest"
+msgstr ""
+
+#: src/param.c:586
+msgid "OK"
+msgstr ""
+
+#: src/param.c:592
+msgid "Cancel"
 msgstr ""
 
 #: src/view.c:176
@@ -277,4 +301,92 @@ msgstr ""
 
 #: src/view.c:973
 msgid "Stereo"
+msgstr ""
+
+#: plugins/echo/echo.c:57
+msgid "Delay"
+msgstr ""
+
+#: plugins/echo/echo.c:58
+msgid "Time to delay by"
+msgstr ""
+
+#: plugins/echo/echo.c:65
+msgid "Gain"
+msgstr ""
+
+#: plugins/echo/echo.c:66
+msgid "Gain with which to mix in delayed signal"
+msgstr ""
+
+#: plugins/echo/echo.c:111 plugins/echo/echo.c:117
+msgid "Echo"
+msgstr ""
+
+#: plugins/echo/echo.c:118
+msgid "Apply an echo to selected regions of a sample"
+msgstr ""
+
+#: plugins/normalise/normalise.c:76 plugins/normalise/normalise.c:81
+msgid "Normalise"
+msgstr ""
+
+#: plugins/normalise/normalise.c:82
+msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
+msgstr ""
+
+#: plugins/reverse/reverse.c:61 plugins/reverse/reverse.c:67
+msgid "Reverse"
+msgstr ""
+
+#: plugins/reverse/reverse.c:68
+msgid "Reverse selected regions of a sample"
+msgstr ""
+
+#: plugins/example/example.c:42 plugins/example/example.c:91
+msgid "With a fork"
+msgstr ""
+
+#: plugins/example/example.c:43
+msgid "With a spoon"
+msgstr ""
+
+#: plugins/example/example.c:44
+msgid "With false teeth"
+msgstr ""
+
+#: plugins/example/example.c:45
+msgid "With Nigel's bum"
+msgstr ""
+
+#: plugins/example/example.c:61
+msgid "Flim"
+msgstr ""
+
+#: plugins/example/example.c:62
+msgid "Should you manage your flim?"
+msgstr ""
+
+#: plugins/example/example.c:69
+msgid "Beans"
+msgstr ""
+
+#: plugins/example/example.c:70
+msgid "Method of eating beans"
+msgstr ""
+
+#: plugins/example/example.c:77
+msgid "Pants methodology"
+msgstr ""
+
+#: plugins/example/example.c:78
+msgid "How many pants should you wear per day?"
+msgstr ""
+
+#: plugins/example/example.c:127 plugins/example/example.c:134
+msgid "Example Filter Region"
+msgstr ""
+
+#: plugins/example/example.c:135
+msgid "An example filter region plugin"
 msgstr ""
