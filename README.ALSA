@@ -1,0 +1,26 @@
+Sat Oct  7 2000
+
+Support for ALSA (Advanced Linux Sound Architecture) version 0.6.0 was
+added by Paul Barton-Davis <pbd@op.net>.
+
+To build sweep with support for ALSA 0.6.0, do:
+
+        ./configure --enable-alsa
+        make
+
+Paul writes:
+
+  To use ALSA, you need --enable-alsa as an arg to configure,
+  because just discovering ALSA is not deemed to be sufficient to use
+  it (at this time).
+
+  A couple of things to note:
+
+         * this is ALSA 0.6.0, which is only available via CVS right now
+         * this code is totally different than the code needed for 0.5.X
+         * you also need a ~/.asoundrc file to define the
+               characteristics of various "named PCM devices"
+         * you can define the environment variable SWEEP_ALSA_PCM to
+               the name of the PCM device you want sweep to use
+         * if its not defined, sweep will try to open a named PCM
+               device called "sweep"
