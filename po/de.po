@@ -1,0 +1,283 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-08-31 14:19+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: src/main.c:103
+msgid "Sweep version"
+msgstr "Sweep version"
+
+#: src/main.c:106
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Aufruf: %s [option ...] [datei ...]\n"
+
+#: src/main.c:107
+msgid "Valid options are:\n"
+msgstr "Guelige Optionen:\n"
+
+#: src/main.c:108
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Ausgabe dieser Hilfe.\n"
+
+#: src/main.c:109
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Ausgabe dieser Versionsinformation.\n"
+
+#: src/main.c:110
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <display>      Ausgabe auf dieses X display.\n"
+
+#: src/interface.c:80
+msgid "Sweep"
+msgstr "Sweep"
+
+#. File
+#: src/interface.c:105 src/view.c:153
+msgid "File"
+msgstr "Datei"
+
+#: src/interface.c:110 src/view.c:159
+msgid "New"
+msgstr "Neu"
+
+#: src/interface.c:119
+msgid "Open"
+msgstr "Oeffnen"
+
+#: src/interface.c:128 src/view.c:211
+msgid "Quit"
+msgstr "Verlassen"
+
+#: src/interface.c:139
+msgid "Help"
+msgstr "Hilfe"
+
+#: src/interface.c:144
+msgid "About..."
+msgstr "Ueber sweep..."
+
+#. Radio group
+#: src/interface.c:165 src/view.c:304
+msgid "Select"
+msgstr "Auswahl"
+
+#: src/interface.c:166
+msgid "Select regions of a sample"
+msgstr "Auswahl eines Segments"
+
+#: src/interface.c:167
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"Dieses Werkzeug erlaubt es, Segmente auszuwaehlen. Aenderungen und"
+"Effekte koennen dann auf die gewaehlten Segmente angewandt werden. Durch"
+"Halten der Shift-Taste beim Auswaehlen koennen mehrere unzusammenhaengende"
+"Segmente ausgewaehlt werden."
+
+#. Radio group
+#: src/interface.c:182
+msgid "Move"
+msgstr "Verschieben"
+
+#: src/interface.c:183
+msgid "Move regions in a sample"
+msgstr "Segment verschieben"
+
+#: src/interface.c:184
+msgid "With this tool you can move selected regions of a sample."
+msgstr "Dieses Werkzeug erlaubt es, Segmente zu verschieben."
+
+#. Radio group
+#: src/interface.c:197 src/view.c:386
+msgid "Zoom"
+msgstr "Zoom"
+
+#: src/interface.c:198
+msgid "Zoom in & out"
+msgstr "Zoom hinein & heraus"
+
+#: src/interface.c:199
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Dieses Werkzeug erlaubt es, in eine Ansicht hinein zu zoomen oder aus ihr"
+"heraus zu zoomen. Durch Mausklick wird die Stelle zum Hineinzoomen"
+"ausgewaehlt. Durch Halten der Shift-Taste beim Mausklick wird herausgezoomt."
+
+#: src/view.c:168
+msgid "Open..."
+msgstr "Oeffnen"
+
+#: src/view.c:177
+msgid "Save"
+msgstr "Speichern"
+
+#: src/view.c:186
+msgid "Save As..."
+msgstr "Speichern unter..."
+
+#: src/view.c:192
+msgid "Revert"
+msgstr "Aenderungen verwerfen"
+
+#: src/view.c:202
+msgid "Close"
+msgstr "Schliessen"
+
+#. Edit
+#: src/view.c:221
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: src/view.c:227
+msgid "Undo"
+msgstr "Rueckgaengig"
+
+#: src/view.c:237
+msgid "Redo"
+msgstr "Wiederholen"
+
+#: src/view.c:250
+msgid "Delete"
+msgstr "Loeschen"
+
+#: src/view.c:256
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: src/view.c:265
+msgid "Copy"
+msgstr "Kopieren"
+
+#: src/view.c:274
+msgid "Paste"
+msgstr "Einfuegen"
+
+#: src/view.c:283
+msgid "Paste as New"
+msgstr "Neu einfuegen"
+
+#: src/view.c:293
+msgid "Clear"
+msgstr "Ausradieren"
+
+#: src/view.c:310
+msgid "Invert"
+msgstr "Invertieren"
+
+#: src/view.c:318
+msgid "All"
+msgstr "Alles"
+
+#: src/view.c:326
+msgid "None"
+msgstr "Nichts"
+
+#. View
+#: src/view.c:336
+msgid "View"
+msgstr "Ansicht"
+
+#: src/view.c:342
+msgid "Zoom In"
+msgstr "Zoom hinein"
+
+#: src/view.c:351
+msgid "Zoom Out"
+msgstr "Zoom heraus"
+
+#: src/view.c:360
+msgid "Zoom to selection"
+msgstr "Zoom in Auswahl"
+
+#: src/view.c:367
+msgid "Left"
+msgstr "Links"
+
+#: src/view.c:376
+msgid "Right"
+msgstr "Rechts"
+
+#: src/view.c:392
+#, c-format
+msgid "50%"
+msgstr "50%"
+
+#: src/view.c:398
+#, c-format
+msgid "100%"
+msgstr "100%"
+
+#: src/view.c:412
+msgid "New View"
+msgstr "Neue Ansicht"
+
+#. Sample
+#: src/view.c:419
+msgid "Sample"
+msgstr "Audiodatei"
+
+#: src/view.c:425
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#. Filters
+#: src/view.c:435
+msgid "Filters"
+msgstr "Filter"
+
+#. Playback
+#: src/view.c:449
+msgid "Playback"
+msgstr "Abspielen"
+
+#: src/view.c:455
+msgid "Play sample"
+msgstr "Datei abspielen"
+
+#: src/view.c:464
+msgid "Loop sample"
+msgstr "Datei endlos"
+
+#: src/view.c:473
+msgid "Play selection"
+msgstr "Auswahl abspielen"
+
+#: src/view.c:482
+msgid "Loop selection"
+msgstr "Auswahl endlos"
+
+#: src/view.c:495
+msgid "Note"
+msgstr "Transponiert abspielen"
+
+#: src/view.c:557
+msgid "Stop"
+msgstr "Stop"
+
+#: src/view.c:961
+msgid "Untitled"
+msgstr "Unbenannt"
+
+#: src/view.c:963
+msgid "Mono"
+msgstr "Mono"
+
+#: src/view.c:963
+msgid "Stereo"
+msgstr "Stereo"

@@ -123,7 +123,7 @@ ltconfig ltmain.sh missing mkinstalldirs
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
@@ -414,11 +414,6 @@ installdirs-am:
 		$(DESTDIR)$(pkgdatadir)
 
 
-rpmspec:
-	$(mkinstalldirs) .rpmspec
-	echo > .rpmspec/@PACKAGE@-@VERSION@-1.spec "%install"
-	echo >> .rpmspec/@PACKAGE@-@VERSION@-1.spec "$(DESTDIR)$(@DIR@dir)"
-
 mostlyclean-generic:
 
 clean-generic:
@@ -462,7 +457,7 @@ distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
 dvi-am dvi check check-am installcheck-am installcheck all-recursive-am \
 install-exec-am install-exec install-data-local install-data-am \
 install-data install-am install uninstall-am uninstall all-redirect \
-all-am all installdirs-am installdirs rpmspec mostlyclean-generic \
+all-am all installdirs-am installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 

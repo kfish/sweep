@@ -132,7 +132,7 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 DEP_FILES =  .deps/about_dialog.P .deps/callbacks.P .deps/cursors.P \
 .deps/driver.P .deps/edit.P .deps/file_dialogs.P .deps/file_ops.P \
@@ -322,11 +322,6 @@ installdirs:
 	$(mkinstalldirs)  $(DESTDIR)$(bindir)
 
 
-rpmspec:
-	$(mkinstalldirs) .rpmspec
-	echo > .rpmspec/@PACKAGE@-@VERSION@-1.spec "%install"
-	echo >> .rpmspec/@PACKAGE@-@VERSION@-1.spec "$(DESTDIR)$(@DIR@dir)"
-
 mostlyclean-generic:
 
 clean-generic:
@@ -373,7 +368,7 @@ mostlyclean-depend distclean-depend clean-depend \
 maintainer-clean-depend info-am info dvi-am dvi check check-am \
 installcheck-am installcheck install-exec-am install-exec \
 install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all installdirs rpmspec mostlyclean-generic \
+all-redirect all-am all installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 

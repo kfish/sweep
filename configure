@@ -2595,7 +2595,7 @@ EOF
 
 fi
 
-ALL_LINGUAS="fr"
+ALL_LINGUAS="fr hu it de"
 echo $ac_n "checking for working const""... $ac_c" 1>&6
 echo "configure:2601: checking for working const" >&5
 if eval "test \"`echo '$''{'ac_cv_c_const'+set}'`\" = set"; then
