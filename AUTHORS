@@ -1,1 +1,69 @@
+Main author
+===========
+
 Conrad Parker <conrad@vergenet.net>
+
+
+Contributed code
+================
+
+Mattias Engdegård <f91=men@nada.kth.se>
+	Solaris audio driver, other cleanups
+
+Paul Barton=Davis <pbd@op.net>
+	ALSA 0.6.0 audio driver
+
+Nicolas Léveillé <nicolas.leveille@free.fr>
+	fixes to file load/save dialogs
+
+
+Borrowed Code
+=============
+
+Michael Krause <m.krause@tu=harburg.de>
+	Basic code for sample=display widget from soundtracker.
+
+Spencer Kimball and Peter Mattis
+	about_dialog.c adapted from the Gimp.
+
+
+Translations
+============
+
+Mathieu Roy <yeupou@altern.org>
+	fr
+
+Gergely Nagy <mhp@lonyay.edu.hu>
+	hu
+
+Yuri Bongiorno <yurix@tiscalinet.it>
+	it
+
+Silvia Pfeiffer <silvia.pfeiffer@silvia=pfeiffer.de>
+	de
+
+
+Artwork
+=======
+
+Mathieu Roy <yeupou@altern.org>
+	Colourful button pixmaps
+
+
+Package Maintainers
+===================
+
+Anand Kumria <akumria@debian.org>
+	Debian packages
+
+
+Miscellaneous
+=============
+
+Sourceforge (http://www.sourceforge.net/)
+	Rocks.
+
+-- 
+Let me know if I've missed anyone out.
+
+Conrad.
