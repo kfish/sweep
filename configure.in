@@ -555,6 +555,7 @@ else
 
 AC_OUTPUT([
 Makefile
+m4/Makefile
 include/Makefile
 include/sweep/Makefile
 src/Makefile
