@@ -114,7 +114,7 @@ do_samplerate_thread (sw_op_instance * inst)
   old_sounddata = sample->sounddata;
   old_nr_frames = old_sounddata->nr_frames;
 
-  new_nr_frames =  old_nr_frames * src_ratio;
+  new_nr_frames = floor (old_nr_frames * src_ratio) ;
   new_sounddata = sounddata_new_empty (old_format->channels, new_rate,
 				       new_nr_frames);
 
@@ -138,7 +138,7 @@ do_samplerate_thread (sw_op_instance * inst)
   /* XXX: move play/rec offsets */
 
   /* Resample data */
-  while (active && remaining > 0) {
+  while (active) {
     g_mutex_lock (sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
@@ -175,6 +175,11 @@ do_samplerate_thread (sw_op_instance * inst)
 	
 	offset_in += (sw_framecount_t)src_data.input_frames_used;
 	offset_out += (sw_framecount_t)src_data.output_frames_gen;
+
+    /* This is the normal loop exit point. */
+	if (src_data.output_frames_gen == 0) {
+	    active = FALSE;
+	}
 	
 #ifdef DEBUG
 	printf ("%ld ->\t%ld\t(%d)\n", src_data.input_frames_used,
@@ -189,9 +194,13 @@ do_samplerate_thread (sw_op_instance * inst)
     g_mutex_unlock (sample->ops_mutex);
   }
 
-  if (remaining > 0) { /* cancelled or failed */
+  /* Only an error if remaining > 1 */
+  if (remaining > 1) { /* cancelled or failed */
     sounddata_destroy (new_sounddata);
   } else if (sample->edit_state == SWEEP_EDIT_STATE_BUSY) {
+    /* Set real number of frames. */
+    new_sounddata->nr_frames = run_total ;
+    
     sample->sounddata = new_sounddata;
 
     inst->redo_data = inst->undo_data =
