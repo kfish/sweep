@@ -28,8 +28,7 @@ numeric and string parameters. Sweep creates and presents to the user
 a graphical dialog window for setting these parameters.
 
 This document explains the programming interface for writing native Sweep
-plugins and how to set up a build environment for your plugin code either
-within Sweep.
+plugins and how to set up a build environment for your plugin code.
 
 
 2. Getting started
@@ -55,7 +54,7 @@ desired operation.
 It is a requirement that all operations which modify a sound wave or
 its associated data also provide a means for undoing and redoing
 themselves. Sweep provides some standard mechanisms for efficiently
-undoing and redoing some common tyes of operation.
+undoing and redoing some common types of operation.
 
 This section describes the data structures used by Sweep and its
 plugins, the mechanisms provided for performing common operations, and
