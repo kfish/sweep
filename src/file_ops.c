@@ -110,19 +110,18 @@ sample_load(char * pathname)
     dn = NULL;
   }
 
-  s = sample_new_empty(dn, fn,
-		       channelcount,
-		       (int)rate,
-		       framecount);
+  s = sample_new_empty(dn, fn, channelcount, (int)rate, framecount);
 
-  if(!s)
-    return NULL;
+  if(!s) return NULL;
 
-  s->soundfile->data = g_malloc(frames_to_bytes(s->soundfile->format, framecount));
+  s->soundfile->data =
+    g_malloc(frames_to_bytes(s->soundfile->format, framecount));
+
   if (s->soundfile->data == NULL) {
     fprintf(stderr,  "s->soundfile->data NULL");
     return NULL;
   }
+
   copydata = s->soundfile->data;
 
   load_buffer = g_malloc (LOAD_BUFFER_LEN * (samplewidth / 8) * channelcount);
@@ -176,7 +175,7 @@ sample_load_with_view (char * pathname)
 }
 
 int
-sample_save (sw_sample * s, char * directory, char * filename)
+sample_save (sw_sample * s)
 {
   sw_format * f = s->soundfile->format;
   char pathname [SW_DIR_LEN];
@@ -196,24 +195,22 @@ sample_save (sw_sample * s, char * directory, char * filename)
   int channelcount=1, samplewidth=16;
 
   if (!s) return -1;
-  if (!filename) return -1;
-
-  sample_set_pathname (s, directory, filename);
 
   /* Hardcoded ;) */
   file_format = AF_FILE_WAVE;
 
   outputSetup = afNewFileSetup();
   afInitFileFormat(outputSetup, file_format);
+  afInitSampleFormat (outputSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 16);
   afInitRate(outputSetup, AF_DEFAULT_TRACK, f->rate);
   afInitChannels(outputSetup, AF_DEFAULT_TRACK, f->channels);
 
-  if (directory) {
+  if (*s->directory) {
     snprintf (pathname, SW_DIR_LEN,
-	      "%s/%s", directory, filename);
+	      "%s/%s", s->directory, s->filename);
     outputFile = afOpenFile(pathname, "w", outputSetup);
   } else {  
-    outputFile = afOpenFile(filename, "w", outputSetup);
+    outputFile = afOpenFile(s->filename, "w", outputSetup);
   }
 
   afFreeFileSetup(outputSetup);

@@ -25,8 +25,7 @@
 #include "sweep_app.h"
 
 sw_soundfile *
-soundfile_new_empty(char * directory, char * filename,
-		    gint nr_channels, gint sample_rate, gint sample_length);
+soundfile_new_empty(gint nr_channels, gint sample_rate, gint sample_length);
 
 void
 soundfile_destroy (sw_soundfile * soundfile);

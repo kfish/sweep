@@ -967,7 +967,7 @@ view_refresh_title (sw_view * view)
 
   snprintf(buf, BUF_LEN,
 	   "%s (%dHz %s) %0d%%",
-	   s->soundfile->filename ? s->soundfile->filename : _("Untitled"),
+	   s->filename ? s->filename : _("Untitled"),
 	   s->soundfile->format->rate,
 	   s->soundfile->format->channels == 1 ? _("Mono") : _("Stereo"),
 	   100 * (view->end - view->start) / s->soundfile->nr_frames);

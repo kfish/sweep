@@ -30,6 +30,6 @@ int
 sample_load_with_view (char * pathname);
 
 int
-sample_save(sw_sample * s, char * directory, char *filename);
+sample_save(sw_sample * s);
 
 #endif /* __FILE_OPS_H__ */

@@ -84,12 +84,7 @@ struct _sw_format {
   gint rate;      /* sampling rate (Hz) */
 };
 
-#define SW_DIR_LEN 256
-
 struct _sw_soundfile {
-  gchar * filename;
-  gchar directory[SW_DIR_LEN];
-
   sw_format * format;
   sw_framecount_t nr_frames;    /* nr frames */
 
@@ -99,12 +94,17 @@ struct _sw_soundfile {
   GMutex * sels_mutex; /* Mutex for access to sels */
 };
 
+#define SW_DIR_LEN 256
+
 /*
  * sw_sample
  */
 struct _sw_sample {
   sw_soundfile * soundfile;
   GList * views;
+
+  gchar * filename;
+  gchar directory[SW_DIR_LEN];
 
   GList * registered_ops;
   GList * current_undo;

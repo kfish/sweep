@@ -39,9 +39,7 @@ static GList * sample_bank = NULL;
 /* Soundfile functions */
 
 sw_soundfile *
-soundfile_new_empty(char * directory, char * filename,
-		gint nr_channels,
-		gint sample_rate, gint sample_length)
+soundfile_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
 {
   sw_soundfile *s;
   sw_framecount_t len;
@@ -49,16 +47,6 @@ soundfile_new_empty(char * directory, char * filename,
   s = g_malloc (sizeof(sw_soundfile));
   if (!s)
     return NULL;
-
-  if (directory)
-    strncpy(s->directory, directory, MIN(SW_DIR_LEN, strlen(directory)));
-  else
-    s->directory[0] = '\0';
-
-  if (filename)
-    s->filename = strdup(filename);
-  else
-    s->filename = NULL;
 
   s->format = format_new (nr_channels, sample_rate);
 
@@ -115,10 +103,19 @@ sample_new_empty(char * directory, char * filename,
   if (!s)
     return NULL;
 
-  s->soundfile = soundfile_new_empty (directory, filename,
-			      nr_channels, sample_rate, sample_length);
+  s->soundfile = soundfile_new_empty (nr_channels, sample_rate, sample_length);
 
   s->views = NULL;
+
+  if (directory)
+    strncpy(s->directory, directory, MIN(SW_DIR_LEN, strlen(directory)));
+  else
+    s->directory[0] = '\0';
+
+  if (filename)
+    s->filename = strdup(filename);
+  else
+    s->filename = NULL;
 
   s->registered_ops = NULL;
   s->current_undo = NULL;
@@ -134,8 +131,8 @@ sample_new_copy(sw_sample * s)
 {
   sw_sample * sn;
 
-  sn = sample_new_empty(s->soundfile->directory,
-			s->soundfile->filename,
+  sn = sample_new_empty(s->directory,
+			s->filename,
 			s->soundfile->format->channels,
 			s->soundfile->format->rate,
 			s->soundfile->nr_frames);
@@ -174,26 +171,25 @@ sample_destroy (sw_sample * s)
 void
 sample_set_pathname (sw_sample * s, char * directory, char * filename)
 {
-  sw_soundfile * sd = s->soundfile;
   gchar * tmp;
   sw_view * v;
   GList * gl;
 
   if (directory)
-    strncpy(sd->directory, directory, MIN(SW_DIR_LEN, strlen(directory)));
+    strncpy(s->directory, directory, MIN(SW_DIR_LEN, strlen(directory)));
   else
-    sd->directory[0] = '\0';
+    s->directory[0] = '\0';
 
   if (filename) {
     /* in case filename == s->filename, as in when
      * the default "save" function is called
      */
     tmp = strdup (filename);
-    if (sd->filename) g_free (sd->filename);
-    sd->filename = tmp;
+    if (s->filename) g_free (s->filename);
+    s->filename = tmp;
   } else {
-    if (sd->filename) g_free (sd->filename);
-    sd->filename = NULL;
+    if (s->filename) g_free (s->filename);
+    s->filename = NULL;
   }
 
   for(gl = s->views; gl; gl = gl->next) {

@@ -254,8 +254,7 @@ splice_out_sel (sw_soundfile * soundfile)
   printf("Splice out: remaining length %d\n", length);
 #endif
 
-  out = soundfile_new_empty (soundfile->directory, soundfile->filename,
-			 f->channels, f->rate, length);
+  out = soundfile_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
@@ -333,8 +332,7 @@ splice_in_eb (sw_soundfile * soundfile, edit_buffer * eb)
 
   di = soundfile->data;
 
-  out = soundfile_new_empty (soundfile->directory, soundfile->filename,
-			 f->channels, f->rate, length);
+  out = soundfile_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
@@ -418,8 +416,7 @@ paste_at (sw_soundfile * soundfile, edit_buffer * eb)
   paste_length = edit_buffer_length (eb);
   length = soundfile->nr_frames + paste_length;
 
-  out = soundfile_new_empty (soundfile->directory, soundfile->filename,
-			 f->channels, f->rate, length);
+  out = soundfile_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
