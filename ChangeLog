@@ -3,6 +3,7 @@ Wed Oct 25 22:18:39 EST 2000 Conrad Parker <conrad@vergenet.net>
 	* fixed compile bug on Solaris (API change in driver.c)
 	* fixed gtk assertion when zooming too far; created new
 	  zoom functions in view.c
+	* added new zoom types (norm and 1:1) from Steve Harris
 
 Mon Oct 16 18:07:23 EST 2000 Conrad Parker <conrad@vergenet.net>
 
