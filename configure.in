@@ -185,6 +185,9 @@ if test "x${ac_enable_oggvorbis}" != xno ||
   if test "x$HAVE_OGG" = xno ; then
     AC_CHECK_LIB(ogg, ogg_stream_init, HAVE_OGG="maybe")
   fi
+  if test "x$HAVE_OGG" = xmaybe; then
+    AC_CHECK_HEADER([ogg/ogg.h], HAVE_OGG="yes", HAVE_OGG="no")
+  fi
 
   AC_SUBST(OGG_LIBS)
 fi

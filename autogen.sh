@@ -118,7 +118,7 @@ if [ -d /sw ]; then
   FINK_DETECTED=1
 fi
 
-eval "$ACLOCAL"
+eval "$ACLOCAL -I m4"
 
 # do we need libtool?
 if grep -q PROG_LIBTOOL configure.*; then
