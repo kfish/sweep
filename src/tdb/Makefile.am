@@ -1,3 +1,4 @@
+EXTRA_DIST = svn-update.sh
 
 noinst_LIBRARIES = libtdb.a
 noinst_HEADERS = tdb.h spinlock.h
