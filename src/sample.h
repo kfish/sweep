@@ -21,10 +21,8 @@
 #ifndef __SAMPLE_H__
 #define __SAMPLE_H__
 
-#include <glib.h>
-
-#include "sweep.h"
-
+#include "sweep_types.h"
+#include "sweep_app.h"
 
 sw_sdata *
 sdata_new_empty(char * directory, char * filename,

@@ -30,7 +30,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_app.h"
+
 #include "callbacks.h"
 #include "file_dialogs.h"
 #include "interface.h"

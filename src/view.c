@@ -28,8 +28,10 @@
 #include <gtk/gtk.h>
 
 #include "view.h"
+
 #include "callbacks.h"
 #include "interface.h"
+#include "sweep_typeconvert.h"
 #include "format.h"
 #include "param.h"
 #include "sample.h"
@@ -94,11 +96,11 @@ apply_procedure_cb (GtkWidget * widget, gpointer data)
 
   if (proc->nr_params == 0) {
     pset = NULL;
-    proc->proc_apply (sample, pset, proc->proc_data);
+    proc->apply (sample, pset, proc->custom_data);
   } else {
     pset = sw_param_set_new (proc);
-    if (proc->proc_suggest)
-      proc->proc_suggest (sample, pset, proc->proc_data);
+    if (proc->suggest)
+      proc->suggest (sample, pset, proc->custom_data);
     create_param_set_adjuster (proc, pi->view, pset);
   }
 
@@ -113,7 +115,7 @@ create_proc_menuitem (sw_proc * proc, sw_view * view,
 
   pi = sw_proc_instance_new (proc, view);
 
-  menuitem = gtk_menu_item_new_with_label(proc->proc_name);
+  menuitem = gtk_menu_item_new_with_label(proc->name);
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
 		     GTK_SIGNAL_FUNC(apply_procedure_cb), pi);
@@ -136,7 +138,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
   GtkWidget * menuitem;
   GtkWidget * submenu, *subsubmenu;
   GtkAccelGroup *accel_group;
-  SampleDisplay * s = SAMPLE_DISPLAY(view->v_display);
+  SampleDisplay * s = SAMPLE_DISPLAY(view->display);
   void *append_func(GtkWidget * widget, GtkWidget * child);
 
   /* Plugin handling */
@@ -152,7 +154,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   /* Create a GtkAccelGroup and add it to the window. */
   accel_group = gtk_accel_group_new();
-  gtk_window_add_accel_group (GTK_WINDOW(view->v_window), accel_group);
+  gtk_window_add_accel_group (GTK_WINDOW(view->window), accel_group);
 
   /* File */
   menuitem = gtk_menu_item_new_with_label(_("File"));
@@ -574,7 +576,7 @@ view_destroy_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *)data;
 
-  sample_display_stop_marching_ants (SAMPLE_DISPLAY(view->v_display));
+  sample_display_stop_marching_ants (SAMPLE_DISPLAY(view->display));
 
   sample_remove_view(view->sample, view);
 }
@@ -584,7 +586,7 @@ view_vol_changed_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * v = (sw_view *)data;
 
-  v->v_vol = 1.0 - GTK_ADJUSTMENT (v->v_vol_adj)->value;
+  v->vol = 1.0 - GTK_ADJUSTMENT (v->vol_adj)->value;
 }
 
 static void
@@ -600,9 +602,9 @@ view_set_pos_indicator_cb (GtkWidget * widget, gpointer data)
     snprint_time (buf, BUF_LEN,
 		  frames_to_time (view->sample->sdata->format,
 				  sd->mouse_offset));
-    gtk_label_set_text (GTK_LABEL(view->v_pos), buf);
+    gtk_label_set_text (GTK_LABEL(view->pos), buf);
   } else {
-    gtk_label_set_text (GTK_LABEL(view->v_pos), NO_TIME);
+    gtk_label_set_text (GTK_LABEL(view->pos), NO_TIME);
   }
 
 
@@ -657,9 +659,9 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   view = g_malloc (sizeof(sw_view));
 
   view->sample = sample;
-  view->v_start = start;
-  view->v_end = end;
-  view->v_vol = vol;
+  view->start = start;
+  view->end = end;
+  view->vol = vol;
 
   win_width = CLAMP (sample->sdata->s_length / 150,
 		     VIEW_MIN_WIDTH, VIEW_MAX_WIDTH);
@@ -668,18 +670,21 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   gtk_window_set_default_size (GTK_WINDOW(window),
 			       win_width, VIEW_DEFAULT_HEIGHT);
   gtk_widget_show(window);
-  view->v_window = window;
+  view->window = window;
 
   gtk_signal_connect (GTK_OBJECT(window), "destroy",
+		      GTK_SIGNAL_FUNC(view_destroy_cb), view);
+
+  gtk_signal_connect (GTK_OBJECT(window), "delete",
 		      GTK_SIGNAL_FUNC(view_destroy_cb), view);
 
   main_vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER(window), main_vbox);
   gtk_widget_show (main_vbox);
 
-  view->v_menubar = gtk_menu_bar_new ();
-  gtk_box_pack_start (GTK_BOX(main_vbox), view->v_menubar, FALSE, TRUE, 0);
-  gtk_widget_show (view->v_menubar);
+  view->menubar = gtk_menu_bar_new ();
+  gtk_box_pack_start (GTK_BOX(main_vbox), view->menubar, FALSE, TRUE, 0);
+  gtk_widget_show (view->menubar);
 
   table = gtk_table_new (3, 3, FALSE);
   gtk_table_set_col_spacing (GTK_TABLE(table), 0, 1);
@@ -738,31 +743,31 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 		       start, end,
 		       start, end);
   gtk_widget_show (hruler);
-  view->v_hruler = hruler;
+  view->hruler = hruler;
 
   gtk_signal_connect_object (GTK_OBJECT (table), "motion_notify_event",
                              (GtkSignalFunc) GTK_WIDGET_CLASS (GTK_OBJECT (hruler)->klass)->motion_notify_event,
                              GTK_OBJECT (hruler));
 
-  /* v_display */
-  view->v_display = sample_display_new();
-  gtk_table_attach (GTK_TABLE(table), view->v_display,
+  /* display */
+  view->display = sample_display_new();
+  gtk_table_attach (GTK_TABLE(table), view->display,
 		    1, 2, 1, 2,
 		    GTK_EXPAND|GTK_FILL|GTK_SHRINK,
 		    GTK_EXPAND|GTK_FILL|GTK_SHRINK,
 		    0, 0);
 
-  sample_display_set_view(SAMPLE_DISPLAY(view->v_display), view);
+  sample_display_set_view(SAMPLE_DISPLAY(view->display), view);
 
-  gtk_signal_connect (GTK_OBJECT(view->v_display), "selection-changed",
+  gtk_signal_connect (GTK_OBJECT(view->display), "selection-changed",
 		      GTK_SIGNAL_FUNC(sd_sel_changed_cb), view);
-  gtk_signal_connect (GTK_OBJECT(view->v_display), "window-changed",
+  gtk_signal_connect (GTK_OBJECT(view->display), "window-changed",
 		      GTK_SIGNAL_FUNC(sd_win_changed_cb), view);
 
-  gtk_widget_show(view->v_display);
+  gtk_widget_show(view->display);
 
   /* scrollbar */
-  view->v_adj = gtk_adjustment_new((gfloat)start,            /* value */
+  view->adj = gtk_adjustment_new((gfloat)start,            /* value */
 				   (gfloat)0.0,              /* start */
 				   (gfloat)sample->sdata->s_length, /* end */
 				   1.0,                      /* step_incr */
@@ -770,12 +775,12 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 				   (gfloat)(end-start)       /* page_size */
 				   );
 
-  gtk_signal_connect (GTK_OBJECT(view->v_adj), "value-changed",
+  gtk_signal_connect (GTK_OBJECT(view->adj), "value-changed",
 		      GTK_SIGNAL_FUNC(adj_changed_cb), view);
-  gtk_signal_connect (GTK_OBJECT(view->v_adj), "changed",
+  gtk_signal_connect (GTK_OBJECT(view->adj), "changed",
 		      GTK_SIGNAL_FUNC(adj_changed_cb), view);
 
-  scrollbar = gtk_hscrollbar_new(GTK_ADJUSTMENT(view->v_adj));
+  scrollbar = gtk_hscrollbar_new(GTK_ADJUSTMENT(view->adj));
   gtk_table_attach (GTK_TABLE(table), scrollbar,
 		    1, 2, 2, 3,
 		    GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
@@ -790,7 +795,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 				 0.1,  /* page incr */
 				 0.1   /* page size */
 				 );
-  view->v_vol_adj = vol_adj;
+  view->vol_adj = vol_adj;
 
   
   vol_vscale = gtk_vscale_new (GTK_ADJUSTMENT(vol_adj));
@@ -823,7 +828,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   label = gtk_label_new (NO_TIME);
   gtk_container_add (GTK_CONTAINER(frame), label);
   gtk_widget_show (label);
-  view->v_pos = label;
+  view->pos = label;
 
   /* status */
   frame = gtk_frame_new (NULL);
@@ -833,43 +838,43 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   label = gtk_label_new ("Sweep " VERSION);
   gtk_container_add (GTK_CONTAINER(frame), label);
   gtk_widget_show (label);
-  view->v_status = label;
+  view->status = label;
 
-  /* Had to wait until view->v_display was created before
+  /* Had to wait until view->display was created before
    * setting the menus up
    */
 
-  view->v_menu = gtk_menu_new ();
-  create_view_menu (view, view->v_menu);
+  view->menu = gtk_menu_new ();
+  create_view_menu (view, view->menu);
 
-  create_view_menu (view, view->v_menubar);
+  create_view_menu (view, view->menubar);
 
   gtk_signal_connect_object (GTK_OBJECT(menu_button),
 			     "button_press_event",
 			     GTK_SIGNAL_FUNC(menu_button_handler),
-			     GTK_OBJECT(view->v_menu));
+			     GTK_OBJECT(view->menu));
 
-  /* Had to wait till view->v_display was created to set these up */
+  /* Had to wait till view->display was created to set these up */
 
   gtk_signal_connect (GTK_OBJECT(play_button), "clicked",
-		      GTK_SIGNAL_FUNC(play_view_cb), view->v_display);
+		      GTK_SIGNAL_FUNC(play_view_cb), view->display);
   gtk_signal_connect (GTK_OBJECT(stop_button), "clicked",
-		      GTK_SIGNAL_FUNC(stop_playback_cb), view->v_display);
+		      GTK_SIGNAL_FUNC(stop_playback_cb), view->display);
 
-  gtk_signal_connect (GTK_OBJECT(view->v_display),
+  gtk_signal_connect (GTK_OBJECT(view->display),
 		      "mouse-offset-changed",
 		      GTK_SIGNAL_FUNC(view_set_pos_indicator_cb),
-		      view->v_display);
+		      view->display);
 		      
 #if 0
-  gtk_signal_connect_object (GTK_OBJECT(view->v_display),
+  gtk_signal_connect_object (GTK_OBJECT(view->display),
 			     "motion_notify_event",
 			     GTK_SIGNAL_FUNC(view_set_pos_indicator_cb),
-			     GTK_OBJECT(view->v_display));
+			     GTK_OBJECT(view->display));
 #endif
 
   if (sample->sdata->sels)
-    sample_display_start_marching_ants (SAMPLE_DISPLAY(view->v_display));
+    sample_display_start_marching_ants (SAMPLE_DISPLAY(view->display));
 
   view_refresh_title(view);
 
@@ -892,7 +897,7 @@ view_new_all(sw_sample * sample, gfloat vol)
 void
 view_set_ends (sw_view * view, glong start, glong end)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(view->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(view->adj);
 
   /*
   if(start < 0) start = 0;
@@ -905,11 +910,11 @@ view_set_ends (sw_view * view, glong start, glong end)
 
   gtk_adjustment_changed(adj);
 
-  gtk_ruler_set_range (GTK_RULER(view->v_hruler),
+  gtk_ruler_set_range (GTK_RULER(view->hruler),
 		       start, end,
 		       start, end);
 
-  sample_display_set_window(SAMPLE_DISPLAY(view->v_display), start, end);
+  sample_display_set_window(SAMPLE_DISPLAY(view->display), start, end);
 
   view_refresh_title(view);
   view_refresh_display(view);
@@ -918,7 +923,7 @@ view_set_ends (sw_view * view, glong start, glong end)
 void
 view_set_playmarker (sw_view * view, int offset)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(view->v_display);
+  SampleDisplay * sd = SAMPLE_DISPLAY(view->display);
 
   sample_display_set_playmarker(sd, offset);
 }
@@ -926,14 +931,14 @@ view_set_playmarker (sw_view * view, int offset)
 void
 view_close (sw_view * view)
 {
-  gtk_widget_destroy(view->v_window);
+  gtk_widget_destroy(view->window);
   g_free(view);
 }
 
 void
 view_volume_increase (sw_view * view)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(view->v_vol_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(view->vol_adj);
 
   adj->value -= 0.1;
   if (adj->value <= 0.0) adj->value = 0.0;
@@ -944,7 +949,7 @@ view_volume_increase (sw_view * view)
 void
 view_volume_decrease (sw_view * view)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(view->v_vol_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(view->vol_adj);
 
   adj->value += 0.1;
   if (adj->value >= 1.0) adj->value = 1.0;
@@ -964,11 +969,11 @@ view_refresh_title (sw_view * view)
   snprintf(buf, BUF_LEN,
 	   "%s (%dHz %s) %0ld%%",
 	   s->sdata->filename ? s->sdata->filename : _("Untitled"),
-	   s->sdata->format->f_rate,
-	   s->sdata->format->f_channels == 1 ? _("Mono") : _("Stereo"),
-	   100 * (view->v_end - view->v_start) / s->sdata->s_length);
+	   s->sdata->format->rate,
+	   s->sdata->format->channels == 1 ? _("Mono") : _("Stereo"),
+	   100 * (view->end - view->start) / s->sdata->s_length);
 
-  gtk_window_set_title (GTK_WINDOW(view->v_window), buf);
+  gtk_window_set_title (GTK_WINDOW(view->window), buf);
 #undef BUF_LEN
 }
 
@@ -997,7 +1002,7 @@ view_default_status (sw_view * view)
 	    "%s [%s]",
 	    byte_buf, time_buf);
 
-  gtk_label_set_text (GTK_LABEL(view->v_status), buf);
+  gtk_label_set_text (GTK_LABEL(view->status), buf);
 
 #undef BUF_LEN
 #undef BYTE_BUF_LEN
@@ -1007,15 +1012,15 @@ view_default_status (sw_view * view)
 void
 view_refresh_hruler (sw_view * v)
 {
-  gtk_ruler_set_range (GTK_RULER(v->v_hruler),
-		       v->v_start, v->v_end,
-		       v->v_start, v->v_end);
+  gtk_ruler_set_range (GTK_RULER(v->hruler),
+		       v->start, v->end,
+		       v->start, v->end);
 }
 
 void
 view_refresh_display (sw_view * v)
 {
-  SampleDisplay * sd = SAMPLE_DISPLAY(v->v_display);
+  SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
 
   sample_display_refresh(sd);
 }
@@ -1023,15 +1028,15 @@ view_refresh_display (sw_view * v)
 void
 view_refresh_adjustment (sw_view * v)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(v->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
   adj->upper = (gfloat)v->sample->sdata->s_length;
   if (adj->page_size > adj->upper - adj->value)
     adj->page_size = adj->upper - adj->value;
 
 #if 0
-  if (v->v_end > v->sample->sdata->s_length)
-    v->v_end = v->sample->sdata->s_length;
+  if (v->end > v->sample->sdata->s_length)
+    v->end = v->sample->sdata->s_length;
 #endif 
 
   gtk_adjustment_changed (adj);
@@ -1040,13 +1045,13 @@ view_refresh_adjustment (sw_view * v)
 void
 view_fix_adjustment (sw_view * v)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(v->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
-  adj->value = (gfloat)v->v_start;
+  adj->value = (gfloat)v->start;
   adj->lower = (gfloat)0.0;
   adj->upper = (gfloat)v->sample->sdata->s_length;
-  adj->page_increment = (gfloat)(v->v_end - v->v_start);
-  adj->page_size = (gfloat)(v->v_end - v->v_start);
+  adj->page_increment = (gfloat)(v->end - v->start);
+  adj->page_size = (gfloat)(v->end - v->start);
 
   gtk_adjustment_changed (adj);
 }
@@ -1054,7 +1059,7 @@ view_fix_adjustment (sw_view * v)
 void
 view_refresh (sw_view * v)
 {
-  GtkAdjustment * adj = GTK_ADJUSTMENT(v->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
   if (adj->upper != v->sample->sdata->s_length) {
     view_refresh_adjustment (v);
@@ -1069,7 +1074,7 @@ view_sink_last_tmp_view (void)
 {
   if (!last_tmp_view) return;
 
-  sample_display_sink_tmp_sel(SAMPLE_DISPLAY(last_tmp_view->v_display));
+  sample_display_sink_tmp_sel(SAMPLE_DISPLAY(last_tmp_view->display));
 }
 
 void
@@ -1077,5 +1082,5 @@ view_clear_last_tmp_view (void)
 {
   if (!last_tmp_view) return;
 
-  sample_display_clear_sel(SAMPLE_DISPLAY(last_tmp_view->v_display));
+  sample_display_clear_sel(SAMPLE_DISPLAY(last_tmp_view->display));
 }

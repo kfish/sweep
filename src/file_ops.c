@@ -32,9 +32,9 @@
 
 #include "glib.h"
 
-#include "sweep.h"
+#include "sweep_types.h"
 #include "file_ops.h"
-#include "format.h"
+#include "sweep_typeconvert.h"
 #include "sample.h"
 #include "view.h"
 
@@ -193,7 +193,7 @@ sample_save (sw_sample * s, char * directory, char * filename)
   AFfilesetup outputSetup;
   AFframecount framecount;
   int file_format;
-  int channelcount, samplewidth=16;
+  int channelcount=1, samplewidth=16;
 
   if (!s) return -1;
   if (!filename) return -1;
@@ -205,8 +205,8 @@ sample_save (sw_sample * s, char * directory, char * filename)
 
   outputSetup = afNewFileSetup();
   afInitFileFormat(outputSetup, file_format);
-  afInitRate(outputSetup, AF_DEFAULT_TRACK, f->f_rate);
-  afInitChannels(outputSetup, AF_DEFAULT_TRACK, f->f_channels);
+  afInitRate(outputSetup, AF_DEFAULT_TRACK, f->rate);
+  afInitChannels(outputSetup, AF_DEFAULT_TRACK, f->channels);
 
   if (directory) {
     snprintf (pathname, SW_DIR_LEN,
@@ -223,7 +223,7 @@ sample_save (sw_sample * s, char * directory, char * filename)
 
   copydata = s->sdata->data;
 
-  channelcount = s->sdata->format->f_channels;
+  channelcount = s->sdata->format->channels;
   save_buffer = g_malloc (SAVE_BUFFER_LEN * (samplewidth / 8) * channelcount);
 
   framecount = s->sdata->s_length;

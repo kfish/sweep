@@ -29,11 +29,11 @@
 
 #include "callbacks.h"
 
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_undo.h"
 #include "sample.h"
 #include "interface.h"
 #include "edit.h"
-#include "undo.h"
 #include "sample-display.h"
 #include "driver.h"
 

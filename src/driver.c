@@ -33,7 +33,7 @@
 #include <sys/ioctl.h>
 #include <pthread.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
 #include "driver.h"
 #include "sample.h"
 
@@ -162,12 +162,12 @@ setup_dev_dsp (sw_sample * s)
     exit(-1);
     }
 
-  stereo = s->sdata->format->f_channels - 1;
+  stereo = s->sdata->format->channels - 1;
   if(ioctl(dev_dsp, SNDCTL_DSP_STEREO, &stereo) == -1 ) {
     perror("OSS: Unable to set channels");
   }
 
-  frequency = s->sdata->format->f_rate;
+  frequency = s->sdata->format->rate;
   if(ioctl(dev_dsp, SNDCTL_DSP_SPEED, &frequency) == -1 ) {
     perror("OSS: Unable to set playback frequency");
   }
@@ -245,7 +245,7 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
 
   sbytes = 2;
  
-  channels = s->sdata->format->f_channels;
+  channels = s->sdata->format->channels;
 
   playoffset = start;
   po = (gdouble)(start);
@@ -263,7 +263,7 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
 	si = (int)floor(po);
 	p = po - (gdouble)si;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	po += relpitch;
 	if (po > endf) break;
@@ -276,11 +276,11 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
 	p = po - (gdouble)si;
 	si *= 2;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	i++; si++;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(PLAYBACK_SCALE * view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	po += relpitch;
 	if (po > endf) break;

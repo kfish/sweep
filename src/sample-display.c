@@ -27,6 +27,8 @@
 
 #include <gtk/gtk.h>
 
+#include "sweep_app.h"
+
 #include "cursors.h"
 
 /* static cursor definitions */
@@ -46,16 +48,16 @@ gint current_tool = TOOL_SELECT;
 /* #define DRAW_CROSSING_VECTORS */
 
 #define PIXEL_TO_OFFSET(p) \
-  ((glong)(((gdouble)(p)) * (((gdouble)(s->view->v_end - s->view->v_start)) / ((gdouble)s->width))))
+  ((glong)(((gdouble)(p)) * (((gdouble)(s->view->end - s->view->start)) / ((gdouble)s->width))))
 
 #define XPOS_TO_OFFSET(x) \
-  (s->view->v_start + PIXEL_TO_OFFSET(x))
+  (s->view->start + PIXEL_TO_OFFSET(x))
 
 #define SAMPLE_TO_PIXEL(n) \
-  ((glong)((gdouble)(n) * (gdouble)s->width / (gdouble)(s->view->v_end - s->view->v_start)))
+  ((glong)((gdouble)(n) * (gdouble)s->width / (gdouble)(s->view->end - s->view->start)))
 
 #define OFFSET_TO_XPOS(o) \
-  SAMPLE_TO_PIXEL((o) - s->view->v_start)
+  SAMPLE_TO_PIXEL((o) - s->view->start)
 
 #define OFFSET_RANGE(l, x) ((x) < 0 ? 0 : ((x) >= (l) ? (l) - 1 : (x)))
 
@@ -146,7 +148,7 @@ sample_display_set_view (SampleDisplay *s, sw_view *view)
   s->old_mixerpos = -1;
   s->mixerpos = -1;
 	
-  /*  gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->view->v_start, s->view->v_start + (s->view->v_end - s->view->v_start));*/
+  /*  gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->view->start, s->view->start + (s->view->end - s->view->start));*/
 	
 #if 0
   s->old_ss = s->old_se = -1;
@@ -195,8 +197,8 @@ sample_display_set_window (SampleDisplay *s,
     end = start + vlen;
   }
 
-  s->view->v_start = start;
-  s->view->v_end = end;
+  s->view->start = start;
+  s->view->end = end;
 
   gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED]);
 
@@ -226,41 +228,41 @@ sample_display_init_display (SampleDisplay *s,
   if (s->width > 1) {
 
     len = s->view->sample->sdata->s_length;
-    vlen = s->view->v_end - s->view->v_start;
+    vlen = s->view->end - s->view->start;
 
     /* If we're already viewing EXACTLY the entire sample,
      * and dealing with a widening of the window, then
      * allow the visualisation to stretch. */
-    if (s->view->v_start == 0 && vlen == len && w > s->width)
+    if (s->view->start == 0 && vlen == len && w > s->width)
       goto stretch;
 
     /*
      * Funky integer error minimisation: this gives non-lossy results,
      *  as opposed to just using:
      *
-     * s->view->v_end = s->view->v_start +
-     *   (s->view->v_end - s->view->v_start) * w / s->width;
+     * s->view->end = s->view->start +
+     *   (s->view->end - s->view->start) * w / s->width;
      *
      * However there is a noticeable waver when resizing the display
      * when zoomed in far enough that individual samples are visible.
      *
-     * The alternative is to represent s->view->v_end (from which the
+     * The alternative is to represent s->view->end (from which the
      * visible length is determined) as a floating point number.
      */
 
     vlendelta = vlen * (w - s->width) / s->width;
 
     if (vlen+vlendelta > len) {
-      s->view->v_start = (len - (vlen+vlendelta)) / 2;
-      s->view->v_end = s->view->v_start + vlen + vlendelta;
-    } else if (s->view->v_start < 0) {
-      s->view->v_end += vlendelta - s->view->v_start;
-      s->view->v_start = 0;
-    } else if (s->view->v_end > len) {
-      s->view->v_start = s->view->v_end - vlen - vlendelta;
-      s->view->v_end = len;
+      s->view->start = (len - (vlen+vlendelta)) / 2;
+      s->view->end = s->view->start + vlen + vlendelta;
+    } else if (s->view->start < 0) {
+      s->view->end += vlendelta - s->view->start;
+      s->view->start = 0;
+    } else if (s->view->end > len) {
+      s->view->start = s->view->end - vlen - vlendelta;
+      s->view->end = len;
     } else {
-      s->view->v_end += vlendelta;
+      s->view->end += vlendelta;
     }
 
     gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED]);
@@ -404,7 +406,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
   sw_audio_t prev_maxpos, prev_minneg;
   glong i, step, nr_pos, nr_neg;
   sw_sample * sample;
-  const int channels = s->view->sample->sdata->format->f_channels;
+  const int channels = s->view->sample->sdata->format->channels;
 
   sample = s->view->sample;
 
@@ -494,7 +496,7 @@ sample_display_draw_data (GdkDrawable *win,
 {
   const int sh = s->height;
   int start_x, end_x;
-  const int channels = s->view->sample->sdata->format->f_channels;
+  const int channels = s->view->sample->sdata->format->channels;
 
   if(width == 0)
     return;
@@ -504,7 +506,7 @@ sample_display_draw_data (GdkDrawable *win,
 
 #if 0
   g_print("draw_data: view %u --> %u, drawing x=%d, width=%d\n",
-	  s->view->v_start, s->view->v_end, x, width);
+	  s->view->start, s->view->end, x, width);
 #endif
 
   start_x = OFFSET_TO_XPOS(0);
@@ -737,14 +739,14 @@ static int
 sample_display_startoffset_to_xpos (SampleDisplay *s,
 				    int offset)
 {
-  int d = offset - s->view->v_start;
+  int d = offset - s->view->start;
 
   if(d < 0)
     return 0;
-  if(d >= (s->view->v_end - s->view->v_start))
+  if(d >= (s->view->end - s->view->start))
     return s->width;
 
-  return d * s->width / (s->view->v_end - s->view->v_start);
+  return d * s->width / (s->view->end - s->view->start);
 }
 
 
@@ -752,11 +754,11 @@ static int
 sample_display_endoffset_to_xpos (SampleDisplay *s,
 				  int offset)
 {
-  if((s->view->v_end - s->view->v_start) < s->width) {
+  if((s->view->end - s->view->start) < s->width) {
     return sample_display_startoffset_to_xpos(s, offset);
   } else {
-    int d = offset - s->view->v_start;
-    int l = (1 - (s->view->v_end - s->view->v_start)) / s->width;
+    int d = offset - s->view->start;
+    int l = (1 - (s->view->end - s->view->start)) / s->width;
 
     /* you get these tests by setting the complete formula below
      * equal to 0 or s->width, respectively, and then resolving
@@ -764,10 +766,10 @@ sample_display_endoffset_to_xpos (SampleDisplay *s,
      */
     if(d < l)
       return 0;
-    if(d > (s->view->v_end - s->view->v_start) + l)
+    if(d > (s->view->end - s->view->start) + l)
       return s->width;
 
-    return (d * s->width + (s->view->v_end - s->view->v_start) - 1) / (s->view->v_end - s->view->v_start);
+    return (d * s->width + (s->view->end - s->view->start) - 1) / (s->view->end - s->view->start);
   }
 }
 #endif /* _{start,end}offset_to_xpos */
@@ -783,7 +785,7 @@ sample_display_do_marker_line (GdkDrawable *win,
 {
   int x;
 
-  if(offset >= s->view->v_start && offset <= s->view->v_end) {
+  if(offset >= s->view->start && offset <= s->view->end) {
 #if 0
     if(!endoffset)
       x = sample_display_startoffset_to_xpos(s, offset);
@@ -910,8 +912,8 @@ sample_display_draw (GtkWidget *widget,
 
   if(s->mixerpos != s->old_mixerpos) {
     for(i = 0; i < 2; i++) {
-      if(s->old_mixerpos >= s->view->v_start &&
-	 s->old_mixerpos < s->view->v_start + (s->view->v_end - s->view->v_start)) {
+      if(s->old_mixerpos >= s->view->start &&
+	 s->old_mixerpos < s->view->start + (s->view->end - s->view->start)) {
 	x = sample_display_startoffset_to_xpos(s, s->old_mixerpos);
 	area2.x = MIN(x_max - 1, MAX(x_min, x - 3));
 	area2.width = 7;
@@ -974,7 +976,7 @@ sample_display_handle_motion (SampleDisplay *s,
    *         otherwise the offset corresponding to the next pixel x+1.
    */
   ol = XPOS_TO_OFFSET(x);
-  if((s->view->v_end - s->view->v_start) < s->width) {
+  if((s->view->end - s->view->start) < s->width) {
     or = XPOS_TO_OFFSET(x) + 1;
   } else {
     or = XPOS_TO_OFFSET(x + 1);
@@ -1051,17 +1053,17 @@ sample_display_handle_motion_2 (SampleDisplay *s,
 {
   int new_win_start =
     s->selecting_wins0 + (s->selecting_x0 - x) *
-    (s->view->v_end - s->view->v_start) / s->width;
+    (s->view->end - s->view->start) / s->width;
 
   new_win_start = CLAMP(new_win_start, 0,
 			s->view->sample->sdata->s_length -
-			(s->view->v_end - s->view->v_start));
+			(s->view->end - s->view->start));
 
-  if(new_win_start != s->view->v_start) {
+  if(new_win_start != s->view->start) {
     sample_display_set_window (s,
 			       new_win_start,
 			       new_win_start +
-			       (s->view->v_end - s->view->v_start));
+			       (s->view->end - s->view->start));
   }
 }
 
@@ -1134,7 +1136,7 @@ sample_display_button_press (GtkWidget      *widget,
   if (current_tool == TOOL_ZOOM) {
     gdk_window_get_pointer (event->window, &x, &y, &state);
     o = XPOS_TO_OFFSET(x);
-    vlen = s->view->v_end - s->view->v_start;
+    vlen = s->view->end - s->view->start;
     if (state & GDK_SHIFT_MASK) {
       view_set_ends (s->view, o - 3*vlen/4, o + 3*vlen/4);
     } else {
@@ -1205,11 +1207,11 @@ sample_display_button_press (GtkWidget      *widget,
     } else if(last_button == 2) {
       s->selecting = SELECTING_PAN_WINDOW;
       gdk_window_get_pointer (event->window, &s->selecting_x0, NULL, NULL);
-      s->selecting_wins0 = s->view->v_start;
+      s->selecting_wins0 = s->view->start;
       SET_CURSOR(widget, move_cr);
     } else if(last_button == 3) {
-      if(s->view && s->view->v_menu) {
-	gtk_menu_popup(GTK_MENU(s->view->v_menu),
+      if(s->view && s->view->menu) {
+	gtk_menu_popup(GTK_MENU(s->view->menu),
 		       NULL, NULL, NULL,
 		       NULL, 3, event->time);
       }

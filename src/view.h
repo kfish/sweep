@@ -23,7 +23,8 @@
 
 #include <gtk/gtk.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_app.h"
 
 sw_view *
 view_new(sw_sample * sample, glong start, glong end, gfloat vol);

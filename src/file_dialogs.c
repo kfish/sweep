@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
 #include "file_ops.h"
 #include "sample.h"
 #include "sample-display.h"

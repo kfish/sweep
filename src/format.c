@@ -22,35 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include "sample.h"
-#include "view.h"
-#include "undo.h"
-#include "sample-display.h"
-#include "driver.h"
-
-extern sw_view * last_tmp_view;
-
-
-/* Format functions */
-
-/*
- * Determine the number of samples occupied by a number of frames
- * in a given format.
- */
-glong
-frames_to_samples (sw_format * format, glong nr_frames)
-{
-  return (nr_frames * (glong)format->f_channels);
-}
-
-/*
- * Determine the size in bytes of a number of frames of a given format.
- */
-glong
-frames_to_bytes (sw_format * format, glong nr_frames)
-{
-  return (nr_frames * (glong)format->f_channels * sizeof(sw_audio_t));
-}
+#include "sweep_types.h"
 
 /*
  * Print a number of bytes to 3 significant figures
@@ -76,15 +48,6 @@ snprint_bytes (gchar * s, gint n, glong nr_bytes)
 }
 
 /*
- * Convert a number of frames to seconds
- */
-gfloat
-frames_to_time (sw_format * format, glong nr_frames)
-{
-  return ((gfloat)nr_frames / (gfloat)format->f_rate);
-}
-
-/*
  * Print a time in the format HH:MM:SS.sss
  */
 void
@@ -107,8 +70,8 @@ format_new (gint nr_channels, gint frame_rate)
   sw_format * format;
 
   format = g_malloc (sizeof(sw_format));
-  format->f_channels = nr_channels;
-  format->f_rate = frame_rate;
+  format->channels = nr_channels;
+  format->rate = frame_rate;
 
   return format;
 }
@@ -118,7 +81,7 @@ format_copy (sw_format * f)
 {
   sw_format * format;
 
-  format = format_new (f->f_channels, f->f_rate);
+  format = format_new (f->channels, f->rate);
 
   return format;
 }
@@ -126,6 +89,6 @@ format_copy (sw_format * f)
 gint
 format_equal (sw_format * f1, sw_format * f2)
 {
-  return (f1->f_channels == f2->f_channels &&
-	  f1->f_rate == f2->f_rate);
+  return (f1->channels == f2->channels &&
+	  f1->rate == f2->rate);
 }

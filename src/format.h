@@ -21,22 +21,7 @@
 #ifndef __FORMAT_H__
 #define __FORMAT_H__
 
-#include <glib.h>
-
-#include "sweep.h"
-
-/*
- * Determine the number of samples occupied by a number of frames
- * in a given format.
- */
-glong
-frames_to_samples (sw_format * format, glong nr_frames);
-
-/*
- * Determine the size in bytes of a number of frames of a given format.
- */
-glong
-frames_to_bytes (sw_format * format, glong nr_frames);
+#include "sweep_types.h"
 
 /*
  * Print a number of bytes to 3 significant figures
@@ -44,12 +29,6 @@ frames_to_bytes (sw_format * format, glong nr_frames);
  */
 void
 snprint_bytes (gchar * s, gint n, glong nr_bytes);
-
-/*
- * Convert a number of frames to seconds
- */
-gfloat
-frames_to_time (sw_format * format, glong nr_frames);
 
 /*
  * Print a time in the format HH:MM:SS.sss

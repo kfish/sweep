@@ -18,25 +18,41 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifndef __SWEEP_APP_H__
+#define __SWEEP_APP_H__
 
-#ifndef __FILTER_OPS_H__
-#define __FILTER_OPS_H__
+#include <gtk/gtk.h>
 
-typedef void (*SweepFilterRegion) (gpointer data,
-				   sw_format * format, int nr_frames,
-				   sw_param_set pset, gpointer custom_data);
+#include "i18n.h"
 
-typedef sw_sdata * (*SweepFilter) (sw_sdata * sdata, sw_param_set pset,
-				   gpointer custom_data);
+/* Tools */
+enum {
+  TOOL_NONE = 0,
+  TOOL_SELECT,
+  TOOL_MOVE,
+  TOOL_ZOOM,
+  TOOL_CROP
+};
 
-sw_op_instance *
-register_filter_region_op (sw_sample * sample, char * desc,
-			   SweepFilterRegion func, sw_param_set pset,
-			   gpointer custom_data);
+typedef struct _sw_view sw_view;
 
-sw_op_instance *
-register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
-		    sw_param_set pset, gpointer custom_data);
+struct _sw_view {
+  sw_sample * sample;
+
+  glong start, end; /* bounds of visible frames */
+  gfloat vol;
+
+  GtkWidget * window;
+  GtkWidget * hruler;
+  GtkWidget * scrollbar;
+  GtkWidget * display;
+  GtkWidget * pos;
+  GtkWidget * status;
+  GtkWidget * menubar;
+  GtkWidget * menu;
+  GtkObject * adj;
+  GtkObject * vol_adj;
+};
 
 
-#endif /* __FILTER_OPS_H__ */
+#endif /* __SWEEP_APP_H__ */

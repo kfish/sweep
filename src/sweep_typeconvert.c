@@ -18,30 +18,45 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DRIVER_OSS_H__
-#define __DRIVER_OSS_H__
+#include <stdio.h>
+#include <string.h>
+#include <glib.h>
 
-#include "sweep_app.h"
+#include "sweep_types.h"
 
-void
-play_view_all (sw_view * view);
+#if 0
+#include "sample.h"
+#include "view.h"
+#include "undo.h"
+#include "sample-display.h"
+#include "driver.h"
+#endif
 
-void
-play_view_all_loop (sw_view * view);
 
-void
-play_view_sel (sw_view * view);
+/*
+ * Determine the number of samples occupied by a number of frames
+ * in a given format.
+ */
+glong
+frames_to_samples (sw_format * format, glong nr_frames)
+{
+  return (nr_frames * (glong)format->channels);
+}
 
-void
-play_view_sel_loop (sw_view * view);
+/*
+ * Determine the size in bytes of a number of frames of a given format.
+ */
+glong
+frames_to_bytes (sw_format * format, glong nr_frames)
+{
+  return (nr_frames * (glong)format->channels * sizeof(sw_audio_t));
+}
 
-void
-play_view_all_pitch (sw_view * view, gfloat pitch);
-
-void
-stop_playback (void);
-
-void
-sample_stop_playback (sw_sample * sample);
-
-#endif /* __DRIVER_OSS_H__ */
+/*
+ * Convert a number of frames to seconds
+ */
+gfloat
+frames_to_time (sw_format * format, glong nr_frames)
+{
+  return ((gfloat)nr_frames / (gfloat)format->rate);
+}

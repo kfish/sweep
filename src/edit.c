@@ -21,11 +21,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_typeconvert.h"
+#include "sweep_undo.h"
 #include "edit.h"
 #include "format.h"
 #include "sample.h"
-#include "undo.h"
 
 edit_buffer * ebuf = NULL;
 
@@ -209,8 +210,8 @@ sample_from_edit_buffer (edit_buffer * eb)
   length = er->end - start;
 
   s = sample_new_empty (NULL, "Untitled",
-			eb->format->f_channels,
-			eb->format->f_rate,
+			eb->format->channels,
+			eb->format->rate,
 			length);
 
   offset0 = frames_to_bytes (eb->format, start);
@@ -254,7 +255,7 @@ splice_out_sel (sw_sdata * sdata)
 #endif
 
   out = sdata_new_empty (sdata->directory, sdata->filename,
-			 f->f_channels, f->f_rate, length);
+			 f->channels, f->rate, length);
 
   d = out->data;
 
@@ -333,7 +334,7 @@ splice_in_eb (sw_sdata * sdata, edit_buffer * eb)
   di = sdata->data;
 
   out = sdata_new_empty (sdata->directory, sdata->filename,
-			 f->f_channels, f->f_rate, length);
+			 f->channels, f->rate, length);
 
   d = out->data;
 
@@ -418,7 +419,7 @@ paste_at (sw_sdata * sdata, edit_buffer * eb)
   length = sdata->s_length + paste_length;
 
   out = sdata_new_empty (sdata->directory, sdata->filename,
-			 f->f_channels, f->f_rate, length);
+			 f->channels, f->rate, length);
 
   d = out->data;
 

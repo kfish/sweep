@@ -27,6 +27,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+#include "i18n.h"
+
 #include "file_ops.h"
 #include "interface.h"
 #include "plugin.h"

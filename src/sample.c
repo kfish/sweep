@@ -22,10 +22,12 @@
 #include <string.h>
 #include <glib.h>
 
+
 #include "sample.h"
+#include "sweep_typeconvert.h"
 #include "format.h"
 #include "view.h"
-#include "undo.h"
+#include "sweep_undo.h"
 #include "sample-display.h"
 #include "driver.h"
 
@@ -133,8 +135,8 @@ sample_new_copy(sw_sample * s)
 
   sn = sample_new_empty(s->sdata->directory,
 			s->sdata->filename,
-			s->sdata->format->f_channels,
-			s->sdata->format->f_rate,
+			s->sdata->format->channels,
+			s->sdata->format->rate,
 			s->sdata->s_length);
 
   if(!sn) {
@@ -240,7 +242,7 @@ sample_start_marching_ants (sw_sample * s)
 
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
-    sample_display_start_marching_ants (SAMPLE_DISPLAY(v->v_display));
+    sample_display_start_marching_ants (SAMPLE_DISPLAY(v->display));
   }
 }
 
@@ -252,7 +254,7 @@ sample_stop_marching_ants (sw_sample * s)
 
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
-    sample_display_stop_marching_ants (SAMPLE_DISPLAY(v->v_display));
+    sample_display_stop_marching_ants (SAMPLE_DISPLAY(v->display));
   }
 }
 

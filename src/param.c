@@ -19,7 +19,8 @@
  */
 
 #include <stdio.h>
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_app.h"
 
 static gint
 param_cmp (sw_param_type type, sw_param p1, sw_param p2)
@@ -135,7 +136,7 @@ print_param_set (sw_proc * proc, sw_param_set pset)
   sw_param_spec * ps;
   int valid_mask;
 
-  printf ("\"%s\" has %d params.\n\n", proc->proc_name, proc->nr_params);
+  printf ("\"%s\" has %d params.\n\n", proc->name, proc->nr_params);
 
   for (i=0; i < proc->nr_params; i++) {
     ps = &proc->param_specs[i];
@@ -303,8 +304,8 @@ param_set_apply_cb (GtkWidget * widget, gpointer data)
   print_param_set (ps->proc, ps->pset);
 #endif
 
-  if (ps->proc->proc_apply) {
-    ps->proc->proc_apply (ps->view->sample, ps->pset, ps->proc->proc_data);
+  if (ps->proc->apply) {
+    ps->proc->apply (ps->view->sample, ps->pset, ps->proc->custom_data);
   }
 
   gtk_widget_destroy (ps->window);
@@ -517,8 +518,8 @@ param_set_suggest_cb (GtkWidget * widget, gpointer data)
 
   GtkWidget * vbox;
 
-  if (ps->proc->proc_suggest) {
-    ps->proc->proc_suggest (ps->view->sample, ps->pset, ps->proc->proc_data);
+  if (ps->proc->suggest) {
+    ps->proc->suggest (ps->view->sample, ps->pset, ps->proc->custom_data);
   }
 
   gtk_widget_destroy (ps->vbox);
@@ -544,7 +545,7 @@ create_param_set_adjuster (sw_proc * proc, sw_view * view,
   GtkWidget * button;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW(window), proc->proc_name);
+  gtk_window_set_title (GTK_WINDOW(window), proc->name);
 
   ps = ps_adjuster_new (proc, view, pset, window);
 

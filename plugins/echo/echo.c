@@ -22,12 +22,11 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "sweep.h"
-#include "edit.h"
-#include "format.h"
-#include "filter_ops.h"
-#include "sample.h"
-#include "undo.h"
+#include "sweep_types.h"
+#include "sweep_typeconvert.h"
+#include "sweep_filter.h"
+#include "i18n.h"
+
 
 #define NR_PARAMS 5
 
@@ -107,7 +106,7 @@ static sw_param_spec param_specs[] = {
 };
 
 static void
-echo_suggest (sw_sample * sample, sw_param_set pset)
+echo_suggest (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   pset[0].i = 2000;
   pset[1].f = 0.4;

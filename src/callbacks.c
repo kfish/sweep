@@ -29,11 +29,11 @@
 
 #include "callbacks.h"
 
-#include "sweep.h"
+#include "sweep_types.h"
+#include "sweep_undo.h"
 #include "sample.h"
 #include "interface.h"
 #include "edit.h"
-#include "undo.h"
 #include "sample-display.h"
 #include "driver.h"
 
@@ -155,13 +155,13 @@ zoom_in_cb (GtkWidget * widget, gpointer data)
   sw_view * v = sd->view;
   glong nstart, nlength, olength;
 
-  olength = v->v_end - v->v_start;
+  olength = v->end - v->start;
   nlength = (glong)((double)olength / DEFAULT_ZOOM);
 
   if (nlength < olength) {
-    nstart = v->v_start + (olength - nlength) / 2UL;
+    nstart = v->start + (olength - nlength) / 2UL;
   } else {
-    nstart = v->v_start - (nlength - olength) / 2UL;
+    nstart = v->start - (nlength - olength) / 2UL;
   }
 
   if(nlength <= DEFAULT_MIN_ZOOM) return;
@@ -176,18 +176,18 @@ zoom_out_cb (GtkWidget * widget, gpointer data)
   sw_view * v = sd->view;
   glong nstart, nlength, olength;
 
-  olength = v->v_end - v->v_start;
+  olength = v->end - v->start;
   nlength = (glong)((double)olength * DEFAULT_ZOOM);
 
   if (nlength < 0) return; /* glong multiplication overflow */
 
   if (nlength > olength) {
-    nstart = v->v_start - (nlength - olength) / 2UL;
+    nstart = v->start - (nlength - olength) / 2UL;
   } else {
-    nstart = v->v_start + (olength - nlength) / 2UL;
+    nstart = v->start + (olength - nlength) / 2UL;
   }
 
-  if (nstart == v->v_start && (nstart+nlength) == v->v_end)
+  if (nstart == v->start && (nstart+nlength) == v->end)
     return;
 
   view_set_ends(sd->view, nstart, nstart+nlength);
@@ -223,7 +223,7 @@ void
 zoom_left_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->adj);
 
   adj->value -= adj->page_size;
   if(adj->value < adj->lower) {
@@ -237,7 +237,7 @@ void
 zoom_right_cb (GtkWidget * widget, gpointer data)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
-  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->v_adj);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(sd->view->adj);
 
   adj->value += adj->page_size;
   if(adj->value > adj->upper) {
@@ -340,9 +340,9 @@ sd_win_changed_cb (GtkWidget * widget)
   SampleDisplay * sd = SAMPLE_DISPLAY(widget);
   sw_view * v = sd->view;
 
-  gtk_signal_handler_block_by_data (GTK_OBJECT(v->v_adj), v);
+  gtk_signal_handler_block_by_data (GTK_OBJECT(v->adj), v);
   view_fix_adjustment (sd->view);
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(v->v_adj), v);
+  gtk_signal_handler_unblock_by_data (GTK_OBJECT(v->adj), v);
 
   view_refresh_hruler (v);
 }
@@ -351,8 +351,8 @@ void
 adj_changed_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * v = (sw_view *)data;
-  SampleDisplay * sd = SAMPLE_DISPLAY(v->v_display);
-  GtkAdjustment * adj = GTK_ADJUSTMENT(v->v_adj);
+  SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
   gtk_signal_handler_block_by_data (GTK_OBJECT(sd), v);
   sample_display_set_window(sd,

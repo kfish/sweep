@@ -25,7 +25,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
-#include "sweep.h"
+#include "sweep_types.h"
 #include "sample.h"
 #include "view.h"
 

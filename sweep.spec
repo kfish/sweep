@@ -26,7 +26,7 @@ and filters.
 %setup
 
 %build
-LINGUAS="fr" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+LINGUAS="fr hu it de" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
 gmake
 
 %install

@@ -18,10 +18,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __UNDO_H__
-#define __UNDO_H__
+#ifndef __SWEEP_UNDO_H__
+#define __SWEEP_UNDO_H__
 
-#include "sweep.h"
+#include "sweep_types.h"
 
 sw_op_instance *
 sw_op_instance_new (char * desc, sw_operation * op);
@@ -103,4 +103,4 @@ void
 redo_by_splice_in (sw_sample * s, splice_data * sp);
 
 
-#endif /* __UNDO_H__ */
+#endif /* __SWEEP_UNDO_H__ */

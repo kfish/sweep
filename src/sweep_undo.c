@@ -22,7 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include "undo.h"
+#include "sweep_undo.h"
 #include "edit.h"
 #include "sample.h"
 

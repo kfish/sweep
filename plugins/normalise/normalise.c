@@ -23,13 +23,11 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "sweep.h"
-#include "edit.h"
-#include "format.h"
-#include "filter_ops.h"
-#include "sample.h"
-#include "undo.h"
+#include "sweep_types.h"
+#include "sweep_typeconvert.h"
+#include "sweep_filter.h"
 
+#include "i18n.h"
 
 static sw_sdata *
 normalise (sw_sdata * sdata, sw_param_set pset, gpointer custom_data)
@@ -48,7 +46,7 @@ normalise (sw_sdata * sdata, sw_param_set pset, gpointer custom_data)
 
     d = (sw_audio_t *)(sdata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
-    for (i=0; i < len * f->f_channels; i++) {
+    for (i=0; i < len * f->channels; i++) {
       if(d[i]>=0) max = MAX(max, d[i]);
       else max = MAX(max, -d[i]);
     }
@@ -62,7 +60,7 @@ normalise (sw_sdata * sdata, sw_param_set pset, gpointer custom_data)
 
     d = (sw_audio_t *)(sdata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
-    for (i=0; i < len * f->f_channels; i++) {
+    for (i=0; i < len * f->channels; i++) {
       d[i] = (sw_audio_t)((gfloat)d[i] * factor);
     }
   }

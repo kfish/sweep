@@ -7,6 +7,14 @@ INCLUDES = \
 
 bin_PROGRAMS = sweep
 
+sweepincludedir = $(includedir)/sweep
+
+sweepinclude_HEADERS = \
+	sweep.h \
+	sweep_types.h \
+	sweep_typeconvert.h \
+	sweep_filter.h
+
 sweep_SOURCES = \
 	main.c sweep.h \
 	about_dialog.c about_dialog.h \
@@ -18,13 +26,14 @@ sweep_SOURCES = \
 	cursors.c cursors.h \
 	driver.c driver.h \
 	edit.c edit.h \
-	filter_ops.c filter_ops.h \
 	notes.c notes.h \
 	param.c param.h \
 	plugin.c plugin.h \
 	sample.c sample.h \
 	sample-display.c sample-display.h \
-	undo.c undo.h \
+	sweep_filter.c sweep_filter.h \
+	sweep_typeconvert.c sweep_typeconvert.h \
+	sweep_undo.c sweep_undo.h \
 	view.c view.h \
 	pixmaps.h \
 	view_pixmaps.h \

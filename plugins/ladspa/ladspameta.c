@@ -37,12 +37,9 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "sweep.h"
-#include "edit.h"
-#include "format.h"
-#include "filter_ops.h"
-#include "sample.h"
-#include "undo.h"
+#include "sweep_types.h"
+#include "sweep_typeconvert.h"
+#include "sweep_filter.h"
 
 #include "ladspa.h"
 
@@ -53,9 +50,9 @@ and your operating system and compiler.
 #endif
 
 /* Compile in support for inplace processing? */
-#define _PROCESS_INPLACE_
+#define _PROCESS_INPLACE
 
-#ifdef _PROCESS_INPLACE_
+#ifdef _PROCESS_INPLACE
 #define LADSPA_META_IS_INPLACE_BROKEN(x) LADSPA_IS_INPLACE_BROKEN(x)
 #else
 #define LADSPA_META_IS_INPLACE_BROKEN(x) (1L)
@@ -216,7 +213,7 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
     nr_ao=0; /* audio outputs */
 
   /* The number of audio channels to be processed */
-  gint nr_channels = format->f_channels;
+  gint nr_channels = format->channels;
 
   /* The number of input and output buffers to use */
   gint nr_i=0, nr_o=0;
@@ -226,7 +223,7 @@ ladspa_meta_apply_region (gpointer pcmdata, sw_format * format,
 
 
   /* instantiate the ladspa plugin */
-  handle = d->instantiate (d, (long)format->f_rate);
+  handle = d->instantiate (d, (long)format->rate);
 
   /* Cache how many of each type of port this ladspa plugin has */
   for (port_i=0; port_i < d->PortCount; port_i++) {
@@ -489,9 +486,9 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 	continue;
 
       proc = g_malloc0 (sizeof (*proc));
-      proc->proc_name = d->Name;
-      proc->proc_author = d->Maker;
-      proc->proc_copyright = d->Copyright;
+      proc->name = d->Name;
+      proc->author = d->Maker;
+      proc->copyright = d->Copyright;
 
       nr_params=0;
       for (j=0; j < d->PortCount; j++) {
@@ -525,9 +522,9 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 	}
       }
 
-      proc->proc_apply = ladspa_meta_apply;
+      proc->apply = ladspa_meta_apply;
 
-      proc->proc_data = lm_custom_new (d, proc->param_specs);
+      proc->custom_data = lm_custom_new (d, proc->param_specs);
 
       *gl = g_list_append (*gl, proc);
     }
