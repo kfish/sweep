@@ -22,7 +22,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 /*
  * Print a number of bytes to 3 significant figures

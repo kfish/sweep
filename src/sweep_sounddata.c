@@ -22,12 +22,13 @@
 #include <string.h>
 #include <glib.h>
 
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_selection.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_selection.h>
+#include <sweep/sweep_undo.h>
+
 #include "format.h"
 #include "view.h"
-#include "sweep_undo.h"
 #include "sample-display.h"
 #include "driver.h"
 

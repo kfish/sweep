@@ -18,22 +18,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SWEEP_H__
-#define __SWEEP_H__
+#ifndef __SWEEP_VERSION_H__
+#define __SWEEP_VERSION_H__
 
-#include <sweep/sweep_version.h>
+/*
+ * The current version of Sweep's native plugin interface.
+ *
+ * Increment this when breaking binary compatability.
+ */
+#define SWEEP_PLUGIN_API_MAJOR 1
 
-#include <sweep/sweep_types.h>
-#include <sweep/sweep_typeconvert.h>
-#include <sweep/sweep_undo.h>
-#include <sweep/sweep_sounddata.h>
-#include <sweep/sweep_selection.h>
-#include <sweep/sweep_filter.h>
+#define SWEEP_PLUGIN_API_MINOR 0
 
-#endif  /* __SWEEP_H__ */
+#define SWEEP_PLUGIN_API_REVISION 0
 
-
-
-
-
-
+#endif /* __SWEEP_VERSION_H__ */

@@ -27,9 +27,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include "sweep_version.h"
-
-#include "i18n.h"
+#include <sweep/sweep_version.h>
+#include <sweep/sweep_i18n.h>
 
 #include "file_ops.h"
 #include "interface.h"

@@ -21,7 +21,7 @@
 #ifndef __FORMAT_H__
 #define __FORMAT_H__
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 gint
 format_equal (sw_format * f1, sw_format * f2);

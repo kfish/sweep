@@ -28,8 +28,9 @@
 
 #include <gtk/gtk.h>
 
-#include "sweep_types.h"
-#include "i18n.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_i18n.h>
+
 #include "about_dialog.h"
 
 #define USE_LOGO

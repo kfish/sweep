@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-05 18:41+1100\n"
+"POT-Creation-Date: 2000-10-07 22:07+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,86 +14,86 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: src/main.c:107
+#: src/main.c:106
 msgid "Sweep version"
 msgstr ""
 
-#: src/main.c:108
+#: src/main.c:107
 msgid "Sweep plugin API version"
 msgstr ""
 
-#: src/main.c:114
+#: src/main.c:113
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr ""
 
-#: src/main.c:115
+#: src/main.c:114
 msgid "Valid options are:\n"
 msgstr ""
 
-#: src/main.c:116
+#: src/main.c:115
 msgid "  -h --help                Output this help.\n"
 msgstr ""
 
-#: src/main.c:117
+#: src/main.c:116
 msgid "  -v --version             Output version info.\n"
 msgstr ""
 
-#: src/main.c:118
+#: src/main.c:117
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr ""
 
-#: src/about_dialog.c:69
+#: src/about_dialog.c:70
 msgid "About Sweep"
 msgstr ""
 
-#: src/about_dialog.c:115
+#: src/about_dialog.c:116
 msgid "This is Sweep version"
 msgstr ""
 
-#: src/about_dialog.c:131
+#: src/about_dialog.c:132
 msgid "http://sweep.sourceforge.net/"
 msgstr ""
 
-#: src/interface.c:82
+#: src/interface.c:83
 msgid "Sweep"
 msgstr ""
 
 #. File
-#: src/interface.c:107 src/view.c:161
+#: src/interface.c:108 src/view.c:164
 msgid "File"
 msgstr ""
 
-#: src/interface.c:112 src/view.c:167
+#: src/interface.c:113 src/view.c:170
 msgid "New"
 msgstr ""
 
-#: src/interface.c:121
+#: src/interface.c:122
 msgid "Open"
 msgstr ""
 
-#: src/interface.c:130 src/view.c:219
+#: src/interface.c:131 src/view.c:222
 msgid "Quit"
 msgstr ""
 
-#: src/interface.c:141
+#: src/interface.c:142
 msgid "Help"
 msgstr ""
 
-#: src/interface.c:146
+#: src/interface.c:147
 msgid "About..."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:167 src/view.c:312
+#: src/interface.c:168 src/view.c:315
 msgid "Select"
 msgstr ""
 
-#: src/interface.c:168
+#: src/interface.c:169
 msgid "Select regions of a sample"
 msgstr ""
 
-#: src/interface.c:169
+#: src/interface.c:170
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -101,292 +101,292 @@ msgid ""
 msgstr ""
 
 #. Radio group
-#: src/interface.c:184
+#: src/interface.c:185
 msgid "Move"
 msgstr ""
 
-#: src/interface.c:185
+#: src/interface.c:186
 msgid "Move regions in a sample"
 msgstr ""
 
-#: src/interface.c:186
+#: src/interface.c:187
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:199 src/view.c:394
+#: src/interface.c:200 src/view.c:397
 msgid "Zoom"
 msgstr ""
 
-#: src/interface.c:200
+#: src/interface.c:201
 msgid "Zoom in & out"
 msgstr ""
 
-#: src/interface.c:201
+#: src/interface.c:202
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
 
-#: src/param.c:565
+#: src/param.c:566
 msgid "Suggest"
 msgstr ""
 
-#: src/param.c:586
+#: src/param.c:587
 msgid "OK"
 msgstr ""
 
-#: src/param.c:592
+#: src/param.c:593
 msgid "Cancel"
 msgstr ""
 
-#: src/view.c:176
+#: src/view.c:179
 msgid "Open..."
 msgstr ""
 
-#: src/view.c:185
+#: src/view.c:188
 msgid "Save"
 msgstr ""
 
-#: src/view.c:194
+#: src/view.c:197
 msgid "Save As..."
 msgstr ""
 
-#: src/view.c:200
+#: src/view.c:203
 msgid "Revert"
 msgstr ""
 
-#: src/view.c:210
+#: src/view.c:213
 msgid "Close"
 msgstr ""
 
 #. Edit
-#: src/view.c:229
+#: src/view.c:232
 msgid "Edit"
 msgstr ""
 
-#: src/view.c:235
+#: src/view.c:238
 msgid "Undo"
 msgstr ""
 
-#: src/view.c:245
+#: src/view.c:248
 msgid "Redo"
 msgstr ""
 
-#: src/view.c:258
+#: src/view.c:261
 msgid "Delete"
 msgstr ""
 
-#: src/view.c:264
+#: src/view.c:267
 msgid "Cut"
 msgstr ""
 
-#: src/view.c:273
+#: src/view.c:276
 msgid "Copy"
 msgstr ""
 
-#: src/view.c:282
+#: src/view.c:285
 msgid "Paste"
 msgstr ""
 
-#: src/view.c:291
+#: src/view.c:294
 msgid "Paste as New"
 msgstr ""
 
-#: src/view.c:301
+#: src/view.c:304
 msgid "Clear"
 msgstr ""
 
-#: src/view.c:318
+#: src/view.c:321
 msgid "Invert"
 msgstr ""
 
-#: src/view.c:326
+#: src/view.c:329
 msgid "All"
 msgstr ""
 
-#: src/view.c:334
+#: src/view.c:337
 msgid "None"
 msgstr ""
 
 #. View
-#: src/view.c:344
+#: src/view.c:347
 msgid "View"
 msgstr ""
 
-#: src/view.c:350
+#: src/view.c:353
 msgid "Zoom In"
 msgstr ""
 
-#: src/view.c:359
+#: src/view.c:362
 msgid "Zoom Out"
 msgstr ""
 
-#: src/view.c:368
+#: src/view.c:371
 msgid "Zoom to selection"
 msgstr ""
 
-#: src/view.c:375
+#: src/view.c:378
 msgid "Left"
 msgstr ""
 
-#: src/view.c:384
+#: src/view.c:387
 msgid "Right"
 msgstr ""
 
-#: src/view.c:400
+#: src/view.c:403
 #, c-format
 msgid "50%"
 msgstr ""
 
-#: src/view.c:406
+#: src/view.c:409
 #, c-format
 msgid "100%"
 msgstr ""
 
-#: src/view.c:420
+#: src/view.c:423
 msgid "New View"
 msgstr ""
 
 #. Sample
-#: src/view.c:427
+#: src/view.c:430
 msgid "Sample"
 msgstr ""
 
-#: src/view.c:433
+#: src/view.c:436
 msgid "Duplicate"
 msgstr ""
 
 #. Filters
-#: src/view.c:443
+#: src/view.c:446
 msgid "Filters"
 msgstr ""
 
 #. Playback
-#: src/view.c:457
+#: src/view.c:460
 msgid "Playback"
 msgstr ""
 
-#: src/view.c:463
+#: src/view.c:466
 msgid "Play sample"
 msgstr ""
 
-#: src/view.c:472
+#: src/view.c:475
 msgid "Loop sample"
 msgstr ""
 
-#: src/view.c:481
+#: src/view.c:484
 msgid "Play selection"
 msgstr ""
 
-#: src/view.c:490
+#: src/view.c:493
 msgid "Loop selection"
 msgstr ""
 
-#: src/view.c:503
+#: src/view.c:506
 msgid "Note"
 msgstr ""
 
-#: src/view.c:565
+#: src/view.c:568
 msgid "Stop"
 msgstr ""
 
-#: src/view.c:971
+#: src/view.c:974
 msgid "Untitled"
 msgstr ""
 
-#: src/view.c:973
+#: src/view.c:976
 msgid "Mono"
 msgstr ""
 
-#: src/view.c:973
+#: src/view.c:976
 msgid "Stereo"
 msgstr ""
 
-#: plugins/echo/echo.c:57
+#: plugins/echo/echo.c:54
 msgid "Delay"
 msgstr ""
 
-#: plugins/echo/echo.c:58
+#: plugins/echo/echo.c:55
 msgid "Time to delay by"
 msgstr ""
 
-#: plugins/echo/echo.c:65
+#: plugins/echo/echo.c:62
 msgid "Gain"
 msgstr ""
 
-#: plugins/echo/echo.c:66
+#: plugins/echo/echo.c:63
 msgid "Gain with which to mix in delayed signal"
 msgstr ""
 
-#: plugins/echo/echo.c:111 plugins/echo/echo.c:117
+#: plugins/echo/echo.c:108 plugins/echo/echo.c:114
 msgid "Echo"
 msgstr ""
 
-#: plugins/echo/echo.c:118
+#: plugins/echo/echo.c:115
 msgid "Apply an echo to selected regions of a sample"
 msgstr ""
 
-#: plugins/normalise/normalise.c:76 plugins/normalise/normalise.c:81
+#: plugins/normalise/normalise.c:73 plugins/normalise/normalise.c:78
 msgid "Normalise"
 msgstr ""
 
-#: plugins/normalise/normalise.c:82
+#: plugins/normalise/normalise.c:79
 msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
 msgstr ""
 
-#: plugins/reverse/reverse.c:61 plugins/reverse/reverse.c:67
+#: plugins/reverse/reverse.c:58 plugins/reverse/reverse.c:64
 msgid "Reverse"
 msgstr ""
 
-#: plugins/reverse/reverse.c:68
+#: plugins/reverse/reverse.c:65
 msgid "Reverse selected regions of a sample"
 msgstr ""
 
-#: plugins/example/example.c:42 plugins/example/example.c:91
+#: plugins/example/example.c:39 plugins/example/example.c:88
 msgid "With a fork"
 msgstr ""
 
-#: plugins/example/example.c:43
+#: plugins/example/example.c:40
 msgid "With a spoon"
 msgstr ""
 
-#: plugins/example/example.c:44
+#: plugins/example/example.c:41
 msgid "With false teeth"
 msgstr ""
 
-#: plugins/example/example.c:45
+#: plugins/example/example.c:42
 msgid "With Nigel's bum"
 msgstr ""
 
-#: plugins/example/example.c:61
+#: plugins/example/example.c:58
 msgid "Flim"
 msgstr ""
 
-#: plugins/example/example.c:62
+#: plugins/example/example.c:59
 msgid "Should you manage your flim?"
 msgstr ""
 
-#: plugins/example/example.c:69
+#: plugins/example/example.c:66
 msgid "Beans"
 msgstr ""
 
-#: plugins/example/example.c:70
+#: plugins/example/example.c:67
 msgid "Method of eating beans"
 msgstr ""
 
-#: plugins/example/example.c:77
+#: plugins/example/example.c:74
 msgid "Pants methodology"
 msgstr ""
 
-#: plugins/example/example.c:78
+#: plugins/example/example.c:75
 msgid "How many pants should you wear per day?"
 msgstr ""
 
-#: plugins/example/example.c:127 plugins/example/example.c:134
+#: plugins/example/example.c:124 plugins/example/example.c:131
 msgid "Example Filter Region"
 msgstr ""
 
-#: plugins/example/example.c:135
+#: plugins/example/example.c:132
 msgid "An example filter region plugin"
 msgstr ""

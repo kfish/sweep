@@ -25,8 +25,8 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
-#include "sweep_types.h"
-#include "sweep_sample.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_sample.h>
 #include "view.h"
 
 #define SAMPLE_DISPLAY(obj)          GTK_CHECK_CAST (obj, sample_display_get_type (), SampleDisplay)

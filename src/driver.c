@@ -33,9 +33,10 @@
 #include <sys/ioctl.h>
 #include <pthread.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_sample.h>
+
 #include "driver.h"
-#include "sweep_sample.h"
 
 #ifdef DRIVER_OSS
 #include <sys/soundcard.h>
@@ -47,8 +48,14 @@
 #define DEV_DSP "/dev/audio"
 #endif
 
+#ifdef DRIVER_ALSA
+#include <sys/asoundlib.h>
+static snd_pcm_t *pcm_handle;
+#define ALSA_PCM_NAME "sweep"
+#endif
 
 #define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
+#define PBUF_SIZE 256
 
 static int dev_dsp = -1;
 
@@ -107,10 +114,24 @@ open_dev_dsp (void)
   }
 
   return dev_dsp;
+#elif defined(DRIVER_ALSA)
+  int err;
+  char *alsa_pcm_name;
+  if ((alsa_pcm_name = getenv ("SWEEP_ALSA_PCM")) == 0) {
+        alsa_pcm_name = ALSA_PCM_NAME;
+  }
+  if ((err = snd_pcm_open(&pcm_handle, alsa_pcm_name,
+                        SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
+    fprintf (stderr, "sweep: unable to open ALSA device %s (%s)\n",
+           alsa_pcm_name, snd_strerror (err));
+    return -1; /* XXX: Flag error */
+  }
+  dev_dsp = snd_pcm_poll_descriptor (pcm_handle);
 #else
   fprintf(stderr, "Warning: No audio device configured\n");
   return -1;
 #endif
+  return 0;
 }
 
 static void
@@ -181,7 +202,94 @@ setup_dev_dsp (sw_sample * s)
   info.play.sample_rate = s->sounddata->format->f_rate;
   if(ioctl(dev_dsp, AUDIO_SETINFO, &info) < 0)
       perror("Unable to configure audio device");
+#elif defined(DRIVER_ALSA)
+  snd_pcm_params_t params;
+  snd_pcm_params_info_t params_info;
+  int err = 0;
 
+  memset (&params, 0, sizeof(params));
+  memset (&params_info, 0, sizeof(params_info));
+
+  if (snd_pcm_params_info (pcm_handle, &params_info) < 0) {
+        fprintf(stderr, "cannot get audio interface parameters (%s)\n",
+                snd_strerror(err));
+          return;
+  }
+
+#if 0
+  switch (s->sdata->format->s_size) {
+  case 16:
+#endif
+        if (params_info.formats & SND_PCM_FMT_S16_LE) {
+                params.format.sfmt = SND_PCM_SFMT_S16_LE;
+        } else {
+                fprintf (stderr, "audio interface does not support "
+                         "linear 16 bit little endian samples\n");
+                return;
+        }
+#if 0
+        break;
+  default:
+        fprintf (stderr, "sorry, no support for sample bit widths "
+                 "other than 16 right now\n");
+        return;
+  }
+#endif
+
+  switch (s->sounddata->format->rate) {
+  case 44100:
+        if (params_info.rates & SND_PCM_RATE_44100) {
+                params.format.rate = 44100;
+        } else {
+                fprintf (stderr, "audio interface does not support "
+                         "44.1kHz sample rate (0x%x)\n",
+                         params_info.rates);
+                return;
+        }
+        break;
+
+  case 48000:
+        if (params_info.rates & SND_PCM_RATE_48000) {
+                params.format.rate = 48000;
+        } else {
+                fprintf (stderr, "audio interface does not support "
+                         "48kHz sample rate\n");
+                return;
+        }
+        break;
+
+  default:
+        fprintf (stderr, "audio interface does not support "
+                 "a sample rate of %d\n",
+                 s->sounddata->format->rate);
+        return;
+  }
+
+  if (s->sounddata->format->channels < params_info.min_channels ||
+      s->sounddata->format->channels > params_info.max_channels) {
+      fprintf (stderr, "audio interface does not support %d channels\n",
+             s->sounddata->format->channels);
+      return;
+  }
+  params.format.channels = s->sounddata->format->channels;
+  params.ready_mode = SND_PCM_READY_FRAGMENT;
+  params.start_mode = SND_PCM_START_DATA;
+  params.xrun_mode = SND_PCM_XRUN_FRAGMENT;
+  params.frag_size = PBUF_SIZE / params.format.channels;
+  params.avail_min = params.frag_size;
+  // params.buffer_size = 3 * params.frag_size;
+
+  if ((err = snd_pcm_params (pcm_handle, &params)) < 0) {
+        fprintf (stderr, "audio interface could not be configured "
+                 "with the specified parameters\n");
+        return;
+  }
+
+  if (snd_pcm_prepare (pcm_handle) < 0) {
+        fprintf (stderr, "audio interface could not be prepared "
+                 "for playback\n");
+        return;
+  }
 #endif
 }
 
@@ -208,6 +316,18 @@ flush_dev_dsp (void)
   if(ioctl(dev_dsp, AUDIO_DRAIN, 0) == -1)
       perror("AUDIO_DRAIN");
 #endif
+
+#ifdef DRIVER_ALSA
+  if (snd_pcm_stop (pcm_handle) < 0) {
+        fprintf (stderr, "audio interface could not be stopped\n");
+        return;
+  }
+  if (snd_pcm_prepare (pcm_handle) < 0) {
+        fprintf (stderr, "audio interface could not be re-prepared\n");
+        return;
+  }
+#endif
+
 }
 
 /*
@@ -224,7 +344,11 @@ flush_dev_dsp (void)
 static void
 close_dev_dsp (void)
 {
+#if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
   close (dev_dsp);
+#elif defined(DRIVER_ALSA)
+  snd_pcm_close (pcm_handle);
+#endif
   dev_dsp = -1;
 }
 
@@ -235,7 +359,6 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
   fd_set fds;
   ssize_t n;
   sw_audio_t * d;
-#define PBUF_SIZE 256
   gint16 pbuf[PBUF_SIZE];
   gint sbytes, channels;
   gdouble po = 0.0, p, endf;
@@ -256,6 +379,8 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
     FD_SET (dev_dsp, &fds);
     
     if (select (dev_dsp+1, NULL, &fds, NULL, NULL) == 0);
+
+    memset (pbuf, 0, sizeof (pbuf));
 
     switch (channels) {
     case 1:
@@ -289,8 +414,12 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
       break;
     }
 
+#if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
     n = write (dev_dsp, pbuf, i*sbytes);
-    
+#elif defined(DRIVER_ALSA)
+    n = snd_pcm_write (pcm_handle, pbuf, PBUF_SIZE/channels);
+#endif
+
     playoffset += (int)(n * relpitch / (sbytes * channels));
   }
 }

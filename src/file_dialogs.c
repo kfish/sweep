@@ -23,9 +23,11 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_sample.h>
+
 #include "file_ops.h"
-#include "sweep_sample.h"
+#include "sample.h"
 #include "sample-display.h"
 
 static gchar* load_current_file = NULL; /* last visited dir for loading */

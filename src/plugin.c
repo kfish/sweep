@@ -32,8 +32,8 @@
 #include <glib.h>
 #include <gmodule.h>
 
-#include "sweep_version.h"
-#include "sweep_types.h"
+#include <sweep/sweep_version.h>
+#include <sweep/sweep_types.h>
 
 
 GList * plugins = NULL;

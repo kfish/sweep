@@ -21,7 +21,7 @@
 #ifndef __FILE_OPS_H__
 #define __FILE_OPS_H__
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 sw_sample *
 sample_load(char * pathname);

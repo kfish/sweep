@@ -22,10 +22,11 @@
 #include <string.h>
 #include <glib.h>
 
-#include "sweep_undo.h"
+#include <sweep/sweep_undo.h>
+#include <sweep/sweep_sample.h>
+#include <sweep/sweep_sounddata.h>
+
 #include "edit.h"
-#include "sweep_sample.h"
-#include "sweep_sounddata.h"
 
 /* Nr. of undo operations remembered */
 #define UNDO_LEVELS 7

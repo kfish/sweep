@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 #include "sweep_app.h"
 
 sw_view *

@@ -62,7 +62,16 @@ plugins, the mechanisms provided for performing common operations, and
 information on building the resulting plugin libraries.
 
 
-2.1 Files to include
+2.1 Sample code
+---------------
+
+You will most likely find it useful to examine the existing plugins in
+the Sweep source archive. These are in the plugins/ directory. In
+particular, the "example" plugin contains many of the features discussed
+in this document.
+
+
+2.2 Files to include
 --------------------
 
 <sweep/sweep.h>
@@ -75,17 +84,33 @@ been included. In particular the GList data structure is used
 extensively by this API.
 
 
-2.2 Internationalisation
+2.3 Internationalisation
 ------------------------
+<sweep/sweep_i18n.h>
 
-#include "config.h"
-#include "i18n.h"
+Sweep includes support for translatable strings via GNU gettext [3]. It
+uses the same macros that the Gnome project defines to mark out strings
+which can be translated.
 
-Define all static strings with N_("..."), define all others (proc names,
-descriptions etc.) with _("...").
+When writing a plugin, you will provide some text strings describing the
+plugin's procedures, the names of parameters used, and short descriptions
+of the paramters meanings. In order to enable translators to provide
+complete translations of Sweep and its plugins in other languages, you
+must specifically mark strings which should be translated.
+
+The usual way to do this is to place the macro _(...) around any strings
+used within the code. However, when the string appears outside of a
+function, you must use the macro N_(...) instead. N(...) marks a string
+for later translation; _(...) marks a string for immediate translation,
+and can only be used where a function call is permitted.
+
+If you would like to add a translation for Sweep into a new language,
+all you need to do is provide translations for the text strings used in
+Sweep. Please see the documentation for GNU gettext [3] for more
+information on how to create the required file.
 
 
-2.3 Basic types
+2.4 Basic types
 ---------------
 <sweep/sweep_types.h>
 
@@ -118,7 +143,7 @@ Time is represented by sw_time_t. Time is defined in a floating point
 format in units of seconds.
 
 
-2.4 Complex types
+2.5 Complex types
 -----------------
 <sweep/sweep_types.h>
 
@@ -155,7 +180,7 @@ struct _sw_sel {
 };
 
 
-2.5 Types for parameters
+2.6 Types for parameters
 ------------------------
 <sweep/sweep_types.h>
 
@@ -180,7 +205,7 @@ union _sw_param {
 };
 
 
-2.6 Parameter Specifications
+2.7 Parameter Specifications
 ----------------------------
 <sweep/sweep_types.h>
 
@@ -209,7 +234,7 @@ struct _sw_param_spec {
 };
 
 
-2.6.1 Constraints
+2.7.1 Constraints
 -----------------
 <sweep/sweep_types.h>
 
@@ -249,7 +274,7 @@ struct _sw_param_range {
 };
 
 
-2.6.2 Hints
+2.7.2 Hints
 -----------
 <sweep/sweep_types.h>
 
@@ -266,7 +291,7 @@ SW_PARAM_HINT_FILENAME indicates that the parameter should be
 interpreted as a valid filename on the user's system.
 
 
-2.7 Procs
+2.8 Procs
 ---------
 <sweep/sweep_types.h>
 
@@ -351,7 +376,7 @@ struct _sw_proc {
 };
 
 
-2.8 Writing a selection modifier
+2.9 Writing a selection modifier
 --------------------------------
 
 A selection modifier is an operation which only affects the sels
@@ -388,13 +413,13 @@ see eg. plugins/byenergy/byenergy.c for an example of a Selection
 plugin.
 
 
-2.9 Writing an audio filter
+2.10 Writing an audio filter
 ---------------------------
 <sweep/sweep_filter.h>
 
 Two convenience routines exist for creating plugins which only modify
 audio data. Note that where possible it is preferable to use the
-LADSPA API instead for developing such plugins. See Appendix A for
+LADSPA API instead for developing such plugins. See Appendix B for
 more information about building LADSPA plugins for use with Sweep.
 
 Filter plugins must only modify the audio data corresponding to
@@ -410,7 +435,8 @@ The SweepFilterRegion mechanism handles this iteration for you,
 whereas the SweepFilter mechanism allows for more general filters for
 which you must provide the iteration over the selection regions.
 
-2.9.1 SweepFilterRegion
+
+2.10.1 SweepFilterRegion
 -----------------------
 
 To make use of the SweepFilterRegion mechanism define a function of
@@ -436,7 +462,8 @@ see eg. plugins/reverse/reverse.c for an example of a FilterRegion
 
 The LADSPA meta-plugin is implemented as a FilterRegion.
 
-2.9.2 SweepFilter
+
+2.10.2 SweepFilter
 -----------------
 
 If the processing involved cannot be done independently for each
@@ -460,7 +487,7 @@ the greatest data value in any of the selected regions, and then in
 a second pass amplify each region by an amount calculated.
 
 
-2.10 Creating Plugin Shared Libraries
+2.11 Creating Plugin Shared Libraries
 -------------------------------------
 <sweep/sweep_types.h>
 
@@ -501,7 +528,7 @@ of which can be statically defined. This list is constructed using
 g_list_append(); see <glib.h> for more information on using GLists.
 
 
-2.11 Building plugins within the sweep source tree
+2.12 Building plugins within the sweep source tree
 -------------------------------------------------
 
 Have a look at plugins/example/
@@ -510,9 +537,7 @@ Makefile.am:
 
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = \
-	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/src
+INCLUDES = -I$(top_srcdir)/include
 
 libdir = @PACKAGE_PLUGIN_DIR@
 
@@ -543,6 +568,7 @@ by plugin writers. This includes the creation of new types of operation
 and undo/redo mechanisms, a detailed discussion of the versioning system
 employed, and information on setting up a standalone build environment
 for a plugin package.
+
 
 3.1 Sweep "Operations", Handling Undo and Redo
 ----------------------------------------------
@@ -613,6 +639,7 @@ Some stock undo and redo methods exist for handling operations which
 need to paste new data over the selected region, or which need to splice
 data into the sample. These are outlined in <sweep/sweep_undo.h>. For
 examples of their use, see "src/edit.c" in the Sweep application source.
+
 
 3.2 Versioning
 --------------
@@ -687,12 +714,28 @@ Note that this flag contains colons, not dots.
 3.3 Setting up a standalone build environment
 ---------------------------------------------
 
-find the sweep include dir ($(prefix)/include/sweep)
+Find the sweep include dir ($(prefix)/include/sweep)
 
-install into the sweep plugin dir ($(prefix)/lib/sweep)
+Install into the sweep plugin dir ($(prefix)/lib/sweep)
 
 
-Appendix A. Building LADSPA plugins for use with Sweep
+Appendix A. Keeping in touch with Sweep development
+===================================================
+
+The Sweep homepage contains links to many relevent resources.
+http://sweep.sourceforge.net/
+
+The Sweep project page on Sourceforge holds the infrastructure for such
+things as CVS access and bug reporting. It is available at
+http://sourceforge.net/projects/sweep/
+
+If you have any questions or comments about Sweep please send them to
+the sweep-devel mailing list <sweep-devel@lists.sourceforge.net>.
+
+If in doubt, contact the author: Conrad Parker <conrad@vergenet.net>
+
+
+Appendix B. Building LADSPA plugins for use with Sweep
 ======================================================
 
 If you intend to create a plugin which only modifies audio data (such
@@ -725,6 +768,7 @@ This API was constructed after careful studying of plugin APIs from
 many other free software projects, including SANE, the Gimp, LADSPA,
 and xmms.
 
+
 References
 ==========
 
@@ -733,3 +777,6 @@ http://www.ladspa.org/
 
 [2] GLib Reference Manual
 http://developer.gnome.org/doc/API/glib/index.html
+
+[3] GNU gettext
+http://www.gnu.org/software/gettext/

@@ -58,6 +58,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 host_alias = @host_alias@
 host_triplet = @host@
+AS = @AS@
 AUDIOFILE_CFLAGS = @AUDIOFILE_CFLAGS@
 AUDIOFILE_CONFIG = @AUDIOFILE_CONFIG@
 AUDIOFILE_LIB = @AUDIOFILE_LIB@
@@ -66,6 +67,7 @@ CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 DATADIRNAME = @DATADIRNAME@
+DLLTOOL = @DLLTOOL@
 GENCAT = @GENCAT@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
@@ -79,13 +81,12 @@ INSTOBJEXT = @INSTOBJEXT@
 INTLDEPS = @INTLDEPS@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
-LD = @LD@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-NM = @NM@
+OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 PACKAGE_PLUGIN_DIR = @PACKAGE_PLUGIN_DIR@
 POFILES = @POFILES@
@@ -97,8 +98,7 @@ USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 l = @l@
 
-INCLUDES =  	-I$(top_srcdir)/intl 	-I$(top_srcdir)/src
-
+INCLUDES = -I$(top_srcdir)/include
 
 libdir = @PACKAGE_PLUGIN_DIR@
 
@@ -108,12 +108,12 @@ lib_LTLIBRARIES =  	libbyenergy.la
 libbyenergy_la_SOURCES = byenergy.c
 libbyenergy_la_LDFLAGS = -version-info 1:0:0
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../include/sweep/config.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../include/sweep
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@

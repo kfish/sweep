@@ -32,10 +32,11 @@
 
 #include "glib.h"
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_sample.h>
+
 #include "file_ops.h"
-#include "sweep_typeconvert.h"
-#include "sweep_sample.h"
 #include "view.h"
 
 sw_sample *

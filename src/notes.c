@@ -29,9 +29,10 @@
 
 #include "callbacks.h"
 
-#include "sweep_types.h"
-#include "sweep_undo.h"
-#include "sweep_sample.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_undo.h>
+#include <sweep/sweep_sample.h>
+
 #include "interface.h"
 #include "edit.h"
 #include "sample-display.h"

@@ -22,12 +22,9 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "config.h"
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_filter.h"
+#include <sweep/sweep.h>
 
-#include "i18n.h"
+#include "config.h"
 
 static void
 region_reverse (gpointer data, sw_format * format, int nr_frames,

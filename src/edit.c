@@ -21,13 +21,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_undo.h"
-#include "sweep_sounddata.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_undo.h>
+#include <sweep/sweep_sounddata.h>
+#include <sweep/sweep_sample.h>
+
 #include "edit.h"
 #include "format.h"
-#include "sweep_sample.h"
+
 
 sw_edit_buffer * ebuf = NULL;
 

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 sw_format *
 format_new (gint nr_channels, gint frame_rate)

@@ -1,8 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = \
-	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/src
+INCLUDES = -I$(top_srcdir)/include
 
 libdir = @PACKAGE_PLUGIN_DIR@
 

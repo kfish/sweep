@@ -22,7 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 /*
  * Determine the number of samples occupied by a number of frames

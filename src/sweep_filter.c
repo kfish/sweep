@@ -21,13 +21,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_undo.h"
-#include "sweep_filter.h"
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_undo.h>
+#include <sweep/sweep_filter.h>
+#include <sweep/sweep_sample.h>
 
 #include "edit.h"
-#include "sweep_sample.h"
 
 
 static sw_operation filter_op = {

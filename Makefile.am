@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = intl po src plugins doc
+SUBDIRS = intl po include src plugins doc
 
 pkgdata_DATA = sweep_logo.ppm
 
@@ -10,8 +10,8 @@ desktopdir = $(datadir)/gnome/apps/Multimedia
 icon_DATA = sweep.png
 icondir = $(datadir)/pixmaps
 
-EXTRA_DIST = CREDITS $(desktop_DATA) $(icon_DATA) $(pkgdata_DATA) \
-             sweep.spec README.Solaris
+EXTRA_DIST = $(desktop_DATA) $(icon_DATA) $(pkgdata_DATA) \
+             sweep.spec README.Solaris README.ALSA
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
                        stamp-h.in \

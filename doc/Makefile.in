@@ -103,7 +103,7 @@ man_MANS = sweep.1
 
 EXTRA_DIST = $(man_MANS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../config.h
+CONFIG_HEADER = ../include/sweep/config.h
 CONFIG_CLEAN_FILES = 
 man1dir = $(mandir)/man1
 MANS = $(man_MANS)

@@ -19,7 +19,8 @@
  */
 
 #include <stdio.h>
-#include "sweep_types.h"
+#include <sweep/sweep_i18n.h>
+#include <sweep/sweep_types.h>
 #include "sweep_app.h"
 
 static gint

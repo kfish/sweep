@@ -21,7 +21,7 @@
 #ifndef __EDIT_H__
 #define __EDIT_H__
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 sw_edit_buffer *
 edit_buffer_from_sample (sw_sample * sample);

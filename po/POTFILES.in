@@ -1,8 +1,14 @@
 # List of source files containing translatable strings.
 
-src/sweep_version.h
+include/sweep/sweep_version.h
+include/sweep/sweep_types.h
+include/sweep/sweep_filter.h
+include/sweep/sweep_sample.h
+include/sweep/sweep_sounddata.h
+include/sweep/sweep_selection.h
+include/sweep/sweep_typeconvert.h
+include/sweep/sweep_undo.h
 src/main.c
-src/sweep_types.h
 src/about_dialog.c
 src/about_dialog.h
 src/file_dialogs.c
@@ -32,17 +38,11 @@ src/print.h
 src/sample-display.c
 src/sample-display.h
 src/sweep_filter.c
-src/sweep_filter.h
 src/sweep_sample.c
-src/sweep_sample.h
 src/sweep_sounddata.c
-src/sweep_sounddata.h
 src/sweep_selection.c
-src/sweep_selection.h
 src/sweep_typeconvert.c
-src/sweep_typeconvert.h
 src/sweep_undo.c
-src/sweep_undo.h
 src/time_ruler.c
 src/time_ruler.h
 src/view.c

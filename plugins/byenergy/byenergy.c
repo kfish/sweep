@@ -24,13 +24,7 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_selection.h"
-#include "sweep_sounddata.h"
-#include "i18n.h"
-
-#include "sweep_sample.h"
+#include <sweep/sweep.h>
 
 #define NR_PARAMS 5
 

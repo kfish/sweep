@@ -18,28 +18,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PRINT_H__
-#define __PRINT_H__
-
-#include <sweep/sweep_types.h>
+#ifndef __I18N_H__
+#define __I18N_H__
 
 /*
- * Print a number of bytes to 3 significant figures
- * using standard abbreviations (GB, MB, kB, byte[s])
+ * Standard gettext macros.
  */
-void
-snprint_bytes (gchar * s, gint n, glong nr_bytes);
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
 
-/*
- * Print a time in the format HH:MM:SS.sss
- */
-void
-snprint_time (gchar * s, gint n, sw_time_t time);
-
-/*
- * Print a time in SMPTE format
- */
-void
-snprint_time_smpte (gchar * s, gint n, sw_time_t time, gint F);
-
-#endif /* __PRINT_H__ */
+#endif /* __I18N_H__ */

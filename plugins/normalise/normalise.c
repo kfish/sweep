@@ -23,12 +23,9 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "config.h"
-#include "sweep_types.h"
-#include "sweep_typeconvert.h"
-#include "sweep_filter.h"
+#include <sweep/sweep.h>
 
-#include "i18n.h"
+#include "config.h"
 
 static sw_sounddata *
 normalise (sw_sounddata * sounddata, sw_param_set pset, gpointer custom_data)

@@ -18,28 +18,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PRINT_H__
-#define __PRINT_H__
+#ifndef __SWEEP_H__
+#define __SWEEP_H__
+
+#include <sweep/config.h>
+
+#include <sweep/sweep_version.h>
+#include <sweep/sweep_i18n.h>
 
 #include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_undo.h>
+#include <sweep/sweep_sample.h>
+#include <sweep/sweep_sounddata.h>
+#include <sweep/sweep_selection.h>
+#include <sweep/sweep_filter.h>
 
-/*
- * Print a number of bytes to 3 significant figures
- * using standard abbreviations (GB, MB, kB, byte[s])
- */
-void
-snprint_bytes (gchar * s, gint n, glong nr_bytes);
+#endif  /* __SWEEP_H__ */
 
-/*
- * Print a time in the format HH:MM:SS.sss
- */
-void
-snprint_time (gchar * s, gint n, sw_time_t time);
 
-/*
- * Print a time in SMPTE format
- */
-void
-snprint_time_smpte (gchar * s, gint n, sw_time_t time, gint F);
 
-#endif /* __PRINT_H__ */
+
+
+

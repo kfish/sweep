@@ -27,14 +27,17 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <sweep/sweep_i18n.h>
+#include <sweep/sweep_types.h>
+#include <sweep/sweep_typeconvert.h>
+#include <sweep/sweep_sample.h>
+
 #include "view.h"
 
 #include "callbacks.h"
 #include "interface.h"
-#include "sweep_typeconvert.h"
 #include "print.h"
 #include "param.h"
-#include "sweep_sample.h"
 #include "sample-display.h"
 #include "file_dialogs.h"
 #include "driver.h"

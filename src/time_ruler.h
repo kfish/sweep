@@ -38,7 +38,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkruler.h>
 
-#include "sweep_types.h"
+#include <sweep/sweep_types.h>
 
 #ifdef __cplusplus
 extern "C" {

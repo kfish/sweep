@@ -2,26 +2,14 @@
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \
+	-I$(top_srcdir)/include \
 	@GTK_CFLAGS@ \
 	@AUDIOFILE_CFLAGS@
 
 bin_PROGRAMS = sweep
 
-sweepincludedir = $(includedir)/sweep
-
-sweepinclude_HEADERS = \
-	sweep_version.h \
-	sweep.h \
-	sweep_types.h \
-	sweep_typeconvert.h \
-	sweep_sample.h \
-	sweep_sounddata.h \
-	sweep_filter.h \
-	sweep_selection.h \
-	sweep_undo.h
-
 sweep_SOURCES = \
-	sweep_version.h \
+	sweep_version.h sweep_app.h \
 	main.c sweep_types.h \
 	about_dialog.c about_dialog.h \
 	file_dialogs.c file_dialogs.h \
@@ -38,7 +26,7 @@ sweep_SOURCES = \
 	print.c print.h \
 	sample-display.c sample-display.h \
 	sweep_filter.c sweep_filter.h \
-	sweep_sample.c sweep_sample.h \
+	sweep_sample.c sweep_sample.h sample.h \
 	sweep_sounddata.c sweep_sounddata.h \
 	sweep_selection.c sweep_selection.h \
 	sweep_typeconvert.c sweep_typeconvert.h \

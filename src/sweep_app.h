@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#include "i18n.h"
+/* #include "i18n.h" */
 
 /* Tools */
 enum {

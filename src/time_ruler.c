@@ -37,7 +37,8 @@
 #include <string.h>
 #include "time_ruler.h"
 
-#include "sweep_typeconvert.h"
+#include <sweep/sweep_typeconvert.h>
+
 #include "print.h"
 
 #define RULER_HEIGHT          14
