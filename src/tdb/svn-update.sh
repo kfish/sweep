@@ -19,6 +19,8 @@ CHANGES="changes.diff"
 
 ## End configuration ##
 
+COPIED=""
+
 echo "Retrieving sources from $REPOSITORY ..."
 
 rm -rf $UPSTREAM
@@ -31,10 +33,21 @@ svn co $REPOSITORY $UPSTREAM
 for i in $FILES; do
   if [ -e $i ] ; then
     diff -u $i $UPSTREAM/$i >> $CHANGES
-    mv $i $i.bak
+    if [ $? != 0 ] ; then
+      mv $i $i.bak
+      cp $UPSTREAM/$i .
+      COPIED="$COPIED $i"
+    fi
+  else
+    cp $UPSTREAM/$i .
+    COPIED="$COPIED $i"
   fi
-  cp $UPSTREAM/$i .
 done
 
-echo "Copied files: $FILES"
-[ -e $CHANGES ] && echo "Differences:  $CHANGES"
+if [ "x$COPIED" != "x" ] ; then
+  echo "Copied files: $COPIED"
+  [ -e $CHANGES ] && echo "Differences:  $CHANGES"
+else
+  rm $CHANGES
+  echo "No changes."
+fi
