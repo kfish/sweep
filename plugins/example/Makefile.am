@@ -12,4 +12,4 @@ libdir = $(PACKAGE_PLUGIN_DIR)
 noinst_LTLIBRARIES = libexample.la
 
 libexample_la_SOURCES = example.c
-libexample_la_LDFLAGS = -version-info 1:0:0
+libexample_la_LDFLAGS = -avoid-version -module

@@ -8,4 +8,4 @@ lib_LTLIBRARIES = \
 	libfade.la
 
 libfade_la_SOURCES = fade.c
-libfade_la_LDFLAGS = -version-info 1:0:0
+libfade_la_LDFLAGS = -avoid-version -module

@@ -8,4 +8,4 @@ lib_LTLIBRARIES = \
 	libbyenergy.la
 
 libbyenergy_la_SOURCES = byenergy.c
-libbyenergy_la_LDFLAGS = -version-info 1:0:0
+libbyenergy_la_LDFLAGS = -avoid-version -module
