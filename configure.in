@@ -483,7 +483,7 @@ fi
 if test "x$HAVE_LIBSNDFILE1" != xyes ; then
   AC_MSG_RESULT([
 *** libsndfile version 1.0.0 or greater, available from
-*** http://www.zip.com.au/~erikd/libsndfile/
+*** http://www.mega-nerd.com/libsndfile/
 ])
 fi
 if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
