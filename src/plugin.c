@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include <glib.h>
 #include <gmodule.h>
@@ -36,6 +37,7 @@
 #include <sweep/sweep_version.h>
 #include <sweep/sweep_types.h>
 
+#include "sweep_compat.h"
 
 GList * plugins = NULL;
 
@@ -46,27 +48,24 @@ cmp_proc_names (sw_procedure * a, sw_procedure * b)
 }
 
 void
-sweep_plugin_init (const gchar * name)
+sweep_plugin_init (const gchar * path)
 {
-  gchar * path;
   GModule * module;
   sw_plugin * m_plugin;
   GList * gl;
 
-  path = g_module_build_path (PACKAGE_PLUGIN_DIR, name);
-  path = g_strdup_printf ("%s/lib%s.so.%d", PACKAGE_PLUGIN_DIR, name,
-			  SWEEP_PLUGIN_API_MAJOR);
-
   module = g_module_open (path, 0);
 
   if (!module) {
-    fprintf (stderr, "Error opening %s: %s\n", path, g_module_error());
+#ifdef DEBUG
+    fprintf (stderr, "sweep_plugin_init: Error opening %s: %s\n",
+	     path, g_module_error());
+#endif
     return;
   }
   
   if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
-    for (gl = m_plugin->plugin_init ();
-	 gl; gl = gl->next) {
+    for (gl = m_plugin->plugin_init (); gl; gl = gl->next) {
       plugins = g_list_insert_sorted (plugins, (sw_procedure *)gl->data,
 				      (GCompareFunc)cmp_proc_names);
     }
@@ -83,40 +82,13 @@ init_static_plugins (void)
 #endif
 }
 
-/* 
- * Implementation of stripname for matching plugins of form
- * lib(.*).so
- *
- * If you want to implement support for other dynamic library
- * naming schemes, the correct thing to do is implement another
- * one of these functions. The g_module stuff deals with the
- * actual filenames portably.
- */
-static char *
-stripname (char * d_name)
-{
-  int len, blen;
-#define BUF_LEN 8
-  char buf[BUF_LEN];
-
-  if (strncmp (d_name, "lib", 3)) return 0;
-
-  len = strlen (d_name);
-  snprintf (buf, BUF_LEN, ".so.%d", SWEEP_PLUGIN_API_MAJOR);
-  blen = strlen (buf);
-  if (strncmp (&d_name[len-blen], buf, blen)) return 0;
-
-  d_name[len-blen] = '\0';
-
-  return &d_name[3];
-}
-
 static void
 init_dynamic_plugins_dir (gchar * dirname)
 {
   DIR * dir;
   struct dirent * dirent;
-  char * name;
+  char * name, * path;
+  struct stat statbuf;
 
   dir = opendir (dirname);
   if (!dir) {
@@ -125,8 +97,12 @@ init_dynamic_plugins_dir (gchar * dirname)
   }
 
   while ((dirent = readdir (dir)) != NULL) {
-    if ((name = stripname (dirent->d_name)) != NULL) {
-      sweep_plugin_init (name);
+    name = dirent->d_name;
+    path = g_module_build_path (PACKAGE_PLUGIN_DIR, dirent->d_name);
+    if (stat (path, &statbuf) == -1) {
+      /* system error -- non-fatal, ignore for plugin loading */
+    } else if (sw_stat_regular (statbuf.st_mode)) {
+      sweep_plugin_init (path);
     }
   }
 }
