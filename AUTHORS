@@ -22,6 +22,8 @@ Nicolas Léveillé <nicolas.leveille@free.fr>
 Steve Harris <steve@totl.net>
         added Normal (1:4096) and 1:1 zoom modes
 
+Radoslaw Korzeniewski <Radoslaw.Korzeniewski@centertel.pl>
+	various bug fixes in file loading
 
 Borrowed Code
 =============
