@@ -260,7 +260,7 @@ msgstr "Suona il campione"
 
 #: src/view.c:397
 msgid "Loop sample"
-msgstr "Campione ciclico"
+msgstr "Riproduci il campione in modo ciclico"
 
 #: src/view.c:406
 msgid "Play selection"
@@ -268,7 +268,7 @@ msgstr "Suona la selezione"
 
 #: src/view.c:415
 msgid "Loop selection"
-msgstr "Selezione ciclica"
+msgstr "Riproduci la selezione in modo ciclico"
 
 #: src/view.c:428
 msgid "Note"
