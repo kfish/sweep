@@ -3,7 +3,7 @@ Sweep Plugin Writer's Guide
 ---------------------------
 
 Documents Sweep Plugin API Version 1.0.0
-Last modified Oct 7 2000
+Last modified Oct 22 2000
 Copyright (C) 2000 Conrad Parker <conrad@vergenet.net>
 
 
@@ -616,10 +616,11 @@ employed.
 
 Sweep maintains a stack of recent operations for each sample, which
 are used to allow undoing and redoing of all operations. If you write
-a new operation method then you must implement Undo and Redo methods
-for it. On the other hand if you are using one of the mechanisms
-covered in Sections 2.7 and 2.8 these things are taken care of by the
-perform_* functions.
+a new operation method that modifies a sample's 'sounddata' (ie. the
+sampling rate, length, selections or audio data) then you must
+implement Undo and Redo methods for it. However if you are using one
+of the convenience mechanisms covered in Sections 2.7 and 2.8 then
+these things are already taken care of by the perform_* functions.
 
 The datatypes used are defined in <sweep/sweep_types.h> as follows:
 
