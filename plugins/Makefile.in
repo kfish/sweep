@@ -82,11 +82,13 @@ INSTOBJEXT = @INSTOBJEXT@
 INTLDEPS = @INTLDEPS@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
+LD = @LD@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+NM = @NM@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 PACKAGE_PLUGIN_DIR = @PACKAGE_PLUGIN_DIR@
@@ -99,6 +101,7 @@ USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 l = @l@
 
+# Uncomment the following line to build the example plugin
 SUBDIRS = byenergy echo normalise reverse ladspa example
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../include/sweep/config.h
