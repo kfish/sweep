@@ -1,0 +1,289 @@
+# Hungarian translation file for sweep.
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Gergely Nagy <algernon@madhouse.lonyay.edu.hu>, 2000
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sweep 0.0.9\n"
+"POT-Creation-Date: 2000-05-11 22:31+1000\n"
+"PO-Revision-Date: 2000-05-15 22:MI+0200\n"
+"Last-Translator: Gergely Nagy <algernon@madhouse.lonyay.edu.hu>\n"
+"Language-Team: Hungarian <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.c:102
+msgid "Sweep version"
+msgstr "Sweep verzió"
+
+#: src/main.c:105
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Használat: %s [opció ...] [fájlok ...]\n"
+
+#: src/main.c:106
+msgid "Valid options are:\n"
+msgstr "Opciók:\n"
+
+#: src/main.c:107
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Ez a képernyõ.\n"
+
+#: src/main.c:108
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Verziószám kírása.\n"
+
+#: src/main.c:109
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <kijelzõ>      A jelzett X kijelzõ használata.\n"
+
+#: src/interface.c:77
+msgid "Sweep"
+msgstr "Sweep"
+
+#. File
+#: src/interface.c:102 src/view.c:75
+msgid "File"
+msgstr "Fájl"
+
+#: src/interface.c:107 src/view.c:81
+msgid "New"
+msgstr "Új"
+
+#: src/interface.c:116
+msgid "Open"
+msgstr "Megnyitás"
+
+#: src/interface.c:125 src/view.c:133
+msgid "Quit"
+msgstr "Kilépés"
+
+#: src/interface.c:136
+msgid "Help"
+msgstr "Segítség"
+
+#: src/interface.c:141
+msgid "About..."
+msgstr "Névjegy..."
+
+#. Radio group
+#: src/interface.c:162 src/view.c:226
+msgid "Select"
+msgstr "Kiválasztás"
+
+#: src/interface.c:163
+msgid "Select regions of a sample"
+msgstr "A hanganyag egyes részeinek kiválasztása"
+
+#: src/interface.c:164
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"Ez az eszköz lehetõvé teszi a hanganyag egyes részeinek kiválasztását. Ezek után "
+"minden mûvelet erre a részre fog korlátozódni. Tartsa nyomva a shift-et választás közben, "
+"hogy nem folyotnos részeket tudnjon kiválasztani."
+
+#. Radio group
+#: src/interface.c:179
+msgid "Move"
+msgstr "Mozgatás"
+
+#: src/interface.c:180
+msgid "Move regions in a sample"
+msgstr "A hanganyag egyes részeinek mozgatása"
+
+#: src/interface.c:181
+msgid "With this tool you can move selected regions of a sample."
+msgstr "Ezzel az eszközzel a hanganyag kiválasztott részeit lehet mozgatni."
+
+#. Radio group
+#: src/interface.c:194 src/view.c:308
+msgid "Zoom"
+msgstr "Nagyítás"
+
+#: src/interface.c:195
+msgid "Zoom in & out"
+msgstr "Nagyítás és kicsinyítés"
+
+#: src/interface.c:196
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Nézet kicsínyítése és nagyítása. Villantson bárhova a nézeten belül, hogy arra"
+"a részre fokuszálodjón a nagyítás. Tartsa lenyomva a shift-et klikkelés közben a kicsinyítéshez"
+
+#: src/view.c:90
+msgid "Open..."
+msgstr "Megnyitás..."
+
+#: src/view.c:99
+msgid "Save"
+msgstr "Mentés"
+
+#: src/view.c:108
+msgid "Save As..."
+msgstr "Mentés másként..."
+
+#: src/view.c:114
+msgid "Revert"
+msgstr "Visszaállítás"
+
+#: src/view.c:124
+msgid "Close"
+msgstr "Bezárás"
+
+#. Edit
+#: src/view.c:143
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: src/view.c:149
+msgid "Undo"
+msgstr "Visszavonás"
+
+#: src/view.c:159
+msgid "Redo"
+msgstr "Visszavonás semlegesítése"
+
+#: src/view.c:172
+msgid "Delete"
+msgstr "Törlés"
+
+#: src/view.c:178
+msgid "Cut"
+msgstr "Kivágás"
+
+#: src/view.c:187
+msgid "Copy"
+msgstr "Másolás"
+
+#: src/view.c:196
+msgid "Paste"
+msgstr "Beillesztés"
+
+#: src/view.c:205
+msgid "Paste as New"
+msgstr "Beillesztés mint új anyag"
+
+#: src/view.c:215
+msgid "Clear"
+msgstr "Törlés"
+
+#: src/view.c:232
+msgid "Invert"
+msgstr "Megfordítás"
+
+#: src/view.c:240
+msgid "All"
+msgstr "Mindent"
+
+#: src/view.c:248
+msgid "None"
+msgstr "Semmit"
+
+#. View
+#: src/view.c:258
+msgid "View"
+msgstr "Nézet"
+
+#: src/view.c:264
+msgid "Zoom In"
+msgstr "Nagyítás"
+
+#: src/view.c:273
+msgid "Zoom Out"
+msgstr "Kicsinyítés"
+
+#: src/view.c:282
+msgid "Zoom to selection"
+msgstr "A kiválasztott rész méretére nagyítás"
+
+#: src/view.c:289
+msgid "Left"
+msgstr "Bal"
+
+#: src/view.c:298
+msgid "Right"
+msgstr "Jobb"
+
+#: src/view.c:314
+#, c-format
+msgid "50%"
+msgstr "50%"
+
+#: src/view.c:320
+#, c-format
+msgid "100%"
+msgstr "100%"
+
+#: src/view.c:334
+msgid "New View"
+msgstr "Új nézet"
+
+#. Sample
+#: src/view.c:341
+msgid "Sample"
+msgstr "Hanganyag"
+
+#: src/view.c:347
+msgid "Duplicate"
+msgstr "Duplázás"
+
+#. Filters
+#: src/view.c:357
+msgid "Filters"
+msgstr "Szûrõk"
+
+#: src/view.c:363
+msgid "Normalise"
+msgstr "Normalizálás"
+
+#: src/view.c:372
+msgid "Reverse"
+msgstr "Megfordítás"
+
+#. Playback
+#: src/view.c:382
+msgid "Playback"
+msgstr "Lejátszás"
+
+#: src/view.c:388
+msgid "Play sample"
+msgstr "Hanganyag lejátszása"
+
+#: src/view.c:397
+msgid "Loop sample"
+msgstr "Hanganyag ciklusos lejátszása"
+
+#: src/view.c:406
+msgid "Play selection"
+msgstr "Kiválasztott rész lejátszása"
+
+#: src/view.c:415
+msgid "Loop selection"
+msgstr "Kiválasztott rész ciklikus lejátszása"
+
+#: src/view.c:428
+msgid "Note"
+msgstr "Hangjegy"
+
+#: src/view.c:490
+msgid "Stop"
+msgstr "Állj"
+
+#: src/view.c:886
+msgid "Untitled"
+msgstr "Névtelen"
+
+#: src/view.c:888
+msgid "Mono"
+msgstr "Mono"
+
+#: src/view.c:888
+msgid "Stereo"
+msgstr "Stereo"

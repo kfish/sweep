@@ -1,0 +1,291 @@
+# Sweep Italian Translation
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Yuri Bongiorno <yurix@tiscalinet.it>, 2000.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: sweep-0.0.9\n"
+"POT-Creation-Date: 2000-09-19 10:37+0200\n"
+"PO-Revision-Date: 2000-09-19 19:19+01:00\n"
+"Last-Translator: Yuri Bongiorno <yurix@tiscalinet.it>\n"
+"Language-Team: Italian <it@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.c:102
+msgid "Sweep version"
+msgstr "Sweep versione"
+
+#: src/main.c:105
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Uso: %s [opzione ...] [file ...]\n"
+
+#: src/main.c:106
+msgid "Valid options are:\n"
+msgstr "Le opzioni valide sono:\n"
+
+#: src/main.c:107
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Visualizza questo aiuto.\n"
+
+#: src/main.c:108
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Visualizza le informazioni sulla versione.\n"
+
+#: src/main.c:109
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <display>      Usa il display X designato.\n"
+
+#: src/interface.c:77
+msgid "Sweep"
+msgstr "Sweep"
+
+#. File
+#: src/interface.c:102 src/view.c:75
+msgid "File"
+msgstr "File"
+
+#: src/interface.c:107 src/view.c:81
+msgid "New"
+msgstr "Nuovo"
+
+#: src/interface.c:116
+msgid "Open"
+msgstr "Apri"
+
+#: src/interface.c:125 src/view.c:133
+msgid "Quit"
+msgstr "Esci"
+
+#: src/interface.c:136
+msgid "Help"
+msgstr "Aiuto"
+
+#: src/interface.c:141
+msgid "About..."
+msgstr "Informazioni su..."
+
+#. Radio group
+#: src/interface.c:162 src/view.c:226
+msgid "Select"
+msgstr "Seleziona"
+
+#: src/interface.c:163
+msgid "Select regions of a sample"
+msgstr "Seleziona le regioni di un campione"
+
+#: src/interface.c:164
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"Questo strumento permette di selezionare le regioni di un campione. Si "
+"possono quindi applicare le modifiche e gli effetti alle regioni selezionate."
+"Tieni premuto shift durante la selezione per aggiungere regioni discontinue "
+"alla selezione."
+
+#. Radio group
+#: src/interface.c:179
+msgid "Move"
+msgstr "Muove"
+
+#: src/interface.c:180
+msgid "Move regions in a sample"
+msgstr "Muove le regioni in un campione"
+
+#: src/interface.c:181
+msgid "With this tool you can move selected regions of a sample."
+msgstr ""
+"Con questo strumento si possono muovere le regioni selezionate di un campione"
+
+#. Radio group
+#: src/interface.c:194 src/view.c:308
+msgid "Zoom"
+msgstr "Zoom"
+
+#: src/interface.c:195
+msgid "Zoom in & out"
+msgstr "Ingrandisci e riduci"
+
+#: src/interface.c:196
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Ingrandisci e riduci. Clicca in qualunque posto per ingrandire"
+"quella parte del campione. Per ridurre tieni premuto shift e clicca."
+
+#: src/view.c:90
+msgid "Open..."
+msgstr "Apri..."
+
+#: src/view.c:99
+msgid "Save"
+msgstr "Salva"
+
+#: src/view.c:108
+msgid "Save As..."
+msgstr "Salva con nome..."
+
+#: src/view.c:114
+msgid "Revert"
+msgstr "Ripristina"
+
+#: src/view.c:124
+msgid "Close"
+msgstr "Chiudi"
+
+#. Edit
+#: src/view.c:143
+msgid "Edit"
+msgstr "Modifica"
+
+#: src/view.c:149
+msgid "Undo"
+msgstr "Annulla l'ultima operazione"
+
+#: src/view.c:159
+msgid "Redo"
+msgstr "Rifai l'ultima operazione"
+
+#: src/view.c:172
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/view.c:178
+msgid "Cut"
+msgstr "Taglia"
+
+#: src/view.c:187
+msgid "Copy"
+msgstr "Copia"
+
+#: src/view.c:196
+msgid "Paste"
+msgstr "Incolla"
+
+#: src/view.c:205
+msgid "Paste as New"
+msgstr "Incolla come nuovo"
+
+#: src/view.c:215
+msgid "Clear"
+msgstr "Cancella"
+
+#: src/view.c:232
+msgid "Invert"
+msgstr "Inverti"
+
+#: src/view.c:240
+msgid "All"
+msgstr "Tutto"
+
+#: src/view.c:248
+msgid "None"
+msgstr "Niente"
+
+#. View
+#: src/view.c:258
+msgid "View"
+msgstr "Vista"
+
+#: src/view.c:264
+msgid "Zoom In"
+msgstr "Ingrandisci"
+
+#: src/view.c:273
+msgid "Zoom Out"
+msgstr "Riduci"
+
+#: src/view.c:282
+msgid "Zoom to selection"
+msgstr "Ingrandisci la selezione"
+
+#: src/view.c:289
+msgid "Left"
+msgstr "Sinistra"
+
+#: src/view.c:298
+msgid "Right"
+msgstr "Destra"
+
+#: src/view.c:314
+#, c-format
+msgid "50%"
+msgstr "50%"
+
+#: src/view.c:320
+#, c-format
+msgid "100%"
+msgstr "100%"
+
+#: src/view.c:334
+msgid "New View"
+msgstr "Nuova vista"
+
+#. Sample
+#: src/view.c:341
+msgid "Sample"
+msgstr "Campione"
+
+#: src/view.c:347
+msgid "Duplicate"
+msgstr "Duplica"
+
+#. Filters
+#: src/view.c:357
+msgid "Filters"
+msgstr "Filtri"
+
+#: src/view.c:363
+msgid "Normalise"
+msgstr "Normalizza"
+
+#: src/view.c:372
+msgid "Reverse"
+msgstr "Rovescia"
+
+#. Playback
+#: src/view.c:382
+msgid "Playback"
+msgstr "Playback"
+
+#: src/view.c:388
+msgid "Play sample"
+msgstr "Suona il campione"
+
+#: src/view.c:397
+msgid "Loop sample"
+msgstr "Campione ciclico"
+
+#: src/view.c:406
+msgid "Play selection"
+msgstr "Suona la selezione"
+
+#: src/view.c:415
+msgid "Loop selection"
+msgstr "Selezione ciclica"
+
+#: src/view.c:428
+msgid "Note"
+msgstr "Nota"
+
+#: src/view.c:490
+msgid "Stop"
+msgstr "Stop"
+
+#: src/view.c:886
+msgid "Untitled"
+msgstr "Senzatitolo"
+
+#: src/view.c:888
+msgid "Mono"
+msgstr "Mono"
+
+#: src/view.c:888
+msgid "Stereo"
+msgstr "Stereo"
