@@ -29,10 +29,10 @@
 
 #include "i18n.h"
 
-static sw_soundfile *
-normalise (sw_soundfile * soundfile, sw_param_set pset, gpointer custom_data)
+static sw_sounddata *
+normalise (sw_sounddata * sounddata, sw_param_set pset, gpointer custom_data)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   GList * gl;
   sw_sel * sel;
   sw_audio_t * d;
@@ -41,10 +41,10 @@ normalise (sw_soundfile * soundfile, sw_param_set pset, gpointer custom_data)
   glong i, len;
 
   /* Find max */
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (sw_audio_t *)(soundfile->data + frames_to_bytes (f, sel->sel_start));
+    d = (sw_audio_t *)(sounddata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
     for (i=0; i < len * f->channels; i++) {
       if(d[i]>=0) max = MAX(max, d[i]);
@@ -55,17 +55,17 @@ normalise (sw_soundfile * soundfile, sw_param_set pset, gpointer custom_data)
   factor = SW_AUDIO_T_MAX / (gfloat)max;
 
   /* Scale */
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (sw_audio_t *)(soundfile->data + frames_to_bytes (f, sel->sel_start));
+    d = (sw_audio_t *)(sounddata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
     for (i=0; i < len * f->channels; i++) {
       d[i] = (sw_audio_t)((gfloat)d[i] * factor);
     }
   }
 
-  return soundfile;
+  return sounddata;
 }
 
 static sw_op_instance *
