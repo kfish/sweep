@@ -22,7 +22,6 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "config.h"
 #include <sweep/sweep.h>
 
 

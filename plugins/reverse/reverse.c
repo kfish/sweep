@@ -24,7 +24,6 @@
 
 #include <sweep/sweep.h>
 
-#include "config.h"
 
 static void
 region_reverse (gpointer data, sw_format * format, int nr_frames,

@@ -25,7 +25,6 @@
 
 #include <sweep/sweep.h>
 
-#include "config.h"
 
 static sw_sounddata *
 normalise (sw_sounddata * sounddata, sw_param_set pset, gpointer custom_data)
