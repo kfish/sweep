@@ -22,6 +22,7 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "config.h"
 #include "sweep_types.h"
 #include "sweep_typeconvert.h"
 #include "sweep_filter.h"
@@ -53,16 +54,16 @@ static sw_param_range gain_range = {
 
 static sw_param_spec param_specs[] = {
   {
-    "Delay",
-    "Time to delay by",
+    N_("Delay"),
+    N_("Time to delay by"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &delay_range},
     SW_PARAM_HINT_TIME
   },
   {
-    "Gain",
-    "Gain with which to mix in delayed signal",
+    N_("Gain"),
+    N_("Gain with which to mix in delayed signal"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &gain_range},
@@ -85,11 +86,8 @@ region_echo (gpointer data, sw_format * format, sw_framecount_t nr_frames,
   gfloat gain = pset[1].f;
 
   sw_framecount_t i, delay_f, dlen_s;
-  /*  glong sw;*/
   sw_audio_t * d, * e;
   gpointer ep;
-
-  /*  sw = frames_to_bytes (format, 1);*/
 
   delay_f = time_to_frames (format, delay);
 
@@ -116,8 +114,8 @@ echo_apply (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 
 
 static sw_proc proc_echo = {
-  _("Echo"),
-  _("Apply an echo to selected regions of a sample"),
+  N_("Echo"),
+  N_("Apply an echo to selected regions of a sample"),
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/echo",

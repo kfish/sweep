@@ -23,20 +23,20 @@
 
 #include "sweep_types.h"
 
-edit_buffer *
+sw_edit_buffer *
 edit_buffer_from_sample (sw_sample * sample);
 
 void
-edit_buffer_destroy (edit_buffer * eb);
+edit_buffer_destroy (sw_edit_buffer * eb);
 
 sw_sounddata *
 splice_out_sel (sw_sounddata * sounddata);
 
 sw_sounddata *
-splice_in_eb (sw_sounddata * sounddata, edit_buffer * eb);
+splice_in_eb (sw_sounddata * sounddata, sw_edit_buffer * eb);
 
 sw_sample *
-paste_over (sw_sample * sample, edit_buffer * eb);
+paste_over (sw_sample * sample, sw_edit_buffer * eb);
 
 void
 do_copy (sw_sample * sample);

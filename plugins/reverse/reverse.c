@@ -22,6 +22,7 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "config.h"
 #include "sweep_types.h"
 #include "sweep_typeconvert.h"
 #include "sweep_filter.h"
@@ -63,8 +64,8 @@ apply_reverse (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 
 
 sw_proc proc_reverse = {
-  _("Reverse"),
-  _("Reverse selected regions of a sample"),
+  N_("Reverse"),
+  N_("Reverse selected regions of a sample"),
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/reverse",

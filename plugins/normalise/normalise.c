@@ -23,6 +23,7 @@
 
 #include <gdk/gdkkeysyms.h>
 
+#include "config.h"
 #include "sweep_types.h"
 #include "sweep_typeconvert.h"
 #include "sweep_filter.h"
@@ -77,8 +78,8 @@ apply_normalise(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 }
 
 sw_proc proc_normalise = {
-  _("Normalise"),
-  _("Alter the sample's amplitude to lie between 1.0 and -1.0"),
+  N_("Normalise"),
+  N_("Alter the sample's amplitude to lie between 1.0 and -1.0"),
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/normalise",

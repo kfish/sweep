@@ -202,7 +202,7 @@ redo_by_replace (replace_data * r)
 #endif
 
 paste_over_data *
-paste_over_data_new (edit_buffer * old_eb, edit_buffer * new_eb)
+paste_over_data_new (sw_edit_buffer * old_eb, sw_edit_buffer * new_eb)
 {
   paste_over_data * p;
 
@@ -241,7 +241,7 @@ redo_by_paste_over (sw_sample * s, paste_over_data * p)
 }
 
 splice_data *
-splice_data_new (edit_buffer * eb)
+splice_data_new (sw_edit_buffer * eb)
 {
   splice_data * s;
 

@@ -10,13 +10,18 @@ bin_PROGRAMS = sweep
 sweepincludedir = $(includedir)/sweep
 
 sweepinclude_HEADERS = \
+	sweep_version.h \
 	sweep.h \
 	sweep_types.h \
 	sweep_typeconvert.h \
-	sweep_filter.h
+	sweep_sounddata.h \
+	sweep_filter.h \
+	sweep_selection.h \
+	sweep_undo.h
 
 sweep_SOURCES = \
-	main.c sweep.h \
+	sweep_version.h \
+	main.c sweep_types.h \
 	about_dialog.c about_dialog.h \
 	file_dialogs.c file_dialogs.h \
 	file_ops.c file_ops.h \

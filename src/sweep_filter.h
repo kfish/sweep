@@ -22,8 +22,8 @@
 #ifndef __SWEEP_FILTER_H__
 #define __SWEEP_FILTER_H__
 
-typedef void (*SweepFilterRegion) (gpointer data,
-				   sw_format * format, int nr_frames,
+typedef void (*SweepFilterRegion) (gpointer data, sw_format * format,
+				   sw_framecount_t nr_frames,
 				   sw_param_set pset, gpointer custom_data);
 
 typedef sw_sounddata * (*SweepFilter) (sw_sounddata * sounddata,

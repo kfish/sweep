@@ -2,9 +2,7 @@
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/src \
-	@GTK_CFLAGS@ \
-	@AUDIOFILE_CFLAGS@
+	-I$(top_srcdir)/src
 
 libdir = @PACKAGE_PLUGIN_DIR@
 

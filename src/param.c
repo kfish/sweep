@@ -111,7 +111,7 @@ snprint_param (gchar * s, gint n, sw_param_type type, sw_param p)
     snprintf (s, n, "%f", p.f);
     break;
   case SWEEP_TYPE_STRING:
-    snprintf (s, n, "%s", p.s);
+    snprintf (s, n, "%s", _(p.s));
     break;
   default:
     break;
@@ -562,7 +562,7 @@ create_param_set_adjuster (sw_proc * proc, sw_view * view,
   gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  button = gtk_button_new_with_label ("Suggest");
+  button = gtk_button_new_with_label (_("Suggest"));
   gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",
@@ -583,13 +583,13 @@ create_param_set_adjuster (sw_proc * proc, sw_view * view,
   gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 4);
   gtk_widget_show (hbox);
 
-  button = gtk_button_new_with_label ("OK");
+  button = gtk_button_new_with_label (_("OK"));
   gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",
 		      GTK_SIGNAL_FUNC (param_set_apply_cb), ps);
 
-  button = gtk_button_new_with_label ("Cancel");
+  button = gtk_button_new_with_label (_("Cancel"));
   gtk_box_pack_start (GTK_BOX(hbox), button, TRUE, FALSE, 0);
   gtk_widget_show (button);
   gtk_signal_connect (GTK_OBJECT(button), "clicked",

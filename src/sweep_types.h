@@ -114,21 +114,21 @@ struct _sw_sample {
   gint playmarker_tag; /* gtk_timeout tag for playmarkers */
 };
 
-typedef struct _edit_region edit_region;
-typedef struct _edit_buffer edit_buffer;
+typedef struct _sw_edit_region sw_edit_region;
+typedef struct _sw_edit_buffer sw_edit_buffer;
 
 /*
  * A region of data. Units are frames.
  * The length of data available *data is (end - start)
  */
-struct _edit_region {
+struct _sw_edit_region {
   sw_framecount_t start;
   sw_framecount_t end;
 
   gpointer data;
 };
 
-struct _edit_buffer {
+struct _sw_edit_buffer {
   sw_format * format;
   GList * regions;
 };
@@ -261,16 +261,29 @@ typedef enum {
 typedef int sw_hints;
 
 /*
+ * SW_PARAM_HINT_DEFAULT indicates that the parameter has no special
+ * interpretation; eg. if a number, it's linear
+ */
+
+#define SW_PARAM_HINT_DEFAULT      (0)
+
+/*
  * SW_PARAM_HINT_LOGARITHMIC indicates that the parameter should be
  * interpreted as logarithmic.
  */
 #define SW_PARAM_HINT_LOGARITHMIC  (1<<1)
 
 /*
+ * SW_PARAM_HINT_TIME indicates that the parameter should be
+ * interpreted as a time
+ */
+#define SW_PARAM_HINT_TIME         (1<<2)
+
+/*
  * SW_PARAM_HINT_FILENAME indicates that the parameter should be
  * interpreted as a valid filename on the user's system.
  */
-#define SW_PARAM_HINT_FILENAME     (1<<2)
+#define SW_PARAM_HINT_FILENAME     (1<<3)
  
 
 typedef struct _sw_param_spec sw_param_spec;

@@ -4561,6 +4561,7 @@ plugins/normalise/Makefile
 plugins/reverse/Makefile
 plugins/ladspa/Makefile
 plugins/byenergy/Makefile
+plugins/example/Makefile
 doc/Makefile
 intl/Makefile
 po/Makefile.in
@@ -4699,6 +4700,7 @@ plugins/normalise/Makefile
 plugins/reverse/Makefile
 plugins/ladspa/Makefile
 plugins/byenergy/Makefile
+plugins/example/Makefile
 doc/Makefile
 intl/Makefile
 po/Makefile.in

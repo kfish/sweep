@@ -29,15 +29,15 @@
 #include "format.h"
 #include "sample.h"
 
-edit_buffer * ebuf = NULL;
+sw_edit_buffer * ebuf = NULL;
 
-static edit_region *
+static sw_edit_region *
 edit_region_new (sw_format * format, sw_framecount_t start, sw_framecount_t end, gpointer data)
 {
-  edit_region * er;
+  sw_edit_region * er;
   sw_framecount_t len;
 
-  er = g_malloc (sizeof(edit_region));
+  er = g_malloc (sizeof(sw_edit_region));
 
   er->start = start;
   er->end = end;
@@ -50,7 +50,7 @@ edit_region_new (sw_format * format, sw_framecount_t start, sw_framecount_t end,
   return er;
 }
 
-static edit_region *
+static sw_edit_region *
 edit_region_new0 (sw_format * format, sw_framecount_t start, sw_framecount_t end, gpointer data0)
 {
   sw_framecount_t offset;
@@ -62,39 +62,39 @@ edit_region_new0 (sw_format * format, sw_framecount_t start, sw_framecount_t end
   return edit_region_new (format, start, end, data0+o2);
 }
 
-static edit_region *
-edit_region_copy (sw_format * format, edit_region * oer)
+static sw_edit_region *
+edit_region_copy (sw_format * format, sw_edit_region * oer)
 {
-  edit_region * er;
+  sw_edit_region * er;
 
   er = edit_region_new (format, oer->start, oer->end, oer->data);
 
   return er;
 }
 
-edit_buffer *
+sw_edit_buffer *
 edit_buffer_new (sw_format * format)
 {
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
 
-  eb = g_malloc0 (sizeof(edit_buffer));
+  eb = g_malloc0 (sizeof(sw_edit_buffer));
   eb->format = format_copy (format);
   eb->regions = NULL;
 
   return eb;
 }
 
-edit_buffer *
-edit_buffer_copy (edit_buffer * oeb)
+sw_edit_buffer *
+edit_buffer_copy (sw_edit_buffer * oeb)
 {
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
   GList * gl;
-  edit_region * oer, * er;
+  sw_edit_region * oer, * er;
 
   eb = edit_buffer_new (oeb->format);
 
   for (gl = oeb->regions; gl; gl = gl->next) {
-    oer = (edit_region *)gl->data;
+    oer = (sw_edit_region *)gl->data;
 
     er = edit_region_copy (oeb->format, oer);
  
@@ -105,17 +105,17 @@ edit_buffer_copy (edit_buffer * oeb)
 }
 
 static void
-edit_buffer_clear (edit_buffer * eb)
+edit_buffer_clear (sw_edit_buffer * eb)
 {
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
 
   if (!eb) return;
 
   g_free (eb->format);
 
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
     g_free (er->data);
   }
   g_list_free (eb->regions);
@@ -125,7 +125,7 @@ edit_buffer_clear (edit_buffer * eb)
 }
 
 void
-edit_buffer_destroy (edit_buffer * eb)
+edit_buffer_destroy (sw_edit_buffer * eb)
 {
   edit_buffer_clear (eb);
   g_free (eb);
@@ -142,14 +142,14 @@ ebuf_clear (void)
 }
 
 static gint
-edit_buffer_length (edit_buffer * eb)
+edit_buffer_length (sw_edit_buffer * eb)
 {
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
   gint length = 0;
 
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
 
     length += (er->end - er->start);
   }
@@ -157,13 +157,13 @@ edit_buffer_length (edit_buffer * eb)
   return length;
 }
 
-static edit_buffer *
+static sw_edit_buffer *
 edit_buffer_from_sounddata (sw_sounddata * sounddata)
 {
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
   GList * gl;
   sw_sel * sel;
-  edit_region * er;
+  sw_edit_region * er;
 
   eb = edit_buffer_new (sounddata->format);
 
@@ -184,18 +184,18 @@ edit_buffer_from_sounddata (sw_sounddata * sounddata)
   return eb;
 }
 
-edit_buffer *
+sw_edit_buffer *
 edit_buffer_from_sample (sw_sample * sample)
 {
   return edit_buffer_from_sounddata (sample->sounddata);
 }
 
 static sw_sample *
-sample_from_edit_buffer (edit_buffer * eb)
+sample_from_edit_buffer (sw_edit_buffer * eb)
 {
   sw_sample * s;
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
   sw_framecount_t offset0 = 0, start, length;
   sw_framecount_t offset, len;
 
@@ -204,10 +204,10 @@ sample_from_edit_buffer (edit_buffer * eb)
 
   if (!gl) return NULL;
 
-  start = ((edit_region *)gl->data)->start;
+  start = ((sw_edit_region *)gl->data)->start;
   
   for (; gl->next; gl = gl->next);
-  er = (edit_region *)gl->data;
+  er = (sw_edit_region *)gl->data;
   length = er->end - start;
 
   s = sample_new_empty (NULL, "Untitled",
@@ -218,7 +218,7 @@ sample_from_edit_buffer (edit_buffer * eb)
   offset0 = frames_to_bytes (eb->format, start);
 
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
     offset = frames_to_bytes (eb->format, er->start) - offset0;
     len = frames_to_bytes (eb->format, er->end - er->start);
 
@@ -293,10 +293,10 @@ splice_out_sel (sw_sounddata * sounddata)
 }
 
 static void
-sounddata_set_sel_from_eb (sw_sounddata * sounddata, edit_buffer * eb)
+sounddata_set_sel_from_eb (sw_sounddata * sounddata, sw_edit_buffer * eb)
 {
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
 
   if (sounddata->sels)
     sounddata_clear_selection (sounddata);
@@ -304,7 +304,7 @@ sounddata_set_sel_from_eb (sw_sounddata * sounddata, edit_buffer * eb)
   if (!eb) return;
   
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
 
     if (er->start > sounddata->nr_frames) break;
 
@@ -314,12 +314,12 @@ sounddata_set_sel_from_eb (sw_sounddata * sounddata, edit_buffer * eb)
 
 /* returns new sounddata */
 sw_sounddata *
-splice_in_eb (sw_sounddata * sounddata, edit_buffer * eb)
+splice_in_eb (sw_sounddata * sounddata, sw_edit_buffer * eb)
 {
   sw_format * f = sounddata->format;
   gint length;
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
   sw_framecount_t prev_end = 0;
   sw_sounddata * out;
   gpointer di, d;
@@ -338,7 +338,7 @@ splice_in_eb (sw_sounddata * sounddata, edit_buffer * eb)
   d = out->data;
 
   gl = eb->regions;
-  er = (edit_region *)gl->data;
+  er = (sw_edit_region *)gl->data;
   if (er->start <= 0) {
     len = frames_to_bytes (f, er->end - er->start);
     memcpy (d, er->data, len);
@@ -348,7 +348,7 @@ splice_in_eb (sw_sounddata * sounddata, edit_buffer * eb)
   }
 
   for (; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
 
     /* Copy sample data in */
     len = frames_to_bytes (f, er->start - prev_end);
@@ -398,14 +398,14 @@ edit_clear_sel (sw_sounddata * sounddata)
 
 /* New sample */
 static sw_sounddata *
-paste_at (sw_sounddata * sounddata, edit_buffer * eb)
+paste_at (sw_sounddata * sounddata, sw_edit_buffer * eb)
 {
   sw_format * f = sounddata->format;
   sw_framecount_t paste_point = 0;
   sw_framecount_t paste_offset = 0, len;
   sw_framecount_t length, paste_length;
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
   gpointer d;
   sw_sounddata * out;
 
@@ -428,7 +428,7 @@ paste_at (sw_sounddata * sounddata, edit_buffer * eb)
   }
 
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
 
     len = frames_to_bytes (f, er->end - er->start);
     memcpy (d, er->data, len);
@@ -452,20 +452,20 @@ paste_at (sw_sounddata * sounddata, edit_buffer * eb)
 
 /* Modifies sample */
 sw_sample *
-paste_over (sw_sample * sample, edit_buffer * eb)
+paste_over (sw_sample * sample, sw_edit_buffer * eb)
 {
   sw_format * f = sample->sounddata->format;
   sw_framecount_t offset, len;
   sw_framecount_t length;
   GList * gl;
-  edit_region * er;
+  sw_edit_region * er;
 
   if (!eb) return sample;
 
   length = sample->sounddata->nr_frames;
 
   for (gl = eb->regions; gl; gl = gl->next) {
-    er = (edit_region *)gl->data;
+    er = (sw_edit_region *)gl->data;
 
     if (er->start > length) break;
 
@@ -501,7 +501,7 @@ do_cut (sw_sample * sample)
 {
   sw_sounddata * out;
   sw_op_instance * inst;
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
 
   inst = sw_op_instance_new ("Cut", &cut_op);
   eb = edit_buffer_from_sample (sample);
@@ -535,7 +535,7 @@ sw_op_instance *
 do_clear (sw_sample * sample)
 {
   sw_op_instance * inst;
-  edit_buffer * old_eb, * new_eb;
+  sw_edit_buffer * old_eb, * new_eb;
 
   inst = sw_op_instance_new ("Clear", &clear_op);
   old_eb = edit_buffer_from_sample (sample);
@@ -565,7 +565,7 @@ do_delete (sw_sample * sample)
 {
   sw_sounddata * out;
   sw_op_instance * inst;
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
 
   inst = sw_op_instance_new ("Delete", &delete_op);
   eb = edit_buffer_from_sample (sample);
@@ -596,7 +596,7 @@ sw_op_instance *
 do_paste_in (sw_sample * in, sw_sample ** out)
 {
   sw_op_instance * inst;
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
 
   inst = sw_op_instance_new ("Paste in", &paste_in_op);
   eb = edit_buffer_copy (ebuf);
@@ -623,7 +623,7 @@ do_paste_at (sw_sample * sample)
 {
   sw_sounddata * out;
   sw_op_instance * inst;
-  edit_buffer * eb1, *eb2;
+  sw_edit_buffer * eb1, *eb2;
 
   inst = sw_op_instance_new ("Paste", &paste_at_op);
   eb1 = edit_buffer_copy (ebuf);
@@ -655,7 +655,7 @@ sw_op_instance *
 do_paste_over (sw_sample * in, sw_sample **out)
 {
   sw_op_instance * inst;
-  edit_buffer * old_eb, * new_eb;
+  sw_edit_buffer * old_eb, * new_eb;
 
   inst = sw_op_instance_new ("Paste over", &paste_over_op);
   old_eb = edit_buffer_from_sample (in);

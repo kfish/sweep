@@ -60,12 +60,12 @@ typedef struct _paste_over_data paste_over_data;
 
 struct _paste_over_data {
   sw_sample * sample;
-  edit_buffer * old_eb;
-  edit_buffer * new_eb;
+  sw_edit_buffer * old_eb;
+  sw_edit_buffer * new_eb;
 };
 
 paste_over_data *
-paste_over_data_new (edit_buffer * old_eb, edit_buffer * new_eb);
+paste_over_data_new (sw_edit_buffer * old_eb, sw_edit_buffer * new_eb);
 
 void
 paste_over_data_destroy (paste_over_data * p);
@@ -81,11 +81,11 @@ typedef struct _splice_data splice_data;
 
 struct _splice_data {
   sw_sample * sample;
-  edit_buffer * eb;
+  sw_edit_buffer * eb;
 };
 
 splice_data *
-splice_data_new (edit_buffer * eb);
+splice_data_new (sw_edit_buffer * eb);
 
 void
 splice_data_destroy (splice_data * s);

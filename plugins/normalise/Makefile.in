@@ -97,7 +97,7 @@ USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 l = @l@
 
-INCLUDES =  	-I$(top_srcdir)/intl 	-I$(top_srcdir)/src 	@GTK_CFLAGS@ 	@AUDIOFILE_CFLAGS@
+INCLUDES =  	-I$(top_srcdir)/intl 	-I$(top_srcdir)/src
 
 
 libdir = @PACKAGE_PLUGIN_DIR@

@@ -61,37 +61,37 @@ static sw_param_range max_interruption_range = {
 
 static sw_param_spec param_specs[] = {
   {
-    "Select regions above threshold",
-    "Whether to select those regions lying above a given threshhold"
-    "or below it.",
+    N_("Select regions above threshold"),
+    N_("Whether to select those regions lying above a given threshhold"
+       "or below it."),
     SWEEP_TYPE_BOOL,
     SW_PARAM_CONSTRAINED_NOT,
     {NULL},
   },
   {
-    "Resolution",
-    "Width of energy detection window (s)",
+    N_("Resolution"),
+    N_("Width of energy detection window (s)"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &resolution_range}
   },
   {
-    "Threshold",
-    "Energy level to detect [0.0 - 1.0]",
+    N_("Threshold"),
+    N_("Energy level to detect [0.0 - 1.0]"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &threshold_range},
   },
   {
-    "Minimum duration",
-    "Shortest region of selection to detect (s)",
+    N_("Minimum duration"),
+    N_("Shortest region of selection to detect (s)"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &min_duration_range}
   },
   {
-    "Maximum interruption",
-    "Longest length of sound above threshold to allow (s)",
+    N_("Maximum interruption"),
+    N_("Longest length of sound above threshold to allow (s)"),
     SWEEP_TYPE_FLOAT,
     SW_PARAM_CONSTRAINED_RANGE,
     {range: &max_interruption_range}
@@ -236,8 +236,8 @@ apply_by_energy(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 }
 
 sw_proc proc_by_energy = {
-  _("Select by energy"),
-  _("Select regions of energy within the sample"),
+  N_("Select by energy"),
+  N_("Select loud or quiet regions"),
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/byenergy",
