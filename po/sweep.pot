@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-09-30 17:26+1100\n"
+"POT-Creation-Date: 2000-09-30 21:01+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,14 +263,14 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: src/view.c:971
+#: src/view.c:968
 msgid "Untitled"
 msgstr ""
 
-#: src/view.c:973
+#: src/view.c:970
 msgid "Mono"
 msgstr ""
 
-#: src/view.c:973
+#: src/view.c:970
 msgid "Stereo"
 msgstr ""
