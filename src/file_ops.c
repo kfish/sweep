@@ -141,7 +141,7 @@ sample_load(char * pathname)
       /* XXX: this does not deal properly with [un?]signed 8 bit data */
       for (i = 0; i < (buffer_frames * channelcount); i++) {
 	((sw_audio_t *)copydata)[i] = SW_AUDIO_T_MAX * (sw_audio_t)
-	  (((gint8 *)load_buffer)[i]) / 256.0;
+	  (((guint8 *)load_buffer)[i] - 128) / 128.0;
       }
     }
     copydata += frames_to_bytes (s->sdata->format, buffer_frames);

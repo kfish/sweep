@@ -380,7 +380,8 @@ struct _sw_proc {
    * If nr_params is 0 this function will not be called.
    * If this function is NULL default (zero) values will be used.
    */
-  void (*proc_suggest) (sw_sample * sample, sw_param_set pset);
+  void (*proc_suggest) (sw_sample * sample, sw_param_set pset,
+			gpointer custom_data);
 
   /* This is the function that actually does the work!
    *
@@ -391,13 +392,16 @@ struct _sw_proc {
    *
    * If nr_params is 0 this function will be passed a NULL pset.
    */
-  sw_op_instance * (*proc_apply) (sw_sample * sample, sw_param_set pset);
+  sw_op_instance * (*proc_apply) (sw_sample * sample,
+				  sw_param_set pset, gpointer custom_data);
 
+  /* custom data to pass to the suggest and apply functions */
+  gpointer proc_data;
 };
 
 struct _sw_plugin {
-  /* plugin_init () returns nr of procs and a list of procs */
-  void (*plugin_init) (gint * nr_procs, sw_proc ** procs);
+  /* plugin_init () returns a list of procs */
+  GList * (*plugin_init) (void);
 
   /* plugin_cleanup() frees the plugin's private data structures */
   void (*plugin_cleanup) (void);

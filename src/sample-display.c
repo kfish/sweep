@@ -36,6 +36,10 @@
 
 gint current_tool = TOOL_SELECT;
 
+/* Maximum number of samples to consider per pixel */
+#define STEP_MAX 32
+
+
 /* Whether or not to compile in support for
  * drawing the crossing vectors
  */
@@ -405,8 +409,9 @@ sample_display_draw_data_channel (GdkDrawable * win,
     
     maxpos = minneg = 0;
 
-    /* 'step' ensures that no more than 256 values get looked at per pixel */
-    step = MAX (1, PIXEL_TO_OFFSET(1)/256);
+    /* 'step' ensures that no more than STEP_MAX values get looked at
+     * per pixel */
+    step = MAX (1, PIXEL_TO_OFFSET(1)/STEP_MAX);
 
     for (i = OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x));
 	 i < OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x+1));

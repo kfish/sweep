@@ -94,10 +94,11 @@ apply_procedure_cb (GtkWidget * widget, gpointer data)
 
   if (proc->nr_params == 0) {
     pset = NULL;
-    proc->proc_apply (sample, pset);
+    proc->proc_apply (sample, pset, proc->proc_data);
   } else {
     pset = sw_param_set_new (proc);
-    proc->proc_suggest (sample, pset);
+    if (proc->proc_suggest)
+      proc->proc_suggest (sample, pset, proc->proc_data);
     create_param_set_adjuster (proc, pi->view, pset);
   }
 
@@ -117,9 +118,13 @@ create_proc_menuitem (sw_proc * proc, sw_view * view,
   gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
 		     GTK_SIGNAL_FUNC(apply_procedure_cb), pi);
   gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      proc->accel_key, proc->accel_mods,
-			      GTK_ACCEL_VISIBLE);
+
+  if (proc->accel_key) {
+    gtk_widget_add_accelerator (menuitem, "activate", accel_group,
+				proc->accel_key, proc->accel_mods,
+				GTK_ACCEL_VISIBLE);
+  }
+
 }
 
 /*

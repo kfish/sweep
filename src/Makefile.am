@@ -32,14 +32,3 @@ sweep_SOURCES = \
 
 sweep_LDADD = @GTK_LIBS@ @AUDIOFILE_LIB@ $(INTLLIBS) $(PTHREAD_LIBS)
 
-libdir = @PACKAGE_PLUGIN_DIR@
-
-lib_LTLIBRARIES = \
-	libnormalise.la \
-	libreverse.la \
-	libecho.la
-
-libecho_la_SOURCES = echo.c echo.h
-libnormalise_la_SOURCES = normalise.c normalise.h
-libreverse_la_SOURCES = reverse.c reverse.h
-

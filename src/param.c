@@ -69,7 +69,7 @@ sw_param_set_new (sw_proc * proc)
 {
   sw_param * p;
 
-  p = g_malloc (sizeof(sw_param) * proc->nr_params);
+  p = g_malloc0 (sizeof(sw_param) * proc->nr_params);
 
   return p;
 }
@@ -300,7 +300,7 @@ param_set_apply_cb (GtkWidget * widget, gpointer data)
 #endif
 
   if (ps->proc->proc_apply) {
-    ps->proc->proc_apply (ps->view->sample, ps->pset);
+    ps->proc->proc_apply (ps->view->sample, ps->pset, ps->proc->proc_data);
   }
 
   gtk_widget_destroy (ps->window);
@@ -505,7 +505,7 @@ param_set_suggest_cb (GtkWidget * widget, gpointer data)
   GtkWidget * vbox;
 
   if (ps->proc->proc_suggest) {
-    ps->proc->proc_suggest (ps->view->sample, ps->pset);
+    ps->proc->proc_suggest (ps->view->sample, ps->pset, ps->proc->proc_data);
   }
 
   gtk_widget_destroy (ps->vbox);

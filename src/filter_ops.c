@@ -38,7 +38,7 @@ static sw_operation filter_op = {
 
 static sw_sdata *
 do_filter_regions (sw_sdata * sdata, SweepFilterRegion func,
-		   sw_param_set pset)
+		   sw_param_set pset, gpointer custom_data)
 {
   sw_format * f = sdata->format;
   GList * gl;
@@ -49,7 +49,8 @@ do_filter_regions (sw_sdata * sdata, SweepFilterRegion func,
     sel = (sw_sel *)gl->data;
 
     d = sdata->data + frames_to_bytes (f, sel->sel_start);
-    func (d, sdata->format, sel->sel_end - sel->sel_start, pset);
+    func (d, sdata->format, sel->sel_end - sel->sel_start,
+	  pset, custom_data);
   }
 
   return sdata;
@@ -57,7 +58,8 @@ do_filter_regions (sw_sdata * sdata, SweepFilterRegion func,
 
 sw_op_instance *
 register_filter_region_op (sw_sample * sample, char * desc,
-			   SweepFilterRegion func, sw_param_set pset)
+			   SweepFilterRegion func,
+			   sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   edit_buffer * old_eb, * new_eb;
@@ -65,7 +67,7 @@ register_filter_region_op (sw_sample * sample, char * desc,
   inst = sw_op_instance_new (desc, &filter_op);
   old_eb = edit_buffer_from_sample (sample);
 
-  do_filter_regions (sample->sdata, func, pset);
+  do_filter_regions (sample->sdata, func, pset, custom_data);
   new_eb = edit_buffer_from_sample (sample);
 
   inst->redo_data = inst->undo_data =
@@ -80,7 +82,7 @@ register_filter_region_op (sw_sample * sample, char * desc,
 
 sw_op_instance *
 register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
-		    sw_param_set pset)
+		    sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   edit_buffer * old_eb, * new_eb;
@@ -89,7 +91,7 @@ register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
   inst = sw_op_instance_new (desc, &filter_op);
   old_eb = edit_buffer_from_sample (sample);
 
-  out = func (sample->sdata, pset);
+  out = func (sample->sdata, pset, custom_data);
 
   /* XXX: Not for inplace edits!!
   sdata_destroy (sample->sdata);

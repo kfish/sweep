@@ -42,18 +42,16 @@ sweep_plugin_init (const gchar * name)
   gchar * path;
   GModule * module;
   sw_plugin * m_plugin;
-  gint nr_plugins;
-  sw_proc * procs;
-  gint i;
+  GList * gl;
 
   path = g_module_build_path (PACKAGE_PLUGIN_DIR, name);
 
   module = g_module_open (path, 0);
   
   if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
-    m_plugin->plugin_init (&nr_plugins, &procs);
-    for (i=0; i < nr_plugins; i++) {
-      plugins = g_list_append (plugins, &procs[i]);
+    for (gl = m_plugin->plugin_init ();
+	 gl; gl = gl->next) {
+      plugins = g_list_append (plugins, (sw_proc *)gl->data);
     }
   }
 }

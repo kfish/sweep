@@ -24,17 +24,19 @@
 
 typedef void (*SweepFilterRegion) (gpointer data,
 				   sw_format * format, int nr_frames,
-				   sw_param_set pset);
+				   sw_param_set pset, gpointer custom_data);
 
-typedef sw_sdata * (*SweepFilter) (sw_sdata * sdata, sw_param_set pset);
+typedef sw_sdata * (*SweepFilter) (sw_sdata * sdata, sw_param_set pset,
+				   gpointer custom_data);
 
 sw_op_instance *
 register_filter_region_op (sw_sample * sample, char * desc,
-			   SweepFilterRegion func, sw_param_set pset);
+			   SweepFilterRegion func, sw_param_set pset,
+			   gpointer custom_data);
 
 sw_op_instance *
 register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
-		    sw_param_set pset);
+		    sw_param_set pset, gpointer custom_data);
 
 
 #endif /* __FILTER_OPS_H__ */
