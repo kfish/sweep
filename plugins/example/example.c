@@ -24,8 +24,6 @@
 
 #include <sweep/sweep.h>
 
-#include "config.h"
-
 
 #ifndef __GNUC__
 #error GCCisms used here. Please report this error to \
@@ -67,7 +65,7 @@ static sw_param_spec example_filter_region_param_specs[] = {
     N_("Method of eating beans"),
     SWEEP_TYPE_STRING,
     SW_PARAM_CONSTRAINED_LIST,
-    {list: &stix_list},
+    {list: (sw_param *)&stix_list},
     SW_PARAM_HINT_DEFAULT
   },
   {
@@ -75,7 +73,7 @@ static sw_param_spec example_filter_region_param_specs[] = {
     N_("How many pants should you wear per day?"),
     SWEEP_TYPE_INT,
     SW_PARAM_CONSTRAINED_LIST,
-    {list: &pants_list},
+    {list: (sw_param *)&pants_list},
     SW_PARAM_HINT_DEFAULT
   }
 };
@@ -127,7 +125,7 @@ example_filter_region_apply (sw_sample * sample, sw_param_set pset,
 }
 
 
-static sw_proc proc_example_filter_region = {
+static sw_procedure proc_example_filter_region = {
   N_("Example Filter Region"),
   N_("An example filter region plugin"),
   "Conrad Parker",
