@@ -153,37 +153,21 @@ setup_dev_dsp (sw_sample * s)
     return; /* XXX: Flag error */
   }
 
-#if 0
-  if (s->sdata->format->s_size == 8) {
-    if(mask&AFMT_U8) {
-      format=AFMT_U8;
-    }
-    if(mask&AFMT_S8) {
-      format=AFMT_S8;
-    }
+  if(mask&AFMT_U16_LE) {
+    format=AFMT_U16_LE;
   }
-
-  if (s->sdata->format->s_size == 16) {
-#endif
-    if(mask&AFMT_U16_LE) {
-      format=AFMT_U16_LE;
-    }
-    if(mask&AFMT_U16_BE) {
-      format=AFMT_U16_BE;
-    }
-    if(mask&AFMT_S16_BE) {
-      format=AFMT_S16_BE;
-    }
-    if(mask&AFMT_U16_LE) {
-      format=AFMT_U16_LE;
-    }
-    if(mask&AFMT_S16_LE) {
-      format=AFMT_S16_LE;
-    }
-
-#if 0
+  if(mask&AFMT_U16_BE) {
+    format=AFMT_U16_BE;
   }
-#endif
+  if(mask&AFMT_S16_BE) {
+    format=AFMT_S16_BE;
+  }
+  if(mask&AFMT_U16_LE) {
+    format=AFMT_U16_LE;
+  }
+  if(mask&AFMT_S16_LE) {
+    format=AFMT_S16_LE;
+  }
 
   if (ioctl(dev_dsp, SNDCTL_DSP_SETFMT, &format) == -1) {
     perror("OSS: Unable to set format");
@@ -223,25 +207,13 @@ setup_dev_dsp (sw_sample * s)
           return;
   }
 
-#if 0
-  switch (s->sdata->format->s_size) {
-  case 16:
-#endif
-        if (params_info.formats & SND_PCM_FMT_S16_LE) {
-                params.format.sfmt = SND_PCM_SFMT_S16_LE;
-        } else {
-                fprintf (stderr, "audio interface does not support "
-                         "linear 16 bit little endian samples\n");
-                return;
-        }
-#if 0
-        break;
-  default:
-        fprintf (stderr, "sorry, no support for sample bit widths "
-                 "other than 16 right now\n");
-        return;
+  if (params_info.formats & SND_PCM_FMT_S16_LE) {
+    params.format.sfmt = SND_PCM_SFMT_S16_LE;
+  } else {
+    fprintf (stderr, "audio interface does not support "
+	     "linear 16 bit little endian samples\n");
+    return;
   }
-#endif
 
   switch (s->sounddata->format->rate) {
   case 44100:
