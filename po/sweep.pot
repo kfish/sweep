@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-23 00:24+1000\n"
+"POT-Creation-Date: 2000-10-25 22:13+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,11 +60,11 @@ msgid "Sweep"
 msgstr ""
 
 #. File
-#: src/interface.c:108 src/view.c:170
+#: src/interface.c:108 src/view.c:172
 msgid "File"
 msgstr ""
 
-#: src/interface.c:113 src/view.c:176
+#: src/interface.c:113 src/view.c:178
 msgid "New"
 msgstr ""
 
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: src/interface.c:131 src/view.c:228
+#: src/interface.c:131 src/view.c:230
 msgid "Quit"
 msgstr ""
 
@@ -85,7 +85,7 @@ msgid "About..."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:168 src/view.c:321
+#: src/interface.c:168 src/view.c:323
 msgid "Select"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 
 #. Radio group
-#: src/interface.c:200 src/view.c:403
+#: src/interface.c:200 src/view.c:405
 msgid "Zoom"
 msgstr ""
 
@@ -140,174 +140,169 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/view.c:185
+#: src/view.c:187
 msgid "Open..."
 msgstr ""
 
-#: src/view.c:194
+#: src/view.c:196
 msgid "Save"
 msgstr ""
 
-#: src/view.c:203
+#: src/view.c:205
 msgid "Save As..."
 msgstr ""
 
-#: src/view.c:209
+#: src/view.c:211
 msgid "Revert"
 msgstr ""
 
-#: src/view.c:219
+#: src/view.c:221
 msgid "Close"
 msgstr ""
 
 #. Edit
-#: src/view.c:238
+#: src/view.c:240
 msgid "Edit"
 msgstr ""
 
-#: src/view.c:244
+#: src/view.c:246
 msgid "Undo"
 msgstr ""
 
-#: src/view.c:254
+#: src/view.c:256
 msgid "Redo"
 msgstr ""
 
-#: src/view.c:267
+#: src/view.c:269
 msgid "Delete"
 msgstr ""
 
-#: src/view.c:273
+#: src/view.c:275
 msgid "Cut"
 msgstr ""
 
-#: src/view.c:282
+#: src/view.c:284
 msgid "Copy"
 msgstr ""
 
-#: src/view.c:291
+#: src/view.c:293
 msgid "Paste"
 msgstr ""
 
-#: src/view.c:300
+#: src/view.c:302
 msgid "Paste as New"
 msgstr ""
 
-#: src/view.c:310
+#: src/view.c:312
 msgid "Clear"
 msgstr ""
 
-#: src/view.c:327
+#: src/view.c:329
 msgid "Invert"
 msgstr ""
 
-#: src/view.c:335
+#: src/view.c:337 src/view.c:419
 msgid "All"
 msgstr ""
 
-#: src/view.c:343
+#: src/view.c:345
 msgid "None"
 msgstr ""
 
 #. View
-#: src/view.c:353
+#: src/view.c:355
 msgid "View"
 msgstr ""
 
-#: src/view.c:359
+#: src/view.c:361
 msgid "Zoom In"
 msgstr ""
 
-#: src/view.c:368
+#: src/view.c:370
 msgid "Zoom Out"
 msgstr ""
 
-#: src/view.c:377
+#: src/view.c:379
 msgid "Zoom to selection"
 msgstr ""
 
-#: src/view.c:384
+#: src/view.c:386
 msgid "Left"
 msgstr ""
 
-#: src/view.c:393
+#: src/view.c:395
 msgid "Right"
 msgstr ""
 
-#: src/view.c:409
+#: src/view.c:412
 #, c-format
 msgid "50%"
 msgstr ""
 
-#: src/view.c:415
-#, c-format
-msgid "100%"
-msgstr ""
-
-#: src/view.c:424
+#: src/view.c:428
 msgid "Normal"
 msgstr ""
 
-#: src/view.c:430
+#: src/view.c:434
 msgid "1:1"
 msgstr ""
 
-#: src/view.c:440
+#: src/view.c:444
 msgid "New View"
 msgstr ""
 
 #. Sample
-#: src/view.c:447
+#: src/view.c:451
 msgid "Sample"
 msgstr ""
 
-#: src/view.c:453
+#: src/view.c:457
 msgid "Duplicate"
 msgstr ""
 
 #. Filters
-#: src/view.c:463
+#: src/view.c:467
 msgid "Filters"
 msgstr ""
 
 #. Playback
-#: src/view.c:477
+#: src/view.c:481
 msgid "Playback"
 msgstr ""
 
-#: src/view.c:483
+#: src/view.c:487
 msgid "Play sample"
 msgstr ""
 
-#: src/view.c:492
+#: src/view.c:496
 msgid "Loop sample"
 msgstr ""
 
-#: src/view.c:501
+#: src/view.c:505
 msgid "Play selection"
 msgstr ""
 
-#: src/view.c:510
+#: src/view.c:514
 msgid "Loop selection"
 msgstr ""
 
-#: src/view.c:523
+#: src/view.c:527
 msgid "Note"
 msgstr ""
 
-#: src/view.c:585
+#: src/view.c:589
 msgid "Stop"
 msgstr ""
 
-#: src/view.c:991
+#: src/view.c:1105
 msgid "Untitled"
 msgstr ""
 
-#: src/view.c:993
+#: src/view.c:1107
 msgid "Mono"
 msgstr ""
 
-#: src/view.c:993
+#: src/view.c:1107
 msgid "Stereo"
 msgstr ""
 
