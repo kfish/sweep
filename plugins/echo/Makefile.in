@@ -81,11 +81,13 @@ INSTOBJEXT = @INSTOBJEXT@
 INTLDEPS = @INTLDEPS@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
+LD = @LD@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+NM = @NM@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 PACKAGE_PLUGIN_DIR = @PACKAGE_PLUGIN_DIR@
@@ -102,11 +104,11 @@ INCLUDES = -I$(top_srcdir)/include
 
 libdir = @PACKAGE_PLUGIN_DIR@
 
-lib_LTLIBRARIES =  	libecho.la
+lib_LTLIBRARIES =  	libexample.la
 
 
-libecho_la_SOURCES = echo.c
-libecho_la_LDFLAGS = -version-info 1:0:0
+libexample_la_SOURCES = example.c
+libexample_la_LDFLAGS = -version-info 1:0:0
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../include/sweep/config.h
 CONFIG_CLEAN_FILES = 
@@ -117,8 +119,8 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I../../include/sweep
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-libecho_la_LIBADD = 
-libecho_la_OBJECTS =  echo.lo
+libexample_la_LIBADD = 
+libexample_la_OBJECTS =  example.lo
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -131,15 +133,15 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/echo.P
-SOURCES = $(libecho_la_SOURCES)
-OBJECTS = $(libecho_la_OBJECTS)
+DEP_FILES =  .deps/example.P
+SOURCES = $(libexample_la_SOURCES)
+OBJECTS = $(libexample_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu plugins/echo/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu plugins/example/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
@@ -203,8 +205,8 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-libecho.la: $(libecho_la_OBJECTS) $(libecho_la_DEPENDENCIES)
-	$(LINK) -rpath $(libdir) $(libecho_la_LDFLAGS) $(libecho_la_OBJECTS) $(libecho_la_LIBADD) $(LIBS)
+libexample.la: $(libexample_la_OBJECTS) $(libexample_la_DEPENDENCIES)
+	$(LINK) -rpath $(libdir) $(libexample_la_LDFLAGS) $(libexample_la_OBJECTS) $(libexample_la_LIBADD) $(LIBS)
 
 tags: TAGS
 
@@ -237,14 +239,14 @@ maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
-subdir = plugins/echo
+subdir = plugins/example
 
 distdir: $(DISTFILES)
 	here=`cd $(top_builddir) && pwd`; \
 	top_distdir=`cd $(top_distdir) && pwd`; \
 	distdir=`cd $(distdir) && pwd`; \
 	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu plugins/echo/Makefile
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu plugins/example/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
