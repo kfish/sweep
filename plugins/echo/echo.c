@@ -126,7 +126,7 @@ static sw_proc proc_echo = {
   param_specs, /* param_specs */
   echo_suggest, /* suggests() */
   echo_apply,
-  NULL /* custom_data */
+  NULL, /* custom_data */
 };
 
 static GList *

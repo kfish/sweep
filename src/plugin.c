@@ -47,8 +47,15 @@ sweep_plugin_init (const gchar * name)
   GList * gl;
 
   path = g_module_build_path (PACKAGE_PLUGIN_DIR, name);
+  path = g_strdup_printf ("%s/lib%s.so.%d", PACKAGE_PLUGIN_DIR, name,
+			  SWEEP_PLUGIN_API_MAJOR);
 
   module = g_module_open (path, 0);
+
+  if (!module) {
+    fprintf (stderr, "Error opening %s: %s\n", path, g_module_error());
+    return;
+  }
   
   if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
     for (gl = m_plugin->plugin_init ();

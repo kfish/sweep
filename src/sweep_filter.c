@@ -58,9 +58,9 @@ do_filter_regions (sw_sounddata * sounddata, SweepFilterRegion func,
 }
 
 sw_op_instance *
-register_filter_region_op (sw_sample * sample, char * desc,
-			   SweepFilterRegion func,
-			   sw_param_set pset, gpointer custom_data)
+perform_filter_region_op (sw_sample * sample, char * desc,
+			  SweepFilterRegion func,
+			  sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   sw_edit_buffer * old_eb, * new_eb;
@@ -82,8 +82,8 @@ register_filter_region_op (sw_sample * sample, char * desc,
 }
 
 sw_op_instance *
-register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
-		    sw_param_set pset, gpointer custom_data)
+perform_filter_op (sw_sample * sample, char * desc, SweepFilter func,
+		   sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   sw_edit_buffer * old_eb, * new_eb;

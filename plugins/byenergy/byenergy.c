@@ -242,12 +242,13 @@ sw_proc proc_by_energy = {
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/byenergy",
   "Filters/Select by energy", /* category */
-  GDK_e, /* accel_key */
-  GDK_SHIFT_MASK, /* accel_mods */
+  0, /* accel_key */
+  0, /* accel_mods */
   NR_PARAMS, /* nr_params */
   param_specs, /* param_specs */
   by_energy_suggest, /* suggests() */
   apply_by_energy,
+  NULL, /* custom data */
 };
 
 static GList *

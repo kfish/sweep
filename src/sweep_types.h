@@ -370,6 +370,8 @@ struct _sw_proc {
   gchar * url;
 
   gchar * category;
+
+  /* Key bindings */
   guint accel_key;
   GdkModifierType accel_mods;
 
@@ -413,7 +415,8 @@ struct _sw_plugin {
   void (*plugin_cleanup) (void);
 };
 
-typedef void (*SweepModify) (sw_sample * sample, sw_param_set pset, gpointer data);
+typedef void (*SweepModify) (sw_sample * sample, sw_param_set pset,
+			     gpointer custom_data);
 
 #endif  /* __SWEEP_TYPES_H__ */
 
