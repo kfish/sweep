@@ -380,10 +380,10 @@ sample_display_draw_data_channel (GdkDrawable * win,
 				  int channel)
 {
   GdkGC *gc;
-  gint32 totpos, totneg;
-  gint16 d, maxpos, avgpos, nr_pos, minneg, avgneg, nr_neg;
-  gint16 prev_maxpos, prev_minneg;
-  glong i, step;
+  sw_audio_intermediate_t totpos, totneg;
+  sw_audio_t d, maxpos, avgpos, minneg, avgneg;
+  sw_audio_t prev_maxpos, prev_minneg;
+  glong i, step, nr_pos, nr_neg;
   sw_sample * sample;
   const int channels = s->view->sample->sdata->format->f_channels;
 
@@ -396,7 +396,8 @@ sample_display_draw_data_channel (GdkDrawable * win,
 		x, y + height/2,
 		x + width - 1, y + height/2);
 
-  totpos = totneg = maxpos = minneg = prev_maxpos = prev_minneg = 0;
+  totpos = totneg = 0.0;
+  maxpos = minneg = prev_maxpos = prev_minneg = 0.0;
 
   while(width >= 0) {
     nr_pos = nr_neg = 0;
@@ -410,7 +411,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
     for (i = OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x));
 	 i < OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x+1));
 	 i+=step) {
-      d = ((gint16 *)sample->sdata->data)[i*channels + channel];
+      d = ((sw_audio_t *)sample->sdata->data)[i*channels + channel];
       if (d >= 0) {
 	if (d > maxpos) maxpos = d;
 	totpos += d;
@@ -434,7 +435,8 @@ sample_display_draw_data_channel (GdkDrawable * win,
       avgneg = 0;
     }
 
-#define YPOS(v) (y + ((((v) + 32768) * height) >> 16))
+#define YPOS(v) (y + ((((v) - SW_AUDIO_T_MIN) * height) \
+		       / (SW_AUDIO_T_MAX - SW_AUDIO_T_MIN)))
 
     gdk_draw_line(win, s->minmax_gc,
 		  x, YPOS(maxpos),
@@ -561,21 +563,12 @@ sample_display_draw_crossing_vector (GdkDrawable * win,
   cx1 = ( x > VRAD ? VRAD : 0 );
   cx2 = ( x < sample->sdata->s_length - VRAD ? VRAD : 0 );
 
-  if (sample->sdata->format->s_size == 16) {
-    cy1 = ((gint16*)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) - cx1];
-    cy2 = ((gint16*)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) + cx2];
-
-    gdk_draw_line(s->backing_pixmap, s->crossing_gc,
-		  x - cx1, (((cy1 + 32768) * sh) >> 16),
-		  x + cx2, (((cy2 + 32768) * sh) >> 16));
-  } else {
-    cy1 = ((gint8*)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) - cx1];
-    cy2 = ((gint8*)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) + cx2];
-
-    gdk_draw_line(s->backing_pixmap, s->crossing_gc,
-		  x - cx1, (((cy1 + 128) * sh) >> 8),
-		  x + cx2, (((cy2 + 128) * sh) >> 8));
-  }
+  cy1 = ((sw_audio_t *)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) - cx1];
+  cy2 = ((sw_audio_t *)sample->sdata->data)[OFFSET_RANGE(sample->sdata->s_length, XPOS_TO_OFFSET(x)) + cx2];
+  
+  gdk_draw_line(s->backing_pixmap, s->crossing_gc,
+		x - cx1, (((cy1 + 1.0) * sh) / 2.0),
+		x + cx2, (((cy2 + 1.0) * sh) / 2.0));
 }	
 			     
 #endif
@@ -810,16 +803,6 @@ sample_display_draw_main (GtkWidget *widget,
 					NULL,
 					area->x, area->y,
 					area->width, area->height);
-
-#if 0
-    gdk_draw_rectangle(widget->window,
-		       s->bg_gc,
-		       TRUE, area->x, area->y, area->width, area->height);
-    gdk_draw_line(widget->window,
-		  s->fg_gc,
-		  area->x, s->height / 2,
-		  area->x + area->width - 1, s->height / 2);
-#endif
   } else {
     const int x_min = area->x;
     const int x_max = area->x + area->width;
@@ -966,7 +949,7 @@ sample_display_handle_motion (SampleDisplay *s,
     x = s->width - 1;
 
   /* Set: ol to the offset of the current mouse position x
-   *      or to the next useful value: if we're zoomed in beyond
+   * Set: or to the next useful value: if we're zoomed in beyond
    *         dot-for-sample, then the next sample value;
    *         otherwise the offset corresponding to the next pixel x+1.
    */

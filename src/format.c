@@ -49,7 +49,7 @@ frames_to_samples (sw_format * format, glong nr_frames)
 glong
 frames_to_bytes (sw_format * format, glong nr_frames)
 {
-  return (nr_frames * (glong)format->f_channels * 2);
+  return (nr_frames * (glong)format->f_channels * sizeof(sw_audio_t));
 }
 
 /*

@@ -154,7 +154,7 @@ region_echo (gpointer data, sw_format * format, gint nr_frames,
 	     sw_param_set pset)
 {
   glong i, sw;
-  gint16 * d, * e;
+  sw_audio_t * d, * e;
   gpointer ep;
   gint dlen;
   gint delay = pset[0].i;
@@ -162,16 +162,16 @@ region_echo (gpointer data, sw_format * format, gint nr_frames,
 
   sw = frames_to_bytes (format, 1);
 
-  d = (gint16 *)data;
+  d = (sw_audio_t *)data;
   ep = data + frames_to_bytes (format, delay);
-  e = (gint16 *)ep;
+  e = (sw_audio_t *)ep;
 
   if (delay > nr_frames) return;
 
   dlen = frames_to_samples (format, nr_frames - delay);
 
   for (i = 0; i < dlen; i++) {
-    *e++ += (gint16)(((gfloat)*d++) * gain);
+    e[i] += (sw_audio_t)((gfloat)(d[i]) * gain);
   }
 }
 

@@ -47,6 +47,9 @@
 #define DEV_DSP "/dev/audio"
 #endif
 
+
+#define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
+
 static int dev_dsp = -1;
 
 static sw_sample * playing = NULL;
@@ -231,14 +234,14 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
   sw_sample * s = view->sample;
   fd_set fds;
   ssize_t n;
-  gint16 * d;
+  sw_audio_t * d;
 #define PBUF_SIZE 256
   gint16 pbuf[PBUF_SIZE];
   gint sbytes, channels;
   gdouble po = 0.0, p, endf;
   gint i=0, si=0;
 
-  d = (gint16 *)s->sdata->data;
+  d = (sw_audio_t *)s->sdata->data;
 
   sbytes = 2;
  
@@ -260,7 +263,7 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
 	si = (int)floor(po);
 	p = po - (gdouble)si;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->v_vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	po += relpitch;
 	if (po > endf) break;
@@ -273,11 +276,11 @@ play_view(sw_view * view, glong start, glong end, gfloat relpitch)
 	p = po - (gdouble)si;
 	si *= 2;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->v_vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	i++; si++;
 	((gint16 *)pbuf)[i] =
-	  (gint16)(view->v_vol *
+	  (gint16)(PLAYBACK_SCALE * view->v_vol *
 		   (d[si] * p + d[si+channels] * (1 - p)));
 	po += relpitch;
 	if (po > endf) break;

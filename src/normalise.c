@@ -37,16 +37,16 @@ normalise (sw_sdata * sdata, sw_param_set pset)
   sw_format * f = sdata->format;
   GList * gl;
   sw_sel * sel;
-  gint16 * d;
-  glong i, len;
-  gint16 max = 0;
+  sw_audio_t * d;
+  sw_audio_t max = 0;
   gfloat factor;
+  glong i, len;
 
   /* Find max */
   for (gl = sdata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (gint16 *)(sdata->data + frames_to_bytes (f, sel->sel_start));
+    d = (sw_audio_t *)(sdata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
     for (i=0; i < len * f->f_channels; i++) {
       if(d[i]>=0) max = MAX(max, d[i]);
@@ -54,16 +54,16 @@ normalise (sw_sdata * sdata, sw_param_set pset)
     }
   }
 
-  factor = 32768 / (gfloat)max;
+  factor = SW_AUDIO_T_MAX / (gfloat)max;
 
   /* Scale */
   for (gl = sdata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = (gint16 *)(sdata->data + frames_to_bytes (f, sel->sel_start));
+    d = (sw_audio_t *)(sdata->data + frames_to_bytes (f, sel->sel_start));
     len = sel->sel_end - sel->sel_start;
     for (i=0; i < len * f->f_channels; i++) {
-      d[i] = (gint16)((gfloat)d[i] * factor);
+      d[i] = (sw_audio_t)((gfloat)d[i] * factor);
     }
   }
 
@@ -79,7 +79,7 @@ apply_normalise(sw_sample * sample, sw_param_set pset)
 
 sw_proc proc_normalise = {
   _("Normalise"),
-  _("Increase the amplitude of a sample as much as possible"),
+  _("Alter the sample's amplitude to lie between 1.0 and -1.0"),
   "Conrad Parker",
   "Copyright (C) 2000",
   "http://sweep.sourceforge.net/plugins/normalise",

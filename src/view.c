@@ -49,9 +49,9 @@
  * Keep width:height ratio equal to one of these
  * for pleasing dimensions.
  */
-#define VIEW_MIN_WIDTH 121
-#define VIEW_MAX_WIDTH 317
-#define VIEW_DEFAULT_HEIGHT 196
+#define VIEW_MIN_WIDTH 197
+#define VIEW_MAX_WIDTH 517
+#define VIEW_DEFAULT_HEIGHT 320
 
 #define NO_TIME ""
 
@@ -122,28 +122,36 @@ create_proc_menuitem (sw_proc * proc, sw_view * view,
 			      GTK_ACCEL_VISIBLE);
 }
 
-static GtkWidget *
-create_rb_menu (sw_view * view)
+/*
+ * Populate a GtkMenu or GtkMenubar m
+ */
+static void
+create_view_menu (sw_view * view, GtkWidget * m)
 {
-  GtkWidget * menu;
   GtkWidget * menuitem;
   GtkWidget * submenu, *subsubmenu;
   GtkAccelGroup *accel_group;
   SampleDisplay * s = SAMPLE_DISPLAY(view->v_display);
+  void *append_func(GtkWidget * widget, GtkWidget * child);
 
   /* Plugin handling */
   GList * gl;
   sw_proc * proc;
 
+#define MENU_APPEND(w,c) \
+  if (GTK_IS_MENU_BAR(##w##)) {                               \
+    gtk_menu_bar_append(GTK_MENU_BAR(##w##), ##c##);          \
+  } else if (GTK_IS_MENU(##w##)) {                            \
+    gtk_menu_append(GTK_MENU(##w##), ##c##);                  \
+  }
+
   /* Create a GtkAccelGroup and add it to the window. */
   accel_group = gtk_accel_group_new();
   gtk_window_add_accel_group (GTK_WINDOW(view->v_window), accel_group);
 
-  menu = gtk_menu_new();
-
   /* File */
   menuitem = gtk_menu_item_new_with_label(_("File"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -211,7 +219,7 @@ create_rb_menu (sw_view * view)
 
   /* Edit */
   menuitem = gtk_menu_item_new_with_label(_("Edit"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -294,7 +302,7 @@ create_rb_menu (sw_view * view)
 
   /* Select */
   menuitem = gtk_menu_item_new_with_label(_("Select"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -326,7 +334,7 @@ create_rb_menu (sw_view * view)
 
   /* View */
   menuitem = gtk_menu_item_new_with_label(_("View"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -409,7 +417,7 @@ create_rb_menu (sw_view * view)
 
   /* Sample */
   menuitem = gtk_menu_item_new_with_label(_("Sample"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -425,7 +433,7 @@ create_rb_menu (sw_view * view)
 
   /* Filters */
   menuitem = gtk_menu_item_new_with_label(_("Filters"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -439,7 +447,7 @@ create_rb_menu (sw_view * view)
 
   /* Playback */
   menuitem = gtk_menu_item_new_with_label(_("Playback"));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
+  MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
@@ -554,8 +562,6 @@ create_rb_menu (sw_view * view)
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_Escape, GDK_NONE,
 			      GTK_ACCEL_VISIBLE);
-
-  return menu;
 }
 
 static void
@@ -666,6 +672,10 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   gtk_container_add (GTK_CONTAINER(window), main_vbox);
   gtk_widget_show (main_vbox);
 
+  view->v_menubar = gtk_menu_bar_new ();
+  gtk_box_pack_start (GTK_BOX(main_vbox), view->v_menubar, FALSE, TRUE, 0);
+  gtk_widget_show (view->v_menubar);
+
   table = gtk_table_new (3, 3, FALSE);
   gtk_table_set_col_spacing (GTK_TABLE(table), 0, 1);
   gtk_table_set_col_spacing (GTK_TABLE(table), 1, 2);
@@ -682,6 +692,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
 		    GTK_FILL, GTK_FILL,
 		    0, 0);
   gtk_widget_show (menu_button);
+
 
   arrow = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
   gtk_container_add (GTK_CONTAINER (menu_button), arrow);
@@ -724,7 +735,7 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   gtk_widget_show (hruler);
   view->v_hruler = hruler;
 
-  gtk_signal_connect_object (GTK_OBJECT (window), "motion_notify_event",
+  gtk_signal_connect_object (GTK_OBJECT (table), "motion_notify_event",
                              (GtkSignalFunc) GTK_WIDGET_CLASS (GTK_OBJECT (hruler)->klass)->motion_notify_event,
                              GTK_OBJECT (hruler));
 
@@ -819,14 +830,19 @@ view_new(sw_sample * sample, glong start, glong end, gfloat vol)
   gtk_widget_show (label);
   view->v_status = label;
 
-  view->v_menu = create_rb_menu(view);
+  /* Had to wait until view->v_display was created before
+   * setting the menus up
+   */
 
-  /* Had to wait till view->v_menu was created to set this up */
+  view->v_menu = gtk_menu_new ();
+  create_view_menu (view, view->v_menu);
+
+  create_view_menu (view, view->v_menubar);
+
   gtk_signal_connect_object (GTK_OBJECT(menu_button),
 			     "button_press_event",
 			     GTK_SIGNAL_FUNC(menu_button_handler),
 			     GTK_OBJECT(view->v_menu));
-
 
   /* Had to wait till view->v_display was created to set these up */
 

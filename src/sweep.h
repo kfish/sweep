@@ -66,6 +66,20 @@ enum {
   TOOL_CROP
 };
 
+/* Sweep internal audio representation
+ *
+ * gfloats in the range [-1.0, 1.0]
+ */
+typedef gfloat sw_audio_t;
+
+/* Intermediate audio representation format:
+ * Use this for intermediate values for mixing etc.
+ */
+typedef gdouble sw_audio_intermediate_t;
+
+#define SW_AUDIO_T_MAX (1.0)
+#define SW_AUDIO_T_MIN (-1.0)
+
 /* Sweep datatypes */
 
 typedef struct _sw_sel sw_sel;
@@ -144,6 +158,7 @@ struct _sw_view {
   GtkWidget * v_display;
   GtkWidget * v_pos;
   GtkWidget * v_status;
+  GtkWidget * v_menubar;
   GtkWidget * v_menu;
   GtkObject * v_adj;
   GtkObject * v_vol_adj;

@@ -34,6 +34,7 @@
 
 #include "sweep.h"
 #include "file_ops.h"
+#include "format.h"
 #include "sample.h"
 #include "view.h"
 
@@ -49,7 +50,11 @@ sample_load(char * pathname)
   char *fn, *dn;
   double rate;
   gint i;
-  gpointer data;
+  /* Length in frames of temporary loading buffer */
+#define LOAD_BUFFER_LEN 512
+  gpointer load_buffer;
+  gint buffer_frames; /* nr of frames in the loading buffer */
+  gpointer copydata;
 
   if (!pathname) return NULL;
 
@@ -60,11 +65,11 @@ sample_load(char * pathname)
 
   framecount = afGetFrameCount(samplefile, AF_DEFAULT_TRACK);
   if (framecount <= 0)
-    return 0;
+    return NULL;
 
   channelcount = afGetChannels(samplefile, AF_DEFAULT_TRACK);
   if (channelcount <= 0)
-    return 0;
+    return NULL;
 
   afGetSampleFormat(samplefile, AF_DEFAULT_TRACK, &sampleformat, &samplewidth);
 
@@ -85,12 +90,17 @@ sample_load(char * pathname)
   rate = afGetRate (samplefile, AF_DEFAULT_TRACK);
 
 #ifdef DEBUG
-  printf("filename: %s\nchannelcount: %d\nsamplewidth: %d\n"
-	 "sampleformat: %d\nframecount: %d\nframesize: %f\n",
-	 filename, channelcount, samplewidth, sampleformat,
+  printf("sweep: Opened filename: %s\n"
+	 "\tchannelcount: %d\n"
+	 "\tsamplewidth: %d\n"
+	 "\tsampleformat: %d\n"
+	 "\tframecount: %d\n"
+	 "\tframesize: %f\n",
+	 pathname, channelcount, samplewidth, sampleformat,
 	 framecount, framesize);
 #endif
 
+  /* Split directory and file names */
   fn = strrchr (pathname, '/');
   if (fn) {
     *fn++ = '\0';
@@ -108,26 +118,37 @@ sample_load(char * pathname)
   if(!s)
     return NULL;
 
-  data = g_malloc(framecount * (samplewidth / 8) * channelcount);
-
-  afReadFrames(samplefile, AF_DEFAULT_TRACK, data, framecount);
-
-  /* data conversion to 16 bit */
-  if (samplewidth == 16) {
-    s->sdata->data = data;
-  } else {
-    s->sdata->data = g_malloc(framecount * 2 * channelcount);
-    if (s->sdata->data == NULL) {
-      fprintf(stderr,  "s->sdata->data NULL");
-      return 0;
-    }
-
-    for (i = 0; i < (framecount * channelcount); i++) {
-      ((gint16 *)s->sdata->data)[i] = (((gint8 *)data)[i]) << 8;
-    }
-
-    free(data);
+  s->sdata->data = g_malloc(frames_to_bytes(s->sdata->format, framecount));
+  if (s->sdata->data == NULL) {
+    fprintf(stderr,  "s->sdata->data NULL");
+    return NULL;
   }
+  copydata = s->sdata->data;
+
+  load_buffer = g_malloc (LOAD_BUFFER_LEN * (samplewidth / 8) * channelcount);
+
+  while (framecount > 0) {
+    buffer_frames = MIN(framecount, LOAD_BUFFER_LEN);
+    afReadFrames(samplefile, AF_DEFAULT_TRACK, load_buffer, buffer_frames);
+    if (samplewidth == 16) {
+      /* Convert from 16 bit samples */
+      for (i = 0; i < (buffer_frames * channelcount); i++) {
+	((sw_audio_t *)copydata)[i] = SW_AUDIO_T_MAX * (sw_audio_t)
+	  (((gint16 *)load_buffer)[i]) / 32768.0;
+      }
+    } else {
+      /* Convert from 8 bit samples */
+      /* XXX: this does not deal properly with [un?]signed 8 bit data */
+      for (i = 0; i < (buffer_frames * channelcount); i++) {
+	((sw_audio_t *)copydata)[i] = SW_AUDIO_T_MAX * (sw_audio_t)
+	  (((gint8 *)load_buffer)[i]) / 256.0;
+      }
+    }
+    copydata += frames_to_bytes (s->sdata->format, buffer_frames);
+    framecount -= buffer_frames;
+  }
+
+  free (load_buffer);
 
   afCloseFile(samplefile);
 

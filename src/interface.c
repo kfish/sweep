@@ -49,11 +49,14 @@ create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data)
   GdkBitmap * mask;
   GdkPixmap * pixmap_data;
   GdkWindow * window;
+  GdkColormap * colormap;
 
   window = widget ? widget->window : NULL;
+  colormap = widget ? gtk_widget_get_colormap (widget) :
+    gtk_widget_get_default_colormap();
 
-  pixmap_data = gdk_pixmap_create_from_xpm_d (window, &mask,
-					      NULL, xpm_data);
+  pixmap_data = gdk_pixmap_colormap_create_from_xpm_d
+    (window, colormap, &mask, NULL, xpm_data);
 
   return gtk_pixmap_new (pixmap_data, mask);
 }
