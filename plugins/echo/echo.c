@@ -108,8 +108,8 @@ static sw_op_instance *
 echo_apply (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   return
-    register_filter_region_op (sample, _("Echo"),
-			       (SweepFilterRegion)region_echo, pset, NULL);
+    perform_filter_region_op (sample, _("Echo"),
+			      (SweepFilterRegion)region_echo, pset, NULL);
 }
 
 

@@ -73,8 +73,8 @@ static sw_op_instance *
 apply_normalise(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   return
-    register_filter_op (sample, _("Normalise"), (SweepFilter)normalise,
-			pset, NULL);
+    perform_filter_op (sample, _("Normalise"), (SweepFilter)normalise,
+		       pset, NULL);
 }
 
 sw_proc proc_normalise = {

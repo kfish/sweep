@@ -231,8 +231,8 @@ static sw_op_instance *
 apply_by_energy(sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   return
-    register_selection_op (sample, _("Select by energy"),
-			   (SweepModify)select_by_energy, pset, NULL);
+    perform_selection_op (sample, _("Select by energy"),
+			  (SweepModify)select_by_energy, pset, NULL);
 }
 
 sw_proc proc_by_energy = {

@@ -154,8 +154,8 @@ static sw_operation sel_op = {
 };
 
 sw_op_instance *
-register_selection_op (sw_sample * s, char * desc, SweepModify func,
-		       sw_param_set pset, gpointer custom_data)
+perform_selection_op (sw_sample * s, char * desc, SweepModify func,
+		      sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   GList * sels;

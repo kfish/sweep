@@ -441,9 +441,9 @@ ladspa_meta_apply (sw_sample * sample,
   const LADSPA_Descriptor * d = lm->d;
 
   return
-    register_filter_region_op
-    (sample, (char *)d->Name, (SweepFilterRegion)ladspa_meta_apply_region,
-     pset, custom_data);
+    perform_filter_region_op (sample, (char *)d->Name,
+			      (SweepFilterRegion)ladspa_meta_apply_region,
+			      pset, custom_data);
 }
 
 /*

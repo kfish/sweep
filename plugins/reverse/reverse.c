@@ -58,7 +58,7 @@ static sw_op_instance *
 apply_reverse (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
   return
-    register_filter_region_op (sample, _("Reverse"),
+    perform_filter_region_op (sample, _("Reverse"),
 			       (SweepFilterRegion)region_reverse, pset, NULL);
 }
 
