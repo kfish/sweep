@@ -24,11 +24,11 @@
 #include "sweep_types.h"
 #include "sweep_app.h"
 
-sw_soundfile *
-soundfile_new_empty(gint nr_channels, gint sample_rate, gint sample_length);
+sw_sounddata *
+sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length);
 
 void
-soundfile_destroy (sw_soundfile * soundfile);
+sounddata_destroy (sw_sounddata * sounddata);
 
 sw_sample *
 sample_new_empty(char * directory, char * filename,
@@ -47,8 +47,7 @@ void
 sample_destroy (sw_sample * s);
 
 void
-sample_set_pathname (sw_sample * s, char * directory,
-			  char * filename);
+sample_set_pathname (sw_sample * s, char * directory, char * filename);
 
 void
 sample_bank_add (sw_sample * s);
@@ -58,6 +57,12 @@ sample_bank_remove (sw_sample * s);
 
 void
 sample_refresh_views (sw_sample * s);
+
+void
+sample_start_marching_ants (sw_sample * s);
+
+void
+sample_stop_marching_ants (sw_sample * s);
 
 void
 sample_set_playmarker (sw_sample * s, int offset);
@@ -82,19 +87,19 @@ guint
 sample_sel_nr_regions (sw_sample * s);
 
 void
-soundfile_clear_selection (sw_soundfile * soundfile);
+sounddata_clear_selection (sw_sounddata * sounddata);
 
 void
 sample_clear_selection (sw_sample * s);
 
 void
-soundfile_add_selection (sw_soundfile * soundfile, sw_sel * sel);
+sounddata_add_selection (sw_sounddata * sounddata, sw_sel * sel);
 
 void
 sample_add_selection (sw_sample * s, sw_sel * sel);
 
 sw_sel *
-soundfile_add_selection_1 (sw_soundfile * soundfile,
+sounddata_add_selection_1 (sw_sounddata * sounddata,
 			   sw_framecount_t start, sw_framecount_t end);
 
 sw_sel *
@@ -105,7 +110,7 @@ void
 sample_set_selection (sw_sample * s, GList * gl);
 
 sw_sel *
-soundfile_set_selection_1 (sw_soundfile * soundfile,
+sounddata_set_selection_1 (sw_sounddata * sounddata,
 			   sw_framecount_t start, sw_framecount_t end);
 
 sw_sel *
@@ -128,20 +133,20 @@ void
 sample_selection_select_none (sw_sample * s);
 
 gint
-soundfile_selection_length (sw_soundfile * soundfile);
+sounddata_selection_length (sw_sounddata * sounddata);
 
 void
-soundfile_selection_translate (sw_soundfile * soundfile, gint delta);
+sounddata_selection_translate (sw_sounddata * sounddata, gint delta);
 
 /*
- * soundfile_copyin_selection (soundfile, soundfile2)
+ * sounddata_copyin_selection (sounddata, sounddata2)
  *
- * copies the selection of soundfile1 into soundfile2. If soundfile2 previously
+ * copies the selection of sounddata1 into sounddata2. If sounddata2 previously
  * had a selection, the two are merged.
  */
 void
-soundfile_copyin_selection (sw_soundfile * soundfile1,
-			    sw_soundfile * soundfile2);
+sounddata_copyin_selection (sw_sounddata * sounddata1,
+			    sw_sounddata * sounddata2);
 
 /*
  * sel_replace: undo/redo functions for changing selection
@@ -162,6 +167,10 @@ sel_replace_data_destroy (sel_replace_data * s);
 void
 do_by_sel_replace (sw_sample * s, sel_replace_data * sr);
 
+
+sw_op_instance *
+sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
+			sw_param_set pset, gpointer custom_data);
 
 /*
  * Functions to handle the temporary selection.

@@ -261,12 +261,12 @@ splice_data_destroy (splice_data * s)
 void
 undo_by_splice_in (sw_sample * s, splice_data * sp)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
 
-  out = splice_in_eb (s->soundfile, sp->eb);
+  out = splice_in_eb (s->sounddata, sp->eb);
 
-  soundfile_destroy (s->soundfile);
-  s->soundfile = out;
+  sounddata_destroy (s->sounddata);
+  s->sounddata = out;
 
   sample_refresh_views (s);
 }
@@ -274,12 +274,12 @@ undo_by_splice_in (sw_sample * s, splice_data * sp)
 void
 redo_by_splice_out (sw_sample * s, splice_data * sp)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
 
-  out = splice_out_sel (s->soundfile);
+  out = splice_out_sel (s->sounddata);
 
-  soundfile_destroy (s->soundfile);
-  s->soundfile = out;
+  sounddata_destroy (s->sounddata);
+  s->sounddata = out;
 
   sample_refresh_views (s);
 }
@@ -287,12 +287,12 @@ redo_by_splice_out (sw_sample * s, splice_data * sp)
 void
 undo_by_splice_out (sw_sample * s, splice_data * sp)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
 
-  out = splice_out_sel (s->soundfile);
+  out = splice_out_sel (s->sounddata);
 
-  soundfile_destroy (s->soundfile);
-  s->soundfile = out;
+  sounddata_destroy (s->sounddata);
+  s->sounddata = out;
 
   sample_refresh_views (s);
 }
@@ -300,12 +300,12 @@ undo_by_splice_out (sw_sample * s, splice_data * sp)
 void
 redo_by_splice_in (sw_sample * s, splice_data * sp)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
 
-  out = splice_in_eb (s->soundfile, sp->eb);
+  out = splice_in_eb (s->sounddata, sp->eb);
 
-  soundfile_destroy (s->soundfile);
-  s->soundfile = out;
+  sounddata_destroy (s->sounddata);
+  s->sounddata = out;
 
   sample_refresh_views (s);
 }

@@ -38,13 +38,13 @@ static GList * sample_bank = NULL;
 
 /* Soundfile functions */
 
-sw_soundfile *
-soundfile_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
+sw_sounddata *
+sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
 {
-  sw_soundfile *s;
+  sw_sounddata *s;
   sw_framecount_t len;
 
-  s = g_malloc (sizeof(sw_soundfile));
+  s = g_malloc (sizeof(sw_sounddata));
   if (!s)
     return NULL;
 
@@ -68,11 +68,11 @@ soundfile_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
 }
 
 void
-soundfile_destroy (sw_soundfile * soundfile)
+sounddata_destroy (sw_sounddata * sounddata)
 {
-  g_free (soundfile->data);
-  soundfile_clear_selection (soundfile);
-  g_free (soundfile);
+  g_free (sounddata->data);
+  sounddata_clear_selection (sounddata);
+  g_free (sounddata);
 }
 
 /* Sample functions */
@@ -103,7 +103,7 @@ sample_new_empty(char * directory, char * filename,
   if (!s)
     return NULL;
 
-  s->soundfile = soundfile_new_empty (nr_channels, sample_rate, sample_length);
+  s->sounddata = sounddata_new_empty (nr_channels, sample_rate, sample_length);
 
   s->views = NULL;
 
@@ -133,19 +133,19 @@ sample_new_copy(sw_sample * s)
 
   sn = sample_new_empty(s->directory,
 			s->filename,
-			s->soundfile->format->channels,
-			s->soundfile->format->rate,
-			s->soundfile->nr_frames);
+			s->sounddata->format->channels,
+			s->sounddata->format->rate,
+			s->sounddata->nr_frames);
 
   if(!sn) {
     fprintf(stderr, "Unable to allocate new sample.\n");
     return NULL;
   }
 
-  memcpy(sn->soundfile->data, s->soundfile->data,
-	 frames_to_bytes(s->soundfile->format, s->soundfile->nr_frames));
+  memcpy(sn->sounddata->data, s->sounddata->data,
+	 frames_to_bytes(s->sounddata->format, s->sounddata->nr_frames));
 
-  soundfile_copyin_selection (s->soundfile, sn->soundfile);
+  sounddata_copyin_selection (s->sounddata, sn->sounddata);
 
   return sn;
 }
@@ -156,11 +156,11 @@ sample_destroy (sw_sample * s)
   sample_stop_playback (s);
 
   /* playback holds this mutex, so wait on it before
-   * destroying the soundfile.
+   * destroying the sounddata.
    */
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
-  soundfile_destroy (s->soundfile);
+  sounddata_destroy (s->sounddata);
 
   /* XXX: Should do this: */
   /* trim_registered_ops (s, 0); */
@@ -277,7 +277,7 @@ sample_set_playmarker (sw_sample * s, int offset)
  * Destroys os.
  *
  * This function is ot needed in general filters because sw_sample
- * pointers are persistent across soundfile modifications.
+ * pointers are persistent across sounddata modifications.
  * However, this function is still required where the entire sample
  * changes but the view must stay the same, eg. for File->Revert.
  */
@@ -422,58 +422,61 @@ static sw_operation sel_op = {
   (SweepFunction)sel_replace_data_destroy
 };
 
-static void
-sample_register_sel_op (sw_sample * s, char * desc, SweepModify func)
+sw_op_instance *
+sample_register_sel_op (sw_sample * s, char * desc, SweepModify func,
+			sw_param_set pset, gpointer custom_data)
 {
   sw_op_instance * inst;
   GList * sels;
 
   inst = sw_op_instance_new (desc, &sel_op);
 
-  sels = sels_copy (s->soundfile->sels);
+  sels = sels_copy (s->sounddata->sels);
   inst->undo_data = sel_replace_data_new (sels);
 
-  func (s);
+  func (s, pset, custom_data);
 
-  sels = sels_copy (s->soundfile->sels);
+  sels = sels_copy (s->sounddata->sels);
   inst->redo_data = sel_replace_data_new (sels);
 
-  register_operation (s, inst);  
+  register_operation (s, inst);
+
+  return inst;
 }
 
 
 guint
 sample_sel_nr_regions (sw_sample * s)
 {
-  return g_list_length (s->soundfile->sels);
+  return g_list_length (s->sounddata->sels);
 }
 
 void
-soundfile_clear_selection (sw_soundfile * soundfile)
+sounddata_clear_selection (sw_sounddata * sounddata)
 {
-  g_list_free(soundfile->sels);
+  g_list_free(sounddata->sels);
 
-  soundfile->sels = NULL;
+  sounddata->sels = NULL;
 }
 
 void
 sample_clear_selection (sw_sample * s)
 {
-  soundfile_clear_selection (s->soundfile);
+  sounddata_clear_selection (s->sounddata);
 
   sample_stop_marching_ants (s);
 }
 
 static gint
-soundfile_sel_needs_normalising (sw_soundfile *soundfile)
+sounddata_sel_needs_normalising (sw_sounddata *sounddata)
 {
   GList * gl;
   sw_sel * osel = NULL, * sel;
 
-  if(!soundfile->sels) return FALSE;
+  if(!sounddata->sels) return FALSE;
   
   /* Seed osel with 'fake' iteration of following loop */
-  gl = soundfile->sels;
+  gl = sounddata->sels;
   osel = (sw_sel *)gl->data;
   gl = gl->next;
   for(; gl; gl = gl->next) {
@@ -492,23 +495,23 @@ soundfile_sel_needs_normalising (sw_soundfile *soundfile)
 }
 
 /*
- * soundfile_normalise_selection(soundfile)
+ * sounddata_normalise_selection(sounddata)
  *
- * normalise the selection of soundfile, ie. make sure there's
+ * normalise the selection of sounddata, ie. make sure there's
  * no overlaps and merge adjoining sections.
  */
 
 static void
-soundfile_normalise_selection (sw_soundfile * soundfile)
+sounddata_normalise_selection (sw_sounddata * sounddata)
 {
   GList * gl;
   GList * nsels = NULL;
   sw_sel * osel = NULL, * sel; 
 
-  if (!soundfile_sel_needs_normalising(soundfile)) return;
+  if (!sounddata_sel_needs_normalising(sounddata)) return;
 
   /* Seed osel with 'fake' iteration of following loop */
-  gl = soundfile->sels;
+  gl = sounddata->sels;
   osel = sel_copy((sw_sel *)gl->data);
   gl = gl->next;
 
@@ -539,43 +542,43 @@ soundfile_normalise_selection (sw_soundfile * soundfile)
   nsels = g_list_insert_sorted(nsels, osel, (GCompareFunc)sel_cmp);
 
   /* Clear the old selection */
-  g_list_free (soundfile->sels);
+  g_list_free (sounddata->sels);
 
   /* Set the newly created (normalised) selection */
-  soundfile->sels = nsels;
+  sounddata->sels = nsels;
 
 }
 
 static void
 sample_normalise_selection (sw_sample * s)
 {
-  soundfile_normalise_selection (s->soundfile);
+  sounddata_normalise_selection (s->sounddata);
 }
 
 void
-soundfile_add_selection (sw_soundfile * soundfile, sw_sel * sel)
+sounddata_add_selection (sw_sounddata * sounddata, sw_sel * sel)
 {
-  soundfile->sels =
-    g_list_insert_sorted(soundfile->sels, sel, (GCompareFunc)sel_cmp);
+  sounddata->sels =
+    g_list_insert_sorted(sounddata->sels, sel, (GCompareFunc)sel_cmp);
 }
 
 void
 sample_add_selection (sw_sample * s, sw_sel * sel)
 {
-  if (!s->soundfile->sels)
+  if (!s->sounddata->sels)
     sample_start_marching_ants (s);
 
-  soundfile_add_selection (s->soundfile, sel);
+  sounddata_add_selection (s->sounddata, sel);
 }
 
 sw_sel *
-soundfile_add_selection_1 (sw_soundfile * soundfile, sw_framecount_t start, sw_framecount_t end)
+sounddata_add_selection_1 (sw_sounddata * sounddata, sw_framecount_t start, sw_framecount_t end)
 {
   sw_sel * sel;
 
   sel = sel_new (start, end);
 
-  soundfile_add_selection(soundfile, sel);
+  sounddata_add_selection(sounddata, sel);
 
   return sel;
 }
@@ -583,7 +586,7 @@ soundfile_add_selection_1 (sw_soundfile * soundfile, sw_framecount_t start, sw_f
 sw_sel *
 sample_add_selection_1 (sw_sample * s, sw_framecount_t start, sw_framecount_t end)
 {
-  return soundfile_add_selection_1 (s->soundfile, start, end);
+  return sounddata_add_selection_1 (s->sounddata, start, end);
 }
 
 void
@@ -591,21 +594,21 @@ sample_set_selection (sw_sample * s, GList * gl)
 {
   sample_clear_selection(s);
 
-  s->soundfile->sels = sels_copy (gl);
+  s->sounddata->sels = sels_copy (gl);
 }
 
 sw_sel *
-soundfile_set_selection_1 (sw_soundfile * soundfile, sw_framecount_t start, sw_framecount_t end)
+sounddata_set_selection_1 (sw_sounddata * sounddata, sw_framecount_t start, sw_framecount_t end)
 {
-  soundfile_clear_selection (soundfile);
+  sounddata_clear_selection (sounddata);
 
-  return soundfile_add_selection_1 (soundfile, start, end);
+  return sounddata_add_selection_1 (sounddata, start, end);
 }
 
 sw_sel *
 sample_set_selection_1 (sw_sample * s, sw_framecount_t start, sw_framecount_t end)
 {
-  return soundfile_set_selection_1 (s->soundfile, start, end);
+  return sounddata_set_selection_1 (s->sounddata, start, end);
 }
 
 void
@@ -618,21 +621,21 @@ sel_modify (sw_sample * s, sw_sel * sel, sw_framecount_t new_start, sw_framecoun
 }
 
 static void
-ss_invert (sw_sample * s)
+ss_invert (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
   GList * gl;
   GList * osels;
   sw_sel * osel, * sel;
 
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
-  if (!s->soundfile->sels) {
-    sample_set_selection_1 (s, 0, s->soundfile->nr_frames);
+  if (!s->sounddata->sels) {
+    sample_set_selection_1 (s, 0, s->sounddata->nr_frames);
     goto out;
   }
 
-  gl = osels = s->soundfile->sels;
-  s->soundfile->sels = NULL;
+  gl = osels = s->sounddata->sels;
+  s->sounddata->sels = NULL;
 
   sel = osel = (sw_sel *)gl->data;
   if (osel->sel_start > 0) {
@@ -647,63 +650,63 @@ ss_invert (sw_sample * s)
     osel = sel;
   }
 
-  if (sel->sel_end != s->soundfile->nr_frames) {
-    sample_add_selection_1 (s, sel->sel_end, s->soundfile->nr_frames);
+  if (sel->sel_end != s->sounddata->nr_frames) {
+    sample_add_selection_1 (s, sel->sel_end, s->sounddata->nr_frames);
   }
 
   g_list_free (osels);
 
 out:
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 }
 
 void
 sample_selection_invert (sw_sample * s)
 {
-  sample_register_sel_op (s, "Invert selection", ss_invert);
+  sample_register_sel_op (s, "Invert selection", ss_invert, NULL, NULL);
 }
 
 static void
-ss_select_all (sw_sample * s)
+ss_select_all (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
-  sample_set_selection_1 (s, 0, s->soundfile->nr_frames);
+  sample_set_selection_1 (s, 0, s->sounddata->nr_frames);
 
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 }
 
 void
 sample_selection_select_all (sw_sample * s)
 {
-  sample_register_sel_op (s, "Select all", ss_select_all);
+  sample_register_sel_op (s, "Select all", ss_select_all, NULL, NULL);
 }
 
 static void
-ss_select_none (sw_sample * s)
+ss_select_none (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
   sample_clear_selection (s);
 
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 }
 
 void
 sample_selection_select_none (sw_sample * s)
 {
-  sample_register_sel_op (s, "Select none", ss_select_none);
+  sample_register_sel_op (s, "Select none", ss_select_none, NULL, NULL);
 }
 
 
 gint
-soundfile_selection_length (sw_soundfile * soundfile)
+sounddata_selection_length (sw_sounddata * sounddata)
 {
   gint length = 0;
   GList * gl;
   sw_sel * sel;
 
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     length += sel->sel_end - sel->sel_start;
@@ -713,12 +716,12 @@ soundfile_selection_length (sw_soundfile * soundfile)
 }
 
 void
-soundfile_selection_translate (sw_soundfile * soundfile, gint delta)
+sounddata_selection_translate (sw_sounddata * sounddata, gint delta)
 {
   GList * gl;
   sw_sel * sel;
 
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     sel->sel_start += delta;
@@ -728,25 +731,25 @@ soundfile_selection_translate (sw_soundfile * soundfile, gint delta)
 
 
 /*
- * soundfile_copyin_selection (soundfile1, soundfile2)
+ * sounddata_copyin_selection (sounddata1, sounddata2)
  *
- * copies the selection of soundfile1 into soundfile2. If soundfile2 previously
+ * copies the selection of sounddata1 into sounddata2. If sounddata2 previously
  * had a selection, the two are merged.
  */
 void
-soundfile_copyin_selection (sw_soundfile * soundfile1, sw_soundfile * soundfile2)
+sounddata_copyin_selection (sw_sounddata * sounddata1, sw_sounddata * sounddata2)
 {
   GList * gl;
   sw_sel * sel, *sel2;
 
-  for (gl = soundfile1->sels; gl; gl = gl->next) {
+  for (gl = sounddata1->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     sel2 = sel_copy (sel);
-    soundfile_add_selection (soundfile2, sel2);
+    sounddata_add_selection (sounddata2, sel2);
   }
 
-  soundfile_normalise_selection (soundfile2);
+  sounddata_normalise_selection (sounddata2);
 }
 
 
@@ -783,17 +786,17 @@ sample_set_tmp_sel (sw_sample * s, sw_view * tview, sw_sel * tsel)
     sel_copy (tsel); /* XXX: try to do this without copying? */
   last_tmp_view = tview;
 
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
-  for(gl = s->soundfile->sels; gl; gl = gl->next) {
+  for(gl = s->sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     if(sel == tsel) {
-      s->soundfile->sels = g_list_remove(s->soundfile->sels, sel);
+      s->sounddata->sels = g_list_remove(s->sounddata->sels, sel);
     }
   }
 
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 }
 
 void
@@ -807,16 +810,16 @@ sample_set_tmp_sel_1 (sw_sample * s, sw_view * tview, sw_framecount_t start, sw_
 }
 
 static void
-ssits (sw_sample * s)
+ssits (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
   sample_add_selection (s, s->tmp_sel);
   s->tmp_sel = NULL;
   last_tmp_view = NULL;
   sample_normalise_selection (s);
 
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 }
 
 void
@@ -828,19 +831,19 @@ sample_selection_insert_tmp_sel (sw_sample * s)
   snprintf (buf, BUF_LEN, "Insert selection [%d - %d]",
 	    s->tmp_sel->sel_start, s->tmp_sel->sel_end);
 
-  sample_register_sel_op (s, buf, ssits);
+  sample_register_sel_op (s, buf, ssits, NULL, NULL);
 }
 
 static void
-ssrwts (sw_sample * s)
+ssrwts (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
-  g_mutex_lock (s->soundfile->sels_mutex);
+  g_mutex_lock (s->sounddata->sels_mutex);
 
   sample_clear_selection (s);
 
   sample_add_selection (s, s->tmp_sel);
 
-  g_mutex_unlock (s->soundfile->sels_mutex);
+  g_mutex_unlock (s->sounddata->sels_mutex);
 
   s->tmp_sel = NULL;
   last_tmp_view = NULL;
@@ -855,5 +858,5 @@ sample_selection_replace_with_tmp_sel (sw_sample * s)
   snprintf (buf, BUF_LEN, "Selection [%d - %d]",
 	    s->tmp_sel->sel_start, s->tmp_sel->sel_end);
 
-  sample_register_sel_op (s, buf, ssrwts);
+  sample_register_sel_op (s, buf, ssrwts, NULL, NULL);
 }

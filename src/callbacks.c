@@ -203,9 +203,9 @@ zoom_to_sel_cb (GtkWidget * widget, gpointer data)
 
   if(!sd) return;
 
-  if(!sd->view->sample->soundfile->sels) return;
+  if(!sd->view->sample->sounddata->sels) return;
 
-  gl = sd->view->sample->soundfile->sels;
+  gl = sd->view->sample->sounddata->sels;
 
   sel = (sw_sel *)gl->data;
   sel_min = sel->sel_start;
@@ -255,7 +255,7 @@ zoom_1_1_cb (GtkWidget * widget, gpointer data)
 
   s = sd->view->sample;
 
-  view_set_ends(sd->view, 0, s->soundfile->nr_frames);
+  view_set_ends(sd->view, 0, s->sounddata->nr_frames);
 }
 
 void
@@ -267,8 +267,8 @@ zoom_2_1_cb (GtkWidget * widget, gpointer data)
   s = sd->view->sample;
 
   view_set_ends(sd->view,
-		s->soundfile->nr_frames / 4,
-		3 * s->soundfile->nr_frames / 4);
+		s->sounddata->nr_frames / 4,
+		3 * s->sounddata->nr_frames / 4);
 }
 
 

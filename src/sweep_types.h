@@ -53,7 +53,7 @@ typedef gint sw_framecount_t;
 
 typedef struct _sw_sel sw_sel;
 typedef struct _sw_format sw_format;
-typedef struct _sw_soundfile sw_soundfile;
+typedef struct _sw_sounddata sw_sounddata;
 typedef struct _sw_sample sw_sample;
 
 /*
@@ -84,7 +84,7 @@ struct _sw_format {
   gint rate;      /* sampling rate (Hz) */
 };
 
-struct _sw_soundfile {
+struct _sw_sounddata {
   sw_format * format;
   sw_framecount_t nr_frames;    /* nr frames */
 
@@ -100,7 +100,7 @@ struct _sw_soundfile {
  * sw_sample
  */
 struct _sw_sample {
-  sw_soundfile * soundfile;
+  sw_sounddata * sounddata;
   GList * views;
 
   gchar * filename;
@@ -133,7 +133,6 @@ struct _edit_buffer {
   GList * regions;
 };
 
-typedef void (*SweepModify) (sw_sample * sample);
 
 typedef void (*SweepFunction) (gpointer data);
 typedef void (*SweepCallback) (sw_sample * sample, gpointer data);
@@ -252,7 +251,8 @@ typedef enum {
  * This constraint is ignored for string paramters.
  */
 #define SW_RANGE_STEP_VALID (1<<2)
- 
+
+#define SW_RANGE_ALL_VALID (SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_UPPER_BOUND_VALID|SW_RANGE_STEP_VALID) 
 
 /*
  * HINTS for user interface semantics
@@ -400,6 +400,8 @@ struct _sw_plugin {
   /* plugin_cleanup() frees the plugin's private data structures */
   void (*plugin_cleanup) (void);
 };
+
+typedef void (*SweepModify) (sw_sample * sample, sw_param_set pset, gpointer data);
 
 #endif  /* __SWEEP_TYPES_H__ */
 

@@ -114,15 +114,15 @@ sample_load(char * pathname)
 
   if(!s) return NULL;
 
-  s->soundfile->data =
-    g_malloc(frames_to_bytes(s->soundfile->format, framecount));
+  s->sounddata->data =
+    g_malloc(frames_to_bytes(s->sounddata->format, framecount));
 
-  if (s->soundfile->data == NULL) {
-    fprintf(stderr,  "s->soundfile->data NULL");
+  if (s->sounddata->data == NULL) {
+    fprintf(stderr,  "s->sounddata->data NULL");
     return NULL;
   }
 
-  copydata = s->soundfile->data;
+  copydata = s->sounddata->data;
 
   load_buffer = g_malloc (LOAD_BUFFER_LEN * (samplewidth / 8) * channelcount);
 
@@ -143,7 +143,7 @@ sample_load(char * pathname)
 	  (((guint8 *)load_buffer)[i] - 128) / 128.0;
       }
     }
-    copydata += frames_to_bytes (s->soundfile->format, buffer_frames);
+    copydata += frames_to_bytes (s->sounddata->format, buffer_frames);
     framecount -= buffer_frames;
   }
 
@@ -177,7 +177,7 @@ sample_load_with_view (char * pathname)
 int
 sample_save (sw_sample * s)
 {
-  sw_format * f = s->soundfile->format;
+  sw_format * f = s->sounddata->format;
   char pathname [SW_DIR_LEN];
 
   /* Length in frames of temporary loading buffer */
@@ -218,12 +218,12 @@ sample_save (sw_sample * s)
   afSetVirtualByteOrder(outputFile, AF_DEFAULT_TRACK,
 			AF_BYTEORDER_LITTLEENDIAN);
 
-  copydata = s->soundfile->data;
+  copydata = s->sounddata->data;
 
-  channelcount = s->soundfile->format->channels;
+  channelcount = s->sounddata->format->channels;
   save_buffer = g_malloc (SAVE_BUFFER_LEN * (samplewidth / 8) * channelcount);
 
-  framecount = s->soundfile->nr_frames;
+  framecount = s->sounddata->nr_frames;
   while (framecount > 0) {
     buffer_frames = MIN(framecount, SAVE_BUFFER_LEN);
 
@@ -234,7 +234,7 @@ sample_save (sw_sample * s)
     }
     afWriteFrames(outputFile, AF_DEFAULT_TRACK, save_buffer, buffer_frames);
 
-    copydata += frames_to_bytes (s->soundfile->format, buffer_frames);
+    copydata += frames_to_bytes (s->sounddata->format, buffer_frames);
     framecount -= buffer_frames;
   }
 

@@ -37,24 +37,24 @@ static sw_operation filter_op = {
   (SweepFunction)paste_over_data_destroy
 };
 
-static sw_soundfile *
-do_filter_regions (sw_soundfile * soundfile, SweepFilterRegion func,
+static sw_sounddata *
+do_filter_regions (sw_sounddata * sounddata, SweepFilterRegion func,
 		   sw_param_set pset, gpointer custom_data)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   GList * gl;
   sw_sel * sel;
   gpointer d;
 
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
-    d = soundfile->data + frames_to_bytes (f, sel->sel_start);
-    func (d, soundfile->format, sel->sel_end - sel->sel_start,
+    d = sounddata->data + frames_to_bytes (f, sel->sel_start);
+    func (d, sounddata->format, sel->sel_end - sel->sel_start,
 	  pset, custom_data);
   }
 
-  return soundfile;
+  return sounddata;
 }
 
 sw_op_instance *
@@ -68,7 +68,7 @@ register_filter_region_op (sw_sample * sample, char * desc,
   inst = sw_op_instance_new (desc, &filter_op);
   old_eb = edit_buffer_from_sample (sample);
 
-  do_filter_regions (sample->soundfile, func, pset, custom_data);
+  do_filter_regions (sample->sounddata, func, pset, custom_data);
   new_eb = edit_buffer_from_sample (sample);
 
   inst->redo_data = inst->undo_data =
@@ -87,16 +87,16 @@ register_filter_op (sw_sample * sample, char * desc, SweepFilter func,
 {
   sw_op_instance * inst;
   edit_buffer * old_eb, * new_eb;
-  sw_soundfile * out;
+  sw_sounddata * out;
 
   inst = sw_op_instance_new (desc, &filter_op);
   old_eb = edit_buffer_from_sample (sample);
 
-  out = func (sample->soundfile, pset, custom_data);
+  out = func (sample->sounddata, pset, custom_data);
 
   /* XXX: Not for inplace edits!!
-  soundfile_destroy (sample->soundfile);
-  sample->soundfile = out;
+  sounddata_destroy (sample->sounddata);
+  sample->sounddata = out;
   */
 
   new_eb = edit_buffer_from_sample (sample);

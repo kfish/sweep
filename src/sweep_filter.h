@@ -26,7 +26,7 @@ typedef void (*SweepFilterRegion) (gpointer data,
 				   sw_format * format, int nr_frames,
 				   sw_param_set pset, gpointer custom_data);
 
-typedef sw_soundfile * (*SweepFilter) (sw_soundfile * soundfile,
+typedef sw_sounddata * (*SweepFilter) (sw_sounddata * sounddata,
 				       sw_param_set pset,
 				       gpointer custom_data);
 

@@ -157,21 +157,21 @@ edit_buffer_length (edit_buffer * eb)
 }
 
 static edit_buffer *
-edit_buffer_from_soundfile (sw_soundfile * soundfile)
+edit_buffer_from_sounddata (sw_sounddata * sounddata)
 {
   edit_buffer * eb;
   GList * gl;
   sw_sel * sel;
   edit_region * er;
 
-  eb = edit_buffer_new (soundfile->format);
+  eb = edit_buffer_new (sounddata->format);
 
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     er = edit_region_new0 (eb->format,
 			   sel->sel_start, sel->sel_end,
-			   soundfile->data);
+			   sounddata->data);
 
 #ifdef DEBUG
     printf("adding eb region [%ld - %ld]\n", sel->sel_start, sel->sel_end);
@@ -186,7 +186,7 @@ edit_buffer_from_soundfile (sw_soundfile * soundfile)
 edit_buffer *
 edit_buffer_from_sample (sw_sample * sample)
 {
-  return edit_buffer_from_soundfile (sample->soundfile);
+  return edit_buffer_from_sounddata (sample->sounddata);
 }
 
 static sw_sample *
@@ -221,7 +221,7 @@ sample_from_edit_buffer (edit_buffer * eb)
     offset = frames_to_bytes (eb->format, er->start) - offset0;
     len = frames_to_bytes (eb->format, er->end - er->start);
 
-    memcpy ((gpointer)(s->soundfile->data + offset), er->data, len);
+    memcpy ((gpointer)(s->sounddata->data + offset), er->data, len);
 
 #ifdef DEBUG
     printf("Adding sample region [%ld - %ld]\n", er->start, er->end);
@@ -231,38 +231,38 @@ sample_from_edit_buffer (edit_buffer * eb)
   return s;
 }
 
-/* returns new soundfile */
-sw_soundfile *
-splice_out_sel (sw_soundfile * soundfile)
+/* returns new sounddata */
+sw_sounddata *
+splice_out_sel (sw_sounddata * sounddata)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   gint length;
   GList * gl;
   sw_sel * osel, * sel;
-  sw_soundfile * out;
+  sw_sounddata * out;
   gpointer d;
   sw_framecount_t offset, len;
 
-  if (!soundfile->sels) {
+  if (!sounddata->sels) {
     printf ("Nothing to splice out.\n");
-    return soundfile;
+    return sounddata;
   }
 
-  length = soundfile->nr_frames - soundfile_selection_length (soundfile);
+  length = sounddata->nr_frames - sounddata_selection_length (sounddata);
 
 #ifdef DEBUG
   printf("Splice out: remaining length %d\n", length);
 #endif
 
-  out = soundfile_new_empty (f->channels, f->rate, length);
+  out = sounddata_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
-  gl = soundfile->sels;
+  gl = sounddata->sels;
   sel = osel = (sw_sel *)gl->data;
   if (osel->sel_start > 0) {
     len = frames_to_bytes (f, osel->sel_start);
-    memcpy (d, soundfile->data, len);
+    memcpy (d, sounddata->data, len);
     d += len;
   }
   gl = gl->next;
@@ -272,67 +272,67 @@ splice_out_sel (sw_soundfile * soundfile)
 
     offset = frames_to_bytes (f, osel->sel_end);
     len = frames_to_bytes (f, sel->sel_start - osel->sel_end);
-    memcpy (d, (gpointer)(soundfile->data + offset), len);
+    memcpy (d, (gpointer)(sounddata->data + offset), len);
     d += len;
 
     osel = sel;
   }
 
-  if (sel->sel_end != soundfile->nr_frames) {
+  if (sel->sel_end != sounddata->nr_frames) {
     offset = frames_to_bytes (f, sel->sel_end);
 #ifdef DEBUG
     printf("Calculated offset %ld [=== %ld]\n", offset, sel->sel_end);
 #endif
 
-    len = frames_to_bytes (f, soundfile->nr_frames - sel->sel_end);
-    memcpy (d, (gpointer)(soundfile->data + offset), len);
+    len = frames_to_bytes (f, sounddata->nr_frames - sel->sel_end);
+    memcpy (d, (gpointer)(sounddata->data + offset), len);
   }
 
   return out;
 }
 
 static void
-soundfile_set_sel_from_eb (sw_soundfile * soundfile, edit_buffer * eb)
+sounddata_set_sel_from_eb (sw_sounddata * sounddata, edit_buffer * eb)
 {
   GList * gl;
   edit_region * er;
 
-  if (soundfile->sels)
-    soundfile_clear_selection (soundfile);
+  if (sounddata->sels)
+    sounddata_clear_selection (sounddata);
 
   if (!eb) return;
   
   for (gl = eb->regions; gl; gl = gl->next) {
     er = (edit_region *)gl->data;
 
-    if (er->start > soundfile->nr_frames) break;
+    if (er->start > sounddata->nr_frames) break;
 
-    soundfile_add_selection_1 (soundfile, er->start, MIN(er->end, soundfile->nr_frames));
+    sounddata_add_selection_1 (sounddata, er->start, MIN(er->end, sounddata->nr_frames));
   }
 }
 
-/* returns new soundfile */
-sw_soundfile *
-splice_in_eb (sw_soundfile * soundfile, edit_buffer * eb)
+/* returns new sounddata */
+sw_sounddata *
+splice_in_eb (sw_sounddata * sounddata, edit_buffer * eb)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   gint length;
   GList * gl;
   edit_region * er;
   sw_framecount_t prev_end = 0;
-  sw_soundfile * out;
+  sw_sounddata * out;
   gpointer di, d;
   sw_framecount_t len;
 
   if (!eb) {
-    return soundfile;
+    return sounddata;
   }
 
-  length = soundfile->nr_frames + edit_buffer_length (eb);
+  length = sounddata->nr_frames + edit_buffer_length (eb);
 
-  di = soundfile->data;
+  di = sounddata->data;
 
-  out = soundfile_new_empty (f->channels, f->rate, length);
+  out = sounddata_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
@@ -369,60 +369,60 @@ splice_in_eb (sw_soundfile * soundfile, edit_buffer * eb)
     memcpy (d, di, len);
   }
  
-  soundfile_set_sel_from_eb (out, eb);
+  sounddata_set_sel_from_eb (out, eb);
  
   return out;
 }
 
-/* Modifies soundfile */
-static sw_soundfile *
-edit_clear_sel (sw_soundfile * soundfile)
+/* Modifies sounddata */
+static sw_sounddata *
+edit_clear_sel (sw_sounddata * sounddata)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   GList * gl;
   sw_sel * sel;
   sw_framecount_t offset, len;
 
-  for (gl = soundfile->sels; gl; gl = gl->next) {
+  for (gl = sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     offset = frames_to_bytes (f, sel->sel_start);
     len = frames_to_bytes (f, sel->sel_end - sel->sel_start);
 
-    memset ((gpointer)(soundfile->data + offset), 0, (size_t)len);
+    memset ((gpointer)(sounddata->data + offset), 0, (size_t)len);
   }
 
-  return soundfile;
+  return sounddata;
 }
 
 /* New sample */
-static sw_soundfile *
-paste_at (sw_soundfile * soundfile, edit_buffer * eb)
+static sw_sounddata *
+paste_at (sw_sounddata * sounddata, edit_buffer * eb)
 {
-  sw_format * f = soundfile->format;
+  sw_format * f = sounddata->format;
   sw_framecount_t paste_point = 0;
   sw_framecount_t paste_offset = 0, len;
   sw_framecount_t length, paste_length;
   GList * gl;
   edit_region * er;
   gpointer d;
-  sw_soundfile * out;
+  sw_sounddata * out;
 
-  if (soundfile->sels) {
-    paste_point = ((sw_sel *)(soundfile->sels)->data)->sel_start;
+  if (sounddata->sels) {
+    paste_point = ((sw_sel *)(sounddata->sels)->data)->sel_start;
     paste_offset = frames_to_bytes (f, paste_point);
   }
 
   paste_length = edit_buffer_length (eb);
-  length = soundfile->nr_frames + paste_length;
+  length = sounddata->nr_frames + paste_length;
 
-  out = soundfile_new_empty (f->channels, f->rate, length);
+  out = sounddata_new_empty (f->channels, f->rate, length);
 
   d = out->data;
 
   if (paste_point > 0) {
     len = paste_offset;
-    memcpy (d, soundfile->data, len);
+    memcpy (d, sounddata->data, len);
     d += len;
   }
 
@@ -434,17 +434,17 @@ paste_at (sw_soundfile * soundfile, edit_buffer * eb)
     d += len;
   }
 
-  if (paste_point < soundfile->nr_frames) {
-    len = frames_to_bytes (f, soundfile->nr_frames) - paste_offset;
-    memcpy (d, (gpointer)(soundfile->data + paste_offset), len);
+  if (paste_point < sounddata->nr_frames) {
+    len = frames_to_bytes (f, sounddata->nr_frames) - paste_offset;
+    memcpy (d, (gpointer)(sounddata->data + paste_offset), len);
   }
 
   /*
-  soundfile_copyin_selection (soundfile, out);
-  soundfile_selection_translate (out, paste_point);
+  sounddata_copyin_selection (sounddata, out);
+  sounddata_selection_translate (out, paste_point);
   */
 
-  soundfile_set_selection_1 (out, paste_point, paste_point + paste_length);
+  sounddata_set_selection_1 (out, paste_point, paste_point + paste_length);
 
   return out;
 }
@@ -453,7 +453,7 @@ paste_at (sw_soundfile * soundfile, edit_buffer * eb)
 sw_sample *
 paste_over (sw_sample * sample, edit_buffer * eb)
 {
-  sw_format * f = sample->soundfile->format;
+  sw_format * f = sample->sounddata->format;
   sw_framecount_t offset, len;
   sw_framecount_t length;
   GList * gl;
@@ -461,7 +461,7 @@ paste_over (sw_sample * sample, edit_buffer * eb)
 
   if (!eb) return sample;
 
-  length = sample->soundfile->nr_frames;
+  length = sample->sounddata->nr_frames;
 
   for (gl = eb->regions; gl; gl = gl->next) {
     er = (edit_region *)gl->data;
@@ -470,7 +470,7 @@ paste_over (sw_sample * sample, edit_buffer * eb)
 
     offset = frames_to_bytes (f, er->start);
     len = frames_to_bytes (f, MIN(er->end, length) - er->start);
-    memcpy ((gpointer)(sample->soundfile->data + offset), er->data, len);
+    memcpy ((gpointer)(sample->sounddata->data + offset), er->data, len);
   }
 
   return sample;
@@ -498,7 +498,7 @@ static sw_operation cut_op = {
 sw_op_instance *
 do_cut (sw_sample * sample)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
   sw_op_instance * inst;
   edit_buffer * eb;
 
@@ -508,13 +508,13 @@ do_cut (sw_sample * sample)
   ebuf_clear ();
   ebuf = edit_buffer_copy (eb);
 
-  out = splice_out_sel (sample->soundfile);
+  out = splice_out_sel (sample->sounddata);
 
   inst->redo_data = inst->undo_data =
     splice_data_new (eb);
 
-  soundfile_destroy (sample->soundfile);
-  sample->soundfile = out;
+  sounddata_destroy (sample->sounddata);
+  sample->sounddata = out;
 
   sample_refresh_views (sample);
 
@@ -539,7 +539,7 @@ do_clear (sw_sample * sample)
   inst = sw_op_instance_new ("Clear", &clear_op);
   old_eb = edit_buffer_from_sample (sample);
 
-  edit_clear_sel (sample->soundfile);
+  edit_clear_sel (sample->sounddata);
   new_eb = edit_buffer_from_sample (sample);
 
   inst->redo_data = inst->undo_data =
@@ -562,19 +562,19 @@ static sw_operation delete_op = {
 sw_op_instance *
 do_delete (sw_sample * sample)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
   sw_op_instance * inst;
   edit_buffer * eb;
 
   inst = sw_op_instance_new ("Delete", &delete_op);
   eb = edit_buffer_from_sample (sample);
 
-  out = splice_out_sel (sample->soundfile);
+  out = splice_out_sel (sample->sounddata);
 
   inst->redo_data = inst->undo_data =
     splice_data_new (eb);
 
-  sample->soundfile = out;
+  sample->sounddata = out;
   /* delete old */
 
   sample_refresh_views (sample);
@@ -600,7 +600,7 @@ do_paste_in (sw_sample * in, sw_sample ** out)
   inst = sw_op_instance_new ("Paste in", &paste_in_op);
   eb = edit_buffer_copy (ebuf);
 
-  (*out)->soundfile = splice_in_eb (in->soundfile, ebuf);
+  (*out)->sounddata = splice_in_eb (in->sounddata, ebuf);
 
   inst->redo_data = inst->undo_data =
     splice_data_new (eb);
@@ -620,7 +620,7 @@ static sw_operation paste_at_op = {
 sw_op_instance *
 do_paste_at (sw_sample * sample)
 {
-  sw_soundfile * out;
+  sw_sounddata * out;
   sw_op_instance * inst;
   edit_buffer * eb1, *eb2;
 
@@ -628,12 +628,12 @@ do_paste_at (sw_sample * sample)
   eb1 = edit_buffer_copy (ebuf);
   inst->undo_data = splice_data_new (eb1);
 
-  out = paste_at (sample->soundfile, ebuf);
-  eb2 = edit_buffer_from_soundfile (out);
+  out = paste_at (sample->sounddata, ebuf);
+  eb2 = edit_buffer_from_sounddata (out);
   inst->redo_data = splice_data_new (eb2);
 
-  sample->soundfile = out;
-  /* delete old soundfile */
+  sample->sounddata = out;
+  /* delete old sounddata */
 
   sample_refresh_views (sample);
 

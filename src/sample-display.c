@@ -186,7 +186,7 @@ sample_display_set_window (SampleDisplay *s,
   g_return_if_fail(s != NULL);
   g_return_if_fail(IS_SAMPLE_DISPLAY(s));
 
-  len = s->view->sample->soundfile->nr_frames;
+  len = s->view->sample->sounddata->nr_frames;
   vlen = end - start;
 
   g_return_if_fail(end > start);
@@ -227,7 +227,7 @@ sample_display_init_display (SampleDisplay *s,
    */
   if (s->width > 1) {
 
-    len = s->view->sample->soundfile->nr_frames;
+    len = s->view->sample->sounddata->nr_frames;
     vlen = s->view->end - s->view->start;
 
     /* If we're already viewing EXACTLY the entire sample,
@@ -406,7 +406,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
   sw_audio_t prev_maxpos, prev_minneg;
   sw_framecount_t i, step, nr_pos, nr_neg;
   sw_sample * sample;
-  const int channels = s->view->sample->soundfile->format->channels;
+  const int channels = s->view->sample->sounddata->format->channels;
 
   sample = s->view->sample;
 
@@ -430,10 +430,10 @@ sample_display_draw_data_channel (GdkDrawable * win,
      * per pixel */
     step = MAX (1, PIXEL_TO_OFFSET(1)/STEP_MAX);
 
-    for (i = OFFSET_RANGE(sample->soundfile->nr_frames, XPOS_TO_OFFSET(x));
-	 i < OFFSET_RANGE(sample->soundfile->nr_frames, XPOS_TO_OFFSET(x+1));
+    for (i = OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x));
+	 i < OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x+1));
 	 i+=step) {
-      d = ((sw_audio_t *)sample->soundfile->data)[i*channels + channel];
+      d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
       if (d >= 0) {
 	if (d > maxpos) maxpos = d;
 	totpos += d;
@@ -496,7 +496,7 @@ sample_display_draw_data (GdkDrawable *win,
 {
   const int sh = s->height;
   int start_x, end_x;
-  const int channels = s->view->sample->soundfile->format->channels;
+  const int channels = s->view->sample->sounddata->format->channels;
 
   if(width == 0)
     return;
@@ -510,7 +510,7 @@ sample_display_draw_data (GdkDrawable *win,
 #endif
 
   start_x = OFFSET_TO_XPOS(0);
-  end_x = OFFSET_TO_XPOS(s->view->sample->soundfile->nr_frames);
+  end_x = OFFSET_TO_XPOS(s->view->sample->sounddata->nr_frames);
 
   if (start_x > x + width || end_x < x) {
     gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
@@ -585,10 +585,10 @@ sample_display_draw_crossing_vector (GdkDrawable * win,
 #define VRAD 8
 
   cx1 = ( x > VRAD ? VRAD : 0 );
-  cx2 = ( x < sample->soundfile->nr_frames - VRAD ? VRAD : 0 );
+  cx2 = ( x < sample->sounddata->nr_frames - VRAD ? VRAD : 0 );
 
-  cy1 = ((sw_audio_t *)sample->soundfile->data)[OFFSET_RANGE(sample->soundfile->nr_frames, XPOS_TO_OFFSET(x)) - cx1];
-  cy2 = ((sw_audio_t *)sample->soundfile->data)[OFFSET_RANGE(sample->soundfile->nr_frames, XPOS_TO_OFFSET(x)) + cx2];
+  cy1 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) - cx1];
+  cy2 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) + cx2];
   
   gdk_draw_line(s->backing_pixmap, s->crossing_gc,
 		x - cx1, (((cy1 + 1.0) * sh) / 2.0),
@@ -699,7 +699,7 @@ sample_display_draw_sel (GdkDrawable * win,
   int l_end, r_end; /* draw left + right ends of sel */
 
   /* Draw real selection */
-  for (gl = sample->soundfile->sels; gl; gl = gl->next) {
+  for (gl = sample->sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     x = OFFSET_TO_XPOS(sel->sel_start);
@@ -984,11 +984,11 @@ sample_display_handle_motion (SampleDisplay *s,
     or = XPOS_TO_OFFSET(x + 1);
   }
 
-  if (ol < 0 || ol >= s->view->sample->soundfile->nr_frames) return;
-  if (or < 0 || or >= s->view->sample->soundfile->nr_frames) return;
+  if (ol < 0 || ol >= s->view->sample->sounddata->nr_frames) return;
+  if (or < 0 || or >= s->view->sample->sounddata->nr_frames) return;
 #if 0
-  g_return_if_fail(ol >= 0 && ol < s->view->sample->soundfile->nr_frames);
-  g_return_if_fail(or > 0 && or <= s->view->sample->soundfile->nr_frames);
+  g_return_if_fail(ol >= 0 && ol < s->view->sample->sounddata->nr_frames);
+  g_return_if_fail(or > 0 && or <= s->view->sample->sounddata->nr_frames);
 #endif
 
   g_return_if_fail(ol < or);
@@ -1058,7 +1058,7 @@ sample_display_handle_motion_2 (SampleDisplay *s,
     (s->view->end - s->view->start) / s->width;
 
   new_win_start = CLAMP(new_win_start, 0,
-			s->view->sample->soundfile->nr_frames -
+			s->view->sample->sounddata->nr_frames -
 			(s->view->end - s->view->start));
 
   if(new_win_start != s->view->start) {
@@ -1160,10 +1160,10 @@ sample_display_button_press (GtkWidget      *widget,
     if(last_button == 1) {
 
       if (XPOS_TO_OFFSET(x) < 0 ||
-	  XPOS_TO_OFFSET(x) > sample->soundfile->nr_frames)
+	  XPOS_TO_OFFSET(x) > sample->sounddata->nr_frames)
 	return TRUE;
 
-      for (gl = sample->soundfile->sels; gl; gl = gl->next) {
+      for (gl = sample->sounddata->sels; gl; gl = gl->next) {
 	sel = (sw_sel *)gl->data;
 	
 	xss = OFFSET_TO_XPOS(sel->sel_start);
@@ -1296,7 +1296,7 @@ sample_display_on_sel (SampleDisplay * s, gint x, gint y)
   sw_sel * sel;
   int xss, xse;
 
-  for (gl = s->view->sample->soundfile->sels; gl; gl = gl->next) {
+  for (gl = s->view->sample->sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     xss = OFFSET_TO_XPOS(sel->sel_start);
@@ -1341,7 +1341,7 @@ sample_display_motion_notify (GtkWidget *widget,
     if (current_tool == TOOL_SELECT && sample_display_on_sel (s, x, y)) {
       SET_CURSOR(widget, horiz_cr);
     } else {
-      if (o > 0 && o < s->view->sample->soundfile->nr_frames)
+      if (o > 0 && o < s->view->sample->sounddata->nr_frames)
 	SET_CURSOR(widget, crosshair_cr);
       else
 	gdk_window_set_cursor (widget->window, NULL);
