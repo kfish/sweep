@@ -82,6 +82,9 @@ update_playmarker (gpointer data)
   sw_sample * s = (sw_sample *)data;
 
   if (s == playing) {
+
+    playoffset = playoffset + ((gfloat)s->sounddata->format->rate * 0.1);
+
     sample_set_playmarker (s, playoffset);
     return TRUE;
   } else {
@@ -94,18 +97,19 @@ static void
 start_playmarker (sw_sample * s)
 {
   s->playmarker_tag =
-    gtk_idle_add ((GtkFunction)update_playmarker, s);
+    gtk_timeout_add ((guint32)100,
+		     (GtkFunction)update_playmarker,
+		     (gpointer)s);
 }
 
 static void
-stop_playmarker (void)
+stop_playmarker (sw_sample * s)
 {
-  if (playing->playmarker_tag > 0)
-    gtk_idle_remove (playing->playmarker_tag);
-  playing->playmarker_tag = 0;
-  sample_set_playmarker (playing, -1);
+  if (s->playmarker_tag > 0)
+    gtk_timeout_remove (s->playmarker_tag);
+  s->playmarker_tag = 0;
+  sample_set_playmarker (s, -1);
 }
-
 
 static int
 open_dev_dsp (void)
@@ -426,6 +430,7 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
       break;
     }
 
+    /* Only write if still playing */
     if (playing) {
 #if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
       n = write (dev_dsp, pbuf, i*sbytes);
@@ -448,6 +453,8 @@ pva (sw_view * view)
   play_view (view, 0, s->sounddata->nr_frames, 1.0);
 
   drain_dev_dsp ();
+
+  stop_playmarker (s);
 
   WAIT_FOR_PLAYING;
 
@@ -531,6 +538,8 @@ pvs (sw_view * view)
   }
   
   drain_dev_dsp ();
+
+  stop_playmarker (s);
 
   WAIT_FOR_PLAYING; 
 
@@ -623,6 +632,8 @@ pvap (pvap_data * p)
 
   drain_dev_dsp ();
 
+  stop_playmarker (s);
+
   WAIT_FOR_PLAYING;
 
   reset_dev_dsp ();
@@ -654,9 +665,6 @@ void
 stop_playback (void)
 {
   if (!playing) return;
-
-  /* Do this explicitly */
-  stop_playmarker ();
 
   playing = NULL;
 
