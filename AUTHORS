@@ -10,6 +10,9 @@ Contributed code
 Mattias Engdegård <f91=men@nada.kth.se>
 	Solaris audio driver, other cleanups
 
+Silvia Pfeiffer <silvia.pfeiffer@silvia-pfeiffer.de>
+	fixes to SMPTE time printing, random hacks
+
 Paul Barton=Davis <pbd@op.net>
 	ALSA 0.6.0 audio driver
 
@@ -39,7 +42,7 @@ Gergely Nagy <mhp@lonyay.edu.hu>
 Yuri Bongiorno <yurix@tiscalinet.it>
 	it
 
-Silvia Pfeiffer <silvia.pfeiffer@silvia=pfeiffer.de>
+Silvia Pfeiffer <silvia.pfeiffer@silvia-pfeiffer.de>
 	de
 
 
