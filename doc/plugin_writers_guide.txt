@@ -1,0 +1,735 @@
+
+Sweep Plugin Writer's Guide
+---------------------------
+
+Documents Sweep Plugin API Version 1.0.0
+Last modified Oct 7 2000
+Copyright (C) 2000 Conrad Parker <conrad@vergenet.net>
+
+
+1. Introduction
+===============
+
+Sweep plugins are able to modify all aspects of a sample file, including
+the audio data, the sampling format used, and which regions of the sample
+are currently selected. Sweep provides some convenience functions to make
+plugin writing easy.
+
+If you intend to write plugins which only modify audio data, you are
+encouraged to use the Linux Audio Developer's Simple Plugin API
+(LADSPA) [1] instead of writing a native Sweep plugin.
+
+Other types of plugins include those which simply modify the selection
+data, and those which provide conversions between different data formats.
+
+Plugins do not need to provide their own graphical user interface
+code. This API provides an abstraction by which plugins specify
+numeric and string parameters. Sweep creates and presents to the user
+a graphical dialog window for setting these parameters.
+
+This document explains the programming interface for writing native Sweep
+plugins and how to set up a build environment for your plugin code either
+within Sweep or as a standalone package.
+
+
+2. Getting started
+==================
+
+A sweep plugin is a shared library which contains one or more
+procedures.  These procedures can modify any of the data associated
+with a particular sound wave. Procedures take as input a set of
+parameters. They must specify the types of these parameters, and can
+optionally provide some constraints (such as an acceptable numeric
+range, or a list of values to choose from) and hints (such as to
+interpret a number logarithmically).  The constraints are interpreted
+by Sweep as hard limits, ie. it will not pass values to the plugin
+which fall outside of the constraints. Both constraints and hints are
+used to construct a useful dialog box to the user for setting
+parameters.
+
+Procedures can optionally supply a function to suggest appropriate
+values for the parameters as needed, provide Help and Copyright
+information, and of course must supply a function to perform the
+desired operation.
+
+It is a requirement that all operations which modify a sound wave or
+its associated data also provide a means for undoing and redoing
+themselves. Sweep provides some standard mechanisms for efficiently
+undoing and redoing some common tyes of operation.
+
+This section describes the data structures used by Sweep and its
+plugins, the mechanisms provided for performing common operations, and
+information on building the resulting plugin libraries.
+
+
+2.1 Files to include
+--------------------
+
+<sweep/sweep.h>
+Includes all required sweep header files.
+
+Sweep plugins have access to all functions and datatypes defined in
+GLib [2]. <glib.h> is automatically included in <sweep/sweep_types.h>,
+so there is no need to explicitly include it once <sweep/sweep.h> has
+been included. In particular the GList data structure is used
+extensively by this API.
+
+
+2.2 Internationalisation
+------------------------
+
+#include "config.h"
+#include "i18n.h"
+
+Define all static strings with N_("..."), define all others (proc names,
+descriptions etc.) with _("...").
+
+
+2.3 Basic types
+---------------
+<sweep/sweep_types.h>
+
+Sweep provides some basic types which are useful for audio
+handling. It is important to use these types where appropriate, as
+this allows the sourcecode to be reconfigured for different
+environments.
+
+Individual sample values of audio data are represented by the types
+sw_audio_t and sw_audio_intermediate_t. These are floating point
+values ranging between SW_AUDIO_T_MIN and SW_AUDIO_T_MAX. For most
+data storage and moving operations you should use sw_audio_t, and
+where more precision is required (eg. when mixing sounds together) use
+sw_audio_intermediate_t.
+
+Blocks of audio data are stored in consecutive frames, where a frame
+is a collection of the data values corresponding to the same instant
+of time in each channel. That is, multichannel audio data is
+interleaved, for example stereo data is stored:
+
+                (LR)(LR)(LR)(LR)...(LR)
+
+where L and R are sample values of type sw_audio_t, and (LR) is a
+single frame of data.
+
+Frame counts are given as sw_framecount_t. Please use this type
+wherever a count or offset in terms of frames is required.
+
+Time is represented by sw_time_t. Time is defined in a floating point
+format in units of seconds.
+
+
+2.4 Complex types
+-----------------
+<sweep/sweep_types.h>
+
+struct _sw_sample {
+  sw_sounddata * sounddata;
+  ...
+};
+<sweep/sweep_sample.h>
+
+
+struct _sw_sounddata {
+  sw_format * format;
+  sw_framecount_t nr_frames;    /* nr frames */
+
+  gpointer data;
+
+  GList * sels;     /* selection: list of sw_sels */
+  ...
+};
+<sweep/sweep_sounddata.h>
+
+struct _sw_format {
+  gint channels;  /* nr channels per frame */
+  gint rate;      /* sampling rate (Hz) */
+};
+
+The selection component of a sounddata object is a GList of sw_sel
+objects.  An sw_sel describes a region in a selection. Units are frame
+offsets from start of sample.
+
+struct _sw_sel {
+  sw_framecount_t sel_start;
+  sw_framecount_t sel_end;
+};
+
+
+2.5 Types for parameters
+------------------------
+<sweep/sweep_types.h>
+
+The parameters to pass to functions can be any of a few simple types
+as defined in <sweep/sweep_types.h>: SWEEP_TYPE_BOOL, SWEEP_TYPE_INT,
+SWEEP_TYPE_FLOAT, SWEEP_TYPE_STRING.
+
+A parameter object is a union which can take any of these values. A
+parameter set is defined as a pointer to a sequence of parameters.
+
+/*
+ * Instances of Parameter Sets
+ */
+typedef union _sw_param sw_param;
+typedef sw_param * sw_param_set;
+
+union _sw_param {
+  sw_bool b;
+  sw_int  i;
+  sw_float f;
+  sw_string s;
+};
+
+
+2.6 Parameter Specifications
+----------------------------
+<sweep/sweep_types.h>
+
+Information about a parameter accepted by a procedure is stored in a
+parameter specification object, as defined in <sweep/sweep_types.h>
+
+/*
+ * sw_param_spec: specification for a parameter.
+ */
+struct _sw_param_spec {
+  /* A short name for this parameter */
+  gchar * name;
+
+  /* A longer description of the parameter's purpose and usage */
+  gchar * desc;
+
+  /* The type of the parameter */
+  sw_param_type type;
+
+  /* Constraints */
+  sw_constraint_type constraint_type;
+  sw_constraint constraint;
+
+  /* Hints */
+  sw_hints hints;
+};
+
+
+2.6.1 Constraints
+-----------------
+<sweep/sweep_types.h>
+
+There are two ways of defining constraints on parameter values
+accepted by the procedure; additionally, you can specify that the
+values for a parameter are completely unconstrained.
+
+SW_PARAM_CONSTRAINED_NOT
+
+SW_PARAM_CONSTRAINED_LIST indicates that the parameter is constrained
+to values given in a param list. NB: the length of this list is given
+by the value of the first parameter, interpreted as an integer.
+ie. this length = constraint->param_list[0].i
+
+SW_PARAM_CONSTRAINED_RANGE indicates that the parameter is constrained
+to a given range.
+
+/*
+ * sw_param_range: a range of acceptable parameter values.
+ *
+ * NB: this is a hard limit. Values <lower and values >upper
+ * need not be expected by plugins.
+ *
+ * The first parameter is a mask consisting of a bitwise or of between
+ * zero and three of SW_RANGE_LOWER_BOUND_VALID,
+ * SW_RANGE_UPPER_BOUND_VALID, and SW_RANGE_STEP_VALID.
+ *
+ * The three following parameters are interpreted as the type of the
+ * parameter they constrain. The 'step' parameter is never valid for
+ * string parameters.
+ */
+struct _sw_param_range {
+  int valid_mask;
+  sw_param lower;
+  sw_param upper;
+  sw_param step;
+};
+
+
+2.6.2 Hints
+-----------
+<sweep/sweep_types.h>
+
+A few hints exist which Sweep can use to provide different graphical
+input methods as appropriate.
+
+SW_PARAM_HINT_LOGARITHMIC indicates that the parameter should be
+interpreted as logarithmic.
+
+SW_PARAM_HINT_TIME indicates that the parameter should be interpreted
+as a time
+
+SW_PARAM_HINT_FILENAME indicates that the parameter should be
+interpreted as a valid filename on the user's system.
+
+
+2.7 Procs
+---------
+<sweep/sweep_types.h>
+
+A proc object ties together all the aspects of a particular plugin
+procedure, including some textual data, the specifications for
+parameters, and the actual C function to call to do the work required.
+
+Procs must provide a suggest() and an apply() function. The
+(sw_op_instance *) returned by the apply() function is described in
+section 3.1.
+
+These functions have the same prototype (sample, parameter set, custom
+data).  The first argument is the sample which is being edited. The
+second is the parameter set object to use, and the third is some
+custom data provided by the proc.
+
+The suggest() function is used to set some meaningful parameter
+values. When the user calls a function, the following occurs:
+
+	1. A new, empty, parameter set is created large enough to hold
+the parameters required for this proc
+	2. The parameter set is passed to the suggest() function (if
+that is defined) along with the sample and custom data. This allows
+the suggest() function to provide some useful values based on the
+characteristics of the sample. The suggest() function modifies the
+values in the parameter set and returns.
+	3. A graphical dialog is created to allow the user to edit the
+parameter values. It is initialised with the values given by the
+suggests() function.
+	4. The user changes the parameter values as they wish, an upon
+pressing "OK" the apply() function is called with these adjusted
+parameter values.
+
+Another useful means of handling suggest() is to remember the
+parameter values set by the last invocation of this proc. This can
+simply be done by keeping these values in static variables within the
+plugin file.
+
+typedef struct _sw_proc sw_proc;
+
+struct _sw_proc {
+  gchar * name;
+  gchar * desc;
+  gchar * author;
+  gchar * copyright;
+  gchar * url;
+
+  gchar * category;
+  guint accel_key;
+  GdkModifierType accel_mods;
+
+  gint nr_params;
+  sw_param_spec * param_specs;
+
+  /* proc_suggest sets suggested values for the members of pset,
+   * possibly using the sample.
+   *
+   * It is assumed that proc_suggest() knows nr_params because
+   * it is part of the whole proc's code.
+   *
+   * If nr_params is 0 then this function will not be called.
+   * If this function is NULL then default values (zero,FALSE,"")
+   * will be used.
+   */
+  void (*suggest) (sw_sample * sample, sw_param_set pset,
+		   gpointer custom_data);
+
+  /* This is the function that actually does the work!
+   *
+   * proc_apply applies the parameter set pset to a sample
+   *
+   * It is assumed that this "apply" function knows nr_params,
+   * because it is part of this whole proc's code.
+   *
+   * If nr_params is 0 then this function will be passed a NULL pset.
+   */
+  sw_op_instance * (*apply) (sw_sample * sample,
+			     sw_param_set pset, gpointer custom_data);
+
+  /* custom data to pass to the suggest and apply functions */
+  gpointer custom_data;
+};
+
+
+2.8 Writing a selection modifier
+--------------------------------
+
+A selection modifier is an operation which only affects the sels
+member of a sample's sounddata. The undo and redo methods which are
+registered for a selection modifier do not attempt to retain any
+information about any other portion of the sample -- they are
+optimised to only retain information about changes in the selection.
+
+To create a selection modifier, you must provide a function of the
+form SweepModify, as defined in <sweep/sweep_types.h>:
+
+typedef void (*SweepModify) (sw_sample * sample, sw_param_set pset,
+                             gpointer custom_data);
+
+This function is expected to modify only the selection data, ie.
+sample->sounddata->sels. Note that this data may also be accessed by
+the playback thread, so it is protected by a mutex. You must surround
+any modifications to the sels member of a sounddata object with
+calls to sounddata_lock_selection() and sounddata_unlock_selection(),
+as defined in <sweep/sweep_selection.h>.
+
+To perform the selection modification, call the following function
+(also defined in <sweep/sweep_selection.h>):
+
+sw_op_instance *
+perform_selection_op (sw_sample * s, char * desc, SweepModify func,
+                      sw_param_set pset, gpointer custom_data);
+
+The first argument is the sample to modify, the second is some
+short descriptive text for the operation, 'func' is the SweepModify
+function, and pset and custom_data are those provided by the proc.
+
+see eg. plugins/byenergy/byenergy.c for an example of a Selection
+plugin.
+
+
+2.9 Writing an audio filter
+---------------------------
+<sweep/sweep_filter.h>
+
+Two convenience routines exist for creating plugins which only modify
+audio data. Note that where possible it is preferable to use the
+LADSPA API instead for developing such plugins. See Appendix A for
+more information about building LADSPA plugins for use with Sweep.
+
+Filter plugins must only modify the audio data corresponding to
+selected regions of a sample. The functions provided to perform filter
+operations remember only information in the selected regions for the
+purposes of undoing and redoing. Thus any modifications done outside the
+selected regions will be lost after an undo.
+
+As the selection information consists of a linked list of selected
+regions (see section 2.3) it is necessary for a filter plugin to
+somehow iterate over the selection and operate only on these regions.
+The SweepFilterRegion mechanism handles this iteration for you,
+whereas the SweepFilter mechanism allows for more general filters for
+which you must provide the iteration over the selection regions.
+
+2.9.1 SweepFilterRegion
+-----------------------
+
+To make use of the SweepFilterRegion mechanism define a function of
+type SweepFilterRegion, which has the following prototype:
+
+typedef void (*SweepFilterRegion) (gpointer data, sw_format * format,
+				   sw_framecount_t nr_frames,
+				   sw_param_set pset, gpointer custom_data);
+
+A SweepFilterRegion function takes a pointer 'data' to a block of
+audio data, an (sw_format *) describing the format of the data, and a
+count of the number of frames to process from that point onwards. It
+also accepts a parameter set and some custom data.
+
+To perform a FilterRegion operation, use the following function:
+
+sw_op_instance *
+perform_filter_region_op (sw_sample * sample, char * desc,
+                          SweepFilterRegion func, sw_param_set pset,
+                          gpointer custom_data);
+
+see eg. plugins/reverse/reverse.c for an example of a FilterRegion
+
+The LADSPA meta-plugin is implemented as a FilterRegion.
+
+2.9.2 SweepFilter
+-----------------
+
+If the processing involved cannot be done independently for each
+selection region, it is necessary to use a SweepFilter function. Note
+that the plugin must then perform the iteration over the selection
+regions itself. These functions have the following prototype:
+
+typedef sw_sounddata * (*SweepFilter) (sw_sounddata * sounddata,
+				       sw_param_set pset,
+				       gpointer custom_data);
+
+To perform a Filter operation, use the following function:
+
+sw_op_instance *
+perform_filter_op (sw_sample * sample, char * desc, SweepFilter func,
+		   sw_param_set pset, gpointer custom_data);
+
+For example, the Normalise plugin (plugins/normalise/normalise.c) is
+implemened as a Filter. This is necessary because it must first find
+the greatest data value in any of the selected regions, and then in
+a second pass amplify each region by an amount calculated.
+
+
+2.10 Creating Plugin Shared Libraries
+-------------------------------------
+<sweep/sweep_types.h>
+
+The usual way to make a proc available for use with Sweep is to build
+it into a shared library file. When building a shared library to
+contain one or more procs you must define a structure of type
+sw_plugin with the name "plugin". This is the only name that should be
+exposed in the library's symbol table; declare all other functions and
+global variables as static. If multiple procedures share common code
+or data then place them in the same plugin library. A plugin must not rely
+on any other particular plugin being loaded.
+
+typedef struct _sw_plugin sw_plugin;
+
+struct _sw_plugin {
+  /* plugin_init () returns a list of procs */
+  GList * (*plugin_init) (void);
+
+  /* plugin_cleanup() frees the plugin's private data structures */
+  void (*plugin_cleanup) (void);
+};
+
+An sw_plugin structure contains two members, a plugin_init function
+that takes no arguments and returns a list of procs, and a void
+plugin_cleanup function.
+
+The initialisation is performed through a function call and can
+instantiate an indeterminate number of procs. This allows the creation
+of plugins which may not necessarily know when built how many procs
+they will create; for example, the LADSPA meta plugin dynamically
+creates a proc corresponding to every LADSPA function it can find in
+all the LADSPA plugins it can find.
+
+In the usual case where the procs are known at build time (ie. they
+consist of functions within the plugin library) the plugin_init
+function can simply construct a GList out of these known procs, each
+of which can be statically defined. This list is constructed using
+g_list_append(); see <glib.h> for more information on using GLists.
+
+
+2.11 Building plugins within the sweep source tree
+-------------------------------------------------
+
+Have a look at plugins/example/
+
+Makefile.am:
+
+## Process this file with automake to produce Makefile.in
+
+INCLUDES = \
+	-I$(top_srcdir)/intl \
+	-I$(top_srcdir)/src
+
+libdir = @PACKAGE_PLUGIN_DIR@
+
+lib_LTLIBRARIES = \
+	libexample.la
+
+libexample_la_SOURCES = example.c
+libexample_la_LDFLAGS = -version-info 1:0:0
+
+The version info (1:0:0 in the example above) should consist of
+the numbers SWEEP_PLUGIN_API_MAJOR, SWEEP_PLUGIN_API_MINOR and
+SWEEP_PLUGIN_API_REVISION listed in <sweep/sweep_version.h>, colon
+separated. Copy the numbers in manually, do not attempt to generate
+them from the values defined. These numbers should only be changed
+when your plugin code changes to use features only available in
+newer versions of the plugin API.
+
+Note that the plugin API is maintained independently of the
+application version. See section 3.2 for more information on API
+versioning.
+
+
+3. Advanced topics
+==================
+
+This section explains in depth some topics which are not usually required
+by plugin writers. This includes the creation of new types of operation
+and undo/redo mechanisms, a detailed discussion of the versioning system
+employed, and information on setting up a standalone build environment
+for a plugin package.
+
+3.1 Sweep "Operations", Handling Undo and Redo
+----------------------------------------------
+
+Sweep maintains a stack of recent operations for each sample, which
+are used to allow undoing and redoing of all operations. If you write
+a new operation method then you must implement Undo and Redo methods
+for it. On the other hand if you are using one of the mechanisms
+covered in Sections 2.7 and 2.8 these things are taken care of by the
+perform_* functions.
+
+The datatypes used are defined in <sweep/sweep_types.h> as follows:
+
+typedef void (*SweepFunction) (gpointer data);
+typedef void (*SweepCallback) (sw_sample * sample, gpointer data);
+
+typedef struct _sw_operation sw_operation;
+typedef struct _sw_op_instance sw_op_instance;
+
+struct _sw_operation {
+  SweepCallback undo;
+  SweepFunction purge_undo;
+  SweepCallback redo;
+  SweepFunction purge_redo;
+};
+
+struct _sw_op_instance {
+  char * description;
+  sw_operation * op;
+  gpointer undo_data;
+  gpointer redo_data;
+};
+
+Once an operation has been successfully performed, it needs to
+register itself with Sweep's undo handler. This involves:
+
+	1. Finding or constructing an sw_operation structure. These are
+often statically defined.
+	2. Creating an sw_op_instance structure. This contains a
+description of the operation performed, a pointer to the sw_operation,
+and pointers to data for use in undoing and redoing the operation
+performed.
+	3. Calling register_operation() to add the sw_op_instance to
+the sample's stack of operations.
+
+The apply() method of a proc usually does these things, does its actual
+work, registers the operation then returns the sw_op_instance created.
+
+An operation given by (sw_op_instance * inst) is undone by calling
+
+	inst->op->undo (sample, inst->undo_data);
+
+and redone by calling
+
+	inst->op->redo (sample, inst->redo_data);
+
+When an operation instance can be discarded (eg. if only a finite number
+of recent operations are remembered), the undo_data and redo_data
+members are purged by calling
+
+	inst->op->purge_undo (inst->undo_data);
+	inst->op->purge_redo (inst->redo_data);
+
+Thus, if any memory was allocated to create undo_data or redo_data it
+should be freed in the purge functions.
+
+Some stock undo and redo methods exist for handling operations which
+need to paste new data over the selected region, or which need to splice
+data into the sample. These are outlined in <sweep/sweep_undo.h>. For
+examples of their use, see "src/edit.c" in the Sweep application source.
+
+3.2 Versioning
+--------------
+<sweep/sweep_version.h>
+
+Sweep's plugin API is strictly versioned. Note that the plugin API's
+versions are maintained completely independently of the application
+version. You can find out the application and plugin API versions of
+your installed copy of Sweep by issuing the command "sweep --version".
+
+Versioning of the plugin API tracks the interface provided by
+Sweep. This is done because the application is actively linking itself
+against the plugin libraries, and must look for plugins which
+implement versions it understands.
+
+Versions are given in the form Major.Minor.Revision (M.m.R). The API
+version implemented by a particular release of Sweep is defined in
+<sweep/sweep_version.h> by the values SWEEP_PLUGIN_API_MAJOR,
+SWEEP_PLUGIN_API_MINOR and SWEEP_PLUGIN_API_REVISION.
+
+Note: in the following description, a "public data structure" is one
+defined in any of the headers included by <sweep/sweep.h>, and a
+"public function" is any function declared in any of the headers
+included by <sweep/sweep.h>. An "interface" is anything that is either
+a public data structure or a public function.
+
+The version information is only ever updated upon a release of
+Sweep. Interfaces defined in the code available through CVS between
+releases are subject to change.
+
+The version information V = M.m.R is updated to V' as follows:
+
+	1. If any interfaces have been removed or modified by a
+release (ie. backwards compatability has been broken) then the Major
+number is incremented and Minor and Revision are set to 0. (V' = M+1.0.0)
+
+	2. Otherwise, if any interfaces have been added since the last
+release the Minor number is incremented and Revision is set to 0.
+(V' = M.m+1.0)
+
+	3. Otherwise, if the application code has changed at all since
+the last release the Revision is incremented. (V' = M.m.R+1)
+
+A plugin library 'plugin' must be built with a name of the form
+
+	libplugin.so.M.m.R
+
+where M, m, and R correspond to the Major, Minor and Revision provided
+by the particular version of sweep you are developing against, or an
+earlier Minor and Revision which are known to work. The current behaviour
+of sweep is to attempt to load all plugins with a Major number it
+understands, and fail silently if the plugin makes use of interfaces
+added in subsequent Minor API versions. Thus it is not absolutely necessary
+to find the earliest API version which will work with your plugin.
+
+Additionally, symlinks should be created for the plugin as follows:
+
+	libplugin.so -> libplugin.so.M
+	libplugin.so.M -> libplugin.so.M.m
+	libplugin.so.M.m -> libplugin.so.M.m.R
+
+These symlinks are created automatically when using libtool to build
+plugin libraries by including the line
+
+libplugin_la_LDFLAGS = -version-info M:m:R
+
+in the Makefile.am within the plugin's build directory (if using automake,
+or the flag "-version-info M:m:R" needs to be otherwise passed to libtool).
+Note that this flag contains colons, not dots.
+
+
+3.3 Setting up a standalone build environment
+---------------------------------------------
+
+find the sweep include dir ($(prefix)/include/sweep)
+
+install into the sweep plugin dir ($(prefix)/lib/sweep)
+
+
+Appendix A. Building LADSPA plugins for use with Sweep
+======================================================
+
+If you intend to create a plugin which only modifies audio data (such
+as an effects plugin), it is recommended that you use the LADSPA API
+[1] if possible. This ensures that the plugin you create is usable by
+a wide variety of free audio programs, rather than only being usable
+by Sweep.
+
+If writing a LADSPA plugin please write a mono filter unless there is
+some kind of algorithmic interaction between the channels such as
+panning. Sweep, and most other LADSPA hosts, use multiple instances or
+invocations of the LADSPA plugins as required so that any number of
+channels can be catered for with a mono plugin.
+
+In fact Sweep will quite happily use a stereo LADSPA filter on a mono
+sample (it will generate an empty second channel and ignore its
+output) but it is inefficient to rely on this behaviour.
+
+To clarify: LADSPA defines a standardised interface for audio plugins.
+When creating LADSPA plugins, do not reference any data structures
+used internally by Sweep. You do not provide any undo or redo methods;
+Sweep will construct these as required when performing an operation
+from a LADSPA plugin.
+
+
+Acknowledgements
+================
+
+This API was constructed after careful studying of plugin APIs from
+many other free software projects, including SANE, the Gimp, LADSPA,
+and xmms.
+
+References
+==========
+
+[1] Linux Audio Developer's Simple Plugin API
+http://www.ladspa.org/
+
+[2] GLib Reference Manual
+http://developer.gnome.org/doc/API/glib/index.html
