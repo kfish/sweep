@@ -201,7 +201,7 @@ if test "x$HAVE_OGG" = xyes && test "x${ac_enable_oggvorbis}" != xno ; then
 
   XIPH_PATH_VORBIS(HAVE_VORBIS="yes", HAVE_VORBIS="no")
 
-  dnl This fails for me, so lets try some explicit checks
+  dnl Fall back to explicit checks if this fails
   if test "x$HAVE_VORBIS" = xno ; then
     AC_MSG_RESULT([
 *** Trying explicit detection of Ogg Vorbis libraries and headers ...])
@@ -271,11 +271,23 @@ dnl LIBS="$LIBS -lm -logg -lspeex"
 
 if test "x$HAVE_OGG" = xyes && test "x${ac_enable_speex}" != xno ; then
 
-  AC_CHECK_LIB(speex, speex_encoder_init, HAVE_SPEEX="maybe", , [-lm -logg])
-  if test "x$HAVE_SPEEX" = xmaybe; then
-    AC_CHECK_HEADER(speex.h, HAVE_SPEEX="yes", HAVE_SPEEX="no")
+  XIPH_PATH_SPEEX(HAVE_SPEEX="yes", HAVE_SPEEX="no")
+
+  dnl Fall back to explicit checks if this fails
+  if test "x$HAVE_SPEEX" = xno ; then
+    AC_CHECK_LIB(speex, speex_encoder_init, HAVE_SPEEX="maybe", , [-lm -logg])
+    if test "x$HAVE_SPEEX" = xmaybe; then
+      AC_CHECK_HEADER(speex.h, HAVE_SPEEX="yes",
+        [AC_CHECK_HEADER([speex/speex.h], HAVE_SPEEX="yes", HAVE_SPEEX="no")]
+      )
+    fi
   fi
+
   if test "x$HAVE_SPEEX" = xyes ; then
+    AC_CHECK_HEADER([speex/speex.h],
+                    AC_DEFINE(HAVE_SPEEX_SUBDIR, [1], [Define to 1 if speex headers are eg. <speex/speex.h>])
+    )
+
     AC_DEFINE(HAVE_SPEEX)
     SPEEX_LIBS="-lspeex -lm"
     AC_SUBST(SPEEX_LIBS)

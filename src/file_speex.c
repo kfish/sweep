@@ -70,10 +70,17 @@
 #include <ctype.h>
 
 #include <ogg/ogg.h>
+#ifdef HAVE_SPEEX_SUBDIR
+#include <speex/speex.h>
+#include <speex/speex_header.h>
+#include <speex/speex_stereo.h>
+#include <speex/speex_callbacks.h>
+#else
 #include <speex.h>
 #include <speex_header.h>
 #include <speex_stereo.h>
 #include <speex_callbacks.h>
+#endif
 
 #define BUFFER_LEN 1024
 
