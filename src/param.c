@@ -471,7 +471,7 @@ create_param_set_vbox (sw_ps_adjuster * ps)
 	if (valid & SW_RANGE_STEP_VALID) {                                 \
 	  step_inc = (gfloat) pspec->constraint.range->step.##T##;         \
 	} else {                                                           \
-	  step_inc = (gfloat) 1.0;                                         \
+	  step_inc = (gfloat) 0.01;                                        \
 	}                                                                  \
 	page_inc = step_inc;                                               \
 	page_size = step_inc;                                              \
