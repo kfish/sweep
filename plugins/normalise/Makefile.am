@@ -12,4 +12,4 @@ lib_LTLIBRARIES = \
 	libnormalise.la
 
 libnormalise_la_SOURCES = normalise.c
-
+libnormalise_la_LDFLAGS = -version-info 1:0:0

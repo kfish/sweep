@@ -12,4 +12,4 @@ lib_LTLIBRARIES = \
 	libladspameta.la
 
 libladspameta_la_SOURCES = ladspameta.c ladspa.h
-
+libladspameta_la_LDFLAGS = -version-info 1:0:0

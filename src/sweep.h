@@ -21,6 +21,8 @@
 #ifndef __SWEEP_H__
 #define __SWEEP_H__
 
+#include <sweep/sweep_version.h>
+
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_typeconvert.h>
 #include <sweep/sweep_undo.h>

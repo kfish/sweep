@@ -23,6 +23,7 @@
 #  include <config.h>
 #endif
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -31,6 +32,7 @@
 #include <glib.h>
 #include <gmodule.h>
 
+#include "sweep_version.h"
 #include "sweep_types.h"
 
 
@@ -78,44 +80,32 @@ init_static_plugins (void)
 static char *
 stripname (char * d_name)
 {
-  int len;
+  int len, blen;
+#define BUF_LEN 8
+  char buf[BUF_LEN];
 
   if (strncmp (d_name, "lib", 3)) return 0;
 
   len = strlen (d_name);
-  if (strncmp (&d_name[len-3], ".so", 3)) return 0;
+  snprintf (buf, BUF_LEN, ".so.%d", SWEEP_PLUGIN_MAJOR);
+  blen = strlen (buf);
+  if (strncmp (&d_name[len-blen], buf, blen)) return 0;
 
-  d_name[len-3] = '\0';
+  d_name[len-blen] = '\0';
 
   return &d_name[3];
 }
 
-/* Initialise dynamically linked plugins */
 static void
-init_dynamic_plugins (void)
+init_dynamic_plugins_dir (gchar * dirname)
 {
   DIR * dir;
   struct dirent * dirent;
   char * name;
 
-  dir = opendir (PACKAGE_PLUGIN_DIR);
+  dir = opendir (dirname);
   if (!dir) {
-#if 0
-    switch (errno) {
-    case EACESS:
-      /* Permission denied */
-    case ENFILE:
-      /* Too many file descriptors in use by process. */
-      /* Too many files are currently open in the system */
-    case ENOENT:
-      /* Directory  does  not  exist */
-    case ENOMEM:
-      /* Insufficient memory to complete the operation. */
-    case ENOTDIR:
-      /* not a directory */
-    default:
-    }
-#endif 
+    /* fail silently */
     return;
   }
 
@@ -124,6 +114,13 @@ init_dynamic_plugins (void)
       sweep_plugin_init (name);
     }
   }
+}
+
+/* Initialise dynamically linked plugins */
+static void
+init_dynamic_plugins (void)
+{
+  init_dynamic_plugins_dir (PACKAGE_PLUGIN_DIR);
 }
 
 void

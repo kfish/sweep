@@ -12,4 +12,4 @@ lib_LTLIBRARIES = \
 	libreverse.la
 
 libreverse_la_SOURCES = reverse.c
-
+libreverse_la_LDFLAGS = -version-info 1:0:0

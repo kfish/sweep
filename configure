@@ -4425,9 +4425,9 @@ EOF
 fi
 
 if test "x${prefix}" = "xNONE"; then
-  PACKAGE_PLUGIN_DIR="${ac_default_prefix}/lib/${PACKAGE}/${VERSION}"
+  PACKAGE_PLUGIN_DIR="${ac_default_prefix}/lib/${PACKAGE}"
 else
-  PACKAGE_PLUGIN_DIR="${prefix}/lib/${PACKAGE}/${VERSION}"
+  PACKAGE_PLUGIN_DIR="${prefix}/lib/${PACKAGE}"
 fi
 cat >> confdefs.h <<EOF
 #define PACKAGE_PLUGIN_DIR "${PACKAGE_PLUGIN_DIR}"

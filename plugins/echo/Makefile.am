@@ -12,4 +12,4 @@ lib_LTLIBRARIES = \
 	libecho.la
 
 libecho_la_SOURCES = echo.c
-
+libecho_la_LDFLAGS = -version-info 1:0:0
