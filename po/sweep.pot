@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-10-07 23:25+1100\n"
+"POT-Creation-Date: 2000-10-08 13:17+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,90 +303,90 @@ msgstr ""
 msgid "Stereo"
 msgstr ""
 
-#: plugins/echo/echo.c:54
+#: plugins/echo/echo.c:53
 msgid "Delay"
 msgstr ""
 
-#: plugins/echo/echo.c:55
+#: plugins/echo/echo.c:54
 msgid "Time to delay by"
 msgstr ""
 
-#: plugins/echo/echo.c:62
+#: plugins/echo/echo.c:61
 msgid "Gain"
 msgstr ""
 
-#: plugins/echo/echo.c:63
+#: plugins/echo/echo.c:62
 msgid "Gain with which to mix in delayed signal"
 msgstr ""
 
-#: plugins/echo/echo.c:108 plugins/echo/echo.c:114
+#: plugins/echo/echo.c:107 plugins/echo/echo.c:113
 msgid "Echo"
 msgstr ""
 
-#: plugins/echo/echo.c:115
+#: plugins/echo/echo.c:114
 msgid "Apply an echo to selected regions of a sample"
 msgstr ""
 
-#: plugins/normalise/normalise.c:73 plugins/normalise/normalise.c:78
+#: plugins/normalise/normalise.c:72 plugins/normalise/normalise.c:77
 msgid "Normalise"
 msgstr ""
 
-#: plugins/normalise/normalise.c:79
+#: plugins/normalise/normalise.c:78
 msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
 msgstr ""
 
-#: plugins/reverse/reverse.c:58 plugins/reverse/reverse.c:64
+#: plugins/reverse/reverse.c:57 plugins/reverse/reverse.c:63
 msgid "Reverse"
 msgstr ""
 
-#: plugins/reverse/reverse.c:65
+#: plugins/reverse/reverse.c:64
 msgid "Reverse selected regions of a sample"
 msgstr ""
 
-#: plugins/example/example.c:39 plugins/example/example.c:88
+#: plugins/example/example.c:37 plugins/example/example.c:86
 msgid "With a fork"
 msgstr ""
 
-#: plugins/example/example.c:40
+#: plugins/example/example.c:38
 msgid "With a spoon"
 msgstr ""
 
-#: plugins/example/example.c:41
+#: plugins/example/example.c:39
 msgid "With false teeth"
 msgstr ""
 
-#: plugins/example/example.c:42
+#: plugins/example/example.c:40
 msgid "With Nigel's bum"
 msgstr ""
 
-#: plugins/example/example.c:58
+#: plugins/example/example.c:56
 msgid "Flim"
 msgstr ""
 
-#: plugins/example/example.c:59
+#: plugins/example/example.c:57
 msgid "Should you manage your flim?"
 msgstr ""
 
-#: plugins/example/example.c:66
+#: plugins/example/example.c:64
 msgid "Beans"
 msgstr ""
 
-#: plugins/example/example.c:67
+#: plugins/example/example.c:65
 msgid "Method of eating beans"
 msgstr ""
 
-#: plugins/example/example.c:74
+#: plugins/example/example.c:72
 msgid "Pants methodology"
 msgstr ""
 
-#: plugins/example/example.c:75
+#: plugins/example/example.c:73
 msgid "How many pants should you wear per day?"
 msgstr ""
 
-#: plugins/example/example.c:124 plugins/example/example.c:131
+#: plugins/example/example.c:122 plugins/example/example.c:129
 msgid "Example Filter Region"
 msgstr ""
 
-#: plugins/example/example.c:132
+#: plugins/example/example.c:130
 msgid "An example filter region plugin"
 msgstr ""
