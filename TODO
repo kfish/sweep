@@ -2,6 +2,8 @@ This is an unstructured list of TODO items for Sweep. For up-to-date
 information, mail sweep-devel@lists.sourceforge.net
 
 	* JACK support
+	* FLAC support
+	* GTK2 port
 	* caching of undo data on disk
 	* sample bank management
 	* markers
