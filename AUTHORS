@@ -19,6 +19,9 @@ Paul Barton=Davis <pbd@op.net>
 Nicolas Léveillé <nicolas.leveille@free.fr>
 	fixes to file load/save dialogs
 
+Steve Harris <steve@totl.net>
+        added Normal (1:4096) and 1:1 zoom modes
+
 
 Borrowed Code
 =============
