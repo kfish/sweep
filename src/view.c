@@ -1820,6 +1820,8 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   GList * zoom_combo_items;
   GtkWidget * zoom_combo;
 
+  gfloat step = 1.0;
+
   view = g_malloc0 (sizeof(sw_view));
 
   view->sample = sample;
@@ -2379,11 +2381,14 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 		      GTK_SIGNAL_FUNC(view_rate_zeroed_cb), view);
 
   /* scrollbar */
+  step = ((gfloat)(end - start)) / 10.0;
+  if (step < 1.0) step = 1.0;
+
   view->adj =
     gtk_adjustment_new((gfloat)start,            /* value */
 		       (gfloat)0.0,              /* start */
 		       (gfloat)sample->sounddata->nr_frames, /* end */
-		       1.0,                      /* step_incr */
+		       step,                      /* step_incr */
 		       (gfloat)(end-start),      /* page_incr */
 		       (gfloat)(end-start)       /* page_size */
 		       );
@@ -2882,6 +2887,7 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
   sw_time_t length;
 #define BUF_LEN 16
   gchar buf[BUF_LEN];
+  gfloat step;
 
   /* Clamp view to within bounds of sample */
   orig_length = end - start;
@@ -2908,7 +2914,11 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
   if (start == view->start && end == view->end) return;
 
   /* Update main scrollbar */
+  step = ((gfloat)(end - start)) / 10.0;
+  if (step < 1.0) step = 1.0;
+
   adj->value = (gfloat)start;
+  adj->step_increment = step;
   adj->page_increment = (gfloat)(end - start);
   adj->page_size = (gfloat)(end - start);
 
