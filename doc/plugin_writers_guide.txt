@@ -29,7 +29,7 @@ a graphical dialog window for setting these parameters.
 
 This document explains the programming interface for writing native Sweep
 plugins and how to set up a build environment for your plugin code either
-within Sweep or as a standalone package.
+within Sweep.
 
 
 2. Getting started
@@ -233,6 +233,9 @@ struct _sw_param_spec {
   sw_hints hints;
 };
 
+Please remember to mark the name and description fields for
+translation.
+
 
 2.7.1 Constraints
 -----------------
@@ -295,21 +298,12 @@ interpreted as a valid filename on the user's system.
 --------------
 <sweep/sweep_types.h>
 
-A proc object ties together all the aspects of a particular plugin
-procedure, including some textual data, the specifications for
-parameters, and the actual C function to call to do the work required.
+A procedure object ties together all the aspects of a particular
+operation, including some textual data, the specifications for
+parameters, and functions to suggest useful parameters and to do the
+work required.
 
-Procs must provide a suggest() and an apply() function. The
-(sw_op_instance *) returned by the apply() function is described in
-section 3.1.
-
-These functions have the same prototype (sample, parameter set, custom
-data).  The first argument is the sample which is being edited. The
-second is the parameter set object to use, and the third is some
-custom data provided by the proc.
-
-The suggest() function is used to set some meaningful parameter
-values. When the user calls a function, the following occurs:
+When the user initiates a procedure, the following occurs:
 
 	1. A new, empty, parameter set is created large enough to hold
 the parameters required for this proc
@@ -321,14 +315,11 @@ values in the parameter set and returns.
 	3. A graphical dialog is created to allow the user to edit the
 parameter values. It is initialised with the values given by the
 suggests() function.
-	4. The user changes the parameter values as they wish, an upon
+	4. The user changes the parameter values as they wish, and upon
 pressing "OK" the apply() function is called with these adjusted
 parameter values.
 
-Another useful means of handling suggest() is to remember the
-parameter values set by the last invocation of this proc. This can
-simply be done by keeping these values in static variables within the
-plugin file.
+The sw_procedure object has the following structure:
 
 
 typedef struct _sw_procedure sw_procedure;
@@ -371,6 +362,57 @@ struct _sw_procedure {
   /* custom data to pass to the suggest and apply functions */
   gpointer custom_data;
 };
+
+
+The name field should be a short descriptive name, as appropriate for
+labelling the menu item to invoke this procedure from Sweep. The
+description should be some somewhat longer ASCII text describing what
+this procedure does. Please remember to mark the name and description
+fields for translation.
+
+The author field should be a comma separated list of names of authors
+of this procedure, each optionally providing an email address in angle
+brackets. The copyright field should be a string such as "Copyright
+(C) 2000 Joe Blow". The url field can optionally give the URL of a web
+page describing the procedure in more detail.
+
+The identifier field should be a string which will uniquely identify
+this plugin. You may choose to put identifying information here such
+as your name, a suggested categorisation for the procedure, or the
+name of your favourite vegetable.
+
+The accel_key and accel_mods fields list keybindings to initiate this
+procedure. The values of their types are defined in <gdk/gdkkeysyms.h>.
+
+The nr_params field gives the number of parameters this procedure
+takes.  You must point the param_specs field to an array of nr_params
+sw_param_spec objects as defined in section 2.7.
+
+Procedures must provide a suggest() and an apply() function. These
+functions take the same arguments (sample, parameter set, custom
+data).  The first argument is the sample which is being edited. The
+second is the parameter set object to use, and the third is some
+custom data provided by the proc.
+
+The suggest() function is used to set some meaningful parameter
+values. The apply() function does the actual work of the procedure.
+
+A useful means of handling suggest() is to remember the parameter
+values set by the last invocation of this procedure. This can simply
+be done by keeping these values in static global variables within the
+plugin file.
+
+The (sw_op_instance *) returned by the apply() function is described
+in section 3.1. However in the usual case of writing a selection
+modifier or audio filter, you do not need to understand the internals
+of an sw_op_instance.
+
+You may provide some custom_data to pass to the suggest() and apply()
+functions if required. This is often useful if many procedures share
+the same suggest() and apply() functions, as custom_data can then
+provide further information to these functions as to how they should
+actually operate. See the ladspameta plugin for an example of this use
+of custom_data.
 
 
 2.9 Writing a selection modifier
@@ -562,9 +604,8 @@ versioning.
 
 This section explains in depth some topics which are not usually required
 by plugin writers. This includes the creation of new types of operation
-and undo/redo mechanisms, a detailed discussion of the versioning system
-employed, and information on setting up a standalone build environment
-for a plugin package.
+and undo/redo mechanisms and a detailed discussion of the versioning system
+employed.
 
 
 3.1 Sweep "Operations", Handling Undo and Redo
@@ -708,14 +749,6 @@ or the flag "-version-info M:m:R" needs to be otherwise passed to libtool).
 Note that this flag contains colons, not dots.
 
 
-3.3 Setting up a standalone build environment
----------------------------------------------
-
-Find the sweep include dir ($(prefix)/include/sweep)
-
-Install into the sweep plugin dir ($(prefix)/lib/sweep)
-
-
 Appendix A. Keeping in touch with Sweep development
 ===================================================
 
@@ -729,7 +762,7 @@ http://sourceforge.net/projects/sweep/
 If you have any questions or comments about Sweep please send them to
 the sweep-devel mailing list <sweep-devel@lists.sourceforge.net>.
 
-If in doubt, contact the author: Conrad Parker <conrad@vergenet.net>
+If in doubt, contact the main author: Conrad Parker <conrad@vergenet.net>
 
 
 Appendix B. Building LADSPA plugins for use with Sweep
