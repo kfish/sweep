@@ -181,10 +181,19 @@ sample_save (sw_sample * s, char * directory, char * filename)
   sw_format * f = s->sdata->format;
   char pathname [SW_DIR_LEN];
 
+  /* Length in frames of temporary loading buffer */
+#define SAVE_BUFFER_LEN 512
+  gpointer save_buffer;
+  gint buffer_frames; /* nr of frames in the saving buffer */
+  gpointer copydata;
+  gint i;
+
 #ifdef HAVE_LIBAUDIOFILE
   AFfilehandle outputFile;
   AFfilesetup outputSetup;
+  AFframecount framecount;
   int file_format;
+  int channelcount, samplewidth=16;
 
   if (!s) return -1;
   if (!filename) return -1;
@@ -212,7 +221,28 @@ sample_save (sw_sample * s, char * directory, char * filename)
   afSetVirtualByteOrder(outputFile, AF_DEFAULT_TRACK,
 			AF_BYTEORDER_LITTLEENDIAN);
 
-  afWriteFrames(outputFile, AF_DEFAULT_TRACK, s->sdata->data, s->sdata->s_length);
+  copydata = s->sdata->data;
+
+  channelcount = s->sdata->format->f_channels;
+  save_buffer = g_malloc (SAVE_BUFFER_LEN * (samplewidth / 8) * channelcount);
+
+  framecount = s->sdata->s_length;
+  while (framecount > 0) {
+    buffer_frames = MIN(framecount, SAVE_BUFFER_LEN);
+
+    /* Convert to 16 bit samples */
+    for (i = 0; i < (buffer_frames * channelcount); i++) {
+      ((gint16 *)save_buffer)[i] =
+	(gint16)(((sw_audio_t *)copydata)[i] * 32768.0 / SW_AUDIO_T_MAX);
+    }
+    afWriteFrames(outputFile, AF_DEFAULT_TRACK, save_buffer, buffer_frames);
+
+    copydata += frames_to_bytes (s->sdata->format, buffer_frames);
+    framecount -= buffer_frames;
+  }
+
+  free (save_buffer);
+
   afCloseFile(outputFile);
 
   return 0;
