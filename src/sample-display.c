@@ -550,6 +550,13 @@ sample_display_draw_data (GdkDrawable *win,
   if (channels == 1) {
     sample_display_draw_data_channel (win, s, x, 0, width, sh, 0);
   } else if (channels == 2) {
+
+    gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
+					TRUE, GTK_STATE_NORMAL,
+					NULL,
+					x, (sh/2)-1,
+					width, 3);
+
     sample_display_draw_data_channel (win, s,
 				      x, 0,
 				      width, (sh/2)-1, 0);
@@ -557,11 +564,6 @@ sample_display_draw_data (GdkDrawable *win,
 				      x, sh-((sh/2)-1),
 				      width, (sh/2)-1, 1);
 
-    gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
-					TRUE, GTK_STATE_NORMAL,
-					NULL,
-					x, (sh/2)-1,
-					width, 2);
   }
 
 }

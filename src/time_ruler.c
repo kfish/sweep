@@ -1,29 +1,27 @@
 /*
  * Sweep, a sound wave editor.
  *
- * time_ruler, based on hruler in GTK+ 1.2.x
+ * time_ruler, modified from hruler in GTK+ 1.2.x
+ * by Conrad Parker 2000 for Sweep.
  *
- * Modified by Conrad Parker 2000 for Sweep.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 /*
  * GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
  */
 
 /*
@@ -45,7 +43,7 @@
 #define RULER_HEIGHT          14
 #define MINIMUM_INCR          5
 #define MAXIMUM_SUBDIVIDE     5
-#define MAXIMUM_SCALES        10
+#define MAXIMUM_SCALES        21
 
 #define ROUND(x) ((int) ((x) + 0.5))
 
@@ -100,25 +98,21 @@ time_ruler_class_init (TimeRulerClass *klass)
 }
 
 static sw_format default_format = { 1, 44100 };
-static GtkRulerMetric default_ruler_metric = {
-  "Seconds", "s", 1.0,
-  { 0.001, 0.01, 0.1, 1, 10, 30, 60, 300, 600, 3600 },
-  { 1, 2, 5, 10, 100 }
-};
+
+static gfloat ruler_scale[MAXIMUM_SCALES] =
+{ 0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 30, 60, 300, 600, 1800, 3600, 18000, 36000 };
+
+static gint subdivide[MAXIMUM_SUBDIVIDE] = { 1, 2, 5, 10, 100 };
 
 static void
 time_ruler_init (TimeRuler *time_ruler)
 {
   GtkWidget *widget;
-  GtkRulerMetric * metric;
 
   time_ruler->format = &default_format;
 
-  metric = g_malloc (sizeof(*metric));
-  memcpy (metric, &default_ruler_metric, sizeof(*metric));
-  metric->pixels_per_unit = (gfloat)time_to_frames (&default_format, 1.0);
-  
-  GTK_RULER(time_ruler)->metric = metric;
+  GTK_RULER(time_ruler)->metric->pixels_per_unit =
+    (gfloat)time_to_frames (&default_format, 1.0);
 
   widget = GTK_WIDGET (time_ruler);
   widget->requisition.width = widget->style->klass->xthickness * 2 + 1;
@@ -228,10 +222,11 @@ time_ruler_draw_ticks (GtkRuler *ruler)
    */
   scale = ceil (ruler->max_size / ruler->metric->pixels_per_unit);
   snprint_time (unit_str, UNIT_STR_LEN, (sw_framecount_t)scale);
-  text_width = strlen (unit_str) * digit_height + 1;
+  /*  text_width = strlen (unit_str) * digit_height + 1;*/
+  text_width = gdk_string_width (font, unit_str);
 
   for (scale = 0; scale < MAXIMUM_SCALES; scale++)
-    if (ruler->metric->ruler_scale[scale] * fabs(increment) > 2 * text_width)
+    if (ruler_scale[scale] * fabs(increment) > 2 * text_width)
       break;
 
   if (scale == MAXIMUM_SCALES)
@@ -241,8 +236,8 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   length = 0;
   for (i = MAXIMUM_SUBDIVIDE - 1; i >= 0; i--)
     {
-      subd_incr = (gfloat) ruler->metric->ruler_scale[scale] / 
-	          (gfloat) ruler->metric->subdivide[i];
+      subd_incr = (gfloat) ruler_scale[scale] / 
+	          (gfloat) subdivide[i];
       if (subd_incr * fabs(increment) <= MINIMUM_INCR) 
 	continue;
 

@@ -55,12 +55,17 @@ snprint_time (gchar * s, gint n, sw_time_t time)
 {
   int hrs, min;
   gfloat sec;
+  char * sign;
+
+  sign = (time < 0.0) ? "-" : "";
+
+  if (time < 0.0) time = -time;
 
   hrs = (int) (time/3600.0);
   min = (int) ((time - ((sw_time_t)hrs * 3600.0)) / 60.0);
   sec = time - ((sw_time_t)min * 60.0);
 
-  snprintf (s, n, "%d:%02d:%5.3f", hrs, min, sec);
+  snprintf (s, n, "%s%d:%02d:%5.3f", sign, hrs, min, sec);
 }
 
 
