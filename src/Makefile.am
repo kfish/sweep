@@ -9,8 +9,8 @@ INCLUDES = \
 bin_PROGRAMS = sweep
 
 sweep_SOURCES = \
-	sweep_version.h sweep_app.h \
-	main.c sweep_types.h \
+	sweep_app.h \
+	main.c \
 	about_dialog.c about_dialog.h \
 	file_dialogs.c file_dialogs.h \
 	file_ops.c file_ops.h \
