@@ -1,3 +1,19 @@
+Sun Oct  8 14:55:21 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* merged in new native plugin interface
+	* merged in ALSA 0.6.0 support from Paul Barton-Davis
+	* added ladspameta plugin for LADSPA support
+	* added byenergy plugin
+	* added Hungarian translation by Gergely Nagy
+	* added Italian translation by Yuri Bongiorno
+	* added German translation by Silvia Pfeiffer
+	* added plugin_writers_guide.txt in doc/
+	* set up include/ directory, moved sweep*.h header files to it
+	* changed colour scheme
+	* changed sweep.png desktop icon to match new colours
+	* many small changes since version 0.0.9
+	* released version 0.1.0
+
 Thu Oct 05 20:48.03 GMT+2 2000 Nicolas Léveillé  <knos@free.fr>
 
 	* src/file_dialogs.c: file selection now has a memory 
