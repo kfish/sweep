@@ -46,6 +46,8 @@
 
 #ifdef DRIVER_SOLARIS_AUDIO
 #include <sys/audioio.h>
+#include <stropts.h>
+#include <sys/conf.h>
 #define DEV_DSP "/dev/audio"
 #endif
 
@@ -307,6 +309,15 @@ reset_dev_dsp (void)
 static void
 flush_dev_dsp (void)
 {
+#ifdef DRIVER_SOLARIS_AUDIO
+  if (ioctl(dev_dsp, I_FLUSH, FLUSHW) == -1)
+    perror("I_FLUSH");
+#endif
+}
+
+static void
+drain_dev_dsp (void)
+{
 #ifdef DRIVER_OSS
   if(ioctl (dev_dsp, SNDCTL_DSP_POST) == -1) {
     perror ("OSS: POST error on " DEV_DSP);
@@ -358,7 +369,7 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
 {
   sw_sample * s = view->sample;
   fd_set fds;
-  ssize_t n;
+  ssize_t n = 0;
   sw_audio_t * d;
   gint16 pbuf[PBUF_SIZE];
   gint sbytes, channels;
@@ -415,11 +426,13 @@ play_view(sw_view * view, sw_framecount_t start, sw_framecount_t end, gfloat rel
       break;
     }
 
+    if (playing) {
 #if defined(DRIVER_OSS) || defined(DRIVER_SOLARIS_AUDIO)
-    n = write (dev_dsp, pbuf, i*sbytes);
+      n = write (dev_dsp, pbuf, i*sbytes);
 #elif defined(DRIVER_ALSA)
-    n = snd_pcm_write (pcm_handle, pbuf, PBUF_SIZE/channels);
+      n = snd_pcm_write (pcm_handle, pbuf, PBUF_SIZE/channels);
 #endif
+    }
 
     playoffset += (int)(n * relpitch / (sbytes * channels));
   }
@@ -434,7 +447,7 @@ pva (sw_view * view)
 
   play_view (view, 0, s->sounddata->nr_frames, 1.0);
 
-  flush_dev_dsp ();
+  drain_dev_dsp ();
 
   WAIT_FOR_PLAYING;
 
@@ -517,7 +530,7 @@ pvs (sw_view * view)
     gl = gl_next;
   }
   
-  flush_dev_dsp ();
+  drain_dev_dsp ();
 
   WAIT_FOR_PLAYING; 
 
@@ -608,7 +621,7 @@ pvap (pvap_data * p)
 
   play_view (p->view, 0, s->sounddata->nr_frames, p->pitch);
 
-  flush_dev_dsp ();
+  drain_dev_dsp ();
 
   WAIT_FOR_PLAYING;
 
@@ -646,6 +659,8 @@ stop_playback (void)
   stop_playmarker ();
 
   playing = NULL;
+
+  flush_dev_dsp ();
 
   pthread_join (player_thread, NULL);
 }
