@@ -1,5 +1,5 @@
 %define name    sweep
-%define version 0.1.0
+%define version 0.1.1
 %define release 1
 %define prefix  /usr
 

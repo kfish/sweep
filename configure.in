@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(sweep, 0.1.0)
+AM_INIT_AUTOMAKE(sweep, 0.1.1)
 AM_CONFIG_HEADER(include/sweep/config.h)
 
 AC_ISC_POSIX
@@ -95,8 +95,12 @@ fi
 
 dnl Set PACKAGE_PLUGIN_DIR in Makefiles and config.h.
 PACKAGE_PLUGIN_DIR=$libdir/sweep
-AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "${PACKAGE_PLUGIN_DIR}")
 AC_SUBST(PACKAGE_PLUGIN_DIR)
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "${ac_default_prefix}/lib/${PACKAGE}")
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "${prefix}/lib/${PACKAGE}")
+fi
 
 dnl Set PACKAGE_SOURCE_DIR in config.h.
 packagesrcdir=`cd $srcdir && pwd`
