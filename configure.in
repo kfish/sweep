@@ -521,19 +521,6 @@ if test "x$HAVE_VORBIS" != xyes ; then
 ])
 fi
 
-if test "x$HAVE_TDB" != xyes ; then
-  AC_MSG_RESULT([
-*** The Trivial Database library (tdb), available from
-*** http://www.sourceforge.net/projects/tdb/
-])
-fi
-if test "x$HAVE_TDB" = xmaybe ; then
-  AC_MSG_RESULT([
-      Development files missing: libtdb seems to be installed, but
-      the tdb.h header file could not be found.
-])
-fi
-
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
    test "x$HAVE_LIBSNDFILE1" = xmaybe || test "x$HAVE_TDB" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
