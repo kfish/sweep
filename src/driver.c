@@ -82,9 +82,6 @@ update_playmarker (gpointer data)
   sw_sample * s = (sw_sample *)data;
 
   if (s == playing) {
-
-    playoffset = playoffset + ((gfloat)s->sounddata->format->rate * 0.1);
-
     sample_set_playmarker (s, playoffset);
     return TRUE;
   } else {
