@@ -1,11 +1,16 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = tdb
+
 INCLUDES = \
 	-I$(top_srcdir)/intl \
 	-I$(top_srcdir)/include \
+	-Itdb \
 	@SNDFILE_CFLAGS@ \
 	@OGG_CFLAGS@ @VORBIS_CFLAGS@ \
 	@SAMPLERATE_CFLAGS@
+
+TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
 
 bin_PROGRAMS = sweep
 
@@ -60,7 +65,8 @@ sweep_SOURCES = \
 	view.c view.h \
 	view_pixmaps.h
 
-sweep_LDADD = @GTK_LIBS@ $(INTLLIBS) $(PTHREAD_LIBS) $(TDB_LIBS) \
+sweep_LDADD = $(TDB_LIBS) \
+	@GTK_LIBS@ $(INTLLIBS) $(PTHREAD_LIBS) \
 	$(SNDFILE_LIBS) \
 	$(OGG_LIBS) $(VORBIS_LIBS) $(VORBISFILE_LIBS) $(VORBISENC_LIBS) \
 	$(MAD_LIBS) $(SPEEX_LIBS) \

@@ -78,19 +78,6 @@ fi
 
 
 dnl
-dnl  Detect tdb library
-dnl
-
-HAVE_TDB=no
-AC_CHECK_LIB(tdb, tdb_open, HAVE_TDB="yes", sweep_config_ok="no")
-if test "x$HAVE_TDB" = xyes ; then
-  AC_CHECK_HEADERS(tdb.h, , [HAVE_TDB="maybe" sweep_config_ok="no"])
-  TDB_LIBS="-ltdb"
-  AC_SUBST(TDB_LIBS)
-fi
-
-
-dnl
 dnl  Detect libsndfile 1.0
 dnl
 
@@ -571,6 +558,7 @@ Makefile
 include/Makefile
 include/sweep/Makefile
 src/Makefile
+src/tdb/Makefile
 plugins/Makefile
 plugins/echo/Makefile
 plugins/normalise/Makefile
