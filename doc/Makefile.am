@@ -2,5 +2,5 @@
 
 man_MANS = sweep.1
 
-EXTRA_DIST = $(man_MANS)
+EXTRA_DIST = $(man_MANS) plugin_writers_guide.txt
 
