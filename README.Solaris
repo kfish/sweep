@@ -1,0 +1,21 @@
+Fri May 12 2000
+
+Solaris audio support was added in sweep version 0.0.9 by Mattias
+Engdegård <f91-men@nada.kth.se>. It is configured in automatically
+on such systems, ie. to build a Solaris binary do:
+
+	./configure
+	make
+
+as specified in the file INSTALL.
+
+Mattias writes:
+
+        You may want to note that I didn't spend any effort on
+        reducing the latency - the Solaris audio device has quite
+        a large buffer and no documented way to reduce it. Thus
+        it works, but may lag a couple of seconds sometimes. This
+        should be no problem in practice, but if someone is
+        displeased with the behaviour, I could outline a way to
+        solve it.
+

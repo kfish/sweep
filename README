@@ -1,0 +1,70 @@
+
+Sweep, a sound wave editor.
+
+Copyright (C) 2000 Conrad Parker
+
+
+Sweep is an editor for sound samples. It operates on files of various
+formats such as .wav, .aiff and .au, and has multiple undo/redo levels
+and filters. It is Free Software, available under the GNU General
+Public Licence. 
+
+Homepage
+--------
+
+Detailed information and new releases of Sweep can be found at:
+
+        http://sweep.sourceforge.net/
+
+Mailing Lists
+-------------
+
+There are two mailing lists related to sweep:
+
+sweep-announce. 
+        which contains only announcements about new releases of sweep.
+This is a moderated list. 
+
+sweep-devel. 
+        For general discussion about sweep and development related issues. 
+
+Archives of both lists are available on the World Wide Web via the
+Sweep homepage. You can also subscribe or unsubscribe via a web
+interface.
+
+For more information about using these lists or to subscribe or
+unsubscribe via an email interface, send a message with just the word
+`help' as subject or in the body, to:
+
+        sweep-announce-request@lists.sourceforge.net
+  or
+        sweep-devel-request@lists.sourceforge.net
+
+as appropriate.
+
+
+Licence
+-------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+USA.
+
+Contact
+-------
+
+If you have any further queries about Sweep, please contact the
+author:
+
+Conrad Parker <conrad@vergenet.net>

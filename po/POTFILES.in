@@ -1,0 +1,12 @@
+# List of source files containing translatable strings.
+
+src/main.c
+src/interface.c
+src/callbacks.c
+src/file_dialogs.c
+src/file_ops.c
+src/interface.c
+src/main.c
+src/sample-display.c
+src/sample.c
+src/view.c

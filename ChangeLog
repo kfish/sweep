@@ -1,0 +1,38 @@
+Thu May 11 22:49:08 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* merged in Solaris audio driver code from Mattias Engdegård
+	* added autoconf tests for OSS and Solaris detection
+	* renamed driver-oss.* to driver.*
+	* fixed buglet giving gtk assertion when starting playmarker
+	  after a device open had failed on a preceding playback.
+	* added RPM .spec file, created redhat RPM and SRPM packages.
+
+Wed May 10 23:31:01 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* added French translations by mathieu ROY
+	* changed to colourful button pixmaps by mathieu ROY
+
+Fri May  5 00:17:56 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* fixed bug in overrunning playback buffer in some situations
+	* corrected display of large samples
+	* limited zoom out to handle multiplication overflow
+	* added help menu and about dialog box
+
+Wed May  3 09:56:09 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* fixed bug in loading samples without complete pathname,
+	  tracked down by Mark Taylor
+
+Tue May  2 20:27:02 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* cleaned up layout of main sample views
+	* updated basic documentation (README, man page)
+
+Thu Apr 27 09:03:24 EST 2000 Conrad Parker <conrad@vergenet.net>
+
+	* fixed playmarker update bug when closing a sample
+	* added position indicator
+	* added button pixmaps to toolbox and play/stop buttons
+
+

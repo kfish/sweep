@@ -1,0 +1,47 @@
+Contributed code
+----------------
+
+Mattias Engdegård <f91-men@nada.kth.se>
+	Solaris audio driver, other cleanups
+
+
+Borrowed Code
+-------------
+
+Michael Krause <m.krause@tu-harburg.de>
+	Basic code for sample-display widget from soundtracker.
+
+Spencer Kimball and Peter Mattis
+	about_dialog.c adapted from the Gimp.
+
+
+Translations
+------------
+
+Mathieu Roy <yeupou@altern.org>
+	fr
+
+
+Artwork
+-------
+
+Mathieu Roy <yeupou@altern.org>
+	Colourful button pixmaps
+
+
+Package Maintainers
+-------------------
+
+Anand Kumria <akumria@debian.org>
+	Debian packages
+
+
+Miscellaneous
+-------------
+
+Sourceforge (http://www.sourceforge.net/)
+	Rocks.
+
+--
+Most other stuff by Conrad Parker <conrad@vergenet.net>.
+Let me know if I've missed anyone out.
