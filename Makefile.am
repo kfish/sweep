@@ -12,7 +12,7 @@ desktopdir = $(datadir)/gnome/apps/Multimedia
 pixmapdir = $(datadir)/pixmaps
 pixmap_DATA = sweep.png
 
-EXTRA_DIST = $(desktop_DATA) $(pkgdata_DATA)  $(pixmap_DATA) \
+EXTRA_DIST = config.rpath mkinstalldirs  $(desktop_DATA) $(pkgdata_DATA)  $(pixmap_DATA) \
              sweep.spec README.Solaris README.ALSA README.i18n acconfig.h TODO
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
