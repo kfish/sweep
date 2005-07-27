@@ -1612,7 +1612,7 @@ msgstr "libsamplerate anchoir"
 #: src/samplerate.c:234
 #, c-format
 msgid "Resample from %d Hz to %d Hz"
-msgstr "Resample zwischen %d Hz und #d Hz."
+msgstr "Resample zwischen %d Hz und %d Hz."
 
 #: src/samplerate.c:437
 msgid "Sweep: Resample"

@@ -7,13 +7,13 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: sweep-0.0.0\n"
 "POT-Creation-Date: 2004-04-30 15:33+1000\n"
 "PO-Revision-Date: 2002-07-11 17:58+1000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: joe bloggs <EMAIL@ADDRESS>\n"
+"Language-Team: English/Australia <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/main.c:89
