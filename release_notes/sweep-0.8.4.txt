@@ -1,4 +1,4 @@
-Fri Apr 30 2004 -- Sweep 0.8.3 Released
+<DATE> -- Sweep 0.8.4 Released
 =======================================
 
 Sweep is an audio editor and live playback tool for GNU/Linux, BSD and
@@ -9,33 +9,53 @@ Scrubby who enjoys mixing around in your files.
 
 This release is available as a source tarball at:
 
-    http://prdownloads.sourceforge.net/sweep/sweep-0.8.3.tar.gz?download
+    http://prdownloads.sourceforge.net/sweep/sweep-0.8.4.tar.gz?download
 
 
 Latest News
 -----------
 
-This is a maintainance release, including a new Spanish translation,
-various bugfixes and no new functionality.
+This is maintainance release, including a new Polish translation,
+various bugfixes and no new functionality. This is also likely to be the
+last sweep release based on gtk-1.2. Further development will utilize
+gtk-2.0 for the interface.
 
-Sweep has moved back into CVS at SourceForge. Five new developers have
-been added to the project: Yuri Bongiorno, Erik de Castro Lopo, Torben Hohn,
-Andr? Pang, and Alexandre Prokoudine.
+Sweep is on the move again. To leverage the increased flexibility provided
+by Subversion, and to allow for more control over the environment,
+Sweep development has relocated from sourceforge CVS to a SVN
+server, reachable at: http://svn.metadecks.org via the WebDAV protocol. 
+
+In addition, I've has setup a trac environment at http://trac.metadecks.org 
+
+Those of you who are not familiar with SVN or Trac can find more
+information at the following sites:
+
+  Trac home page:	http://www.edgewall.com/trac/  
+  SVN homepage:		http://subversion.tigris.org/
+
+But broadly speaking, SVN is equivilent to CVS, albeit with added 
+and improved functionality, and Trac provides the following features:
+  
+  a wiki
+  a bug/issue tracker
+  a web interface for viewing the SVN repository
+
+and numerous other useful things in a neatly intergrated package.
+
+New in this release
+--------------------
 
 Internationalization (i18n) improvements:
                                                                                
-	* a new Spanish translation by Juan Manuel Martinez
-        * an updated Italian translation by Yuri Bongiorno
+	* a new polish translation from Radoslaw Korzeniewski
+        * an updated russian translation from Alex Prokoudine
+	* a small update to the German translation to fix syntax error
 
 Bugfixes:
 
-	* resampler bug fixed by Erik de Castro Lopo 
-	* made main scrollbar arrows useful (bug #821596)
-	* seven other bug reports closed
-	* compile warning fixes for GCC3
-
-The dependency on libtdb has been removed. TDB sources are now pulled
-directly from the upstream Samba subversion repository.
+	* updated the alsa driver to work with recent alsa versions
+	    patch submitted by vze26m98
+	* various minor tweaks and improvements.
 
 
 Further information
