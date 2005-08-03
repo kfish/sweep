@@ -1,0 +1,85 @@
+Fri Apr 30 2004 -- Sweep 0.8.3 Released
+=======================================
+
+Sweep is an audio editor and live playback tool for GNU/Linux, BSD and
+compatible systems. It supports many music and voice formats including
+WAV, AIFF, Ogg Vorbis, Speex and MP3, with multichannel editing and
+LADSPA effects plugins. Inside lives a pesky little virtual stylus 
+called
+Scrubby who enjoys mixing around in your files.
+
+This release is available as a source tarball at:
+
+    http://prdownloads.sourceforge.net/sweep/sweep-0.8.3.tar.gz?download
+
+
+Latest News
+-----------
+
+This is a maintainance release, including a new Spanish translation,
+various bugfixes and no new functionality.
+
+Sweep has moved back into CVS at SourceForge. Five new developers have
+been added to the project: Yuri Bongiorno, Erik de Castro Lopo, Torben 
+Hohn,
+Andr? Pang, and Alexandre Prokoudine.
+
+Internationalization (i18n) improvements:
+                                                                               
+	* a new Spanish translation by Juan Manuel Martinez
+        * an updated Italian translation by Yuri Bongiorno
+
+Bugfixes:
+
+	* resampler bug fixed by Erik de Castro Lopo 
+	* made main scrollbar arrows useful (bug #821596)
+	* seven other bug reports closed
+	* compile warning fixes for GCC3
+
+The dependency on libtdb has been removed. TDB sources are now pulled
+directly from the upstream Samba subversion repository.
+
+
+Further information
+-------------------
+
+Screenshots:
+
+    http://www.metadecks.org/software/sweep/screenshots/
+
+Some interesting audio recordings of Scrubby are at:
+
+    http://www.metadecks.org/software/sweep/demos.html
+
+Sweep is designed to be intuitive and to give you full control. It 
+includes
+almost everything you would expect in a sample editor, and then some:
+
+	* precise, vinyl like scrubbing
+	* looped, reverse, and pitch-controlled playback
+	* playback mixing of unlimited independent tracks
+	* looped and reverse recording
+	* internationalisation
+	* multichannel and 32 bit floating point PCM file support
+	* support for Ogg Vorbis, MP3 and Speex compressed audio files
+	* sample rate conversion and channel operations
+	* LADSPA 1.1 effects support
+	* multiple views, discontinuous selections
+	* easy keybindings, mouse wheel zooming
+	* unlimited undo/redo with fully revertible edit history
+	* multithreaded background processing
+	* shaded peak/mean waveform rendering, multiple colour schemes
+
+Sweep is Free Software, available under the GNU General Public License.
+
+More information is available at:
+
+    http://www.metadecks.org/software/sweep/
+
+Thanks to Pixar Animation Studios and CSIRO Australia for supporting the
+development of this project.
+
+enjoy :)
+
+Conrad.
+
