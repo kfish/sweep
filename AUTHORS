@@ -34,6 +34,9 @@ Erik de Castro Lopo <erikd@zip.com.au>
 Zenaan Harkness <zen@getsystems.com>
 	improved handling of volume and pitch sliders
 
+Peter Shorthose
+	various build and gettext fixes
+
 Borrowed Code
 =============
 
@@ -104,6 +107,10 @@ Package Maintainers
 
 Anand Kumria <akumria@debian.org>
 	Debian packages
+
+Daniel Black <dragonheart@gentoo.org>                                           
+Gentoo Sound Team <sound@gentoo.org>
+	Gentoo packages
 
 Julio Merino Vidal <jmmv@hispabsd.org>
 	NetBSD packages (+ contributed configure and build fixes)
