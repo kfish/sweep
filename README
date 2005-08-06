@@ -41,10 +41,6 @@ REQUIRED:
 
             http://www.zip.com.au/~erikd/libsndfile/
 
-        * libtdb, available in many distributions or at:
-
-            http://www.sourceforge.net/projects/tdb
-
 	* Secret Rabbit Code, aka. libsamplerate, available from:
 
 	    http://www.mega-nerd.com/SRC/
