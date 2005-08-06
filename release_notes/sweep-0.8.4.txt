@@ -54,8 +54,8 @@ Internationalization (i18n) improvements:
 Bugfixes:
 
 	* updated the alsa driver to work with recent alsa versions
-	    patch submitted by vze26m98
-	* various minor tweaks and improvements.
+	    patch submitted by Charles Turner
+	* various minor tweaks and improvements
 
 
 Further information
