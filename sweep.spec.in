@@ -1,5 +1,5 @@
 %define name    sweep
-%define version 0.1.1
+%define version @VERSION@
 %define release 1
 %define prefix  /usr
 
@@ -89,3 +89,8 @@ rm -r $RPM_BUILD_ROOT
 - added devel package
 - added packaging of plugins
 - added documentation
+
+* Tue Aug 09 2005 Peter Shorthose <kickback@users.sourceforge.net>
+- use autoconf to generate the spec via sweep.spec.in
+- insert the package version via the autoconf macro 
+- remind the reader that the above changes are untested as of now
