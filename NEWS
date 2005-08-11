@@ -1,3 +1,49 @@
+DATE 2005 -- Version 0.8.4
+----------------------
+
+This is maintainance release, including a new Polish translation,
+various bugfixes and no new functionality. This is also likely to be the
+last sweep release based on gtk-1.2. Further development will utilize
+gtk-2.0 for the interface.
+
+Sweep is on the move again. To leverage the increased flexibility provided
+by Subversion, and to allow for more control over the environment,
+Sweep development has relocated from sourceforge CVS to a SVN
+server, reachable at: http://svn.metadecks.org via the WebDAV protocol. 
+
+In addition, I've has setup a trac environment at http://trac.metadecks.org 
+
+Those of you who are not familiar with SVN or Trac can find more
+information at the following sites:
+
+  Trac home page:	http://www.edgewall.com/trac/  
+  SVN homepage:		http://subversion.tigris.org/
+
+But broadly speaking, SVN is equivilent to CVS, albeit with added 
+and improved functionality, and Trac provides the following features:
+  
+  a wiki
+  a bug/issue tracker
+  a web interface for viewing the SVN repository
+
+and numerous other useful things in a neatly intergrated package.
+
+New in this release
+--------------------
+
+Internationalization (i18n) improvements:
+                                                                               
+	* a new polish translation from Radoslaw Korzeniewski
+        * an updated russian translation from Alex Prokoudine
+	* a small update to the German translation to fix syntax error
+
+Bugfixes:
+
+	* updated the alsa driver to work with recent alsa versions
+	    patch submitted by Charles Turner
+	* various minor tweaks and improvements
+
+
 Wed Apr 30 2003 -- Version 0.8.2
 --------------------------------
 
