@@ -34,6 +34,9 @@ Erik de Castro Lopo <erikd@zip.com.au>
 Zenaan Harkness <zen@getsystems.com>
 	improved handling of volume and pitch sliders
 
+Charles Turner <vze26m98@optonline.net>
+	updated the alsa driver to work with recent alsa versions
+
 Peter Shorthose
 	various build and gettext fixes
 
