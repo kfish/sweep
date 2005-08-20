@@ -17,7 +17,7 @@ clean ()
   rm -f aclocal.m4 configure config.log
   rm -Rf autom4te.cache
   # remove old autotools extra cruft
-  rm -f config.guess config.sub missing mkinstalldirs compile depcomp install-sh
+  rm -f config.guess config.sub missing compile depcomp install-sh
   # remove libtool cruft
   rm -f ltmain.sh libtool ltconfig
 }
