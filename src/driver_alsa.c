@@ -21,6 +21,7 @@
 /*
  * ALSA 0.6 support by Paul Davis
  * ALSA 0.9 updates by Zenaan Harkness
+ * ALSA 1.0 updates by Daniel Dreschers
  */
 
 #ifdef HAVE_CONFIG_H
@@ -48,7 +49,6 @@
 
 #ifdef DRIVER_ALSA
 
-#define ALSA_PCM_OLD_HW_PARAMS_API
 #include <alsa/asoundlib.h>
 
 // shamelessly ripped from alsaplayer alsa-final driver:
@@ -211,7 +211,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   }
 
   if ((err = snd_pcm_hw_params_set_rate_near
-       (pcm_handle, hwparams, rate, 0)) < 0) {
+       (pcm_handle, hwparams, &rate, 0 /* dir */)) < 0) {
     fprintf (stderr,
 	     "sweep: alsa_setup: audio interface does not support "
 	     "sample rate of %d (%s)\n",
@@ -220,7 +220,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   }
 
   if ((err = snd_pcm_hw_params_set_channels_near
-       (pcm_handle, hwparams, channels)) < 0) {
+       (pcm_handle, hwparams, &channels)) < 0) {
     fprintf (stderr,
 	     "sweep: alsa_setup: audio interface does not support "
 	     "%d channels (%s)\n",
@@ -229,7 +229,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   }
 
   if ((err = snd_pcm_hw_params_set_period_size_near
-       (pcm_handle, hwparams, period_size, 0)) < 0) {
+       (pcm_handle, hwparams, &period_size, 0)) < 0) {
     fprintf (stderr,
 	     "sweep: alsa_setup: audio interface does not support "
 	     "period size of %ld (%s)\n", period_size, snd_strerror (err));
@@ -239,7 +239,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   periods = LOGFRAGS_TO_FRAGS(pcmio_get_log_frags());
 
   if ((err = snd_pcm_hw_params_set_periods_near
-       (pcm_handle, hwparams, periods, 0)) < 0) {
+       (pcm_handle, hwparams, &periods, 0)) < 0) {
     fprintf (stderr,
 	     "sweep: alsa_setup: audio interface does not support "
 	     "period size of %d (%s) - suprising that we get this err!\n",
@@ -264,27 +264,29 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   }
   //printf ("sweep: alsa_setup 9\n");
 
-#if 0
-  handle->driver_rate = rate;
-  handle->driver_channels = channels;
-# else
   {
     unsigned int c, r;
-    int d;
+    int dir = 0;
 
-    d = 0;
+    if ((err = snd_pcm_hw_params_get_rate (hwparams, &r, &dir)) < 0) {
+      fprintf (stderr,
+	       "sweep: alsa_setup: error getting PCM rate (%s)\n",
+	       snd_strerror (err));
+    }
 
-    r = snd_pcm_hw_params_get_rate (hwparams, &d);
-    c = snd_pcm_hw_params_get_channels (hwparams);
+    if ((err = snd_pcm_hw_params_get_channels (hwparams, &c)) < 0) {
+      fprintf (stderr,
+	       "sweep: alsa_setup: error getting PCM channels (%s)\n",
+	       snd_strerror (err));
+    }
 
 #ifdef DEBUG
-    fprintf (stderr, "alsa got rate %d, channels %d, dir %d", r, c, d);
+    fprintf (stderr, "alsa got rate %i, channels %i, dir %d\n", r, c, dir);
 #endif
 
     handle->driver_rate = r;
     handle->driver_channels = c;
   }
-#endif
 
   if (snd_pcm_prepare (pcm_handle) < 0) {
     fprintf (stderr, "audio interface could not be prepared for playback\n");
