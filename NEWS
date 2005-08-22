@@ -1,47 +1,29 @@
-DATE 2005 -- Version 0.8.4
-----------------------
+Mon Aug 22 2005 -- Version 0.8.4
+--------------------------------
 
-This is maintainance release, including a new Polish translation,
-various bugfixes and no new functionality. This is also likely to be the
-last sweep release based on gtk-1.2. Further development will utilize
-gtk-2.0 for the interface.
+This is maintainance release, including:
 
-Sweep is on the move again. To leverage the increased flexibility provided
-by Subversion, and to allow for more control over the environment,
-Sweep development has relocated from sourceforge CVS to a SVN
-server, reachable at: http://svn.metadecks.org via the WebDAV protocol. 
+ 	* updates for ALSA 1.0 (Daniel Dreschers, Charles Turner),
+	* a new Polish translation (Radoslaw Korzeniewski),
+        * an updated russian translation (Alex Prokoudine),
+	* a small fix to the German translation, and
+	* various minor tweaks and improvements.
 
-In addition, I've has setup a trac environment at http://trac.metadecks.org 
+This is likely to be the last Sweep release based on GTK+-1.2. Further
+development will use GTK+-2.0 for the interface.
 
-Those of you who are not familiar with SVN or Trac can find more
-information at the following sites:
+Over the last year, Peter Shorthose has developed a comprehensive set of
+GTK+-2.0 patches for Sweep, and will handle their merging and ongoing
+release management towards Sweep 1.0. Welcome Peter!
 
-  Trac home page:	http://www.edgewall.com/trac/  
-  SVN homepage:		http://subversion.tigris.org/
+The trunk of sweep CVS has been migrated to a new Subversion repository.        
+You can check it out by:                                                        
 
-But broadly speaking, SVN is equivilent to CVS, albeit with added 
-and improved functionality, and Trac provides the following features:
-  
-  a wiki
-  a bug/issue tracker
-  a web interface for viewing the SVN repository
+  svn co http://svn.metadecks.org/sweep/trunk sweep                             
 
-and numerous other useful things in a neatly intergrated package.
+svn.metadecks.org can also be browsed via trac at:                              
 
-New in this release
---------------------
-
-Internationalization (i18n) improvements:
-                                                                               
-	* a new polish translation from Radoslaw Korzeniewski
-        * an updated russian translation from Alex Prokoudine
-	* a small update to the German translation to fix syntax error
-
-Bugfixes:
-
-	* updated the alsa driver to work with recent alsa versions
-	    patch submitted by Charles Turner
-	* various minor tweaks and improvements
+  http://trac.metadecks.org/                                                    
 
 
 Wed Apr 30 2003 -- Version 0.8.2
