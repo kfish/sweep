@@ -32,13 +32,16 @@ Erik de Castro Lopo <erikd@zip.com.au>
 	libsndfile-1 file import/export, random bugfixes
 
 Zenaan Harkness <zen@getsystems.com>
-	improved handling of volume and pitch sliders
+	improved handling of volume and pitch sliders, ALSA 0.9 updates
 
 Charles Turner <vze26m98@optonline.net>
 	updated the alsa driver to work with recent alsa versions
 
 Peter Shorthose
 	various build and gettext fixes
+
+Daniel Dreschers
+        ALSA 1.0 updates
 
 Borrowed Code
 =============
