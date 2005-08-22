@@ -1,39 +1,19 @@
-2005-07-27  gettextize  <bug-gnu-gettext@gnu.org>
+Mon Aug 22 21:54:30 EST 2005 Conrad Parker <conrad@metadecks.org>
 
-	* m4/codeset.m4: New file, from gettext-0.14.5.
-	* m4/gettext.m4: New file, from gettext-0.14.5.
-	* m4/glibc2.m4: New file, from gettext-0.14.5.
-	* m4/glibc21.m4: New file, from gettext-0.14.5.
-	* m4/iconv.m4: New file, from gettext-0.14.5.
-	* m4/intdiv0.m4: New file, from gettext-0.14.5.
-	* m4/intmax.m4: New file, from gettext-0.14.5.
-	* m4/inttypes.m4: New file, from gettext-0.14.5.
-	* m4/inttypes_h.m4: New file, from gettext-0.14.5.
-	* m4/inttypes-pri.m4: New file, from gettext-0.14.5.
-	* m4/isc-posix.m4: New file, from gettext-0.14.5.
-	* m4/lcmessage.m4: New file, from gettext-0.14.5.
-	* m4/lib-ld.m4: New file, from gettext-0.14.5.
-	* m4/lib-link.m4: New file, from gettext-0.14.5.
-	* m4/lib-prefix.m4: New file, from gettext-0.14.5.
-	* m4/longdouble.m4: New file, from gettext-0.14.5.
-	* m4/longlong.m4: New file, from gettext-0.14.5.
-	* m4/nls.m4: New file, from gettext-0.14.5.
-	* m4/po.m4: New file, from gettext-0.14.5.
-	* m4/printf-posix.m4: New file, from gettext-0.14.5.
-	* m4/progtest.m4: New file, from gettext-0.14.5.
-	* m4/signed.m4: New file, from gettext-0.14.5.
-	* m4/size_max.m4: New file, from gettext-0.14.5.
-	* m4/stdint_h.m4: New file, from gettext-0.14.5.
-	* m4/uintmax_t.m4: New file, from gettext-0.14.5.
-	* m4/ulonglong.m4: New file, from gettext-0.14.5.
-	* m4/wchar_t.m4: New file, from gettext-0.14.5.
-	* m4/wint_t.m4: New file, from gettext-0.14.5.
-	* m4/xsize.m4: New file, from gettext-0.14.5.
-	* m4/Makefile.am (EXTRA_DIST): Add the new files.
-	* Makefile.am (EXTRA_DIST): Add config.rpath, mkinstalldirs.
+	* updated for ALSA 1.0 (Daniel Dreschers, Charles Turner)
+	* a new Polish translation (Radoslaw Korzeniewski)
+	* an updated russian translation (Alex Prokoudine)
+	* moved sources into svn.metadecks.org; check SVN logs for full
+	  changes; see also http://trac.metadecks.org/.
+	* released 0.8.4
 
 Fri Apr 30 15:06:10 EST 2004 Conrad Parker <conrad@metadecks.org>
 
+	* a new Spanish translation by Juan Manuel Martinez
+	* an updated Italian translation by Yuri Bongiorno
+	* resampler bug fixed by Erik de Castro Lopo
+	* made main scrollbar arrows useful (bug #821596)
+	* compile warning fixes for GCC3
 	* moved sources back into CVS; check CVS logs for full changes
 	* released 0.8.3
 
@@ -343,7 +323,7 @@ Wed Sep  4 15:05:04 EST 2002 Conrad Parker <conrad@metadecks.org>
 Tue Sep  3 20:19:49 EST 2002 Conrad Parker <conrad@metadecks.org>
 
 	* changed storing of last load and save directories to use
-          preferences functions for persistence
+	  preferences functions for persistence
 	* added configure summary info for GTK+ and GLib
 	* commented out pixmaps inst hook in toplevel Makefile.am
 	* added non-failing check for gnome-moz-remote

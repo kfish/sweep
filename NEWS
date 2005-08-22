@@ -26,6 +26,32 @@ svn.metadecks.org can also be browsed via trac at:
   http://trac.metadecks.org/                                                    
 
 
+Fri Apr 30 2004 -- Version 0.8.3
+--------------------------------
+
+This is a maintainance release, including a new Spanish translation,
+various bugfixes and no new functionality.
+
+Sweep has moved back into CVS at SourceForge. Five new developers have
+been added to the project: Yuri Bongiorno, Erik de Castro Lopo, Torben 
+Hohn, Andr? Pang, and Alexandre Prokoudine.
+
+Internationalization (i18n) improvements:
+                                                                               
+	* a new Spanish translation by Juan Manuel Martinez
+        * an updated Italian translation by Yuri Bongiorno
+
+Bugfixes:
+
+	* resampler bug fixed by Erik de Castro Lopo 
+	* made main scrollbar arrows useful (bug #821596)
+	* seven other bug reports closed
+	* compile warning fixes for GCC3
+
+The dependency on libtdb has been removed. TDB sources are now pulled
+directly from the upstream Samba subversion repository.
+
+
 Wed Apr 30 2003 -- Version 0.8.2
 --------------------------------
 
