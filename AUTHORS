@@ -13,7 +13,7 @@ Mattias Engdegård <f91=men@nada.kth.se>
 Silvia Pfeiffer <silvia.pfeiffer@silvia-pfeiffer.de>
 	fixes to SMPTE time printing, random hacks
 
-Paul Barton=Davis <pbd@op.net>
+Paul Davis <paul@linuxaudiosystems.com>
 	ALSA 0.6.0 audio driver
 
 Nicolas Léveillé <nicolas.leveille@free.fr>
