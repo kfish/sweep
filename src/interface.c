@@ -50,6 +50,33 @@ GtkStyle * style_red_grey;
 GtkStyle * style_dark_grey;
 GtkStyle * style_red;
 
+
+
+
+
+void sweep_set_window_icon (GtkWindow *window, gchar * icon_name)
+{
+  gchar * icon_path;
+  GError * pixbuf_error = NULL;
+  GdkPixbuf * window_icon;
+  
+  if ((!GTK_IS_WINDOW(window)) || (icon_name == NULL))
+	return;
+  
+  icon_path = g_strconcat (PACKAGE_DATA_DIR, "/", icon_name, NULL);             
+  window_icon = gdk_pixbuf_new_from_file (icon_path, pixbuf_error);
+  
+  /* fails silently for now. most people wouldn't see a stderr msg anyway */
+  if (window_icon)
+   {
+      gtk_window_set_icon (GTK_WINDOW (window), window_icon);
+      gdk_pixbuf_unref (window_icon);
+   }
+  g_free(icon_path);
+  if (pixbuf_error != NULL)
+  g_error_free(pixbuf_error);
+}
+
 GtkWidget *
 create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data)
 {
@@ -168,8 +195,8 @@ GtkWidget *
 create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 		      const gchar * tip_text, GtkStyle * style,
 		      sw_toolbar_button_type button_type,
-		      GtkSignalFunc clicked,
-		      GtkSignalFunc pressed, GtkSignalFunc released,
+		      GCallback clicked,
+		      GCallback pressed, GCallback released,
 		      gpointer data)
 {
   GtkWidget * pixmap;
@@ -205,18 +232,18 @@ create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
   }
 
   if (clicked != NULL) {
-    gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			GTK_SIGNAL_FUNC(clicked), data);
+    g_signal_connect (G_OBJECT (button), "clicked",
+			G_CALLBACK(clicked), data);
   }
 
   if (pressed != NULL) {
-    gtk_signal_connect (GTK_OBJECT(button), "pressed",
-			GTK_SIGNAL_FUNC(pressed), data);
+    g_signal_connect (G_OBJECT(button), "pressed",
+			G_CALLBACK(pressed), data);
   }
 
   if (released != NULL) {
-    gtk_signal_connect (GTK_OBJECT(button), "released",
-			GTK_SIGNAL_FUNC(released), data);
+    g_signal_connect (G_OBJECT(button), "released",
+			G_CALLBACK(released), data);
   }
 
   return button;
@@ -250,8 +277,8 @@ create_toolbox (void)
   gtk_window_set_title (GTK_WINDOW (window1), _("Sweep"));
   gtk_widget_realize (window1);
 
-  gtk_signal_connect (GTK_OBJECT(window1), "destroy",
-		      GTK_SIGNAL_FUNC(main_destroy_cb), NULL);
+  g_signal_connect (G_OBJECT(window1), "destroy",
+		      G_CALLBACK(main_destroy_cb), NULL);
 
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -279,8 +306,8 @@ create_toolbox (void)
 
   menuitem = gtk_menu_item_new_with_label (_("New"));
   gtk_menu_append (GTK_MENU(menu), menuitem);
-  gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-		      GTK_SIGNAL_FUNC(sample_new_empty_cb), NULL);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		      G_CALLBACK(sample_new_empty_cb), NULL);
   gtk_widget_show(menuitem);
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_n, GDK_CONTROL_MASK,
@@ -288,8 +315,8 @@ create_toolbox (void)
 
   menuitem = gtk_menu_item_new_with_label (_("Open"));
   gtk_menu_append (GTK_MENU(menu), menuitem);
-  gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-		      GTK_SIGNAL_FUNC(sample_load_cb), window1);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		      G_CALLBACK(sample_load_cb), window1);
   gtk_widget_show(menuitem);
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_o, GDK_CONTROL_MASK,
@@ -297,8 +324,8 @@ create_toolbox (void)
 
   menuitem = gtk_menu_item_new_with_label (_("Quit"));
   gtk_menu_append (GTK_MENU(menu), menuitem);
-  gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-		      GTK_SIGNAL_FUNC(exit_cb), window1);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		      G_CALLBACK(exit_cb), window1);
   gtk_widget_show(menuitem);
   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 			      GDK_q, GDK_CONTROL_MASK,
@@ -313,8 +340,8 @@ create_toolbox (void)
 
   menuitem = gtk_menu_item_new_with_label (_("About..."));
   gtk_menu_append (GTK_MENU(menu), menuitem);
-  gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-		      GTK_SIGNAL_FUNC(about_dialog_create), NULL);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		      G_CALLBACK(about_dialog_create), NULL);
   gtk_widget_show(menuitem);
 
 #if 0
