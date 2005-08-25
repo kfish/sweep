@@ -448,8 +448,8 @@ create_param_set_table (sw_ps_adjuster * ps)
 	  gtk_menu_append (GTK_MENU(menu), menuitem);
 	  gtk_widget_show (menuitem);
 
-          gtk_signal_connect(GTK_OBJECT(menuitem), "activate",
-            GTK_SIGNAL_FUNC(param_list_set_known_cb), &plsk[j]);
+          g_signal_connect (G_OBJECT(menuitem), "activate",
+            G_CALLBACK(param_list_set_known_cb), &plsk[j]);
 
 	  if (!param_cmp (pspec->type, pspec->constraint.list[j+1], pset[i])) {
 	    gtk_option_menu_set_history (GTK_OPTION_MENU(optionmenu), j);
@@ -506,7 +506,7 @@ create_param_set_table (sw_ps_adjuster * ps)
           GTK_ADJUSTMENT(adj)->upper += step_inc;                          \
 	  num_widget = gtk_hscale_new (GTK_ADJUSTMENT(adj));               \
           gtk_scale_set_digits (GTK_SCALE(num_widget), digits);            \
-          gtk_widget_set_usize (num_widget, 75, -1);                       \
+          gtk_widget_set_size_request (num_widget, 75, -1);                       \
 	  gtk_table_attach (GTK_TABLE (table), num_widget, 1, 2, i, i+1,   \
 			    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);        \
 	} else {                                                           \
@@ -517,7 +517,7 @@ create_param_set_table (sw_ps_adjuster * ps)
           gtk_spin_button_set_numeric (GTK_SPIN_BUTTON(num_widget), TRUE); \
           gtk_spin_button_set_snap_to_ticks (GTK_SPIN_BUTTON(num_widget),  \
                                          TRUE);                            \
-          gtk_widget_set_usize (num_widget, 75, -1);                       \
+          gtk_widget_set_size_request (num_widget, 75, -1);                       \
 	  gtk_table_attach (GTK_TABLE (table), num_widget, 1, 2, i, i+1,   \
 			    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);        \
 	}                                                                  \
@@ -570,7 +570,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 {
   sw_ps_adjuster * ps;
 
-  GtkStyle * style;
+  //@@GtkStyle * style;
 
   GtkWidget * window;
   GtkWidget * main_vbox;
@@ -591,7 +591,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 
 #ifdef _USE_TEXT
   GtkWidget * text;
-  GdkFont * font;
+//@@  GdkFont * font;
 
 #define BUF_LEN 1024
   gchar buf[BUF_LEN];
@@ -605,8 +605,8 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 
   ps = ps_adjuster_new (proc, view, pset, window);
 
-  gtk_signal_connect (GTK_OBJECT(window), "destroy",
-		      GTK_SIGNAL_FUNC(param_set_cancel_cb), ps);
+  g_signal_connect (G_OBJECT(window), "destroy",
+		      G_CALLBACK(param_set_cancel_cb), ps);
 
 #ifdef _USE_TEXT
   hbox = gtk_hbox_new (FALSE, 0);
@@ -616,7 +616,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   text = gtk_text_new (NULL, NULL);
   gtk_text_set_editable (GTK_TEXT (text), FALSE);
   gtk_text_set_word_wrap (GTK_TEXT (text), FALSE);
-  gtk_widget_set_usize (text, 320, -1);
+  gtk_widget_set_size_request (text, 320, -1);
   gtk_box_pack_start (GTK_BOX (hbox), text, FALSE, FALSE, 0);
   gtk_widget_show (text);
 
@@ -656,27 +656,28 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   if (proc->name != NULL) {
 
 #ifdef _USE_TEXT
-    font =
-      gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
+/*font =
+  gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
 
-    n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
-
-    gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
-
+  n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
+  gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
+*/
 #else
 
-    style = gtk_style_new ();
-    gdk_font_unref (style->font);
-    style->font =
-      gdk_font_load("-adobe-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
-    gtk_widget_push_style (style);
-
+/* pangoise?
+	  
+  style = gtk_style_new ();
+  gdk_font_unref (style->font);
+  style->font =
+  gdk_font_load("-adobe-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+  gtk_widget_push_style (style);
+*/
     label = gtk_label_new (_(proc->name));
     gtk_misc_set_padding (GTK_MISC (label), 10, 10);
     gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
 
-    gtk_widget_pop_style ();
+/*  gtk_widget_pop_style ();*/
 
 #endif
   }
@@ -749,11 +750,11 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   button = gtk_button_new_with_label (_("Defaults"));
   gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 8);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (param_set_suggest_cb), ps);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (param_set_suggest_cb), ps);
 
   scrolled = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_set_usize (scrolled, -1, 240);
+  gtk_widget_set_size_request (scrolled, -1, 240);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_box_pack_start (GTK_BOX (vbox), scrolled, TRUE, TRUE, 8);
@@ -783,8 +784,8 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (param_set_apply_cb), ps);
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (param_set_apply_cb), ps);
   
 
   button = gtk_button_new_with_label (_("Cancel"));
@@ -792,8 +793,8 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (param_set_cancel_cb), ps);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (param_set_cancel_cb), ps);
 
   gtk_widget_grab_default (ok_button);
 
