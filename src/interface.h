@@ -32,17 +32,24 @@ create_color (int red, int green, int blue);
 GtkStyle *
 create_style (GdkColor * fg, GdkColor * bg, gboolean do_grade);
 
+
+
 void
-init_styles (void);
+sweep_set_window_icon (GtkWindow * window, gchar * icon_name);
+
+
 
 GtkWidget *
 create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 		      const gchar * tip_text, GtkStyle * style,
 		      sw_toolbar_button_type button_type,
-		      GtkSignalFunc clicked,
-		      GtkSignalFunc pressed, GtkSignalFunc released,
+		      GCallback clicked,
+		      GCallback pressed, GCallback released,
 		      gpointer data);
 
+
 GtkWidget* create_toolbox (void);
+
+
 
 #endif /* __INTERFACE_H__ */
