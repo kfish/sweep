@@ -26,8 +26,8 @@
 void
 question_dialog_new (sw_sample * sample, char * title, char * question,
 		     char * yes_answer, char * no_answer,
-		     GtkSignalFunc yes_callback, gpointer yes_callback_data,
-		     GtkSignalFunc no_callback, gpointer no_callback_data,
+		     GCallback yes_callback, gpointer yes_callback_data,
+		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode);
 
 void
