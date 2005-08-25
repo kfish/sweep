@@ -62,28 +62,29 @@ static gint time_ruler_motion_notify (GtkWidget      *widget,
 static void time_ruler_draw_ticks    (GtkRuler       *ruler);
 static void time_ruler_draw_pos      (GtkRuler       *ruler);
 
-
-guint
+GType
 time_ruler_get_type (void)
 {
-  static guint time_ruler_type = 0;
+  static GType time_ruler_type = 0;
 
   if (!time_ruler_type)
     {
-      static const GtkTypeInfo time_ruler_info =
+      static const GTypeInfo time_ruler_info =
       {
-	"TimeRuler",
-	sizeof (TimeRuler),
+		  
 	sizeof (TimeRulerClass),
-	(GtkClassInitFunc) time_ruler_class_init,
-	(GtkObjectInitFunc) time_ruler_init,
-	/* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
+	NULL, /* base_init */
+	NULL, /* base_finalize */
+	(GClassInitFunc) time_ruler_class_init,
+	NULL, /* class_finalize */
+	NULL, /* class_data */
+	sizeof (TimeRuler),
+	0,    /* n_preallocs */
+	(GInstanceInitFunc) time_ruler_init,	  
+
       };
 
-      time_ruler_type = gtk_type_unique (gtk_ruler_get_type (),
-					 &time_ruler_info);
+      time_ruler_type = g_type_register_static (GTK_TYPE_RULER, "TimeRuler", &time_ruler_info, 0);
     }
 
   return time_ruler_type;
@@ -120,15 +121,14 @@ time_ruler_init (TimeRuler *time_ruler)
   time_ruler->samplerate = 44100;
 
   widget = GTK_WIDGET (time_ruler);
-  widget->requisition.width = widget->style->klass->xthickness * 2 + 1;
-  widget->requisition.height = widget->style->klass->ythickness * 2 + RULER_HEIGHT;
+  widget->requisition.width = widget->style->xthickness * 2 + 1;
+  widget->requisition.height = widget->style->ythickness * 2 + RULER_HEIGHT;
 }
-
 
 GtkWidget*
 time_ruler_new (void)
 {
-  return GTK_WIDGET (gtk_type_new (time_ruler_get_type ()));
+  return GTK_WIDGET (g_object_new (time_ruler_get_type (), NULL));
 }
 
 static gint
@@ -173,7 +173,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
   GdkGC *gc, *bg_gc;
-  GdkFont *font;
+  //@@ GdkFont *font;
   gint i;
   gint width, height;
   gint xthickness;
@@ -187,8 +187,11 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 #define UNIT_STR_LEN 32
   gchar unit_str[UNIT_STR_LEN];
   gint digit_height;
+  gint digit_offset;
   gint text_width;
   gint pos;
+  PangoLayout *layout;
+  PangoRectangle logical_rect, ink_rect;
 
   g_return_if_fail (ruler != NULL);
   g_return_if_fail (GTK_IS_TIME_RULER (ruler));
@@ -200,14 +203,18 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 
   gc = widget->style->fg_gc[GTK_STATE_NORMAL];
   bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
-  font = widget->style->font;
 
-  xthickness = widget->style->klass->xthickness;
-  ythickness = widget->style->klass->ythickness;
-  digit_height = font->ascent; /* assume descent == 0 ? */
+  xthickness = widget->style->xthickness;
+  ythickness = widget->style->ythickness;
 
   width = widget->allocation.width;
   height = widget->allocation.height - ythickness * 2;
+
+  layout = gtk_widget_create_pango_layout (widget, "012456789");
+  pango_layout_get_extents (layout, &ink_rect, &logical_rect);
+  
+  digit_height = PANGO_PIXELS (ink_rect.height) + 2;
+  digit_offset = ink_rect.y;
 
    
   gtk_paint_box (widget->style, ruler->backing_store,
@@ -241,8 +248,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)scale);
   /*  snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)scale, 10.0);*/
   /*  text_width = strlen (unit_str) * digit_height + 1;*/
-  text_width = gdk_string_width (font, unit_str);
-
+  text_width = PANGO_PIXELS (ink_rect.width) + 2;
   for (scale = 0; scale < MAXIMUM_SCALES; scale++)
     if (ruler_scale[scale] * abs_increment > 2 * text_width)
       break;
@@ -294,9 +300,23 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 #else
 	      snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);
 #endif
-	      gdk_draw_string (ruler->backing_store, font, gc,
-			       pos + 2, ythickness + font->ascent - 1,
-			       unit_str);
+//@@	      gdk_draw_string (ruler->backing_store, font, gc,
+//@@			       pos + 2, ythickness + font->ascent - 1,
+//@@			       unit_str);
+		  
+		  pango_layout_set_text (layout, unit_str, -1);
+  pango_layout_get_extents (layout, NULL, &logical_rect);
+
+  gtk_paint_layout (widget->style,
+                  ruler->backing_store,
+                  GTK_WIDGET_STATE (widget),
+				  FALSE,
+                  NULL,
+                  widget,
+                  "vruler",
+                  pos +2,
+                  2,
+                  layout);
 	    }
 	}
     }
@@ -323,8 +343,8 @@ time_ruler_draw_pos (GtkRuler *ruler)
       widget = GTK_WIDGET (ruler);
 
       gc = widget->style->fg_gc[GTK_STATE_NORMAL];
-      xthickness = widget->style->klass->xthickness;
-      ythickness = widget->style->klass->ythickness;
+      xthickness = widget->style->xthickness;
+      ythickness = widget->style->ythickness;
       width = widget->allocation.width;
       height = widget->allocation.height - ythickness * 2;
 
@@ -336,7 +356,7 @@ time_ruler_draw_pos (GtkRuler *ruler)
 	{
 	  /*  If a backing store exists, restore the ruler  */
 	  if (ruler->backing_store && ruler->non_gr_exp_gc)
-	    gdk_draw_pixmap (ruler->widget.window,
+	    gdk_draw_drawable (ruler->widget.window,
 			     ruler->non_gr_exp_gc,
 			     ruler->backing_store,
 			     ruler->xsrc, ruler->ysrc,
