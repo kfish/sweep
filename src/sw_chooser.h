@@ -45,7 +45,7 @@ struct _SWChooserClass {
   void (*number_changed) (SWChooser * chooser, int number);
 };
 
-GtkType sw_chooser_get_type (void);
+GType sw_chooser_get_type (void);
 
 GtkWidget * samplerate_chooser_new (gchar * title);
 int samplerate_chooser_get_rate (GtkWidget * chooser);
