@@ -50,9 +50,9 @@ question_dialog_destroy_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_widget_get_toplevel (widget);
 
   quit_if_no_files = (gboolean)
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(widget), "quit_nofiles"));
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "quit_nofiles"));
 
-  sample = gtk_object_get_user_data (GTK_OBJECT(dialog));
+  sample = g_object_get_data (G_OBJECT(dialog), "default");
   if (sample && sample_bank_contains (sample)) {
     sample_set_edit_mode (sample, SWEEP_EDIT_MODE_READY);
   }
@@ -65,25 +65,26 @@ static void
 question_dialog_answer_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog;
-  GtkSignalFunc func;
+  GCallback(*func) (GtkWidget* widget, gpointer data);
 
   up_and_running = TRUE;
 
-  func = gtk_object_get_user_data (GTK_OBJECT(widget));
+  func = g_object_get_data (G_OBJECT(widget), "default");
   dialog = gtk_widget_get_toplevel (widget);
 
   if (func != NULL)
     func (widget, data);
 
   /* "destroy" will call destroy above */
+  
   gtk_widget_destroy (dialog);
 }
 
 static void
 query_dialog_new (sw_sample * sample, char * title, char * question,
 		  gboolean show_cancel, char * ok_answer, char * no_answer,
-		  GtkSignalFunc ok_callback, gpointer ok_callback_data,
-		  GtkSignalFunc no_callback, gpointer no_callback_data,
+		  GCallback ok_callback, gpointer ok_callback_data,
+		  GCallback no_callback, gpointer no_callback_data,
 		  gpointer xpm_data, gboolean quit_if_no_files)
 {
   gchar * new_title;
@@ -98,26 +99,27 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GtkAccelGroup * accel_group;
 
   window = gtk_dialog_new ();
+  sweep_set_window_icon (GTK_WINDOW(window), "sweep_app_icon.png");
 
   new_title = g_strdup_printf ("%s: %s", "Sweep", title);
   gtk_window_set_title (GTK_WINDOW(window), new_title);
   g_free (new_title);
 
-  gtk_window_position(GTK_WINDOW(window), GTK_WIN_POS_MOUSE);
-  gtk_container_border_width (GTK_CONTAINER(window), 8);
+  gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_MOUSE);
+  gtk_container_set_border_width  (GTK_CONTAINER(window), 8);
 
-  gtk_object_set_user_data (GTK_OBJECT(window), sample);
+  g_object_set_data (G_OBJECT(window), "default", sample);
 
   accel_group = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW(window), accel_group);
 
-  gtk_signal_connect (GTK_OBJECT(window), "destroy",
-		      GTK_SIGNAL_FUNC(question_dialog_destroy_cb), window);
+  g_signal_connect (G_OBJECT(window), "destroy",
+		      G_CALLBACK(question_dialog_destroy_cb), window);
 
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(window), "destroy");
+//@@ gtk_accel_group_connect (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
+//@@		       GTK_OBJECT(window), "destroy");
 
-  gtk_object_set_data (GTK_OBJECT(window), "quit_nofiles",
+  g_object_set_data (G_OBJECT(window), "quit_nofiles",
 		       GINT_TO_POINTER((gint)quit_if_no_files));
 
   vbox = GTK_DIALOG(window)->vbox;
@@ -146,10 +148,10 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
 		      ok_button, FALSE, TRUE, 0);
-  gtk_object_set_user_data (GTK_OBJECT(ok_button), ok_callback);
+  g_object_set_data (G_OBJECT(ok_button), "default", ok_callback);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (question_dialog_answer_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (question_dialog_answer_cb),
 		      ok_callback_data);
 
   /* Cancel */
@@ -160,10 +162,10 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
 			button, FALSE, TRUE, 0);
-    gtk_object_set_user_data (GTK_OBJECT(button), no_callback);
+    g_object_set_data (G_OBJECT(button), "default", no_callback);
     gtk_widget_show (button);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC (question_dialog_answer_cb),
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK (question_dialog_answer_cb),
 			no_callback_data);
   }
 
@@ -175,8 +177,8 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
 void
 question_dialog_new (sw_sample * sample, char * title, char * question,
 		     char * yes_answer, char * no_answer,
-		     GtkSignalFunc yes_callback, gpointer yes_callback_data,
-		     GtkSignalFunc no_callback, gpointer no_callback_data,
+		     GCallback yes_callback, gpointer yes_callback_data,
+		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode)
 {
   if (edit_mode != SWEEP_EDIT_MODE_READY)
@@ -241,7 +243,7 @@ static gint
 syserror_dialog_new (gpointer data)
 {
   sweep_perror_data * pd = (sweep_perror_data *)data;
-  char * sys_errstr = NULL;
+  const gchar * sys_errstr = NULL;
   char * new_message;
 
   sys_errstr = g_strerror (pd->thread_errno);

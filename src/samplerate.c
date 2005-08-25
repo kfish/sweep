@@ -258,17 +258,17 @@ samplerate_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  chooser = gtk_object_get_user_data (GTK_OBJECT(dialog));
+  chooser = g_object_get_data (G_OBJECT(dialog), "default");
   new_rate = samplerate_chooser_get_rate (chooser);
 
   quality_menu =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_menu"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_menu"));
   menu = gtk_option_menu_get_menu (GTK_OPTION_MENU(quality_menu));
   menuitem = gtk_menu_get_active (GTK_MENU(menu));
-  quality = GPOINTER_TO_INT(gtk_object_get_user_data(GTK_OBJECT(menuitem)));
+  quality = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(menuitem), "default"));
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_quality_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_quality_chb"));
   rem_quality =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
@@ -308,9 +308,9 @@ src_update_ok_button (GtkWidget * widget)
   dialog = gtk_widget_get_toplevel (widget);
 
   old_rate =
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(dialog), "old_rate"));
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(dialog), "old_rate"));
 
-  chooser = gtk_object_get_user_data (GTK_OBJECT(dialog));
+  chooser = g_object_get_data (G_OBJECT(dialog), "default");
   new_rate = samplerate_chooser_get_rate (chooser);
 
   if (old_rate > 0 && new_rate > 0 && old_rate != new_rate) {
@@ -319,7 +319,7 @@ src_update_ok_button (GtkWidget * widget)
   }
 
   ok_button =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "ok_button"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "ok_button"));
 
   gtk_widget_set_sensitive (ok_button, is_valid);
 }
@@ -331,7 +331,7 @@ src_quality_label_update (GtkWidget * dialog, int quality)
   gchar * new_text, * c;
 
   label =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_label"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_label"));
 
   new_text = g_strdup (src_get_description (quality));
 
@@ -355,7 +355,7 @@ src_quality_label_update_cb (GtkWidget * widget, gpointer data)
 
   dialog = GTK_WIDGET(data);
 
-  quality = GPOINTER_TO_INT(gtk_object_get_user_data(GTK_OBJECT(widget)));
+  quality = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
 
   src_quality_label_update (dialog, quality);
 }
@@ -373,7 +373,7 @@ src_quality_options_reset_cb (GtkWidget * widget, gpointer data)
   /* Quality */
 
   quality_menu =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_menu"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_menu"));
   
   i = prefs_get_int (QUALITY_KEY);
   
@@ -398,7 +398,7 @@ src_quality_options_default_cb (GtkWidget * widget, gpointer data)
   /* Quality */
 
   quality_menu =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_menu"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_menu"));
 
   gtk_option_menu_set_history (GTK_OPTION_MENU(quality_menu), DEFAULT_QUALITY);
   src_quality_label_update (dialog, DEFAULT_QUALITY);
@@ -467,17 +467,17 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, TRUE, 8);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "old_rate",
+  g_object_set_data (G_OBJECT(dialog), "old_rate",
 		       GINT_TO_POINTER(sample->sounddata->format->rate));
 
   chooser = samplerate_chooser_new (_("New sample rate"));
   gtk_box_pack_start (GTK_BOX(vbox), chooser, TRUE, TRUE, 0);
   gtk_widget_show (chooser);
 
-  gtk_signal_connect (GTK_OBJECT(chooser), "number-changed",
-		      GTK_SIGNAL_FUNC(src_update_ok_button), NULL);
+  g_signal_connect (G_OBJECT(chooser), "number-changed",
+		      G_CALLBACK(src_update_ok_button), NULL);
 
-  gtk_object_set_user_data (GTK_OBJECT(dialog), chooser);
+  g_object_set_data (G_OBJECT(dialog), "default", chooser);
 
   /* Quality */
 
@@ -505,23 +505,23 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   for (i = 0; (desc = (char *) src_get_name (i)) != NULL; i++) {
     menuitem = gtk_menu_item_new_with_label (desc);
     gtk_menu_append (GTK_MENU(menu), menuitem);
-    gtk_object_set_user_data (GTK_OBJECT(menuitem), GINT_TO_POINTER(i));
+    g_object_set_data (G_OBJECT(menuitem), "default", GINT_TO_POINTER(i));
     gtk_widget_show (menuitem);
 
-    gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-			GTK_SIGNAL_FUNC(src_quality_label_update_cb), dialog);
+    g_signal_connect (G_OBJECT(menuitem), "activate",
+			G_CALLBACK(src_quality_label_update_cb), dialog);
   }
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "quality_menu", option_menu);
+  g_object_set_data (G_OBJECT(dialog), "quality_menu", option_menu);
 
   /* long description ... */
   label = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (vbox2), label, TRUE, FALSE, 4);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "quality_label", label);
+  g_object_set_data (G_OBJECT(dialog), "quality_label", label);
 
   /* Remember / Reset */
 
@@ -535,7 +535,7 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_quality_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_quality_chb", checkbutton);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
 
@@ -545,8 +545,8 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
 
   button = gtk_button_new_with_label (_("Reset"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(src_quality_options_reset_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(src_quality_options_reset_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -559,8 +559,8 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
 
   button = gtk_button_new_with_label (_("Default"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(src_quality_options_default_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(src_quality_options_default_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -612,11 +612,11 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (samplerate_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (samplerate_dialog_ok_cb),
 		      sample);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "ok_button", ok_button);
+  g_object_set_data (G_OBJECT (dialog), "ok_button", ok_button);
 
   /* Cancel */
 
@@ -625,8 +625,8 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (samplerate_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (samplerate_dialog_cancel_cb),
 		      sample);
 
   gtk_widget_grab_default (ok_button);
