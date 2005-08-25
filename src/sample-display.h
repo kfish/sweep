@@ -114,7 +114,7 @@ struct _SampleDisplayClass
   void (*mouse_offset_changed)(SampleDisplay *s, int mouse_offset);
 };
 
-guint
+GType
 sample_display_get_type (void);
 
 GtkWidget*
