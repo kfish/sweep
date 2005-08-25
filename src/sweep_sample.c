@@ -120,7 +120,7 @@ filename_generate (void)
 }
 
 sw_sample *
-sample_new_empty(char * pathname,
+sample_new_empty(const gchar * pathname,
 		 gint nr_channels, gint sample_rate,
 		 sw_framecount_t sample_length)
 {
@@ -240,24 +240,24 @@ sample_new_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  entry = gtk_object_get_data (GTK_OBJECT (dialog), "name_entry");
+  entry = g_object_get_data (G_OBJECT(dialog), "name_entry");
   filename = gtk_entry_get_text (GTK_ENTRY(entry));
 
-  entry = gtk_object_get_data (GTK_OBJECT (dialog), "duration_entry");
+  entry = g_object_get_data (G_OBJECT(dialog), "duration_entry");
   text = gtk_entry_get_text (GTK_ENTRY(entry));
   seconds = strtime_to_seconds (text);
   if (seconds == -1) goto out; /* XXX: invalid time spec */
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "rate_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "rate_chooser");
   sample_rate = samplerate_chooser_get_rate (entry);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "channelcount_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "channelcount_chooser");
   nr_channels = channelcount_chooser_get_count (entry);
 
   nr_frames = (sw_framecount_t) (sample_rate * seconds);
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_format_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_format_chb"));
   rem_format =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
@@ -307,17 +307,17 @@ sample_new_dialog_update (GtkWidget * widget)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  entry = gtk_object_get_data (GTK_OBJECT (dialog), "duration_entry");
+  entry = g_object_get_data (G_OBJECT(dialog), "duration_entry");
   text = gtk_entry_get_text (GTK_ENTRY(entry));
   seconds = strtime_to_seconds (text);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "rate_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "rate_chooser");
   sample_rate = samplerate_chooser_get_rate (entry);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "channelcount_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "channelcount_chooser");
   nr_channels = channelcount_chooser_get_count (entry);
 
-  memsize_label = gtk_object_get_data (GTK_OBJECT(dialog), "memsize_label");
+  memsize_label = g_object_get_data (G_OBJECT(dialog), "memsize_label");
 
   bytes = (glong) (seconds * sample_rate * nr_channels * sizeof(sw_audio_t));
   if (bytes < 0) {
@@ -327,7 +327,7 @@ sample_new_dialog_update (GtkWidget * widget)
     gtk_label_set_text (GTK_LABEL(memsize_label), buf);
   }
 
-  ok_button = gtk_object_get_data (GTK_OBJECT(dialog), "ok_button");
+  ok_button = g_object_get_data (G_OBJECT(dialog), "ok_button");
 
   if (seconds <= 0.0 || sample_rate <= 0 || nr_channels <= 0 || bytes < 0) {
     gtk_widget_set_sensitive (ok_button, FALSE);
@@ -352,10 +352,10 @@ sample_new_dialog_reset_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "rate_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "rate_chooser");
   samplerate_chooser_set_rate (entry, sample_rate);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "channelcount_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "channelcount_chooser");
   channelcount_chooser_set_count (entry, nr_channels);
 
   sample_new_dialog_update (dialog);
@@ -369,20 +369,20 @@ sample_new_dialog_defaults_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  entry = gtk_object_get_data (GTK_OBJECT (dialog), "duration_entry");
+  entry = g_object_get_data (G_OBJECT(dialog), "duration_entry");
   gtk_entry_set_text (GTK_ENTRY (entry), DEFAULT_DURATION);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "rate_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "rate_chooser");
   samplerate_chooser_set_rate (entry, DEFAULT_SAMPLERATE);
 
-  entry = gtk_object_get_data (GTK_OBJECT(dialog), "channelcount_chooser");
+  entry = g_object_get_data (G_OBJECT(dialog), "channelcount_chooser");
   channelcount_chooser_set_count (entry, DEFAULT_CHANNELS);
 
   sample_new_dialog_update (dialog);
 }
 
 static void
-create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
+create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
 			  sw_time_t duration, gboolean do_reset)
 {
   GtkWidget * dialog;
@@ -407,20 +407,21 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gchar buf[BUF_LEN];
 
   dialog = gtk_dialog_new ();
+  sweep_set_window_icon (GTK_WINDOW(dialog), "sweep_app_icon.png");
   gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: New file"));
   /*gtk_container_border_width (GTK_CONTAINER(dialog), 8);*/
 
-  gtk_signal_connect (GTK_OBJECT(dialog), "destroy",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_cancel_cb), dialog);
+  g_signal_connect (G_OBJECT(dialog), "destroy",
+		      G_CALLBACK(sample_new_dialog_cancel_cb), dialog);
 
 #ifdef DEVEL_CODE
   /* XXX: Causes Gtk-CRITICAL warnings at runtime */
   accel_group = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW(dialog), accel_group);
 
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(dialog), "destroy");
+ //@@ gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
+ //@@	       GTK_OBJECT(dialog), "destroy");
 #endif
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
@@ -454,7 +455,7 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_entry_set_text (GTK_ENTRY (entry), 
 		      pathname ? pathname : filename_generate ()); 
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "name_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "name_entry", entry);
 
   /* Duration */
   
@@ -474,10 +475,10 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   snprint_time (buf, BUF_LEN, duration);
   gtk_entry_set_text (GTK_ENTRY (entry), buf); 
 
-  gtk_signal_connect (GTK_OBJECT(entry), "changed",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_update), NULL);
+  g_signal_connect (G_OBJECT(entry), "changed",
+		      G_CALLBACK(sample_new_dialog_update), NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "duration_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "duration_entry", entry);
 
   label = gtk_label_new (_("hh:mm:ss.xxx"));
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 4);
@@ -497,10 +498,10 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX(vbox), entry, FALSE, FALSE, 4);
   gtk_widget_show (entry);
 
-  gtk_signal_connect (GTK_OBJECT(entry), "number-changed",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_update), NULL);
+  g_signal_connect (G_OBJECT(entry), "number-changed",
+		      G_CALLBACK(sample_new_dialog_update), NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rate_chooser", entry);
+  g_object_set_data (G_OBJECT (dialog), "rate_chooser", entry);
 
   /* Channels */
 
@@ -509,10 +510,10 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX(vbox), entry, FALSE, FALSE, 4);
   gtk_widget_show (entry);
 
-  gtk_signal_connect (GTK_OBJECT(entry), "number-changed",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_update), NULL);
+  g_signal_connect (G_OBJECT(entry), "number-changed",
+		      G_CALLBACK(sample_new_dialog_update), NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "channelcount_chooser", entry);
+  g_object_set_data (G_OBJECT (dialog), "channelcount_chooser", entry);
 
   /* Defaults */
 
@@ -532,7 +533,7 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
 			  "configuration for creating new files."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_format_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_format_chb", checkbutton);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), do_reset);
 
@@ -542,8 +543,8 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
 
   button = gtk_button_new_with_label (_("Reset"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_reset_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(sample_new_dialog_reset_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -553,8 +554,8 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
 
   button = gtk_button_new_with_label (_("Defaults"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(sample_new_dialog_defaults_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(sample_new_dialog_defaults_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -598,7 +599,7 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 4);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "memsize_label", label);
+  g_object_set_data (G_OBJECT (dialog), "memsize_label", label);
 
   /* OK */
 
@@ -607,10 +608,10 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (sample_new_dialog_ok_cb), NULL);
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (sample_new_dialog_ok_cb), NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "ok_button", ok_button);
+  g_object_set_data (G_OBJECT (dialog), "ok_button", ok_button);
 
   /* Cancel */
 
@@ -619,8 +620,8 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (sample_new_dialog_cancel_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (sample_new_dialog_cancel_cb), NULL);
 
   gtk_widget_grab_default (ok_button);
 
@@ -637,7 +638,7 @@ create_sample_new_dialog (gchar * pathname, gint nr_channels, gint sample_rate,
 }
 
 void
-create_sample_new_dialog_defaults (char * pathname)
+create_sample_new_dialog_defaults (const gchar * pathname)
 {
   create_sample_new_dialog (pathname, DEFAULT_CHANNELS, DEFAULT_SAMPLERATE,
 			    60, TRUE);
@@ -673,7 +674,7 @@ sample_get_sounddata (sw_sample * s)
 }
 
 void
-sample_set_pathname (sw_sample * s, char * pathname)
+sample_set_pathname (sw_sample * s, const gchar * pathname)
 {
   sw_view * v;
   GList * gl;
@@ -809,7 +810,7 @@ sweep_quit (void)
 			   "changes will be lost.\n\n"
 			   "Are you sure you want to quit?"),
 			 _("Quit"), _("Don't quit"),
-			 sweep_quit_ok_cb, NULL, sweep_quit_cancel_cb, NULL,
+			 G_CALLBACK (sweep_quit_ok_cb), NULL, G_CALLBACK (sweep_quit_cancel_cb), NULL,
 			 SWEEP_EDIT_MODE_READY);
   } else if (any_playing()) {
     question_dialog_new (NULL, _("Files playing"),
@@ -817,7 +818,7 @@ sweep_quit (void)
 			   "currently playing.\n\n"
 			   "Are you sure you want to quit?"),
 			 _("Quit"), _("Don't quit"),
-			 sweep_quit_ok_cb, NULL, sweep_quit_cancel_cb, NULL,
+			 G_CALLBACK (sweep_quit_ok_cb), NULL, G_CALLBACK (sweep_quit_cancel_cb), NULL,
 			 SWEEP_EDIT_MODE_READY);
   } else {
     sweep_quit_ok_cb (NULL, NULL);
@@ -935,7 +936,7 @@ sample_refresh_playmode (sw_sample * s)
 
   if (!head->going) {
     if (s->playmarker_tag > 0) {
-      gtk_timeout_remove (s->playmarker_tag);
+      g_source_remove (s->playmarker_tag);
     }
   }
 
@@ -1884,10 +1885,10 @@ sample_show_info_dialog (sw_sample * sample)
     dialog = gtk_dialog_new ();
     gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
     gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: File properties"));
-    gtk_container_border_width (GTK_CONTAINER(dialog), 8);
+    gtk_container_set_border_width (GTK_CONTAINER(dialog), 8);
 
-    gtk_signal_connect (GTK_OBJECT(dialog), "destroy",
-			GTK_SIGNAL_FUNC(sample_info_dialog_destroy_cb),
+    g_signal_connect (G_OBJECT(dialog), "destroy",
+			G_CALLBACK(sample_info_dialog_destroy_cb),
 			sample);
     
     clist = gtk_clist_new (2);
@@ -1931,8 +1932,8 @@ sample_show_info_dialog (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 			TRUE, TRUE, 0);
     gtk_widget_show (ok_button);
-    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-			GTK_SIGNAL_FUNC (sample_info_dialog_ok_cb), sample);
+    g_signal_connect (G_OBJECT(ok_button), "clicked",
+			G_CALLBACK (sample_info_dialog_ok_cb), sample);
     
     gtk_widget_grab_default (ok_button);
     
