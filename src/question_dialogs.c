@@ -243,7 +243,7 @@ static gint
 syserror_dialog_new (gpointer data)
 {
   sweep_perror_data * pd = (sweep_perror_data *)data;
-  const gchar * sys_errstr = NULL;
+  gchar * sys_errstr = NULL;
   char * new_message;
 
   sys_errstr = g_strerror (pd->thread_errno);
