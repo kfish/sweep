@@ -149,7 +149,7 @@ monitor_checked (GtkWidget * dialog)
   GtkWidget * monitor_chb;
 
   monitor_chb =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "monitor_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "monitor_chb"));
 
   return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (monitor_chb));
 }
@@ -159,9 +159,9 @@ config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog = GTK_WIDGET (data);
   GtkAdjustment * adj;
-  char * main_dev, * monitor_dev;
+  G_CONST_RETURN gchar * main_dev, * monitor_dev;
 
-  adj = gtk_object_get_data (GTK_OBJECT(dialog), "buff_adj");
+  adj = g_object_get_data (G_OBJECT(dialog), "buff_adj");
 
   prefs_set_int (LOG_FRAGS_KEY, adj->value);
 
@@ -201,7 +201,7 @@ update_ok_button (GtkWidget * widget, gpointer data)
   gboolean ok = FALSE;
 
   ok_button =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "ok_button"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "ok_button"));
 
   if (monitor_checked (dialog)) {
     main_devname =
@@ -223,13 +223,13 @@ set_monitor_widgets (GtkWidget * dialog, gboolean use_monitor)
   GtkWidget * monitor_chb, * monitor_widget, * swap;
 
   monitor_chb =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "monitor_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "monitor_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(monitor_chb), use_monitor);
 
-  monitor_widget = gtk_object_get_data (GTK_OBJECT(dialog), "monitor_widget");
+  monitor_widget = g_object_get_data (G_OBJECT(dialog), "monitor_widget");
   gtk_widget_set_sensitive (monitor_widget, use_monitor);
 
-  swap = gtk_object_get_data (GTK_OBJECT(dialog), "swap");
+  swap = g_object_get_data (G_OBJECT(dialog), "swap");
   gtk_widget_set_sensitive (swap, use_monitor);
 
 }
@@ -239,7 +239,7 @@ set_buff_adj (GtkWidget * dialog, gint logfrags)
 {
   GtkAdjustment * adj;
 
-  adj = gtk_object_get_data (GTK_OBJECT(dialog), "buff_adj");
+  adj = g_object_get_data (G_OBJECT(dialog), "buff_adj");
   gtk_adjustment_set_value (adj, logfrags);
 }
 
@@ -371,11 +371,11 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 			TRUE, TRUE, 0);
     gtk_widget_show (ok_button);
-    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-			GTK_SIGNAL_FUNC (config_dev_dsp_dialog_ok_cb),
+    g_signal_connect (G_OBJECT(ok_button), "clicked",
+			G_CALLBACK (config_dev_dsp_dialog_ok_cb),
 			dialog);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "ok_button", ok_button);
+    g_object_set_data (G_OBJECT (dialog), "ok_button", ok_button);
 
     /* Cancel */
 
@@ -384,8 +384,8 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 			TRUE, TRUE, 0);
     gtk_widget_show (button);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC (config_dev_dsp_dialog_cancel_cb),
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK (config_dev_dsp_dialog_cancel_cb),
 			NULL);
 
     gtk_widget_grab_default (ok_button);
@@ -440,17 +440,17 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(hbox), main_combo, TRUE, TRUE, 0);
     gtk_widget_show (main_combo);
 
-    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(main_combo)->entry), "changed",
-			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+    g_signal_connect (G_OBJECT(GTK_COMBO(main_combo)->entry), "changed",
+			G_CALLBACK(update_ok_button), dialog);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "main_combo", main_combo);
+    g_object_set_data (G_OBJECT (dialog), "main_combo", main_combo);
 
 #if 0
     button = gtk_button_new_with_label (_("Default"));
     gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(default_devicename_cb), NULL);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(default_devicename_cb), NULL);
 #endif
 
     separator = gtk_hseparator_new ();
@@ -463,8 +463,8 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(vbox), checkbutton, FALSE, FALSE, 4);
     gtk_widget_show (checkbutton);
 
-    gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+    g_signal_connect (G_OBJECT(checkbutton), "toggled",
+			G_CALLBACK(update_ok_button), dialog);
 
     hbox = gtk_hbox_new (FALSE, 8);
     gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
@@ -479,14 +479,14 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(hbox), monitor_combo, TRUE, TRUE, 0);
     gtk_widget_show (monitor_combo);
 
-    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(monitor_combo)->entry), "changed",
-			GTK_SIGNAL_FUNC(update_ok_button), dialog);
+    g_signal_connect (G_OBJECT(GTK_COMBO(monitor_combo)->entry), "changed",
+			G_CALLBACK(update_ok_button), dialog);
 
-    gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-			GTK_SIGNAL_FUNC(monitor_enable_cb), dialog);
+    g_signal_connect (G_OBJECT(checkbutton), "toggled",
+			G_CALLBACK(monitor_enable_cb), dialog);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "monitor_chb", checkbutton);
-    gtk_object_set_data (GTK_OBJECT (dialog), "monitor_widget", hbox);
+    g_object_set_data (G_OBJECT (dialog), "monitor_chb", checkbutton);
+    g_object_set_data (G_OBJECT (dialog), "monitor_widget", hbox);
 
 
     /* Swap / Remember / Reset device names*/
@@ -498,8 +498,8 @@ device_config (void)
 
     button = gtk_button_new_with_label (_("Swap"));
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 4);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(pcmio_devname_swap_cb), dialog);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(pcmio_devname_swap_cb), dialog);
     gtk_widget_show (button);
 
     tooltips = gtk_tooltips_new ();
@@ -507,7 +507,7 @@ device_config (void)
 			  _("Swap main and monitor devices."),
 			  NULL);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "swap", button);
+    g_object_set_data (G_OBJECT (dialog), "swap", button);
 
     hbox2 = gtk_hbox_new (TRUE, 4);
     gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
@@ -515,8 +515,8 @@ device_config (void)
 
     button = gtk_button_new_with_label (_("Reset"));
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(pcmio_devname_reset_cb), dialog);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(pcmio_devname_reset_cb), dialog);
     gtk_widget_show (button);
 
     tooltips = gtk_tooltips_new ();
@@ -529,8 +529,8 @@ device_config (void)
 
     button = gtk_button_new_with_label (_("Defaults"));
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(pcmio_devname_default_cb), dialog);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(pcmio_devname_default_cb), dialog);
     gtk_widget_show (button);
 
     tooltips = gtk_tooltips_new ();
@@ -568,14 +568,14 @@ device_config (void)
 			      1  /* page size */
 			      );
 
-    gtk_object_set_data (GTK_OBJECT(dialog), "buff_adj", adj);
+    g_object_set_data (G_OBJECT(dialog), "buff_adj", adj);
 
     hscale = gtk_hscale_new (GTK_ADJUSTMENT(adj));
     gtk_box_pack_start (GTK_BOX(hbox), hscale, TRUE, TRUE, 4);
     gtk_scale_set_draw_value (GTK_SCALE(hscale), TRUE);
     gtk_scale_set_digits (GTK_SCALE(hscale), 0);
     gtk_range_set_update_policy (GTK_RANGE(hscale), GTK_UPDATE_CONTINUOUS);
-    gtk_widget_set_usize (hscale, 160, -1);
+    gtk_widget_set_size_request(hscale, 160, -1);
     gtk_widget_show (hscale);
 
     label = gtk_label_new (_("High latency /\nFewer dropouts"));
@@ -605,7 +605,7 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
     gtk_widget_show (checkbutton);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "rem_options_chb", checkbutton);
+    g_object_set_data (G_OBJECT (dialog), "rem_options_chb", checkbutton);
 
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
 #endif
@@ -616,8 +616,8 @@ device_config (void)
 
     button = gtk_button_new_with_label (_("Reset"));
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(pcmio_buffering_reset_cb), dialog);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(pcmio_buffering_reset_cb), dialog);
     gtk_widget_show (button);
 
     tooltips = gtk_tooltips_new ();
@@ -630,8 +630,8 @@ device_config (void)
 
     button = gtk_button_new_with_label (_("Default"));
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC(pcmio_buffering_default_cb), dialog);
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK(pcmio_buffering_default_cb), dialog);
     gtk_widget_show (button);
 
     tooltips = gtk_tooltips_new ();
