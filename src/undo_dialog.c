@@ -291,7 +291,7 @@ ud_redo_cb (GtkWidget * widget, gpointer data)
 static GtkWidget *
 ud_create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 			 const gchar * label_text, const gchar * tip_text,
-			 GtkSignalFunc clicked)
+			 GCallback clicked)
 {
   GtkWidget * hbox;
   GtkWidget * label;
@@ -324,8 +324,8 @@ ud_create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
   }
 
   if (clicked != NULL) {
-    gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			GTK_SIGNAL_FUNC(clicked), NULL);
+    g_signal_connect (G_OBJECT (button), "clicked",
+			G_CALLBACK(clicked), NULL);
   }
 
   return button;
@@ -348,18 +348,18 @@ undo_dialog_create (sw_sample * sample)
     undo_dialog = gtk_dialog_new ();
     gtk_window_set_wmclass(GTK_WINDOW(undo_dialog), "undo_dialog", "Sweep");
     gtk_window_set_title(GTK_WINDOW(undo_dialog), _("Sweep: History"));
-    gtk_window_set_policy(GTK_WINDOW(undo_dialog), FALSE, FALSE, FALSE);
-    gtk_window_position(GTK_WINDOW(undo_dialog), GTK_WIN_POS_MOUSE);
-    gtk_container_border_width (GTK_CONTAINER(undo_dialog), 8);
+    gtk_window_set_resizable (GTK_WINDOW(undo_dialog), FALSE);
+    gtk_window_set_position (GTK_WINDOW(undo_dialog), GTK_WIN_POS_MOUSE);
+    gtk_container_set_border_width  (GTK_CONTAINER(undo_dialog), 8);
 
     accel_group = gtk_accel_group_new ();
     gtk_window_add_accel_group (GTK_WINDOW(undo_dialog), accel_group);
 
-    gtk_signal_connect(GTK_OBJECT(undo_dialog), "destroy",
-		       (GtkSignalFunc) undo_dialog_destroy, NULL);
+    g_signal_connect (G_OBJECT(undo_dialog), "destroy",
+		      G_CALLBACK(undo_dialog_destroy), NULL);
 
-    gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-			 GTK_OBJECT(undo_dialog), "hide");
+ //@@   gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
+//@@			 GTK_OBJECT(undo_dialog), "hide");
 
     vbox = GTK_DIALOG(undo_dialog)->vbox;
 
@@ -377,15 +377,15 @@ undo_dialog_create (sw_sample * sample)
 
     gtk_entry_set_editable (GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 
-    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
-			GTK_SIGNAL_FUNC(undo_dialog_entry_changed_cb), NULL);
+    g_signal_connect (G_OBJECT(GTK_COMBO(combo)->entry), "changed",
+			G_CALLBACK(undo_dialog_entry_changed_cb), NULL);
 
     hbox = gtk_hbox_new (TRUE, 8);
     gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
     gtk_widget_show (hbox);
 
     button = ud_create_pixmap_button (undo_dialog, undo_xpm, _("Undo"), _("Undo"),
-				   ud_undo_cb);
+				   G_CALLBACK (ud_undo_cb));
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
     gtk_widget_add_accelerator (button, "clicked", accel_group,
@@ -393,7 +393,7 @@ undo_dialog_create (sw_sample * sample)
     undo_button = button;
 
     button = ud_create_pixmap_button (undo_dialog, redo_xpm, _("Redo"), _("Redo"),
-				   ud_redo_cb);
+				   G_CALLBACK (ud_redo_cb));
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
     gtk_widget_add_accelerator (button, "clicked", accel_group,
@@ -422,8 +422,8 @@ undo_dialog_create (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
 			button, TRUE, TRUE, 0);
     gtk_widget_show (button);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC (undo_dialog_revert_cb),
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK (undo_dialog_revert_cb),
 			NULL);
     revert_button = button;
 
@@ -436,8 +436,8 @@ undo_dialog_create (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
 			ok_button, TRUE, TRUE, 0);
     gtk_widget_show (ok_button);
-    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-			GTK_SIGNAL_FUNC (undo_dialog_ok_cb),
+    g_signal_connect (G_OBJECT(ok_button), "clicked",
+			G_CALLBACK (undo_dialog_ok_cb),
 			NULL);
 #endif
 
@@ -448,8 +448,8 @@ undo_dialog_create (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
 			button, FALSE, FALSE, 0);
     gtk_widget_show (button);
-    gtk_signal_connect (GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC (undo_dialog_cancel_cb),
+    g_signal_connect (G_OBJECT(button), "clicked",
+			G_CALLBACK (undo_dialog_cancel_cb),
 			NULL);
 
     gtk_widget_grab_default (button);
