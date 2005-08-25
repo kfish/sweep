@@ -92,7 +92,7 @@ initial_sample_ask (gpointer data)
 		         "Would you like to create a new file or "
 		         "load an existing file?"),
 		       _("Create new file"), _("Load existing file"),
-		       sample_new_empty_cb, NULL, sample_load_cb, NULL, 0);
+		       G_CALLBACK (sample_new_empty_cb), NULL, G_CALLBACK (sample_load_cb), NULL, 0);
 
   return FALSE;
 }
@@ -147,7 +147,9 @@ main (int argc, char *argv[])
 
   g_thread_init (NULL);
 
-  /* must be done before gtk_idle_add / gtk_timeout_add */
+	
+
+  /* must be done before g_idle_add / gtk_timeout_add */
   sweep_timeouts_init ();
 
   for(i = 1; i < argc; i++) {
@@ -174,7 +176,7 @@ main (int argc, char *argv[])
 #endif
       show_help = TRUE;
     } else {
-      gtk_idle_add ((GtkFunction)initial_sample_load, argv[i]);
+      g_idle_add ((GSourceFunc) initial_sample_load, argv[i]);
       no_files = FALSE;
     }
   }
@@ -205,7 +207,7 @@ main (int argc, char *argv[])
   
 
   if (no_files) {
-    gtk_idle_add ((GtkFunction)initial_sample_ask, NULL);
+    g_idle_add ((GSourceFunc)initial_sample_ask, NULL);
   }
 
   /* initialise preferences */
