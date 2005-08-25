@@ -37,6 +37,7 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtkruler.h>
+#include <glib.h>
 
 #include <sweep/sweep_types.h>
 
@@ -69,7 +70,7 @@ struct _DbRulerClass
 };
 
 
-guint      db_ruler_get_type (void);
+GType      db_ruler_get_type (void);
 GtkWidget* db_ruler_new      (void);
 
 #ifdef __cplusplus
