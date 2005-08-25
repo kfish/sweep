@@ -304,18 +304,19 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   win_height = gdk_screen_height () / 2;
 
   filesel = gtk_file_selection_new(_("Sweep: Load file"));
+  sweep_set_window_icon (GTK_WINDOW(filesel), "sweep_app_icon.png");
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
-  gtk_widget_set_usize (filesel, win_width, win_height);
+  gtk_widget_set_size_request (filesel, win_width, win_height);
 
   accel_group = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW(filesel), accel_group);
 
-  gtk_signal_connect (GTK_OBJECT(filesel), "destroy",
-		      GTK_SIGNAL_FUNC(sample_load_destroy_cb), filesel);
+  g_signal_connect (G_OBJECT(filesel), "destroy",
+                     G_CALLBACK(sample_load_destroy_cb), filesel);
 
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
+/*  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
 		       GTK_OBJECT(filesel), "destroy");
-
+*/
   load_current_file = prefs_get_string (LAST_LOAD_KEY);
 
   if(load_current_file) {
@@ -324,11 +325,13 @@ sample_load_cb(GtkWidget * widget, gpointer data)
       free (load_current_file);
   }
 
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
-		     "clicked", GTK_SIGNAL_FUNC(sample_load_ok_cb), filesel);
+  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
+                   "clicked", G_CALLBACK(sample_load_ok_cb), filesel);
 
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
-		"clicked", GTK_SIGNAL_FUNC(sample_load_cancel_cb), filesel);
+
+  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
+              "clicked", G_CALLBACK(sample_load_cancel_cb), filesel);
+
 
   gtk_widget_show(filesel);
 }
@@ -375,7 +378,7 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
 
   question_dialog_new (sample, _("Revert file"), buf,
 		       _("Revert"), _("Don't revert"),
-		       sample_revert_ok_cb, sample, NULL, NULL,
+		       G_CALLBACK (sample_revert_ok_cb), sample, NULL, NULL,
 		       SWEEP_EDIT_MODE_ALLOC);
 }
 
@@ -600,7 +603,7 @@ sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
       snprintf (buf, BUF_LEN, _("%s exists. Overwrite?"), pathname);
       question_dialog_new (sample, _("File exists"), buf,
 			   _("Overwrite"), _("Don't overwrite"),
-			   overwrite_ok_cb, sd, overwrite_cancel_cb, sd,
+			   G_CALLBACK (overwrite_ok_cb), sd, G_CALLBACK (overwrite_cancel_cb), sd,
 			   SWEEP_EDIT_MODE_META);
     }
   }
@@ -620,10 +623,10 @@ file_set_format_cb (GtkWidget * widget, gpointer data)
   sw_sample * sample = (sw_sample *)data;
 
   sample->file_method = (sw_file_method_t)
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(widget), "method"));
+     GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "method"));
 
   sample->file_format =
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(widget), "format"));
+     GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "format"));
 }
 
 static GtkWidget *
@@ -762,8 +765,9 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   sample = view->sample;
 
   filesel = gtk_file_selection_new(_("Sweep: Save file"));
+  sweep_set_window_icon (GTK_WINDOW(filesel), "sweep_app_icon.png");
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
-  gtk_widget_set_usize (filesel, win_width, win_height);
+  gtk_widget_set_size_request (filesel, win_width, win_height);
 
   if (!strcmp (g_dirname (sample->pathname), ".")) {
 
@@ -817,11 +821,12 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 
   gtk_widget_show (save_options);
 
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
-		     "clicked", GTK_SIGNAL_FUNC(sample_save_as_ok_cb), data);
+  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
+                   "clicked", G_CALLBACK(sample_save_as_ok_cb), data);
 
-  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
-		"clicked", GTK_SIGNAL_FUNC(sample_save_as_cancel_cb), filesel);
+  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
+               "clicked", G_CALLBACK(sample_save_as_cancel_cb), filesel);
+
 
   gtk_widget_show(filesel);
 }
@@ -881,7 +886,7 @@ sample_save_cb (GtkWidget * widget, gpointer data)
     
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Save"), _("Don't save"),
-			 sample_save_ok_cb, view, NULL, NULL,
+			  G_CALLBACK (sample_save_ok_cb), view, NULL, NULL,
 			 SWEEP_EDIT_MODE_ALLOC);
   } else {
     sample_save_ok_cb (widget, view);
