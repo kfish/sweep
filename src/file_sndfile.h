@@ -27,12 +27,12 @@ sw_sample *
 sndfile_sample_reload (sw_sample * sample, gboolean try_raw);
 
 sw_sample *
-sndfile_sample_load (char * pathname, gboolean try_raw);
+sndfile_sample_load (gchar * pathname, gboolean try_raw);
 
 int
-sndfile_sample_save(sw_sample * s, char * pathname);
+sndfile_sample_save(sw_sample * s, gchar * pathname);
 
 int
-sndfile_save_options_dialog (sw_sample * sample, char * pathname);
+sndfile_save_options_dialog (sw_sample * sample, gchar * pathname);
 
 #endif /* __FILE_OPS_H__ */
