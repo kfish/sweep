@@ -130,12 +130,12 @@ static void
 start_playmarker (sw_sample * s)
 {
   if (s->playmarker_tag > 0) {
-    gtk_timeout_remove (s->playmarker_tag);
+    g_source_remove (s->playmarker_tag);
   }
 
   s->playmarker_tag =
-    gtk_timeout_add ((guint32)30,
-		     (GtkFunction)update_playmarker,
+    g_timeout_add ((guint32)30,
+		     (GSourceFunc) update_playmarker,
 		     (gpointer)s);
 }
 
