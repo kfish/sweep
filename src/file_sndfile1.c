@@ -69,13 +69,13 @@ typedef struct {
 typedef struct {
   gboolean saving; /* loading or saving ? */
   sw_sample * sample;
-  char * pathname;
+  gchar * pathname;
   SF_INFO * sfinfo;
   GtkWidget * ok_button;
 } sndfile_save_options;
 
 static void
-sweep_sndfile_perror (SNDFILE * sndfile, char * pathname)
+sweep_sndfile_perror (SNDFILE * sndfile, gchar * pathname)
 {
 #undef BUF_LEN
 #define BUF_LEN 128
@@ -211,7 +211,7 @@ set_subformat_cb (GtkWidget * widget, gpointer data)
   sfinfo->format &= SF_FORMAT_TYPEMASK; /* clear submask */
 
   subformat =
-    GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
   subformat &= SF_FORMAT_SUBMASK; /* get new subformat */
 
   sfinfo->format |= subformat;
@@ -259,7 +259,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   GtkWidget * entry;
   GtkWidget * ok_button, * button;
 
-  GtkStyle * style;
+/*GtkStyle * style;*/
 
   GtkTooltips * tooltips;
 
@@ -295,8 +295,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (sndfile_save_options_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (sndfile_save_options_dialog_cancel_cb),
 		      so);
 
 
@@ -327,18 +327,20 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 
   /* Filename */
 
+/* pangoise?
+
   style = gtk_style_copy (style_wb);
   gdk_font_unref (style->font);
   style->font =
-    gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+  gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
   gtk_widget_push_style (style);
-
+*/
   label = gtk_label_new (g_basename (so->pathname));
   gtk_box_pack_start (GTK_BOX(vbox), label,
 		      FALSE, FALSE, 8);
   gtk_widget_show (label);
   
-  gtk_widget_pop_style ();
+/*gtk_widget_pop_style ();*/
 
   notebook = gtk_notebook_new ();
   gtk_box_pack_start (GTK_BOX(main_vbox), notebook, TRUE, TRUE, 4);
@@ -399,10 +401,10 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
       }
 
       menuitem = gtk_menu_item_new_with_label (info.name);
-      gtk_object_set_user_data (GTK_OBJECT(menuitem),
+      g_object_set_data (G_OBJECT(menuitem), "default", 
 				GINT_TO_POINTER(info.format));
-      gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-			  GTK_SIGNAL_FUNC(set_subformat_cb), so);
+      g_signal_connect (G_OBJECT(menuitem), "activate",
+			  G_CALLBACK(set_subformat_cb), so);
       gtk_menu_append (GTK_MENU(menu), menuitem);
       gtk_widget_show (menuitem);
       if (info.format == subformat) {
@@ -426,8 +428,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
     gtk_widget_show (entry);
 
-    gtk_signal_connect (GTK_OBJECT(entry), "number-changed",
-			GTK_SIGNAL_FUNC(set_rate_cb), so);
+    g_signal_connect (G_OBJECT(entry), "number-changed",
+			G_CALLBACK(set_rate_cb), so);
 
     if (sample == NULL)
       so->sfinfo->samplerate = samplerate_chooser_get_rate (entry);
@@ -462,8 +464,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (entry);
   
-  gtk_signal_connect (GTK_OBJECT(entry), "number-changed",
-		      GTK_SIGNAL_FUNC(set_channels_cb), so);
+  g_signal_connect (G_OBJECT(entry), "number-changed",
+		      G_CALLBACK(set_channels_cb), so);
 
   if (sample == NULL)
     so->sfinfo->channels = channelcount_chooser_get_count (entry);
@@ -518,7 +520,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 }
 
 int
-sndfile_save_options_dialog (sw_sample * sample, char * pathname)
+sndfile_save_options_dialog (sw_sample * sample, gchar * pathname)
 {
   GtkWidget * dialog;
   sndfile_save_options * so;
@@ -545,8 +547,8 @@ sndfile_save_options_dialog (sw_sample * sample, char * pathname)
   dialog = create_sndfile_encoding_options_dialog (so);
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Save PCM options"));
 
-  gtk_signal_connect (GTK_OBJECT(so->ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (sndfile_save_options_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(so->ok_button), "clicked",
+		      G_CALLBACK (sndfile_save_options_dialog_ok_cb),
 		      so);
 
   gtk_widget_show (dialog);
@@ -562,7 +564,7 @@ struct _sf_data {
 };
 
 static sw_sample *
-_sndfile_sample_load (sw_sample * sample, char * pathname, SF_INFO * sfinfo,
+_sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 		      gboolean try_raw);
 
 static void
@@ -570,7 +572,7 @@ sndfile_load_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 {
   sndfile_save_options * so = (sndfile_save_options *)data;
   sw_sample * sample = so->sample;
-  char * pathname = so->pathname;
+  gchar * pathname = so->pathname;
   SF_INFO * sfinfo = so->sfinfo;
   GtkWidget * dialog;
 
@@ -661,7 +663,7 @@ static sw_operation sndfile_load_op = {
 };
 
 static sw_sample *
-_sndfile_sample_load (sw_sample * sample, char * pathname, SF_INFO * sfinfo,
+_sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 		      gboolean try_raw)
 {
   SNDFILE * sndfile;
@@ -714,8 +716,8 @@ _sndfile_sample_load (sw_sample * sample, char * pathname, SF_INFO * sfinfo,
       gtk_window_set_title (GTK_WINDOW(dialog),
 			    _("Sweep: Load Raw PCM options"));
 
-      gtk_signal_connect (GTK_OBJECT(so->ok_button), "clicked",
-			  GTK_SIGNAL_FUNC (sndfile_load_options_dialog_ok_cb),
+      g_signal_connect (G_OBJECT(so->ok_button), "clicked",
+			  G_CALLBACK (sndfile_load_options_dialog_ok_cb),
 			  so);
 
       gtk_widget_show (dialog);
@@ -785,7 +787,7 @@ sndfile_sample_reload (sw_sample * sample, gboolean try_raw)
 }
 
 sw_sample *
-sndfile_sample_load (char * pathname, gboolean try_raw)
+sndfile_sample_load (gchar * pathname, gboolean try_raw)
 {
   if (pathname == NULL) return NULL;
 
@@ -796,7 +798,7 @@ static int
 sndfile_sample_save_thread (sw_op_instance * inst)
 {
   sw_sample * sample = inst->sample;
-  char * pathname = (char *)inst->do_data;
+  gchar * pathname = (gchar *)inst->do_data;
 
   SNDFILE *sndfile;
   SF_INFO * sfinfo;
@@ -987,7 +989,7 @@ static sw_operation sndfile_save_op = {
 };
 
 int
-sndfile_sample_save (sw_sample * sample, char * pathname)
+sndfile_sample_save (sw_sample * sample, gchar * pathname)
 {
   char buf[BUF_LEN];
 
