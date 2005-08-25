@@ -2764,7 +2764,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_widget_show (pixmap);
 
   label = gtk_label_new (NO_TIME);
-  gtk_label_set_width_chars (label, 12);
+  gtk_label_set_width_chars (GTK_LABEL(label), 12);
   gtk_box_pack_start (GTK_BOX(tool_hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
   view->pos = label;
