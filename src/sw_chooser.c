@@ -85,12 +85,17 @@ sw_chooser_class_init(SWChooserClass * class)
 
   object_class = (GtkObjectClass *) class;
 
-  sw_chooser_signals[NUMBER_CHANGED_SIGNAL] =
-    gtk_signal_new("number-changed", GTK_RUN_FIRST, object_class->type,
-                   GTK_SIGNAL_OFFSET(SWChooserClass, number_changed),
-                   gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1, GTK_TYPE_INT);
+  sw_chooser_signals[NUMBER_CHANGED_SIGNAL] = g_signal_new ("number-changed",
+					 			  G_TYPE_FROM_CLASS (class),
+	                              G_SIGNAL_RUN_FIRST,
+	                              G_STRUCT_OFFSET (SWChooserClass, number_changed),
+                                  NULL, 
+                                  NULL,                
+					 			  g_cclosure_marshal_VOID__VOID,
+                                  G_TYPE_NONE, 0);
 
-  gtk_object_class_add_signals(object_class, sw_chooser_signals, LAST_SIGNAL);
+  
+//@@  gtk_object_class_add_signals(object_class, sw_chooser_signals, LAST_SIGNAL);
 
   class->number_changed = NULL;
 }
@@ -99,25 +104,32 @@ static void
 sw_chooser_init (GtkWidget * chooser)
 {
 }
+//@@ switched guint for GtkType 
 
-guint
-sw_chooser_get_type()
+
+GType
+sw_chooser_get_type (void)
 {
-  static guint sw_chooser_type = 0;
+  static GType sw_chooser_type = 0;
 
-  if (!sw_chooser_type) {
-    GtkTypeInfo sw_chooser_info =
+  if (!sw_chooser_type)
     {
-      "SWChooser",
-      sizeof(SWChooser),
+      static const GTypeInfo sw_chooser_info =
+      {
+		  
       sizeof(SWChooserClass),
-      (GtkClassInitFunc) sw_chooser_class_init,
-      (GtkObjectInitFunc) sw_chooser_init,
-      (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL,
+	NULL, /* base_init */
+	NULL, /* base_finalize */
+	(GClassInitFunc) sw_chooser_class_init,
+	NULL, /* class_finalize */
+	NULL, /* class_data */
+	sizeof (SWChooser),
+	0,    /* n_preallocs */
+	(GInstanceInitFunc) sw_chooser_init,	  
+
     };
 
-    sw_chooser_type = gtk_type_unique(gtk_frame_get_type(), &sw_chooser_info);
+      sw_chooser_type = g_type_register_static (GTK_TYPE_FRAME, "SWChooser", &sw_chooser_info, 0);
   }
 
   return sw_chooser_type;
@@ -128,7 +140,7 @@ static int
 chooser_get_number (GtkWidget * chooser)
 {
   return
-    GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT(chooser), "number"));
+    GPOINTER_TO_INT (g_object_get_data (G_OBJECT(chooser), "number"));
 }
 
 static int
@@ -139,7 +151,7 @@ chooser_set_number_direct (GtkWidget * chooser, int number)
   char buf[BUF_LEN];
 
   direct_entry =
-    GTK_WIDGET (gtk_object_get_data (GTK_OBJECT(chooser), "direct_entry"));
+    GTK_WIDGET (g_object_get_data (G_OBJECT(chooser), "direct_entry"));
 
   /*
    * Print the number in the direct_entry, but leave it blank for zero.
@@ -153,11 +165,11 @@ chooser_set_number_direct (GtkWidget * chooser, int number)
 
   gtk_entry_set_text (GTK_ENTRY(direct_entry), buf);
 
-  gtk_object_set_data (GTK_OBJECT(chooser), "number",
+  g_object_set_data (G_OBJECT(chooser), "number",
 		       GINT_TO_POINTER(number));
 
-  gtk_signal_emit (GTK_OBJECT(chooser),
-		   sw_chooser_signals[NUMBER_CHANGED_SIGNAL], number);
+  g_signal_emit_by_name (GTK_OBJECT(chooser),
+		   "number-changed");
 
   return number;
 }
@@ -169,7 +181,7 @@ chooser_set_number (GtkWidget * chooser, int number, sw_choice * choices)
   int i;
 
   combo_entry =
-    GTK_WIDGET (gtk_object_get_data (GTK_OBJECT(chooser), "combo_entry"));
+    GTK_WIDGET (g_object_get_data (G_OBJECT(chooser), "combo_entry"));
 
   for (i = 0; choices[i].name != NULL; i++) {
     if (number == choices[i].number) {
@@ -197,7 +209,7 @@ chooser_combo_changed_cb (GtkWidget * widget, gpointer data)
   
   text = gtk_entry_get_text (GTK_ENTRY(widget));
 
-  choices = gtk_object_get_data (GTK_OBJECT(chooser), "choices");
+  choices = g_object_get_data (G_OBJECT(chooser), "choices");
 
   for (i = 0; choices[i].name != NULL; i++) {
     if (strcmp (text, _(choices[i].name)) == 0) {
@@ -209,7 +221,7 @@ chooser_combo_changed_cb (GtkWidget * widget, gpointer data)
   /* set the direct hbox sensitive if "Custom", else insensitive */
 
   direct_hbox =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(chooser), "direct_hbox"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(chooser), "direct_hbox"));
 
   if (number == -1) {
     gtk_widget_set_sensitive (direct_hbox, TRUE);
@@ -234,18 +246,25 @@ chooser_entry_changed_cb (GtkWidget * widget, gpointer data)
   text = gtk_entry_get_text (GTK_ENTRY(widget));
   number = atoi (text);
 
-  choices = gtk_object_get_data (GTK_OBJECT(chooser), "choices");
+  choices = g_object_get_data (G_OBJECT(chooser), "choices");
 
   combo_entry =
-    GTK_WIDGET (gtk_object_get_data (GTK_OBJECT(chooser), "combo_entry"));
+    GTK_WIDGET (g_object_get_data (G_OBJECT(chooser), "combo_entry"));
 
-  gtk_signal_handler_block_by_data (GTK_OBJECT(widget), chooser);
-  gtk_signal_handler_block_by_data (GTK_OBJECT(combo_entry), chooser);
+	g_signal_handlers_block_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
+ //@@ gtk_signal_handler_block_by_data (GTK_OBJECT(widget), chooser);
+	g_signal_handlers_unblock_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
+  //@@ gtk_signal_handler_block_by_data (GTK_OBJECT(combo_entry), chooser);
 
   chooser_set_number (chooser, number, choices);
-
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(combo_entry), chooser);
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(widget), chooser);
+g_signal_handlers_block_matched (GTK_OBJECT(combo_entry), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
+  //@@gtk_signal_handler_unblock_by_data (GTK_OBJECT(combo_entry), chooser);
+g_signal_handlers_block_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
+  //@@gtk_signal_handler_unblock_by_data (GTK_OBJECT(widget), chooser);
 
 }
 
@@ -284,7 +303,7 @@ sw_chooser_build (GtkWidget * chooser)
 
   combo_entry = GTK_COMBO(combo)->entry;
 
-  gtk_entry_set_editable (GTK_ENTRY(combo_entry), FALSE);
+  gtk_editable_set_editable (GTK_EDITABLE(combo_entry), FALSE);
 
   gtk_box_pack_start (GTK_BOX (vbox), combo, TRUE, FALSE, 4);
   gtk_widget_show (combo);
@@ -307,16 +326,16 @@ sw_chooser_build (GtkWidget * chooser)
     gtk_widget_show (label);
   }
 
-  gtk_signal_connect (GTK_OBJECT(combo_entry), "changed",
-		      GTK_SIGNAL_FUNC(chooser_combo_changed_cb), chooser);
+  g_signal_connect (G_OBJECT(combo_entry), "changed",
+		      G_CALLBACK(chooser_combo_changed_cb), chooser);
   
-  gtk_signal_connect (GTK_OBJECT(direct_entry), "changed",
-		      GTK_SIGNAL_FUNC(chooser_entry_changed_cb), chooser);
+  g_signal_connect (G_OBJECT(direct_entry), "changed",
+		      G_CALLBACK(chooser_entry_changed_cb), chooser);
 
-  gtk_object_set_data (GTK_OBJECT(chooser), "combo_entry", combo_entry);
-  gtk_object_set_data (GTK_OBJECT(chooser), "direct_entry", direct_entry);
-  gtk_object_set_data (GTK_OBJECT(chooser), "direct_hbox", hbox);
-  gtk_object_set_data (GTK_OBJECT(chooser), "choices", choices);
+  g_object_set_data (G_OBJECT(chooser), "combo_entry", combo_entry);
+  g_object_set_data (G_OBJECT(chooser), "direct_entry", direct_entry);
+  g_object_set_data (G_OBJECT(chooser), "direct_hbox", hbox);
+  g_object_set_data (G_OBJECT(chooser), "choices", choices);
 
   /* fake a change event to set the number data */
   chooser_combo_changed_cb (combo_entry, chooser);
@@ -326,7 +345,7 @@ sw_chooser_build (GtkWidget * chooser)
 GtkWidget *
 samplerate_chooser_new (gchar * title)
 {
-  SWChooser * chooser = SW_CHOOSER (gtk_type_new (sw_chooser_get_type ()));
+  SWChooser * chooser = SW_CHOOSER (g_object_new (sw_chooser_get_type (), NULL));
 
   chooser->title = title ? title : _("Sampling rate");
   chooser->choices = (gpointer)samplerate_choices;
@@ -352,7 +371,7 @@ samplerate_chooser_set_rate (GtkWidget * chooser, int rate)
 GtkWidget *
 channelcount_chooser_new (gchar * title)
 {
-  SWChooser * chooser = SW_CHOOSER (gtk_type_new (sw_chooser_get_type ()));
+  SWChooser * chooser = SW_CHOOSER (g_object_new (sw_chooser_get_type (), NULL));
 
   chooser->title = title ? title : _("Channels");
   chooser->choices = channelcount_choices;
