@@ -330,8 +330,8 @@ schedule_operation (sw_sample * sample, char * description,
     
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Continue editing"), _("Reread from disk"),
-			 schedule_operation_ok_cb, inst,
-			 sample_revert_ok_cb, sample,
+			 G_CALLBACK (schedule_operation_ok_cb), inst,
+			 G_CALLBACK (sample_revert_ok_cb), sample,
 			 SWEEP_EDIT_MODE_ALLOC);
   } else {
     schedule_operation_do (inst);
@@ -647,7 +647,7 @@ cancel_active_op (sw_sample * s)
 {
 #ifdef TRYCANCEL
 
-  gtk_idle_add ((GtkFunction)try_cancel_active_op, (gpointer)s);
+  g_idle_add (GSourceFunc(try_cancel_active_op), (gpointer)s);
 
 #else
 
