@@ -16,7 +16,7 @@ Source:         %{name}-%{version}.tar.gz
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 Docdir:         %{prefix}/doc
 Prefix:         %{prefix}
-Requires:       gtk+ >= 1.2.0
+Requires:       gtk+ >= 2.2.0
 
 %description
 Sweep is an editor for sound samples. It operates on files of various
@@ -94,3 +94,6 @@ rm -r $RPM_BUILD_ROOT
 - use autoconf to generate the spec via sweep.spec.in
 - insert the package version via the autoconf macro 
 - remind the reader that the above changes are untested as of now
+
+* Thur Aug 25 2005 Peter Shorthose <kickback@users.sourceforge.net>
+- update Gtk requirements
