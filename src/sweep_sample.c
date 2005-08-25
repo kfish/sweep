@@ -120,7 +120,7 @@ filename_generate (void)
 }
 
 sw_sample *
-sample_new_empty(const gchar * pathname,
+sample_new_empty(gchar * pathname,
 		 gint nr_channels, gint sample_rate,
 		 sw_framecount_t sample_length)
 {
@@ -638,7 +638,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
 }
 
 void
-create_sample_new_dialog_defaults (const gchar * pathname)
+create_sample_new_dialog_defaults ( gchar * pathname)
 {
   create_sample_new_dialog (pathname, DEFAULT_CHANNELS, DEFAULT_SAMPLERATE,
 			    60, TRUE);
@@ -674,7 +674,7 @@ sample_get_sounddata (sw_sample * s)
 }
 
 void
-sample_set_pathname (sw_sample * s, const gchar * pathname)
+sample_set_pathname (sw_sample * s, gchar * pathname)
 {
   sw_view * v;
   GList * gl;
