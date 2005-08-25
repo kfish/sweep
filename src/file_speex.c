@@ -1101,50 +1101,50 @@ speex_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   /* Mode */
 
   mode =
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(dialog), "mode_choice"));
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(dialog), "mode_choice"));
 
   /* Features */
 
   features =
-    GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(dialog),
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(dialog),
 					 "features_choice"));
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
   quality = (int)GTK_ADJUSTMENT(adj)->value;
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "complexity_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "complexity_adj"));
   complexity = (int)GTK_ADJUSTMENT(adj)->value;
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "framepack_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "framepack_adj"));
   framepack = (int)GTK_ADJUSTMENT(adj)->value;
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_chb"));
   use_br = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
   entry =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_entry"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_entry"));
   text = gtk_entry_get_text (GTK_ENTRY(entry));
   bitrate = (int)strtol (text, (char **)NULL, 0);
 
   /* rem encode */
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_encode_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_encode_chb"));
   rem_encode =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
   entry =
-    GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog), "serialno_entry"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "serialno_entry"));
   text = gtk_entry_get_text (GTK_ENTRY(entry));
   serialno = strtol (text, (char **)NULL, 0);
   if (serialno == LONG_MIN || serialno == LONG_MAX) serialno = random ();
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_serialno_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_serialno_chb"));
   rem_serialno =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
-  pathname = gtk_object_get_data (GTK_OBJECT(dialog), "pathname");
+  pathname = g_object_get_data (G_OBJECT(dialog), "pathname");
 
   gtk_widget_destroy (dialog);
 
@@ -1261,28 +1261,28 @@ speex_encode_options_update_cb (GtkWidget * widget, gpointer data)
 
   /* Features */
   features =
-    GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT(dialog),
+    GPOINTER_TO_INT (g_object_get_data (G_OBJECT(dialog),
 					  "features_choice"));
 
   /* Quality */
 
   quality_label =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_label"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_label"));
   quality_hscale =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "quality_hscale"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_hscale"));
 
   /* Bitrate */
 
   br_checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_chb"));
   br = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(br_checkbutton));
 
   br_label =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_label"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_label"));
   br_entry =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_entry"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_entry"));
   br_units =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "br_units"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "br_units"));
 
   gtk_widget_set_sensitive (br_label, br);
   gtk_widget_set_sensitive (br_entry, br);
@@ -1306,9 +1306,9 @@ speex_encode_options_mode_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog = GTK_WIDGET (data);
   int mode;
 
-  mode = GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+  mode = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "mode_choice",
+  g_object_set_data (G_OBJECT(dialog), "mode_choice",
 		       GINT_TO_POINTER(mode));
 }
 
@@ -1323,7 +1323,7 @@ speex_encode_options_mode_auto_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
   option_menu =
-    GTK_OPTION_MENU(gtk_object_get_data (GTK_OBJECT(dialog), "mode_menu"));
+    GTK_OPTION_MENU(g_object_get_data (G_OBJECT(dialog), "mode_menu"));
 
 #if (SPEEX_NB_MODES > 2)
   if (f->rate >= 32000) {
@@ -1337,7 +1337,7 @@ speex_encode_options_mode_auto_cb (GtkWidget * widget, gpointer data)
     }
 
   gtk_option_menu_set_history (option_menu, mode);
-  gtk_object_set_data (GTK_OBJECT(dialog), "mode_choice",
+  g_object_set_data (G_OBJECT(dialog), "mode_choice",
 		       GINT_TO_POINTER(mode));
 }
 
@@ -1348,14 +1348,14 @@ speex_encode_options_set_features (GtkWidget * dialog, int features)
   int i;
 
   option_menu =
-    GTK_OPTION_MENU(gtk_object_get_data (GTK_OBJECT(dialog), "features_menu"));
+    GTK_OPTION_MENU(g_object_get_data (G_OBJECT(dialog), "features_menu"));
 
   for (i = 0; feature_choices[i].name != NULL; i++) {
     if (feature_choices[i].number == features)
       gtk_option_menu_set_history (option_menu, i);
   }
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "features_choice",
+  g_object_set_data (G_OBJECT(dialog), "features_choice",
 		       GINT_TO_POINTER(features));
 }
 
@@ -1365,9 +1365,9 @@ speex_encode_options_features_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog = GTK_WIDGET (data);
   int features;
 
-  features = GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+  features = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "features_choice",
+  g_object_set_data (G_OBJECT(dialog), "features_choice",
 		       GINT_TO_POINTER(features));
 
   speex_encode_options_update_cb (dialog, data);
@@ -1400,7 +1400,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Quality */
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
   
   i = prefs_get_int (QUALITY_KEY);
   
@@ -1414,7 +1414,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Complexity */
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "complexity_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "complexity_adj"));
   
   i = prefs_get_int (COMPLEXITY_KEY);
   
@@ -1428,7 +1428,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Framepack */
 
-  adj = GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "framepack_adj"));
+  adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "framepack_adj"));
   
   i = prefs_get_int (FRAMEPACK_KEY);
   
@@ -1461,18 +1461,18 @@ speex_encode_options_default_cb (GtkWidget * widget, gpointer data)
 
   /* Quality */
   quality_adj =
-    GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+    GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
   gtk_adjustment_set_value (GTK_ADJUSTMENT(quality_adj), DEFAULT_QUALITY);
 
   /* Complexity */
   complexity_adj =
-    GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "complexity_adj"));
+    GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "complexity_adj"));
   gtk_adjustment_set_value (GTK_ADJUSTMENT(complexity_adj),
 			    DEFAULT_COMPLEXITY);
 
   /* Framepack */
   framepack_adj =
-    GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "framepack_adj"));
+    GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "framepack_adj"));
   gtk_adjustment_set_value (GTK_ADJUSTMENT(framepack_adj), DEFAULT_FRAMEPACK);
 
   speex_encode_options_update_cb (widget, data);
@@ -1517,11 +1517,11 @@ randomise_serialno_pressed_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_widget_get_toplevel (widget);
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_serialno_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_serialno_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
 
   tag = gtk_timeout_add (30, randomise_serialno, data);
-  gtk_object_set_data (GTK_OBJECT(widget), "tag", GINT_TO_POINTER(tag));
+  g_object_set_data (G_OBJECT(widget), "tag", GINT_TO_POINTER(tag));
 }
 
 static void
@@ -1529,7 +1529,7 @@ randomise_serialno_released_cb (GtkWidget * widget, gpointer data)
 {
   gint tag;
 
-  tag = GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(widget), "tag"));
+  tag = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "tag"));
   gtk_timeout_remove (tag);
 }
 
@@ -1569,7 +1569,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   GtkTooltips * tooltips;
 
-  GtkStyle * style;
+/*  GtkStyle * style; */
 
   int i;
   long * l;
@@ -1597,7 +1597,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 		       GTK_OBJECT(dialog), "destroy");
 #endif
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "pathname", pathname);
+  g_object_set_data (G_OBJECT(dialog), "pathname", pathname);
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 
@@ -1634,17 +1634,19 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_set_border_width (GTK_CONTAINER(hbox), 4);
   gtk_widget_show (hbox);
 
+/* worth changing this over to pango?
+
   style = gtk_style_new ();
   gdk_font_unref (style->font);
   style->font =
-    gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+  gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
   gtk_widget_push_style (style);
-
+*/
   label = gtk_label_new (g_basename (pathname));
   gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
   
-  gtk_widget_pop_style ();
+/* gtk_widget_pop_style (); */
 
   notebook = gtk_notebook_new ();
   gtk_box_pack_start (GTK_BOX(main_vbox), notebook, TRUE, TRUE, 4);
@@ -1677,22 +1679,22 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     menuitem =
       gtk_menu_item_new_with_label (_(mode_choices[i].name));
     gtk_menu_append (GTK_MENU(menu), menuitem);
-    gtk_object_set_user_data (GTK_OBJECT(menuitem),
+    g_object_set_data (G_OBJECT(menuitem), "default", 
 			      GINT_TO_POINTER(mode_choices[i].number));
     gtk_widget_show (menuitem);
 
-    gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-			GTK_SIGNAL_FUNC(speex_encode_options_mode_cb),
+    g_signal_connect (G_OBJECT(menuitem), "activate",
+			G_CALLBACK(speex_encode_options_mode_cb),
 			dialog);
   }
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
     
-  gtk_object_set_data (GTK_OBJECT(dialog), "mode_menu", option_menu);
+  g_object_set_data (G_OBJECT(dialog), "mode_menu", option_menu);
 
   button = gtk_button_new_with_label (_("Auto"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(speex_encode_options_mode_auto_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(speex_encode_options_mode_auto_cb),
 		      sample);
   gtk_widget_show (button);
   
@@ -1718,12 +1720,12 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     menuitem =
       gtk_menu_item_new_with_label (_(feature_choices[i].name));
     gtk_menu_append (GTK_MENU(menu), menuitem);
-    gtk_object_set_user_data (GTK_OBJECT(menuitem),
+    g_object_set_data (G_OBJECT(menuitem), "default", 
 			      GINT_TO_POINTER(feature_choices[i].number));
     gtk_widget_show (menuitem);
 
-    gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-			GTK_SIGNAL_FUNC(speex_encode_options_features_cb),
+    g_signal_connect (G_OBJECT(menuitem), "activate",
+			G_CALLBACK(speex_encode_options_features_cb),
 			dialog);
 
     if (feature_choices[i].desc != NULL) {
@@ -1734,7 +1736,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   }
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
     
-  gtk_object_set_data (GTK_OBJECT(dialog), "features_menu", option_menu);
+  g_object_set_data (G_OBJECT(dialog), "features_menu", option_menu);
 
 
   table = gtk_table_new (3, 2, TRUE);
@@ -1755,7 +1757,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 4);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "quality_label", label);
+  g_object_set_data (G_OBJECT (dialog), "quality_label", label);
 
   quality_adj = gtk_adjustment_new (DEFAULT_QUALITY, /* value */
 				    1.0,  /* lower */
@@ -1784,7 +1786,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     gtk_widget_set_usize (quality_hscale, gdk_screen_width() / 8, -1);
     gtk_widget_show (quality_hscale);
 
-    gtk_object_set_data (GTK_OBJECT (dialog), "quality_hscale",
+    g_object_set_data (G_OBJECT (dialog), "quality_hscale",
 			 quality_hscale);
 
     label = gtk_label_new (NULL);
@@ -1799,7 +1801,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "file)."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "quality_adj", quality_adj);
+  g_object_set_data (G_OBJECT (dialog), "quality_adj", quality_adj);
 
   /* Bit rate */
 
@@ -1809,11 +1811,11 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-		      GTK_SIGNAL_FUNC(speex_encode_options_update_cb),
+  g_signal_connect (G_OBJECT(checkbutton), "toggled",
+		      G_CALLBACK(speex_encode_options_update_cb),
 		      dialog);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "br_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "br_chb", checkbutton);
 
   tooltips = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tooltips, checkbutton,
@@ -1827,7 +1829,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "br_label", label);
+  g_object_set_data (G_OBJECT (dialog), "br_label", label);
 
   hbox = gtk_hbox_new (FALSE, 0);
   gtk_table_attach (GTK_TABLE(table), hbox, 1, 2, 2, 3,
@@ -1838,13 +1840,13 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX(hbox), entry, TRUE, TRUE, 0);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "br_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "br_entry", entry);
 
   label = gtk_label_new (_("bps"));
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 4);
   gtk_widget_show (label);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "br_units", label);
+  g_object_set_data (G_OBJECT (dialog), "br_units", label);
 
   label = gtk_label_new (_("Extra"));
 
@@ -1912,7 +1914,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "and 10 (slower encoding)"),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "complexity_adj", complexity_adj);
+  g_object_set_data (G_OBJECT (dialog), "complexity_adj", complexity_adj);
 
   /* Frames per packet */
 
@@ -1954,7 +1956,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "bitrates."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "framepack_adj", framepack_adj);
+  g_object_set_data (G_OBJECT (dialog), "framepack_adj", framepack_adj);
 
   /* Remember / Reset */
 
@@ -1968,7 +1970,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_encode_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_encode_chb", checkbutton);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
 
@@ -1978,8 +1980,8 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   button = gtk_button_new_with_label (_("Reset"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(speex_encode_options_reset_cb), sample);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(speex_encode_options_reset_cb), sample);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -1992,8 +1994,8 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   button = gtk_button_new_with_label (_("Defaults"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(speex_encode_options_default_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(speex_encode_options_default_cb),
 		      sample);
   gtk_widget_show (button);
 
@@ -2025,7 +2027,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 4);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "serialno_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "serialno_entry", entry);
 
   /* Remember serialno ? */
 
@@ -2042,8 +2044,8 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), checkbutton, FALSE, TRUE, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-		      GTK_SIGNAL_FUNC(remember_serialno_clicked_cb),
+  g_signal_connect (G_OBJECT(checkbutton), "toggled",
+		      G_CALLBACK(remember_serialno_clicked_cb),
 		      sample);
 
   tooltips = gtk_tooltips_new ();
@@ -2061,7 +2063,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "will be randomly generated for each file encoded."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_serialno_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_serialno_chb", checkbutton);
 
   l = prefs_get_long (SERIALNO_KEY);
 
@@ -2087,12 +2089,12 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "this button is held down."),
 			NULL);
 
-  gtk_signal_connect (GTK_OBJECT(button), "pressed",
-		      GTK_SIGNAL_FUNC(randomise_serialno_pressed_cb),
+  g_signal_connect (G_OBJECT(button), "pressed",
+		      G_CALLBACK(randomise_serialno_pressed_cb),
 		      entry);
 
-  gtk_signal_connect (GTK_OBJECT(button), "released",
-		      GTK_SIGNAL_FUNC(randomise_serialno_released_cb),
+  g_signal_connect (G_OBJECT(button), "released",
+		      G_CALLBACK(randomise_serialno_released_cb),
 		      entry);
 
   /* About */
@@ -2151,8 +2153,8 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (speex_save_options_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (speex_save_options_dialog_ok_cb),
 		      sample);
 
   /* Cancel */
@@ -2162,8 +2164,8 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (speex_save_options_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (speex_save_options_dialog_cancel_cb),
 		      sample);
 
   gtk_widget_grab_default (ok_button);
