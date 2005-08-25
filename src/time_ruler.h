@@ -66,7 +66,7 @@ struct _TimeRulerClass
 };
 
 
-guint      time_ruler_get_type (void);
+GType      time_ruler_get_type (void);
 GtkWidget* time_ruler_new      (void);
 void       time_ruler_set_format (TimeRuler * time_ruler, sw_format * f);
 
