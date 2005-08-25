@@ -109,10 +109,9 @@ static void
 view_init_repeater (sw_view * view, GtkFunction function, gpointer data)
 {
   function (data);
-
   if (view->repeater_tag <= 0) {
-    view->repeater_tag = gtk_timeout_add ((guint32)1000/ZOOM_FRAMERATE,
-					  function, data);
+    view->repeater_tag = g_timeout_add ((guint32)1000/ZOOM_FRAMERATE,
+					  (GSourceFunc) function, data);
   }
 }
 
@@ -122,7 +121,7 @@ repeater_released_cb (GtkWidget * widget, gpointer data)
   sw_view * view = (sw_view *)data;
 
   if (view->repeater_tag > 0) {
-    gtk_timeout_remove (view->repeater_tag);
+    g_source_remove(view->repeater_tag);
     view->repeater_tag = 0;
   }
 }
@@ -193,7 +192,7 @@ view_set_tool_cb (GtkWidget * widget, gpointer data)
   sw_tool_t tool;
 
   tool = (sw_tool_t)
-    GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+    GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
 
   view->current_tool = tool;
 
@@ -373,7 +372,7 @@ sample_set_color_cb (GtkWidget * widget, gpointer data)
   sw_view * view = (sw_view *) data;
   gint color;
 
-  color = GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+  color = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
   sample_set_color (view->sample, color);
 }
 
@@ -712,10 +711,12 @@ sd_win_changed_cb (GtkWidget * widget)
   SampleDisplay * sd = SAMPLE_DISPLAY(widget);
   sw_view * v = sd->view;
 
-  gtk_signal_handler_block_by_data (GTK_OBJECT(v->adj), v);
+  g_signal_handlers_block_matched (GTK_OBJECT(v->adj), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, v);
   view_fix_adjustment (sd->view);
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(v->adj), v);
-
+	
+  g_signal_handlers_unblock_matched (GTK_OBJECT(v->adj), G_SIGNAL_MATCH_DATA, 0,
+								0, 0, 0, v); 
   view_refresh_hruler (v);
 }
 
@@ -726,12 +727,14 @@ adj_changed_cb (GtkWidget * widget, gpointer data)
   SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
   GtkAdjustment * adj = GTK_ADJUSTMENT(v->adj);
 
-  gtk_signal_handler_block_by_data (GTK_OBJECT(sd), v);
+  g_signal_handlers_block_matched (GTK_OBJECT(GTK_OBJECT(sd)), G_SIGNAL_MATCH_DATA, 0,
+								0, 0, 0, v);
   sample_display_set_window(sd,
 			    (gint)adj->value,
 			    (gint)(adj->value + adj->page_size));
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(sd), v);
-
+  
+  g_signal_handlers_unblock_matched (GTK_OBJECT(GTK_OBJECT(sd)), G_SIGNAL_MATCH_DATA, 0,
+								0, 0, 0, v);
   view_refresh_hruler (v);
 }
 
@@ -744,11 +747,13 @@ adj_value_changed_cb (GtkWidget * widget, gpointer data)
 
   if (!v->sample->play_head->going || !v->following) {
 
-    gtk_signal_handler_block_by_data (GTK_OBJECT(sd), v);
+    g_signal_handlers_block_matched (GTK_OBJECT(GTK_OBJECT(sd)), G_SIGNAL_MATCH_DATA, 0,
+								0, 0, 0, v);
     sample_display_set_window(sd,
 			      (gint)adj->value,
 			      (gint)(adj->value + adj->page_size));
-    gtk_signal_handler_unblock_by_data (GTK_OBJECT(sd), v);
+    g_signal_handlers_unblock_matched (GTK_OBJECT(GTK_OBJECT(sd)), G_SIGNAL_MATCH_DATA, 0,
+								0, 0, 0, v);
   }
 
   if (v->following) {
