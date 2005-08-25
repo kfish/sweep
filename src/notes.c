@@ -112,14 +112,14 @@ noteplay_setup (GtkWidget *subsubmenu, sw_view * view,
   for (k = 0 ; k < sizeof (notes) / sizeof (notes [0]) ; k++) {
     menuitem = gtk_menu_item_new_with_label (_(notes [k].name));
     gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
-    gtk_signal_connect (GTK_OBJECT(menuitem), "activate",
-			GTK_SIGNAL_FUNC(play_view_note_cb), view);
+    g_signal_connect (G_OBJECT(menuitem), "activate",
+			G_CALLBACK(play_view_note_cb), view);
     gtk_widget_show (menuitem);
     gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-				notes [k].accel_key, GDK_NONE,
+notes [k].accel_key, 0,
 				GTK_ACCEL_VISIBLE);
 
-    gtk_object_set_user_data (GTK_OBJECT(menuitem),
+    g_object_set_data (G_OBJECT(menuitem), "default", 
 			      GINT_TO_POINTER(k));
   }
 
@@ -136,7 +136,7 @@ play_view_note_cb (GtkWidget * widget, gpointer data)
   float pitch;
   
   /* Retrieve the pitch. */
-  k = GPOINTER_TO_INT(gtk_object_get_user_data (GTK_OBJECT(widget)));
+  k = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
   pitch = notes[k].pitch;
 
   if (head->going) {
