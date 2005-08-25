@@ -46,7 +46,7 @@ struct _LevelMeterClass {
 };
 
 GtkWidget *levelmeter_new(guint state);
-guint levelmeter_get_type(void);
+GType levelmeter_get_type(void);
 guint levelmeter_get_level(LevelMeter * levelmeter);
 void levelmeter_set_level(LevelMeter * levelmeter, guint level);
 
