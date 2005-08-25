@@ -53,7 +53,7 @@
 static GtkWidget *
 create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 		      const gchar * label_text, const gchar * tip_text,
-		      GtkSignalFunc clicked)
+		      GCallback clicked)
 {
   GtkWidget * hbox;
   GtkWidget * label;
@@ -86,8 +86,8 @@ create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
   }
 
   if (clicked != NULL) {
-    gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			GTK_SIGNAL_FUNC(clicked), NULL);
+    g_signal_connect (G_OBJECT (button), "clicked",
+			G_CALLBACK(clicked), NULL);
   }
 
   return button;
@@ -113,25 +113,25 @@ paste_xfade_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "src_slider");
+  slider = g_object_get_data (G_OBJECT(dialog), "src_slider");
   src_gain_start = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "src_slider2");
+  slider = g_object_get_data (G_OBJECT(dialog), "src_slider2");
   src_gain_end = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  checkbutton = gtk_object_get_data (GTK_OBJECT(dialog), "src_invert");
+  checkbutton = g_object_get_data (G_OBJECT(dialog), "src_invert");
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton))) {
     src_gain_start *= -1.0;
     src_gain_end *= -1.0;
   }
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "dest_slider");
+  slider = g_object_get_data (G_OBJECT(dialog), "dest_slider");
   dest_gain_start = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "dest_slider2");
+  slider = g_object_get_data (G_OBJECT(dialog), "dest_slider2");
   dest_gain_end = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  checkbutton = gtk_object_get_data (GTK_OBJECT(dialog), "dest_invert");
+  checkbutton = g_object_get_data (G_OBJECT(dialog), "dest_invert");
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton))) {
     dest_gain_start *= -1.0;
     dest_gain_end *= -1.0;
@@ -156,18 +156,18 @@ paste_mix_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "src_slider");
+  slider = g_object_get_data (G_OBJECT(dialog), "src_slider");
   src_gain = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  checkbutton = gtk_object_get_data (GTK_OBJECT(dialog), "src_invert");
+  checkbutton = g_object_get_data (G_OBJECT(dialog), "src_invert");
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton))) {
     src_gain *= -1.0;
   }
 
-  slider = gtk_object_get_data (GTK_OBJECT(dialog), "dest_slider");
+  slider = g_object_get_data (G_OBJECT(dialog), "dest_slider");
   dest_gain = (double) db_slider_get_value (DB_SLIDER(slider));
 
-  checkbutton = gtk_object_get_data (GTK_OBJECT(dialog), "dest_invert");
+  checkbutton = g_object_get_data (G_OBJECT(dialog), "dest_invert");
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton))) {
     dest_gain *= -1.0;
   }
@@ -232,14 +232,14 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
     gtk_window_set_title(GTK_WINDOW(dialog), _("Sweep: Paste mix"));
   }
 
-  gtk_window_set_policy(GTK_WINDOW(dialog), FALSE, FALSE, FALSE);
-  gtk_window_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+  gtk_window_set_resizable (GTK_WINDOW(dialog), FALSE);
+  gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
 
   accel_group = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW(dialog), accel_group);
 
-  gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-		     (GtkSignalFunc) paste_dialog_destroy, sample);
+  g_signal_connect (G_OBJECT(dialog), "destroy",
+		     G_CALLBACK (paste_dialog_destroy), sample);
 
 #if 0
   gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
@@ -273,14 +273,14 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_box_pack_start (GTK_BOX(hbox2), slider, TRUE, TRUE, 2);
   gtk_widget_show (slider);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "src_slider", slider);
+  g_object_set_data (G_OBJECT(dialog), "src_slider", slider);
 
   if (xfade) {
     slider = db_slider_new (_("End gain"), 1.0, 0.0, 2.0);
     gtk_box_pack_start (GTK_BOX(hbox2), slider, TRUE, TRUE, 2);
     gtk_widget_show (slider);
     
-    gtk_object_set_data (GTK_OBJECT(dialog), "src_slider2", slider);
+    g_object_set_data (G_OBJECT(dialog), "src_slider2", slider);
   }
 
   checkbutton =
@@ -288,7 +288,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_box_pack_start (GTK_BOX (vbox), checkbutton, TRUE, FALSE, 2);
   gtk_widget_show (checkbutton);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "src_invert", checkbutton);
+  g_object_set_data (G_OBJECT(dialog), "src_invert", checkbutton);
 
   /* Destination */
 
@@ -312,14 +312,14 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_box_pack_start (GTK_BOX(hbox2), slider, TRUE, TRUE, 2);
   gtk_widget_show (slider);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "dest_slider", slider);
+  g_object_set_data (G_OBJECT(dialog), "dest_slider", slider);
 
   if (xfade) {
     slider = db_slider_new (_("End gain"), 0.0, 0.0, 2.0);
     gtk_box_pack_start (GTK_BOX(hbox2), slider, TRUE, TRUE, 2);
     gtk_widget_show (slider);
 
-    gtk_object_set_data (GTK_OBJECT(dialog), "dest_slider2", slider);
+    g_object_set_data (G_OBJECT(dialog), "dest_slider2", slider);
   }
 
   checkbutton =
@@ -327,7 +327,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_box_pack_start (GTK_BOX (vbox), checkbutton, TRUE, FALSE, 2);
   gtk_widget_show (checkbutton);
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "dest_invert", checkbutton);
+  g_object_set_data (G_OBJECT(dialog), "dest_invert", checkbutton);
 
   /* Info frame */
 
@@ -379,12 +379,12 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_widget_show (ok_button);
 
   if (xfade) {
-    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (paste_xfade_dialog_ok_cb),
+    g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (paste_xfade_dialog_ok_cb),
 			sample);
   } else {
-    gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (paste_mix_dialog_ok_cb),
+    g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (paste_mix_dialog_ok_cb),
 			sample);
   }
 
@@ -396,8 +396,8 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area),
 		      button, TRUE, TRUE , 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (paste_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (paste_dialog_cancel_cb),
 		      sample);
 
   gtk_widget_grab_default (ok_button);
