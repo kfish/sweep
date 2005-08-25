@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 
 #include "levelmeter.h"
 
@@ -61,8 +62,12 @@ levelmeter_set_level(LevelMeter * levelmeter, guint level)
   g_return_if_fail(IS_LEVELMETER(levelmeter));
 
   levelmeter->level = level;
-
-  gtk_widget_draw (GTK_WIDGET(levelmeter), NULL);
+/*
+  gtk_widget_queue_draw_area(GTK_WIDGET(levelmeter), 
+									        gint x,
+                                             gint y,
+                                             gint width,
+                                             gint height) */
 }
 
 static void
@@ -165,7 +170,9 @@ levelmeter_draw (GtkWidget * widget, GdkRectangle * area)
 static gint
 levelmeter_expose(GtkWidget * widget, GdkEventExpose * event)
 {
-  gtk_widget_draw (widget, NULL);
+ //@@ gtk_widget_draw (widget, NULL);
+  levelmeter_draw(widget, NULL);
+	//@@ fix this
 
   return FALSE;
 }
@@ -202,7 +209,7 @@ levelmeter_class_init(LevelMeterClass * class)
 
   widget_class->realize = levelmeter_realize;
   widget_class->expose_event = levelmeter_expose;
-  widget_class->draw = levelmeter_draw;
+ //@@ widget_class->draw = levelmeter_draw;
   widget_class->size_request = levelmeter_size_request;
   widget_class->size_allocate = levelmeter_size_allocate;
 /*
@@ -214,12 +221,17 @@ levelmeter_class_init(LevelMeterClass * class)
   col_green.red = 0xFFFF;
   col_green.green = 0xFFFF;
   col_green.blue = 0;
-  gdk_color_alloc(gdk_colormap_get_system(), &col_green);
-
+  gdk_colormap_alloc_color        (gdk_colormap_get_system(),
+                                             &col_green,
+                                             TRUE,
+                                             TRUE);
   col_red.red = 0xFFFF;
   col_red.green = 0;
   col_red.blue = 0;
-  gdk_color_alloc(gdk_colormap_get_system(), &col_red);
+  gdk_colormap_alloc_color        (gdk_colormap_get_system(),
+                                             &col_red,
+                                             TRUE,
+                                             TRUE);
 
 }
 
@@ -229,25 +241,30 @@ levelmeter_init(LevelMeter * levelmeter)
   levelmeter->level = 0;
 }
 
-guint
+GType
 levelmeter_get_type()
 {
-  static guint levelmeter_type = 0;
+  static GType levelmeter_type = 0;
 
   if (!levelmeter_type) {
-    GtkTypeInfo levelmeter_info =
+    static const GTypeInfo levelmeter_info =
     {
-      "LevelMeter",
-      sizeof(LevelMeter),
+		  
       sizeof(LevelMeterClass),
-      (GtkClassInitFunc) levelmeter_class_init,
-      (GtkObjectInitFunc) levelmeter_init,
-      (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL,
+	NULL, /* base_init */
+	NULL, /* base_finalize */
+	(GClassInitFunc) levelmeter_class_init,
+	NULL, /* class_finalize */
+	NULL, /* class_data */
+	sizeof (LevelMeter),
+	0,    /* n_preallocs */
+	(GInstanceInitFunc) levelmeter_init,	  
+
     };
 
-    levelmeter_type = gtk_type_unique(gtk_widget_get_type(), &levelmeter_info);
+      levelmeter_type = g_type_register_static (GTK_TYPE_WIDGET, "LevelMeter", &levelmeter_info, 0);
   }
+	
   return levelmeter_type;
 }
 
@@ -256,8 +273,7 @@ levelmeter_new(guint level)
 {
   LevelMeter *levelmeter;
 
-  levelmeter = gtk_type_new(levelmeter_get_type());
-
+    levelmeter = LEVELMETER (g_object_new (levelmeter_get_type (), NULL));	
   levelmeter_set_level(levelmeter, level);
 
   return GTK_WIDGET(levelmeter);
