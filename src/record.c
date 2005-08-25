@@ -130,19 +130,19 @@ static void
 start_recmarker (sw_head * head)
 {
   if (update_tag > 0) {
-    gtk_timeout_remove (update_tag);
+    g_source_remove (update_tag);
   }
 
-  update_tag = gtk_timeout_add ((guint32)30,
-				(GtkFunction)update_recmarker,
+  update_tag = g_timeout_add ((guint32)30,
+				(GSourceFunc)update_recmarker,
 				(gpointer)head);
 
   gtk_label_set_text (GTK_LABEL(rec_ind_label), "RECORDING");
   gtk_widget_set_style (rec_ind_ebox, style_red);
   rec_ind_state = TRUE;
 
-  gtk_timeout_add ((guint32)500,
-		   (GtkFunction)update_rec_ind,
+  g_timeout_add ((guint32)500,
+		   (GSourceFunc)update_rec_ind,
 		   (gpointer)head);
 }
 
@@ -334,19 +334,35 @@ _rec_dialog_set_sample (sw_sample * sample, gboolean select_current)
   }
 
   head = sample->rec_head;
-
+#warning check return code for successful disconnect here.
   if (rec_head != NULL) {
-    gtk_signal_disconnect_by_data (GTK_OBJECT(mix_slider), rec_head);
-    gtk_signal_disconnect_by_data (GTK_OBJECT(gain_slider), rec_head);
+    g_signal_handlers_disconnect_matched
+                                            (GTK_OBJECT(mix_slider),
+                                             G_SIGNAL_MATCH_DATA,
+                                             0,
+                                             0,
+                                             0,
+                                             0,
+                                             rec_head);
+												 
+	g_signal_handlers_disconnect_matched
+                                            (GTK_OBJECT(gain_slider),
+                                             G_SIGNAL_MATCH_DATA,
+                                             0,
+                                             0,
+                                             0,
+                                             0,
+                                             rec_head);
+    
   }
 
   db_slider_set_value (DB_SLIDER(mix_slider), head->mix);
-  gtk_signal_connect (GTK_OBJECT(mix_slider), "value-changed",
-		      GTK_SIGNAL_FUNC(mix_value_changed_cb), head);
+  g_signal_connect (G_OBJECT(mix_slider), "value-changed",
+		      G_CALLBACK(mix_value_changed_cb), head);
 
   db_slider_set_value (DB_SLIDER(gain_slider), head->gain);
-  gtk_signal_connect (GTK_OBJECT(gain_slider), "value-changed",
-		      GTK_SIGNAL_FUNC(gain_value_changed_cb), head);
+  g_signal_connect (G_OBJECT(gain_slider), "value-changed",
+		      G_CALLBACK(gain_value_changed_cb), head);
 
   rec_head = head;
 
@@ -380,10 +396,9 @@ rec_dialog_entry_changed_cb (GtkWidget * widget, gpointer data)
   sample = sample_bank_find_byname (new_text);
 
   if (sample == NULL) return;
-
-  gtk_signal_handler_block_by_data (GTK_OBJECT(entry), NULL);
+g_signal_handlers_block_matched (GTK_OBJECT(entry), G_SIGNAL_MATCH_DATA, 0, 0, 0, 0, NULL);
   _rec_dialog_set_sample (sample, TRUE);
-  gtk_signal_handler_unblock_by_data (GTK_OBJECT(entry), NULL);
+  g_signal_handlers_unblock_matched (GTK_OBJECT(entry), G_SIGNAL_MATCH_DATA, 0, 0, 0, 0, NULL);
 }
 
 void
@@ -418,6 +433,7 @@ rec_dialog_create (sw_sample * sample)
 
   if (rec_dialog == NULL) {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    sweep_set_window_icon (GTK_WINDOW(window), "sweep_app_icon.png");
     rec_dialog = window;
         
     main_vbox = gtk_vbox_new (FALSE, 0);
@@ -426,17 +442,17 @@ rec_dialog_create (sw_sample * sample)
 
     gtk_window_set_wmclass(GTK_WINDOW(rec_dialog), "rec_dialog", "Sweep");
     gtk_window_set_title(GTK_WINDOW(rec_dialog), _("Sweep: Record"));
-    gtk_window_position(GTK_WINDOW(rec_dialog), GTK_WIN_POS_MOUSE);
+    gtk_window_set_position(GTK_WINDOW(rec_dialog), GTK_WIN_POS_MOUSE);
 
     accel_group = gtk_accel_group_new ();
     gtk_window_add_accel_group (GTK_WINDOW(rec_dialog), accel_group);
 
-    gtk_signal_connect(GTK_OBJECT(rec_dialog), "destroy",
-		       (GtkSignalFunc) rec_dialog_destroy, head);
-
-    gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-			 GTK_OBJECT(rec_dialog), "hide");
-
+    g_signal_connect (G_OBJECT(rec_dialog), "destroy",
+		       G_CALLBACK(rec_dialog_destroy), head);
+/*  FIXME: what's the equiv of gtk_accel_group_add
+    gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, 0,
+ 			 GTK_OBJECT(rec_dialog), "hide");
+*/
     hbox = gtk_hbox_new (FALSE, 8);
     gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, TRUE, 8);
     gtk_widget_show (hbox);
@@ -449,10 +465,10 @@ rec_dialog_create (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX(hbox), combo, TRUE, TRUE, 8);
     gtk_widget_show (combo);
 
-    gtk_entry_set_editable (GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE(GTK_COMBO(combo)->entry), FALSE);
 
-    gtk_signal_connect (GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
-			GTK_SIGNAL_FUNC(rec_dialog_entry_changed_cb), NULL);
+    g_signal_connect (G_OBJECT(GTK_COMBO(combo)->entry), "changed",
+			G_CALLBACK(rec_dialog_entry_changed_cb), NULL);
 
     separator = gtk_hseparator_new ();
     gtk_box_pack_start (GTK_BOX(main_vbox), separator, FALSE, FALSE, 0);
