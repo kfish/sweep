@@ -49,20 +49,28 @@ enum {
 static gint db_slider_signals[LAST_SIGNAL] = { 0 };
 
 static void
-db_slider_class_init(DbSliderClass * class)
+db_slider_class_init(DbSliderClass * klass)
 {
   GtkObjectClass *object_class;
 
-  object_class = (GtkObjectClass *) class;
+  object_class = (GtkObjectClass *) klass;
 
-  db_slider_signals[VALUE_CHANGED_SIGNAL] =
-    gtk_signal_new("value-changed", GTK_RUN_FIRST, object_class->type,
+  db_slider_signals[VALUE_CHANGED_SIGNAL] = g_signal_new ("value-changed",
+					 					 G_TYPE_FROM_CLASS (klass),
+	                                	 G_SIGNAL_RUN_FIRST,
+	                                 	 G_STRUCT_OFFSET (DbSliderClass, value_changed),
+                                         NULL, 
+                                         NULL,                
+										 g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
+ /* db_slider_signals[VALUE_CHANGED_SIGNAL] =
+    gtk_signal_new("value-changed", GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
                    GTK_SIGNAL_OFFSET(DbSliderClass, value_changed),
-                   gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1, GTK_TYPE_FLOAT);
+                   gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1, GTK_TYPE_FLOAT); */
 
-  gtk_object_class_add_signals(object_class, db_slider_signals, LAST_SIGNAL);
+ //@@ gtk_object_class_add_signals(object_class, db_slider_signals, LAST_SIGNAL);
 
-  class->value_changed = NULL;
+  klass->value_changed = NULL;
 }
 
 static void
@@ -70,25 +78,28 @@ db_slider_init (GtkWidget * slider)
 {
 }
 
-guint
+GType
 db_slider_get_type()
 {
-  static guint db_slider_type = 0;
+  static GType db_slider_type = 0;
 
   if (!db_slider_type) {
-    GtkTypeInfo db_slider_info =
+    static const GTypeInfo db_slider_info =
     {
-      "DbSlider",
-      sizeof(DbSlider),
       sizeof(DbSliderClass),
-      (GtkClassInitFunc) db_slider_class_init,
-      (GtkObjectInitFunc) db_slider_init,
-      (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL,
+	 NULL, /* base_init */
+     NULL, /* base_finalize */
+	 (GClassInitFunc) db_slider_class_init,
+     NULL, /* class_finalize */
+	 NULL, /* class_data */
+     sizeof (DbSlider),
+	 0,
+	(GInstanceInitFunc) db_slider_init, 
+
     };
 
-    db_slider_type = gtk_type_unique(gtk_event_box_get_type(),
-				     &db_slider_info);
+    db_slider_type = g_type_register_static(GTK_TYPE_VBOX, "DbSlider" ,&db_slider_info, 0);
+				    
   }
 
   return db_slider_type;
@@ -99,7 +110,7 @@ static int
 slider_get_value (GtkWidget * slider)
 {
   return
-    GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT(slider), "value"));
+    GPOINTER_TO_INT (g_object_get_data (G_OBJECT(slider), "value"));
 }
 
 static int
@@ -109,7 +120,7 @@ slider_set_value (GtkWidget * slider, int value)
   int i;
 
   combo_entry =
-    GTK_WIDGET (gtk_object_get_data (GTK_OBJECT(slider), "combo_entry"));
+    GTK_WIDGET (g_object_get_data (G_OBJECT(slider), "combo_entry"));
 
   for (i = 0; choices[i].name != NULL; i++) {
     if (value == choices[i].value) {
@@ -166,7 +177,7 @@ db_slider_value_changed_cb (GtkWidget * widget, gpointer data)
 
   g_free (db_text);
 
-  gtk_signal_emit (GTK_OBJECT(slider), db_slider_signals[VALUE_CHANGED_SIGNAL],
+  g_signal_emit_by_name (GTK_OBJECT(slider), "value-changed",
 		   value);
 }
 
@@ -202,12 +213,12 @@ db_slider_build (GtkWidget * slider, gchar * title, gfloat value)
   vscale = gtk_vscale_new (GTK_ADJUSTMENT(adj));
   gtk_scale_set_draw_value (GTK_SCALE(vscale), FALSE);
   gtk_range_set_update_policy (GTK_RANGE(vscale), GTK_UPDATE_CONTINUOUS);
-  gtk_widget_set_usize (vscale, -1, gdk_screen_height() / 8);
+  gtk_widget_set_size_request (vscale, -1, gdk_screen_height() / 8);
   gtk_box_pack_start (GTK_BOX(vbox), vscale, TRUE, TRUE, 0);
   gtk_widget_show (vscale);
 
-  gtk_signal_connect (GTK_OBJECT(adj), "value_changed",
-		      GTK_SIGNAL_FUNC(db_slider_value_changed_cb), slider);
+  g_signal_connect (G_OBJECT(adj), "value_changed",
+		      G_CALLBACK(db_slider_value_changed_cb), slider);
 
   DB_SLIDER(slider)->adj = adj;
 
@@ -227,7 +238,7 @@ db_slider_build (GtkWidget * slider, gchar * title, gfloat value)
 GtkWidget *
 db_slider_new (gchar * title, gfloat value, gfloat lower, gfloat upper)
 {
-  DbSlider * slider = DB_SLIDER (gtk_type_new (db_slider_get_type ()));
+  DbSlider * slider = DB_SLIDER (g_object_new (db_slider_get_type (), NULL));
 
   slider->lower = lower;
   slider->upper = upper;
