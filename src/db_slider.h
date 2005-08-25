@@ -47,7 +47,7 @@ struct _DbSliderClass {
   void (*value_changed) (DbSlider * slider, gfloat value);
 };
 
-GtkType db_slider_get_type (void);
+GType db_slider_get_type (void);
 GtkWidget * db_slider_new (gchar * title, gfloat value, gfloat lower,
 			   gfloat upper);
 gfloat db_slider_get_value (DbSlider * slider);
