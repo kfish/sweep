@@ -173,7 +173,7 @@ dup_channels_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  chooser = gtk_object_get_user_data (GTK_OBJECT(dialog));
+  chooser = g_object_get_data (G_OBJECT(dialog), "default");
   new_channels = channelcount_chooser_get_count (chooser);
 
   gtk_widget_destroy (dialog);
@@ -224,7 +224,7 @@ dup_channels_dialog_new_cb (GtkWidget * widget, gpointer data)
 				  sample->sounddata->format->channels);
   gtk_widget_show (chooser);
 
-  gtk_object_set_user_data (GTK_OBJECT(dialog), chooser);
+  g_object_set_data (G_OBJECT(dialog), "default", chooser);
 
   /* OK */
 
@@ -233,8 +233,8 @@ dup_channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (dup_channels_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (dup_channels_dialog_ok_cb),
 		      sample);
 
   /* Cancel */
@@ -244,8 +244,8 @@ dup_channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (dup_channels_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (dup_channels_dialog_cancel_cb),
 		      NULL);
 
   gtk_widget_grab_default (ok_button);
@@ -658,7 +658,7 @@ channels_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   dialog = gtk_widget_get_toplevel (widget);
 
-  chooser = gtk_object_get_user_data (GTK_OBJECT(dialog));
+  chooser = g_object_get_data (G_OBJECT(dialog), "default");
   new_channels = channelcount_chooser_get_count (chooser);
 
   gtk_widget_destroy (dialog);
@@ -707,7 +707,7 @@ channels_dialog_new_cb (GtkWidget * widget, gpointer data)
 				  sample->sounddata->format->channels);
   gtk_widget_show (chooser);
 
-  gtk_object_set_user_data (GTK_OBJECT(dialog), chooser);
+  g_object_set_data (G_OBJECT(dialog), "default", chooser);
 
   /* OK */
 
@@ -716,8 +716,8 @@ channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (channels_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (channels_dialog_ok_cb),
 		      sample);
 
   /* Cancel */
@@ -727,8 +727,8 @@ channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (channels_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (channels_dialog_cancel_cb),
 		      NULL);
 
   gtk_widget_grab_default (ok_button);
