@@ -33,7 +33,7 @@ gboolean
 sample_mtime_changed (sw_sample * sample);
 
 sw_sample *
-sample_load(char * pathname);
+sample_load(const gchar * pathname);
 
 void
 sample_load_cb(GtkWidget * wiget, gpointer data);
