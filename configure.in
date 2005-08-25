@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(sweep, 0.8.4)
+AM_INIT_AUTOMAKE(sweep, 0.9.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -58,24 +58,25 @@ fi
 AC_SUBST(PTHREAD_LIBS)
 
 
+
 dnl
-dnl  Detect GLib, GTK+ libraries
+dnl  Detect Gthread, GLib and GTK+ libraries
 dnl
 
-HAVE_GLIB=no
-AM_PATH_GLIB(1.2.0, HAVE_GLIB="yes", sweep_config_ok="no")
-if test "x$HAVE_GLIB" = xno ; then
-  AC_CHECK_LIB(glib, g_list_append, HAVE_GLIB="maybe")
-fi
+PKG_CHECK_MODULES(GTK, glib-2.0 >=  2.2.0
+                       )
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
-HAVE_GTK=no
-AM_PATH_GTK(1.2.0, HAVE_GTK="yes", sweep_config_ok="no", gthread)
-if test "x$HAVE_GTK" = xyes ; then
-  CFLAGS="$CFLAGS $GTK_CFLAGS"
-else
-  AC_CHECK_LIB(gtk, gtk_init, HAVE_GTK="maybe")
-fi
+PKG_CHECK_MODULES(GLIB, gtk+-2.0 >=  2.2.0
+                       )
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
 
+PKG_CHECK_MODULES(GTHREADS, gthread-2.0 >=  2.2.0
+                       )
+AC_SUBST(GTHREADS_CFLAGS)
+AC_SUBST(GTHREADS_LIBS)
 
 dnl
 dnl  Detect libsndfile 1.0
