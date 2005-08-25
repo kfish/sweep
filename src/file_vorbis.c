@@ -731,12 +731,12 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_widget_get_toplevel (widget);
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "abr_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "abr_chb"));
   use_abr =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));  
 
   if (use_abr) {
-    entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+    entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					   "nominal_bitrate_entry"));
     text = gtk_entry_get_text (GTK_ENTRY(entry));
     nominal_bitrate = strtol (text, (char **)NULL, 0);
@@ -744,7 +744,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 	nominal_bitrate == 0)
       nominal_bitrate = DEFAULT_NOMINAL;
 
-    entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+    entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					   "max_bitrate_entry"));
     text = gtk_entry_get_text (GTK_ENTRY(entry));
     max_bitrate = strtol (text, (char **)NULL, 0);
@@ -752,7 +752,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 	max_bitrate == 0)
       max_bitrate = -1;
 
-    entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+    entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					   "min_bitrate_entry"));
     text = gtk_entry_get_text (GTK_ENTRY(entry));
     min_bitrate = strtol (text, (char **)NULL, 0);
@@ -762,27 +762,27 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   } else {
     quality_adj =
-      GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+      GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
     quality = GTK_ADJUSTMENT(quality_adj)->value;
   }
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_encode_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_encode_chb"));
   rem_encode =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
   entry =
-    GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog), "serialno_entry"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "serialno_entry"));
   text = gtk_entry_get_text (GTK_ENTRY(entry));
   serialno = strtol (text, (char **)NULL, 0);
   if (serialno == LONG_MIN || serialno == LONG_MAX) serialno = random ();
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_serialno_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_serialno_chb"));
   rem_serialno =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
-  pathname = gtk_object_get_data (GTK_OBJECT(dialog), "pathname");
+  pathname = g_object_get_data (G_OBJECT(dialog), "pathname");
 
   gtk_widget_destroy (dialog);
 
@@ -848,7 +848,7 @@ bitrate_enable_cb (GtkWidget * widget, gpointer data)
   GtkWidget * quality_widget;
   gboolean active;
 
-  quality_widget = gtk_object_get_data (GTK_OBJECT(widget), "quality_widget");
+  quality_widget = g_object_get_data (G_OBJECT(widget), "quality_widget");
 
   active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget));
 
@@ -874,7 +874,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   /* Quality */
 
   quality_adj =
-    GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+    GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
   
   q = prefs_get_float (QUALITY_KEY);
   
@@ -888,7 +888,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Nominal bitrate */
 
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "nominal_bitrate_entry"));
   l = prefs_get_long (NOMINAL_KEY);
   if (l == NULL) {
@@ -900,7 +900,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Max bitrate */
 
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "max_bitrate_entry"));
   l = prefs_get_long (MAXIMUM_KEY);
   if (l != NULL && (*l != -1)) {
@@ -909,7 +909,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   /* Min bitrate */
   
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "min_bitrate_entry"));
   l = prefs_get_long (MINIMUM_KEY);
   if (l != NULL && (*l != -1)) {
@@ -926,7 +926,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   }
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "abr_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "abr_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), use_abr);
 }
 
@@ -944,32 +944,32 @@ vorbis_encode_options_default_cb (GtkWidget * widget, gpointer data)
   /* Quality */
 
   quality_adj =
-    GTK_OBJECT(gtk_object_get_data (GTK_OBJECT(dialog), "quality_adj"));
+    GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
   gtk_adjustment_set_value (GTK_ADJUSTMENT(quality_adj), DEFAULT_QUALITY);
 
   /* Nominal bitrate */
 
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "nominal_bitrate_entry"));
   gtk_entry_set_text (GTK_ENTRY (entry),
 		      g_strdup_printf ("%ld", DEFAULT_NOMINAL));
 
   /* Max bitrate */
 
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "max_bitrate_entry"));
   gtk_entry_set_text (GTK_ENTRY (entry), "");
 
   /* Min bitrate */
   
-  entry = GTK_WIDGET(gtk_object_get_data(GTK_OBJECT(dialog),
+  entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "min_bitrate_entry"));
   gtk_entry_set_text (GTK_ENTRY (entry), "");
 
   /* Use ABR */
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "abr_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "abr_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
 }
 
@@ -1039,11 +1039,11 @@ randomise_serialno_pressed_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_widget_get_toplevel (widget);
 
   checkbutton =
-    GTK_WIDGET(gtk_object_get_data (GTK_OBJECT(dialog), "rem_serialno_chb"));
+    GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_serialno_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
 
-  tag = gtk_timeout_add (30, randomise_serialno, data);
-  gtk_object_set_data (GTK_OBJECT(widget), "tag", GINT_TO_POINTER(tag));
+  tag = g_timeout_add (30, randomise_serialno, data);
+  g_object_set_data (G_OBJECT(widget), "tag", GINT_TO_POINTER(tag));
 }
 
 static void
@@ -1051,8 +1051,8 @@ randomise_serialno_released_cb (GtkWidget * widget, gpointer data)
 {
   gint tag;
 
-  tag = GPOINTER_TO_INT(gtk_object_get_data (GTK_OBJECT(widget), "tag"));
-  gtk_timeout_remove (tag);
+  tag = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "tag"));
+  g_source_remove (tag);
 }
 
 static GtkWidget *
@@ -1080,7 +1080,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   GtkTooltips * tooltips;
 
-  GtkStyle * style;
+/*GtkStyle * style;*/
 
   long * l;
 
@@ -1108,11 +1108,11 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   */
 
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(dialog), "destroy");
+//@@  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
+//@@		       GTK_OBJECT(dialog), "destroy");
 #endif
 
-  gtk_object_set_data (GTK_OBJECT(dialog), "pathname", pathname);
+  g_object_set_data (G_OBJECT(dialog), "pathname", pathname);
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 
@@ -1146,18 +1146,19 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER(hbox), 4);
   gtk_widget_show (hbox);
+/* pangoise?
 
-  style = gtk_style_new ();
-  gdk_font_unref (style->font);
-  style->font =
-    gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
-  gtk_widget_push_style (style);
-
+ style = gtk_style_new ();
+ gdk_font_unref (style->font);
+ style->font =
+ gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+ gtk_widget_push_style (style);
+*/
   label = gtk_label_new (g_basename (pathname));
   gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
   
-  gtk_widget_pop_style ();
+/* gtk_widget_pop_style ();*/
 
   notebook = gtk_notebook_new ();
   gtk_box_pack_start (GTK_BOX(main_vbox), notebook, TRUE, TRUE, 4);
@@ -1202,7 +1203,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
     quality_hscale = gtk_hscale_new (GTK_ADJUSTMENT(quality_adj));
     gtk_box_pack_start (GTK_BOX (vbox_pants), quality_hscale, TRUE, TRUE, 0);
     gtk_scale_set_draw_value (GTK_SCALE (quality_hscale), TRUE);
-    gtk_widget_set_usize (quality_hscale, gdk_screen_width() / 8, -1);
+    gtk_widget_set_size_request (quality_hscale, gdk_screen_width() / 8, -1);
     gtk_widget_show (quality_hscale);
 
     label = gtk_label_new (NULL);
@@ -1217,7 +1218,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "file) using variable bitrate mode (VBR)."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "quality_adj", quality_adj);
+  g_object_set_data (G_OBJECT (dialog), "quality_adj", quality_adj);
 
   /* Bitrate management (ABR) */
 
@@ -1236,7 +1237,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "control (above) instead."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT(checkbutton), "quality_widget", hbox);
+  g_object_set_data (G_OBJECT(checkbutton), "quality_widget", hbox);
   
   frame = gtk_frame_new (_("Bitrate management engine"));
   gtk_box_pack_start (GTK_BOX(vbox), frame, TRUE, TRUE, 4);
@@ -1250,10 +1251,10 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_set_border_width (GTK_CONTAINER(table), 8);
   gtk_widget_show (table);
 
-  gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-		      GTK_SIGNAL_FUNC(bitrate_enable_cb), frame);
+  g_signal_connect (G_OBJECT(checkbutton), "toggled",
+		      G_CALLBACK(bitrate_enable_cb), frame);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "abr_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "abr_chb", checkbutton);
 
   gtk_widget_set_sensitive (frame, FALSE);
 
@@ -1273,7 +1274,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "nominal_bitrate_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "nominal_bitrate_entry", entry);
 
   tooltips = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tooltips, entry,
@@ -1302,7 +1303,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "min_bitrate_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "min_bitrate_entry", entry);
 
   tooltips = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tooltips, entry,
@@ -1332,7 +1333,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "max_bitrate_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "max_bitrate_entry", entry);
 
   tooltips = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tooltips, entry,
@@ -1357,7 +1358,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_encode_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_encode_chb", checkbutton);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
 
@@ -1367,8 +1368,8 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   button = gtk_button_new_with_label (_("Reset"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(vorbis_encode_options_reset_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(vorbis_encode_options_reset_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -1381,8 +1382,8 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   button = gtk_button_new_with_label (_("Defaults"));
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC(vorbis_encode_options_default_cb), NULL);
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK(vorbis_encode_options_default_cb), NULL);
   gtk_widget_show (button);
 
   tooltips = gtk_tooltips_new ();
@@ -1507,7 +1508,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 4);
   gtk_widget_show (entry);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "serialno_entry", entry);
+  g_object_set_data (G_OBJECT (dialog), "serialno_entry", entry);
 
   /* Remember serialno ? */
 
@@ -1524,8 +1525,8 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (hbox), checkbutton, FALSE, TRUE, 0);
   gtk_widget_show (checkbutton);
 
-  gtk_signal_connect (GTK_OBJECT(checkbutton), "toggled",
-		      GTK_SIGNAL_FUNC(remember_serialno_clicked_cb),
+  g_signal_connect (G_OBJECT(checkbutton), "toggled",
+		      G_CALLBACK(remember_serialno_clicked_cb),
 		      sample);
 
   tooltips = gtk_tooltips_new ();
@@ -1543,7 +1544,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "will be randomly generated for each file encoded."),
 			NULL);
 
-  gtk_object_set_data (GTK_OBJECT (dialog), "rem_serialno_chb", checkbutton);
+  g_object_set_data (G_OBJECT (dialog), "rem_serialno_chb", checkbutton);
 
   l = prefs_get_long (SERIALNO_KEY);
 
@@ -1569,12 +1570,12 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "this button is held down."),
 			NULL);
 
-  gtk_signal_connect (GTK_OBJECT(button), "pressed",
-		      GTK_SIGNAL_FUNC(randomise_serialno_pressed_cb),
+  g_signal_connect (G_OBJECT(button), "pressed",
+		      G_CALLBACK(randomise_serialno_pressed_cb),
 		      entry);
 
-  gtk_signal_connect (GTK_OBJECT(button), "released",
-		      GTK_SIGNAL_FUNC(randomise_serialno_released_cb),
+  g_signal_connect (G_OBJECT(button), "released",
+		      G_CALLBACK(randomise_serialno_released_cb),
 		      entry);
 
   /* About */
@@ -1633,8 +1634,8 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (ok_button);
-  gtk_signal_connect (GTK_OBJECT(ok_button), "clicked",
-		      GTK_SIGNAL_FUNC (vorbis_save_options_dialog_ok_cb),
+  g_signal_connect (G_OBJECT(ok_button), "clicked",
+		      G_CALLBACK (vorbis_save_options_dialog_ok_cb),
 		      sample);
 
   /* Cancel */
@@ -1644,8 +1645,8 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
   gtk_widget_show (button);
-  gtk_signal_connect (GTK_OBJECT(button), "clicked",
-		      GTK_SIGNAL_FUNC (vorbis_save_options_dialog_cancel_cb),
+  g_signal_connect (G_OBJECT(button), "clicked",
+		      G_CALLBACK (vorbis_save_options_dialog_cancel_cb),
 		      sample);
 
   gtk_widget_grab_default (ok_button);
