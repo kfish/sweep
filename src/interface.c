@@ -64,7 +64,7 @@ void sweep_set_window_icon (GtkWindow *window, gchar * icon_name)
 	return;
   
   icon_path = g_strconcat (PACKAGE_DATA_DIR, "/", icon_name, NULL);             
-  window_icon = gdk_pixbuf_new_from_file (icon_path, pixbuf_error);
+  window_icon = gdk_pixbuf_new_from_file (icon_path, &pixbuf_error);
   
   /* fails silently for now. most people wouldn't see a stderr msg anyway */
   if (window_icon)
@@ -73,8 +73,9 @@ void sweep_set_window_icon (GtkWindow *window, gchar * icon_name)
       gdk_pixbuf_unref (window_icon);
    }
   g_free(icon_path);
-  if (pixbuf_error != NULL)
-  g_error_free(pixbuf_error);
+  
+   if (pixbuf_error != NULL)
+   g_error_free(pixbuf_error);
 }
 
 GtkWidget *
