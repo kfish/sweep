@@ -91,12 +91,11 @@ sw_chooser_class_init(SWChooserClass * class)
 	                              G_STRUCT_OFFSET (SWChooserClass, number_changed),
                                   NULL, 
                                   NULL,                
-					 			  g_cclosure_marshal_VOID__VOID,
-                                  G_TYPE_NONE, 0);
+					 			  g_cclosure_marshal_VOID__INT,
+                                  G_TYPE_NONE, 1,
+								  G_TYPE_INT);
 
   
-//@@  gtk_object_class_add_signals(object_class, sw_chooser_signals, LAST_SIGNAL);
-
   class->number_changed = NULL;
 }
 
@@ -104,7 +103,6 @@ static void
 sw_chooser_init (GtkWidget * chooser)
 {
 }
-//@@ switched guint for GtkType 
 
 
 GType
@@ -167,9 +165,7 @@ chooser_set_number_direct (GtkWidget * chooser, int number)
 
   g_object_set_data (G_OBJECT(chooser), "number",
 		       GINT_TO_POINTER(number));
-
-  g_signal_emit_by_name (GTK_OBJECT(chooser),
-		   "number-changed");
+  g_signal_emit(G_OBJECT(chooser), sw_chooser_signals[NUMBER_CHANGED_SIGNAL], 0, number);
 
   return number;
 }
