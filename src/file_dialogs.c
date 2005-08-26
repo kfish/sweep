@@ -42,6 +42,7 @@
 #include "sweep_app.h"
 #include "file_sndfile.h"
 #include "sample.h"
+#include "interface.h"
 #include "sample-display.h"
 #include "question_dialogs.h"
 #include "preferences.h"
