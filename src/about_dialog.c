@@ -64,7 +64,7 @@ about_dialog_create()
 
   if (!about_dialog) {
     about_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint (about_dialog, GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
+    gtk_window_set_type_hint (GTK_WINDOW(about_dialog), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
     gtk_window_set_decorated ( GTK_WINDOW (about_dialog), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(about_dialog), "about_dialog", "Sweep");
     gtk_window_set_resizable (GTK_WINDOW(about_dialog), FALSE);
