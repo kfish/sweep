@@ -32,7 +32,8 @@ create_color (int red, int green, int blue);
 GtkStyle *
 create_style (GdkColor * fg, GdkColor * bg, gboolean do_grade);
 
-
+void
+init_styles (void);
 
 void
 sweep_set_window_icon (GtkWindow * window, gchar * icon_name);
