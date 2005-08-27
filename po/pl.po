@@ -2,8 +2,6 @@
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Radoslaw KORZENIEWSKI <radoslaw@korzeniewski.net>, 2001.
 #
-#: src/sample-display.c:220
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.3\n"
@@ -1032,7 +1030,7 @@ msgstr "Opis:"
 
 #: src/file_vorbis.c:1463
 msgid "A short text description of the contents"
-msgstr "Krótki opis zawartości"
+msgstr "Krótki tekstowy opis zawartości"
 
 #: src/file_vorbis.c:1465
 msgid "Genre:"
@@ -1719,7 +1717,7 @@ msgstr "Czas trwania:"
 
 #: src/sweep_sample.c:482
 msgid "hh:mm:ss.xxx"
-msgstr ""
+msgstr "gg:mm:ss.xxx"
 
 #: src/sweep_sample.c:525
 msgid "Remember this format"
@@ -1799,31 +1797,31 @@ msgstr ""
 
 #: src/sweep_sample.c:1476 src/view.c:1362
 msgid "Invert selection"
-msgstr "Zaptl zaznaczenie"
+msgstr "Odwróć zaznaczenie"
 
 #: src/sweep_sample.c:1496 src/view.c:1370 src/view.c:1464
 msgid "Select all"
-msgstr "Zaznaczenie"
+msgstr "Zaznacz wszystko"
 
 #: src/sweep_sample.c:1516 src/view.c:1378
 msgid "Select none"
-msgstr "Zaznaczenie"
+msgstr "Odznacz"
 
 #: src/sweep_sample.c:1536
 msgid "Halve selection"
-msgstr "Odtwrz zaznaczenie"
+msgstr "Połowiczne zaznaczenie"
 
 #: src/sweep_sample.c:1556
 msgid "Double selection"
-msgstr "Odtwrz zaznaczenie"
+msgstr "Podwójne zaznaczenie"
 
 #: src/sweep_sample.c:1579
 msgid "Selection left"
-msgstr "Zaznaczenie"
+msgstr "Zaznacz z lewa"
 
 #: src/sweep_sample.c:1601
 msgid "Selection right"
-msgstr "Zaznaczenie"
+msgstr "Zaznacz z prawa"
 
 #: src/sweep_sample.c:1689
 msgid "Insert selection ["
@@ -1855,7 +1853,7 @@ msgstr "Kanały"
 
 #: src/sweep_sample.c:1916
 msgid "Data memory: "
-msgstr ""
+msgstr "Pamięć danych: "
 
 #: src/sweep_sample.c:1918
 msgid "Duration: "
@@ -1869,14 +1867,18 @@ msgid ""
 "\n"
 "Do you want to continue editing this buffer?"
 msgstr ""
+"%s\n"
+" został zmieniony na dysku.\n"
+"\n"
+"Czy chcesz kontynuować edycję tego bufora?"
 
 #: src/sweep_undo.c:332
 msgid "Continue editing"
-msgstr ""
+msgstr "Kontynuacja edycji"
 
 #: src/sweep_undo.c:332
 msgid "Reread from disk"
-msgstr ""
+msgstr "Ponowne odczytanie z dysku"
 
 #: src/sweep_undo.c:430 src/sweep_undo.c:488
 msgid "Nothing to undo"
@@ -1888,11 +1890,11 @@ msgstr ""
 
 #: src/undo_dialog.c:158
 msgid "Original data"
-msgstr ""
+msgstr "Oryginalne dane"
 
 #: src/undo_dialog.c:343
 msgid "Action"
-msgstr ""
+msgstr "Akcja"
 
 #: src/undo_dialog.c:350
 msgid "Sweep: History"
@@ -1908,7 +1910,7 @@ msgstr "Redo"
 
 #: src/undo_dialog.c:420
 msgid "Revert to selected state"
-msgstr ""
+msgstr "Przywróć do wskazanego stanu"
 
 #: src/undo_dialog.c:446 src/view.c:480 src/view.c:3508
 msgid "Close"
@@ -1920,15 +1922,15 @@ msgstr "Duplikuj"
 
 #: src/view.c:311
 msgid "Duplicate to multichannel"
-msgstr ""
+msgstr "Zduplikuj do wielokanałowego"
 
 #: src/view.c:323
 msgid "Swap left and right"
-msgstr "Zaznaczenie"
+msgstr "Zamień lewy z prawym"
 
 #: src/view.c:367
 msgid "Add/Remove channels"
-msgstr ""
+msgstr "Dodaj/Usuń kanały"
 
 #: src/view.c:420 src/view.c:1910
 msgid "New ..."
@@ -1980,7 +1982,7 @@ msgstr ""
 
 #: src/view.c:672
 msgid "Invert"
-msgstr ""
+msgstr "Odwróć"
 
 #: src/view.c:681
 msgid "All"
@@ -1992,19 +1994,19 @@ msgstr "Brak"
 
 #: src/view.c:704
 msgid "Halve"
-msgstr ""
+msgstr "Połowiczne"
 
 #: src/view.c:714
 msgid "Double"
-msgstr ""
+msgstr "Podwójne"
 
 #: src/view.c:724
 msgid "Shift left"
-msgstr ""
+msgstr "Przesunięcie w lewo"
 
 #: src/view.c:734
 msgid "Shift right"
-msgstr ""
+msgstr "Przesunięcie w prawo"
 
 #: src/view.c:745
 msgid "View"
@@ -2012,11 +2014,11 @@ msgstr "Widok"
 
 #: src/view.c:752 src/view.c:2190
 msgid "Autoscroll: follow playback cursor"
-msgstr ""
+msgstr "Autoscroll: podążaj za kursorem odtwarzania"
 
 #: src/view.c:766
 msgid "Center"
-msgstr ""
+msgstr "Wycentrowanie"
 
 #: src/view.c:779 src/view.c:2129
 msgid "Zoom in"
@@ -2048,7 +2050,7 @@ msgstr "Powiększenie pełne"
 
 #: src/view.c:838
 msgid "1:1"
-msgstr ""
+msgstr "1:1"
 
 #: src/view.c:851
 msgid "Remember as"
@@ -2368,7 +2370,7 @@ msgstr "Nie zamykaj"
 
 #: src/view.c:3555 src/view.c:3568
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: src/view.c:3571
 msgid "Empty"
@@ -2417,12 +2419,10 @@ msgid "Longest length of sound above threshold to allow (s)"
 msgstr "Najdłuższy dzwięk powyżej progu (s)"
 
 #: plugins/byenergy/byenergy.c:227 plugins/byenergy/byenergy.c:232
-#, fuzzy
 msgid "Select by energy"
 msgstr "Zaznacz po energii"
 
 #: plugins/byenergy/byenergy.c:233
-#, fuzzy
 msgid "Select loud or quiet regions"
 msgstr "Zaznacz głośne lub ciche obszary"
 
