@@ -46,7 +46,7 @@ else
 fi
 
 %build
-LINGUAS="fr hu it de" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+LINGUAS="fr hu it de pl" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
 gmake
 
 %install
