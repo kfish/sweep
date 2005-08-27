@@ -54,7 +54,7 @@ sweep_plugin_init (const gchar * path)
   sw_plugin * m_plugin;
   GList * gl;
 
-  module = g_module_open (path, 0);
+  module = g_module_open (path, G_MODULE_BIND_LAZY);
 
   if (!module) {
 #ifdef DEBUG
