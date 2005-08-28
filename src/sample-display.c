@@ -58,7 +58,7 @@
 extern GdkCursor * sweep_cursors[];
 
 /* Maximum number of samples to consider per pixel */
-#define STEP_MAX 64
+#define STEP_MAX 32
 
 
 /* Whether or not to compile in support for
@@ -786,8 +786,10 @@ sample_display_draw_data_channel (GdkDrawable * win,
   sw_sel * sel;
   int x1, x2, y1;
   sw_audio_t vhigh, vlow;
-  sw_audio_t d, maxd, mind, prevmaxd, prevmind, avgd, avgposd, avgnegd;
-  sw_framecount_t i, step, nr_frames, numd;
+  sw_audio_intermediate_t totpos, totneg;
+  sw_audio_t d, maxpos, avgpos, minneg, avgneg;
+  sw_audio_t prev_maxpos, prev_minneg;
+  sw_framecount_t i, step, nr_frames, nr_pos, nr_neg;
   sw_sample * sample;
   const int channels = s->view->sample->sounddata->format->channels;
 
@@ -851,6 +853,11 @@ sample_display_draw_data_channel (GdkDrawable * win,
   gdk_draw_line(win, s->zeroline_gc,
 		x, y1, x + width - 1, y1);
 
+  totpos = totneg = 0.0;
+  maxpos = minneg = prev_maxpos = prev_minneg = 0.0;
+
+  nr_frames = sample->sounddata->nr_frames;
+
   /* 'step' ensures that no more than STEP_MAX values get looked at
    * per pixel */
   step = MAX (1, PIXEL_TO_OFFSET(1)/STEP_MAX);
@@ -884,63 +891,76 @@ sample_display_draw_data_channel (GdkDrawable * win,
 
 #else
 
-  prevmaxd = 2 * SW_AUDIO_T_MIN;
-  prevmind = 2 * SW_AUDIO_T_MAX;
-
   for (i = OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x-1));
-       i <= OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x));
+       i < OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x));
        i += step) {
     d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
-    if (d > prevmaxd) { prevmaxd = d; }
-    if (d < prevmind) { prevmind = d; }
+    if (d >= 0) {
+      if (d > prev_maxpos) prev_maxpos = d;
+    } else {
+      if (d < prev_minneg) prev_minneg = d;
+    }
   }
 
   while(width >= 0) {
-    maxd = 2 * SW_AUDIO_T_MIN;
-    mind = 2 * SW_AUDIO_T_MAX;
-    avgd = 0;
-    numd = 0;
+    nr_pos = nr_neg = 0;
+    totpos = totneg = 0;
+    
+    maxpos = minneg = 0;
 
     /* lock the sounddata against destructive ops to make sure
      * sounddata->data doesn't change under us */
     g_mutex_lock (sample->ops_mutex);
 
-    for (i = OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x));
-	 i <= OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x+1));
-	 i += step) {
+    for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
+	 i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
+	 i+=step) {
       d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
-      numd++;
-      if (d > maxd) { maxd = d; }
-      if (d < mind) { mind = d; }
-      avgd += d;
+      if (d >= 0) {
+	if (d > maxpos) maxpos = d;
+	totpos += d;
+	nr_pos++;
+      } else {
+	if (d < minneg) minneg = d;
+	totneg += d;
+	nr_neg++;
+      }
     }
 
     g_mutex_unlock (sample->ops_mutex);
     
-    avgd /= numd;
-    avgposd = ((maxd - avgd) / 2) + avgd;
-    avgnegd = ((mind - avgd) / 2) + avgd;
+    if (nr_pos > 0) {
+      avgpos = totpos / nr_pos;
+    } else {
+      avgpos = 0;
+    }
+
+    if (nr_neg > 0) {
+      avgneg = totneg / nr_neg;
+    } else {
+      avgneg = 0;
+    }
 
     gdk_draw_line(win, s->minmax_gc,
-		  x, YPOS(maxd),
-		  x, YPOS(mind));
+		  x, YPOS(maxpos),
+		  x, YPOS(minneg));
 
-    gc = maxd > prevmaxd ? s->highlight_gc : s->lowlight_gc;
+    gc = maxpos > prev_maxpos ? s->highlight_gc : s->lowlight_gc;
     gdk_draw_line(win, gc,
-		  x, YPOS(prevmaxd),
-		  x, YPOS(maxd));
+		  x, YPOS(prev_maxpos),
+		  x, YPOS(maxpos));
 
-    gc = mind > prevmind ? s->lowlight_gc : s->highlight_gc;
+    gc = minneg > prev_minneg ? s->lowlight_gc : s->highlight_gc;
     gdk_draw_line(win, gc,
-		  x, YPOS(prevmind),
-		  x, YPOS(mind));
+		  x, YPOS(prev_minneg),
+		  x, YPOS(minneg));
 
     gdk_draw_line(win, fg_gc,
-		  x, YPOS(avgposd),
-		  x, YPOS(avgnegd));
+		  x, YPOS(avgpos),
+		  x, YPOS(avgneg));
 
-    prevmaxd = maxd;
-    prevmind = mind;
+    prev_maxpos = maxpos;
+    prev_minneg = minneg;
 
     x++;
     width--;
