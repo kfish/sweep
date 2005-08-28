@@ -3,7 +3,6 @@ information, mail sweep-devel@lists.sourceforge.net
 
 	* JACK support
 	* FLAC support
-	* GTK2 port
 	* caching of undo data on disk
 	* sample bank management
 	* markers
@@ -16,3 +15,4 @@ Done
 	* ALSA 0.9 support
 	* Ogg Vorbis support
 	* MP3 support (read-only)
+	* GTK2 port
