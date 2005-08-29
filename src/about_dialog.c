@@ -84,7 +84,7 @@ about_dialog_create()
     about_ebox = gtk_event_box_new();
     gtk_box_pack_start(GTK_BOX(vbox), about_ebox, TRUE, TRUE, 0);
     gtk_widget_show(about_ebox);
-    sprintf(buf2, "%s/sweep_logo.png", PACKAGE_DATA_DIR);
+    sprintf(buf2, "%s/sweep_logo.ppm", PACKAGE_DATA_DIR);
     about_image = gtk_image_new_from_file (buf2);
     gtk_container_add(GTK_CONTAINER(about_ebox), about_image);
     gtk_widget_show(about_ebox);
