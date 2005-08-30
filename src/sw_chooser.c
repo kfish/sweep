@@ -249,19 +249,14 @@ chooser_entry_changed_cb (GtkWidget * widget, gpointer data)
 
 	g_signal_handlers_block_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
 									0, 0, 0, chooser);
- //@@ gtk_signal_handler_block_by_data (GTK_OBJECT(widget), chooser);
-	g_signal_handlers_unblock_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
+	g_signal_handlers_block_matched (GTK_OBJECT(combo_entry), G_SIGNAL_MATCH_DATA, 0,
 									0, 0, 0, chooser);
-  //@@ gtk_signal_handler_block_by_data (GTK_OBJECT(combo_entry), chooser);
-
   chooser_set_number (chooser, number, choices);
-g_signal_handlers_block_matched (GTK_OBJECT(combo_entry), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, chooser);
-  //@@gtk_signal_handler_unblock_by_data (GTK_OBJECT(combo_entry), chooser);
-g_signal_handlers_block_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, chooser);
-  //@@gtk_signal_handler_unblock_by_data (GTK_OBJECT(widget), chooser);
 
+    g_signal_handlers_unblock_matched (GTK_OBJECT(combo_entry), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
+    g_signal_handlers_unblock_matched (GTK_OBJECT(widget), G_SIGNAL_MATCH_DATA, 0,
+									0, 0, 0, chooser);
 }
 
 static void
