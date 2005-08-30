@@ -22,7 +22,6 @@
 #define __INTERFACE_H__
 
 #include "sweep_app.h"
-#include "../pixmaps/sweep_app_icon.xpm"  /* wm / taskbar icon */
 
 GtkWidget *
 create_widget_from_xpm (GtkWidget * widget, gchar **xpm_data);
@@ -37,7 +36,7 @@ void
 init_styles (void);
 
 void
-sweep_set_window_icon (GtkWindow * window, gchar * icon_name);
+sweep_set_window_icon (GtkWindow * window);
 
 
 

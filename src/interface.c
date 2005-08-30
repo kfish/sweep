@@ -40,6 +40,7 @@
 #include "interface.h"
 #include "about_dialog.h"
 #include "pixmaps.h"
+#include "../pixmaps/sweep_app_icon.xpm"  /* wm / taskbar icon */
 
 GtkStyle * style_wb;
 GtkStyle * style_bw;
@@ -54,14 +55,14 @@ GtkStyle * style_red;
 
 
 
-void sweep_set_window_icon (GtkWindow *window, gchar * icon_name)
+void sweep_set_window_icon (GtkWindow *window)
 {
   GdkPixbuf * window_icon;
   
-  if ((!GTK_IS_WINDOW(window)) || (icon_name == NULL))
+  if (!GTK_IS_WINDOW(window))
 	return;
   
-  window_icon = gdk_pixbuf_new_from_xpm_data(sweep_app_icon_xpm);
+  window_icon = gdk_pixbuf_new_from_xpm_data((const char **)sweep_app_icon_xpm);
   
   if (window_icon)
    {

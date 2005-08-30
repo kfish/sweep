@@ -1872,7 +1872,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-  sweep_set_window_icon (GTK_WINDOW(window), "sweep_app_icon.png");
+  sweep_set_window_icon (GTK_WINDOW(window));
 
   gtk_window_set_default_size (GTK_WINDOW(window), win_width, win_height);
   view->window = window;

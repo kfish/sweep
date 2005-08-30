@@ -305,7 +305,7 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   win_height = gdk_screen_height () / 2;
 
   filesel = gtk_file_selection_new(_("Sweep: Load file"));
-  sweep_set_window_icon (GTK_WINDOW(filesel), "sweep_app_icon.png");
+  sweep_set_window_icon (GTK_WINDOW(filesel));
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (filesel, win_width, win_height);
 
@@ -766,7 +766,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   sample = view->sample;
 
   filesel = gtk_file_selection_new(_("Sweep: Save file"));
-  sweep_set_window_icon (GTK_WINDOW(filesel), "sweep_app_icon.png");
+  sweep_set_window_icon (GTK_WINDOW(filesel));
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (filesel, win_width, win_height);
 

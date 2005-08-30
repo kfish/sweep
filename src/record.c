@@ -433,7 +433,7 @@ rec_dialog_create (sw_sample * sample)
 
   if (rec_dialog == NULL) {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    sweep_set_window_icon (GTK_WINDOW(window), "sweep_app_icon.png");
+    sweep_set_window_icon (GTK_WINDOW(window));
     rec_dialog = window;
         
     main_vbox = gtk_vbox_new (FALSE, 0);

@@ -407,7 +407,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   gchar buf[BUF_LEN];
 
   dialog = gtk_dialog_new ();
-  sweep_set_window_icon (GTK_WINDOW(dialog), "sweep_app_icon.png");
+  sweep_set_window_icon (GTK_WINDOW(dialog));
   gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: New file"));
   /*gtk_container_border_width (GTK_CONTAINER(dialog), 8);*/

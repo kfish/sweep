@@ -99,7 +99,7 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GtkAccelGroup * accel_group;
 
   window = gtk_dialog_new ();
-  sweep_set_window_icon (GTK_WINDOW(window), "sweep_app_icon.png");
+  sweep_set_window_icon (GTK_WINDOW(window));
 
   new_title = g_strdup_printf ("%s: %s", "Sweep", title);
   gtk_window_set_title (GTK_WINDOW(window), new_title);
