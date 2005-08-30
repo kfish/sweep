@@ -1806,6 +1806,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   GtkWidget * progress;
   GtkWidget * frame;
   GtkWidget * label;
+  PangoRectangle logical_rect, ink_rect;
 #if 0
   GtkWidget * entry;
 #endif
@@ -2764,9 +2765,21 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_widget_show (pixmap);
 
   label = gtk_label_new (NO_TIME);
-  gtk_label_set_width_chars (GTK_LABEL(label), 12);
   gtk_box_pack_start (GTK_BOX(tool_hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+  
+  /*
+   * Prime the label with the largest string then fetch the width.
+   * now we can lock the width via gtk_widget_set_usize() to prevent
+   * the toolbar wobble caused by using a variable width font.
+   * Just a hackish replacement for the belated gtk_label_set_width_chars()
+   * FIXME: connect this to the style change event to update the width 
+   * when the theme changes.
+   */
+  gtk_label_set_text(GTK_LABEL(label), "00:00:00.000");
+  pango_layout_get_extents (gtk_label_get_layout (GTK_LABEL(label)), &ink_rect, &logical_rect);
+  gtk_widget_set_usize(GTK_WIDGET(label),  PANGO_PIXELS (ink_rect.width) + 2, -1);
+  
+  gtk_widget_show (label); 
   view->pos = label;
 
   /* progress bar */
