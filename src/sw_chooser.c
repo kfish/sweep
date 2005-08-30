@@ -198,7 +198,7 @@ chooser_combo_changed_cb (GtkWidget * widget, gpointer data)
   GtkWidget * chooser = (GtkWidget *)data;
   sw_choice * choices;
   GtkWidget * direct_hbox;
-  gchar * text;
+  const gchar * text;
   int i, number = -1;
 
   /* find what number the chosen menu string corresponds to */
@@ -236,7 +236,7 @@ chooser_entry_changed_cb (GtkWidget * widget, gpointer data)
   GtkWidget * combo_entry;
   sw_choice * choices;
 
-  gchar * text;
+  const gchar * text;
   int number = -1;
 
   text = gtk_entry_get_text (GTK_ENTRY(widget));
