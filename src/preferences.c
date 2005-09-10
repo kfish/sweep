@@ -42,7 +42,7 @@ static TDB_CONTEXT * prefs_tdb = NULL;
 
 #define DIR_MODE (S_IRWXU)
 #define FILE_MODE (S_IRUSR | S_IWUSR)
-//@@ review conf dir naming policy (leave as ~/.sweep?)
+
 void
 prefs_init ()
 {
@@ -50,14 +50,14 @@ prefs_init ()
   struct stat sbuf;
   
   prefs_path = g_get_home_dir ();
-  prefs_path = g_strconcat (prefs_path, "/.sweep-gtk2", NULL);
+  prefs_path = g_strconcat (prefs_path, "/.sweep", NULL);
 
   if (stat (prefs_path, &sbuf) == -1) {
     switch (errno) {
     case ENOENT:
       if (mkdir (prefs_path, DIR_MODE) == -1) {
 	if (errno != EEXIST) {
-	  perror (_("Error creating ~/.sweep-gtk2"));
+	  perror (_("Error creating ~/.sweep"));
 	  exit (1);
 	}
       } else {
@@ -68,7 +68,7 @@ prefs_init ()
       /* Directory exists, permission denied -- handled at access test */
       break;
     default:
-      perror (_("Error on ~/.sweep-gtk2"));
+      perror (_("Error on ~/.sweep"));
       exit (1);
     }
   }
@@ -77,14 +77,14 @@ prefs_init ()
     switch (errno) {
     case EACCES:
       if (chmod (prefs_path, DIR_MODE) == -1) {
-	perror (_("Error setting permissions on ~/.sweep-gtk2"));
+	perror (_("Error setting permissions on ~/.sweep"));
 	exit (1);
       } else {
 	printf ("Changed mode of %s to %04o\n", prefs_path, DIR_MODE);
       }
       break;
     default:
-      perror (_("Error accessing ~/.sweep-gtk2"));
+      perror (_("Error accessing ~/.sweep"));
       exit (1);
     }
   }
@@ -95,7 +95,7 @@ prefs_init ()
     switch (errno) {
     case EACCES:
       if (chmod (prefs_path, FILE_MODE) == -1) {
-	perror ("Error setting permissions on ~/.sweep-gtk2/preferences.tdb");
+	perror ("Error setting permissions on ~/.sweep/preferences.tdb");
 	exit (1);
       } else {
 	printf ("Changed mode of %s to %04o\n", prefs_path, FILE_MODE);
@@ -109,7 +109,7 @@ prefs_init ()
   prefs_tdb = tdb_open (prefs_path, 0, 0, O_RDWR | O_CREAT, FILE_MODE);
 
   if (prefs_tdb == NULL) {
-    perror (_("Error opening ~/.sweep-gtk2/preferences.tdb"));
+    perror (_("Error opening ~/.sweep/preferences.tdb"));
     exit (1);
     return;
   }
