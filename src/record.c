@@ -334,7 +334,7 @@ _rec_dialog_set_sample (sw_sample * sample, gboolean select_current)
   }
 
   head = sample->rec_head;
-#warning check return code for successful disconnect here.
+
   if (rec_head != NULL) {
     g_signal_handlers_disconnect_matched
                                             (GTK_OBJECT(mix_slider),
@@ -387,7 +387,7 @@ static void
 rec_dialog_entry_changed_cb (GtkWidget * widget, gpointer data)
 {
   GtkEntry * entry;
-  gchar * new_text;
+  const gchar * new_text;
   sw_sample * sample;
 
   entry = GTK_ENTRY(GTK_COMBO(combo)->entry);

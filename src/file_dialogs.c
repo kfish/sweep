@@ -280,7 +280,7 @@ sample_load_ok_cb(GtkWidget * widget, gpointer data)
 {
   gchar *dir;
 
-  dir = gtk_file_selection_get_filename(GTK_FILE_SELECTION(data));
+  dir = (gchar *)gtk_file_selection_get_filename(GTK_FILE_SELECTION(data));
 
   sample_load(dir);
 

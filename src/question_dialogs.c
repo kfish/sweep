@@ -246,7 +246,7 @@ syserror_dialog_new (gpointer data)
   gchar * sys_errstr = NULL;
   char * new_message;
 
-  sys_errstr = g_strerror (pd->thread_errno);
+  sys_errstr = (gchar *) g_strerror (pd->thread_errno);
 
   if (sys_errstr != NULL) {
     new_message = g_strdup_printf ("%s:\n\n%s", pd->message, sys_errstr);

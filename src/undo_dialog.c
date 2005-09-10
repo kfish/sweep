@@ -221,7 +221,7 @@ undo_dialog_entry_changed_cb (GtkWidget * widget, gpointer data)
   sw_sample * sample;
 
   entry = GTK_ENTRY(GTK_COMBO(combo)->entry);
-  new_text = gtk_entry_get_text (entry);
+  new_text = (gchar *)gtk_entry_get_text (entry);
 
   sample = sample_bank_find_byname (new_text);
 

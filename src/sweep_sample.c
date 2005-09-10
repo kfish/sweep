@@ -181,7 +181,7 @@ sample_new_empty(gchar * pathname,
 #if 0
   s->color = ((int)random()) % VIEW_COLOR_MAX;
 #else
-  s->color = filename_color_hash (g_basename (s->pathname));
+  s->color = filename_color_hash ((gchar *)g_basename (s->pathname));
 #endif
 
   s->info_clist = NULL;
@@ -241,10 +241,10 @@ sample_new_dialog_ok_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_widget_get_toplevel (widget);
 
   entry = g_object_get_data (G_OBJECT(dialog), "name_entry");
-  filename = gtk_entry_get_text (GTK_ENTRY(entry));
+  filename = (gchar *) gtk_entry_get_text (GTK_ENTRY(entry));
 
   entry = g_object_get_data (G_OBJECT(dialog), "duration_entry");
-  text = gtk_entry_get_text (GTK_ENTRY(entry));
+  text = (gchar *) gtk_entry_get_text (GTK_ENTRY(entry));
   seconds = strtime_to_seconds (text);
   if (seconds == -1) goto out; /* XXX: invalid time spec */
 
@@ -266,7 +266,7 @@ sample_new_dialog_ok_cb (GtkWidget * widget, gpointer data)
     prefs_set_int (CHANNELS_KEY, nr_channels);
   }
 
-  s = sample_new_empty (filename, nr_channels, sample_rate, nr_frames);
+  s = sample_new_empty ((gchar *)filename, nr_channels, sample_rate, nr_frames);
   v = view_new_all (s, 1.0);
   sample_add_view (s, v);
   sample_bank_add (s);
@@ -308,7 +308,7 @@ sample_new_dialog_update (GtkWidget * widget)
   dialog = gtk_widget_get_toplevel (widget);
 
   entry = g_object_get_data (G_OBJECT(dialog), "duration_entry");
-  text = gtk_entry_get_text (GTK_ENTRY(entry));
+  text = (gchar *)gtk_entry_get_text (GTK_ENTRY(entry));
   seconds = strtime_to_seconds (text);
 
   entry = g_object_get_data (G_OBJECT(dialog), "rate_chooser");
@@ -704,7 +704,7 @@ sample_bank_list_names (void)
   for (gl = sample_bank; gl; gl = gl->next) {
     s = (sw_sample *)gl->data;
 
-    ret = g_list_append (ret, g_basename (s->pathname));
+    ret = g_list_append (ret, (gpointer *)g_basename (s->pathname));
   }
 
   return ret;

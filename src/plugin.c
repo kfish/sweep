@@ -52,6 +52,7 @@ sweep_plugin_init (const gchar * path)
 {
   GModule * module;
   sw_plugin * m_plugin;
+  gpointer  m_plugin_ptr;
   GList * gl;
 
   module = g_module_open (path, G_MODULE_BIND_LAZY);
@@ -64,7 +65,8 @@ sweep_plugin_init (const gchar * path)
     return;
   }
   
-  if (g_module_symbol (module, "plugin", (gpointer *)&m_plugin)) {
+  if (g_module_symbol (module, "plugin", &m_plugin_ptr)) {
+	m_plugin = (sw_plugin *)m_plugin_ptr;
     for (gl = m_plugin->plugin_init (); gl; gl = gl->next) {
       plugins = g_list_insert_sorted (plugins, (sw_procedure *)gl->data,
 				      (GCompareFunc)cmp_proc_names);

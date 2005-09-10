@@ -168,12 +168,12 @@ config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
   main_dev =
     gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
 
-  prefs_set_string (DEV_KEY, main_dev);
+  prefs_set_string (DEV_KEY, (gchar *)main_dev);
 
   if (monitor_checked (dialog)) {
     monitor_dev =
       gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry)); 
-    prefs_set_string (MONITOR_DEV_KEY, monitor_dev);
+    prefs_set_string (MONITOR_DEV_KEY, (gchar *)monitor_dev);
 
     prefs_set_int (USE_MONITOR_KEY, 1);
   } else {
@@ -204,9 +204,9 @@ update_ok_button (GtkWidget * widget, gpointer data)
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "ok_button"));
 
   if (monitor_checked (dialog)) {
-    main_devname =
+    main_devname = (gchar *)
       gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
-    monitor_devname =
+    monitor_devname = (gchar *)
       gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
 
     ok = (strcmp (main_devname, monitor_devname) != 0);
@@ -247,11 +247,11 @@ static void
 pcmio_devname_swap_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog = GTK_WIDGET (data);
-  char * main_dev, * monitor_dev;
+  gchar * main_dev, * monitor_dev;
 
   main_dev =
     g_strdup (gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry)));
-  monitor_dev = gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
+  monitor_dev = (gchar *)gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
 
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), monitor_dev);
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry), main_dev);

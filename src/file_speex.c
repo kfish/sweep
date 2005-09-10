@@ -689,7 +689,7 @@ static int
 speex_sample_save_thread (sw_op_instance * inst)
 {
   sw_sample * sample = inst->sample;
-  char * pathname = (char *)inst->do_data;
+  gchar * pathname = (gchar *)inst->do_data;
 
   FILE * outfile;
   sw_format * format;
@@ -706,7 +706,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   ogg_packet       op; /* one raw packet of data for decode */
 
   float input[MAX_FRAME_SIZE];
-  char cbits[MAX_FRAME_BYTES];
+  gchar cbits[MAX_FRAME_BYTES];
   int nbBytes;
   int id = 0;
 
@@ -716,8 +716,8 @@ speex_sample_save_thread (sw_op_instance * inst)
   void * st;
   SpeexBits bits;
 
-  char * vendor_string = "Encoded with Sweep " VERSION " (metadecks.org)";
-  char * comments = NULL;
+  gchar * vendor_string = "Encoded with Sweep " VERSION " (metadecks.org)";
+  gchar * comments = NULL;
   int comments_length = 0;
 
   int eos = 0;
@@ -758,18 +758,18 @@ speex_sample_save_thread (sw_op_instance * inst)
 
   switch (so->mode) {
   case MODE_NARROWBAND:
-    mode = &speex_nb_mode;
+    mode = (SpeexMode *) &speex_nb_mode;
     break;
   case MODE_WIDEBAND:
-    mode = &speex_wb_mode;
+    mode = (SpeexMode *) &speex_wb_mode;
     break;
 #if (SPEEX_NB_MODES > 2)
   case MODE_ULTRAWIDEBAND:
-    mode = &speex_uwb_mode;
+    mode = (SpeexMode *) &speex_uwb_mode;
     break;
 #endif
   default:
-    mode = &speex_nb_mode;
+    mode = (SpeexMode *) &speex_nb_mode;
     break;
   }
 
@@ -1083,7 +1083,7 @@ speex_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   speex_save_options * so;
   GtkWidget * checkbutton;
   GtkWidget * entry;
-  gchar * text;
+  const gchar * text;
 
   gboolean use_br;
   GtkObject * adj; 

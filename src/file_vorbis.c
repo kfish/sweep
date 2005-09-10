@@ -714,7 +714,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   vorbis_save_options * so;
   GtkWidget * checkbutton;
   GtkWidget * entry;
-  gchar * text;
+  const gchar * text;
 
   gboolean use_abr;
   GtkObject * quality_adj; 

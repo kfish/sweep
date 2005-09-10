@@ -337,7 +337,7 @@ zoom_combo_changed_cb (GtkWidget * widget, gpointer data)
   sw_time_t zoom_time;
   sw_framecount_t zoom_length;
 
-  text = gtk_entry_get_text (GTK_ENTRY(widget));
+  text = (gchar *) gtk_entry_get_text (GTK_ENTRY(widget));
 
   if (!strcmp (text, "All")) {
     view_zoom_all (view);
