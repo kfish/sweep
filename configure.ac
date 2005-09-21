@@ -437,6 +437,41 @@ if test "x$ac_cv_prog_gcc" = xyes ; then
 fi
 dnl changequote([,])dnl
 
+dnl - Modified from www.nagios.org who modified it from www.erlang.org 
+
+dnl   Check how to export functions from the broker executable, needed
+dnl   when dynamically loaded drivers are loaded (so that they can find
+dnl   broker functions).
+dnl   OS'es with ELF executables using the GNU linker (Linux and recent *BSD ,
+dnl   in rare cases Solaris) typically need '-Wl,-export-dynamic' (i.e. pass
+dnl   -export-dynamic to the linker - also known as -rdynamic and some other
+dnl   variants); some sysVr4 system(s) instead need(s) '-Wl,-Bexport'.
+dnl   AIX 4.x (perhaps only for x>=2) wants -Wl,-bexpall,-brtl and doesn't
+dnl   reliably return an error for others, thus we separate it out.
+dnl   Otherwise we assume that if the linker accepts the flag, it is needed.
+      
+       AC_MSG_CHECKING(for extra flags needed to export symbols)
+       case $host_os in
+               aix4*|aix5*)
+                       EXPORT_DYNAMIC_FLAGS="-Wl,-bexpall,-brtl"
+               ;;
+               bsdi*)
+                       EXPORT_DYNAMIC_FLAGS="-rdynamic"
+               ;;
+               *)
+                       save_ldflags="$LDFLAGS"
+                       LDFLAGS=-Wl,-export-dynamic
+                       AC_TRY_LINK(,,[EXPORT_DYNAMIC_FLAGS="-Wl,-export-dynamic"], [
+                               LDFLAGS=-Wl,-Bexport
+                               AC_TRY_LINK(,,[EXPORT_DYNAMIC_FLAGS="- Wl,-Bexport"],
+                                       AC_MSG_RESULT(none))])
+                       LDFLAGS="$save_ldflags"
+               ;;
+       esac
+       AC_SUBST(EXPORT_DYNAMIC_FLAGS)
+       test "x$EXPORT_DYNAMIC_FLAGS" != x && AC_MSG_RESULT([$EXPORT_DYNAMIC_FLAGS])
+
+
 
 dnl
 dnl  Configuration tests complete -- provide summary of results.
