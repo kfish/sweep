@@ -439,9 +439,9 @@ dnl changequote([,])dnl
 
 dnl - Modified from www.nagios.org who modified it from www.erlang.org 
 
-dnl   Check how to export functions from the broker executable, needed
+dnl   Check how to export functions from the sweep executable, needed
 dnl   when dynamically loaded drivers are loaded (so that they can find
-dnl   broker functions).
+dnl   sweep functions).
 dnl   OS'es with ELF executables using the GNU linker (Linux and recent *BSD ,
 dnl   in rare cases Solaris) typically need '-Wl,-export-dynamic' (i.e. pass
 dnl   -export-dynamic to the linker - also known as -rdynamic and some other
