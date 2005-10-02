@@ -36,7 +36,7 @@ AC_ARG_ENABLE(experimental,
      [ ac_enable_experimental=yes ])
 
 if test "x${ac_enable_experimental}" = xyes ; then
-    AC_DEFINE(DEVEL_CODE)
+    AC_DEFINE([DEVEL_CODE], [], [Whether to build the develpment code.])
 fi
 
 
@@ -124,7 +124,7 @@ PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
                   HAVE_LIBSNDFILE1="yes", HAVE_LIBSNDFILE1="no")
 
 if test "x$HAVE_LIBSNDFILE1" = xyes ; then
-  AC_DEFINE(HAVE_LIBSNDFILE1)
+  AC_DEFINE([HAVE_LIBSNDFILE1], [], [Define if we have libsndfile1.])
   AC_SUBST(SNDFILE_LIBS)
   LIBSNDFILE_VERSION="1"
 else
@@ -236,7 +236,7 @@ if test "x$HAVE_OGG" = xyes && test "x${ac_enable_oggvorbis}" != xno ; then
   AC_SUBST(VORBISFILE_LIBS)
 
   if test "x$HAVE_VORBIS" = xyes ; then
-    AC_DEFINE(HAVE_OGGVORBIS)
+    AC_DEFINE([HAVE_OGGVORBIS], [], [Define if we have Ogg Vorbis.])
 
     dnl Test out ov_read_float
     AC_MSG_CHECKING([for deprecated ov_read_float() interface])
@@ -250,7 +250,7 @@ if test "x$HAVE_OGG" = xyes && test "x${ac_enable_oggvorbis}" != xno ; then
                     #include <vorbis/vorbisfile.h> ],
                    [OggVorbis_File * vf; float ** pcm; int b;
                     ov_read_float (vf, &pcm, &b);],
-		   [ AC_DEFINE(OV_READ_FLOAT_THREE_ARGS)
+		   [ AC_DEFINE([OV_READ_FLOAT_THREE_ARGS], [], [Define if ov_read_float takes 3 arguments.])
 		     AC_MSG_RESULT(yes) ],
                    [ AC_MSG_RESULT(no) ])
 
@@ -289,7 +289,7 @@ if test "x$HAVE_OGG" = xyes && test "x${ac_enable_speex}" != xno ; then
                     AC_DEFINE(HAVE_SPEEX_SUBDIR, [1], [Define to 1 if speex headers are eg. <speex/speex.h>])
     )
 
-    AC_DEFINE(HAVE_SPEEX)
+    AC_DEFINE([HAVE_SPEEX], [], [Define if we have speex.])
     SPEEX_LIBS="-lspeex -lm"
     AC_SUBST(SPEEX_LIBS)
   fi
@@ -317,7 +317,7 @@ if test "x${ac_enable_mad}" != xno ; then
     AC_CHECK_HEADER(mad.h, HAVE_MAD="yes", HAVE_MAD="no")
   fi
   if test "x$HAVE_MAD" = xyes ; then
-    AC_DEFINE(HAVE_MAD)
+    AC_DEFINE([HAVE_MAD], [], [Define if we have mad.])
     MAD_LIBS="-lmad"
     AC_SUBST(MAD_LIBS)
   fi
@@ -342,7 +342,7 @@ if test "x${ac_enable_src}" != xno ; then
                     HAVE_LIBSAMPLERATE="yes", HAVE_LIBSAMPLERATE="no")
 
   if test "x$HAVE_LIBSAMPLERATE" = xyes ; then
-    AC_DEFINE(HAVE_LIBSAMPLERATE)
+    AC_DEFINE([HAVE_LIBSAMPLERATE], [], [Define if we have libsamplerate.])
     AC_SUBST(SAMPLERATE_LIBS)
   fi
 else
@@ -364,7 +364,7 @@ if test "x${ac_enable_alsa}" != xno ; then
 
   AC_CHECK_HEADERS(alsa/asoundlib.h)
   if test "x${ac_cv_header_alsa_asoundlib_h}" = xyes ; then
-    AC_DEFINE(DRIVER_ALSA)
+    AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.])
     LIBS="$LIBS -lasound"
   fi
 
@@ -376,7 +376,7 @@ AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h)
 if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
   test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
   if test "x$ac_enable_alsa" = xno ; then
-    AC_DEFINE(DRIVER_OSS)
+    AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
 
     dnl Check for NetBSD's OSS compatability layer
     AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
@@ -390,7 +390,7 @@ case $host in
 *-*-solaris*)
 AC_CHECK_HEADERS(sys/audioio.h)
 if test "x${ac_cv_header_sys_audioio_h}" = xyes; then
-    AC_DEFINE(DRIVER_SOLARIS_AUDIO)
+    AC_DEFINE([DRIVER_SOLARIS_AUDIO], [], [Define if we have and want the solaris audio driver.])
     sweep_config_driver="Solaris"
 fi
 ;;
@@ -399,15 +399,15 @@ esac
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale")
+  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${ac_default_prefix}/${DATADIRNAME}/locale", [Define the PACKAGE_LOCALE_DIR.])
 else
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
+  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRNAME}/locale")
 fi
 
 dnl Set PACKAGE_DATA_DIR in config.h.
 if test "x${datadir}" = 'x${prefix}/share'; then
   if test "x${prefix}" = xNONE; then
-    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${ac_default_prefix}/share/${PACKAGE}")
+    AC_DEFINE_UNQUOTED([PACKAGE_DATA_DIR], "${ac_default_prefix}/share/${PACKAGE}", [Define the PACKAGE_DATA_DIR.])
   else
     AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}")
   fi
@@ -423,11 +423,11 @@ if test "x${prefix}" = xNONE; then
 else
   sweep_plugin_dir="${prefix}/lib/${PACKAGE}"
 fi
-AC_DEFINE_UNQUOTED(PACKAGE_PLUGIN_DIR, "$sweep_plugin_dir")
+AC_DEFINE_UNQUOTED([PACKAGE_PLUGIN_DIR], "$sweep_plugin_dir", [Define the PACKAGE_PLUGIN_DIR.])
 
 dnl Set PACKAGE_SOURCE_DIR in config.h.
 packagesrcdir=`cd $srcdir && pwd`
-AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
+AC_DEFINE_UNQUOTED([PACKAGE_SOURCE_DIR], "${packagesrcdir}", [Define the PACKAGE_SOURCE_DIR.])
 
 
 dnl Use -Wall if we have gcc.
