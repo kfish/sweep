@@ -492,6 +492,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   dialog = gtk_dialog_new ();
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 
+   attach_window_close_accel(GTK_WINDOW(dialog));
+
   /* Set up the action area first so the sensitivity of the ok button
    *  can be updated by formats below. */
 

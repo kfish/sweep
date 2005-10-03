@@ -1564,9 +1564,6 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   GtkWidget * entry;
 
   GtkWidget * separator;
-
-  GtkAccelGroup * accel_group;
-
   GtkTooltips * tooltips;
 
 /*  GtkStyle * style; */
@@ -1579,23 +1576,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			_("Sweep: Speex save options"));
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 
-  accel_group = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW(dialog), accel_group);
-
-#ifdef DEVEL_CODE
-  /* XXX: Use of this accelerator gives the following error messages:
-
-  Gtk-CRITICAL **: file gtkstyle.c: line 568 (gtk_style_detach): assertion `style != NULL' failed.
-
-  Gtk-CRITICAL **: file gtkcontainer.c: line 1247 (gtk_container_unregister_toplevel): assertion `node != NULL' failed.
-
-  Gtk-CRITICAL **: file gtkstyle.c: line 621 (gtk_style_unref): assertion `style != NULL' failed.
-
-  */
-
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(dialog), "destroy");
-#endif
+  attach_window_close_accel(GTK_WINDOW(dialog));
 
   g_object_set_data (G_OBJECT(dialog), "pathname", pathname);
 

@@ -51,6 +51,13 @@ create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 
 GtkWidget* create_toolbox (void);
 
+void 
+attach_window_close_accel(GtkWindow *window);
 
+void 
+close_window_cb(GtkAccelGroup *accel_group,
+                                             GObject *acceleratable,
+                                             guint keyval,
+                                             GdkModifierType modifier);
 
 #endif /* __INTERFACE_H__ */
