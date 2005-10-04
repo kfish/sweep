@@ -170,10 +170,7 @@ levelmeter_draw (GtkWidget * widget, GdkRectangle * area)
 static gint
 levelmeter_expose(GtkWidget * widget, GdkEventExpose * event)
 {
- //@@ gtk_widget_draw (widget, NULL);
   levelmeter_draw(widget, NULL);
-	//@@ fix this
-
   return FALSE;
 }
 
@@ -209,7 +206,6 @@ levelmeter_class_init(LevelMeterClass * class)
 
   widget_class->realize = levelmeter_realize;
   widget_class->expose_event = levelmeter_expose;
- //@@ widget_class->draw = levelmeter_draw;
   widget_class->size_request = levelmeter_size_request;
   widget_class->size_allocate = levelmeter_size_allocate;
 /*

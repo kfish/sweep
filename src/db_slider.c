@@ -63,13 +63,6 @@ db_slider_class_init(DbSliderClass * klass)
                                          NULL,                
 										 g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
- /* db_slider_signals[VALUE_CHANGED_SIGNAL] =
-    gtk_signal_new("value-changed", GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
-                   GTK_SIGNAL_OFFSET(DbSliderClass, value_changed),
-                   gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1, GTK_TYPE_FLOAT); */
-
- //@@ gtk_object_class_add_signals(object_class, db_slider_signals, LAST_SIGNAL);
-
   klass->value_changed = NULL;
 }
 

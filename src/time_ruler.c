@@ -173,7 +173,6 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
   GdkGC *gc, *bg_gc;
-  //@@ GdkFont *font;
   gint i;
   gint width, height;
   gint xthickness;
@@ -300,14 +299,10 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 #else
 	      snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);
 #endif
-//@@	      gdk_draw_string (ruler->backing_store, font, gc,
-//@@			       pos + 2, ythickness + font->ascent - 1,
-//@@			       unit_str);
-		  
-		  pango_layout_set_text (layout, unit_str, -1);
-  pango_layout_get_extents (layout, NULL, &logical_rect);
+  		  pango_layout_set_text (layout, unit_str, -1);
+ 		  pango_layout_get_extents (layout, NULL, &logical_rect);
 
-  gtk_paint_layout (widget->style,
+ 		  gtk_paint_layout (widget->style,
                   ruler->backing_store,
                   GTK_WIDGET_STATE (widget),
 				  FALSE,
@@ -318,8 +313,8 @@ time_ruler_draw_ticks (GtkRuler *ruler)
                   2,
                   layout);
 	    }
-	}
-    }
+	 }
+   }
 }
 
 static void

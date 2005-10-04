@@ -569,9 +569,6 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 			   sw_param_set pset)
 {
   sw_ps_adjuster * ps;
-
-  //@@GtkStyle * style;
-
   GtkWidget * window;
   GtkWidget * main_vbox;
   GtkWidget * pixmap;
@@ -591,7 +588,6 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 
 #ifdef _USE_TEXT
   GtkWidget * text;
-//@@  GdkFont * font;
 
 #define BUF_LEN 1024
   gchar buf[BUF_LEN];
@@ -656,22 +652,23 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   if (proc->name != NULL) {
 
 #ifdef _USE_TEXT
-/*font =
-  gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
-
-  n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
-  gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
-*/
+/*
+ * font =
+ * gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
+ *
+ * n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
+ * gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
+ */
 #else
 
 /* pangoise?
-	  
-  style = gtk_style_new ();
-  gdk_font_unref (style->font);
-  style->font =
-  gdk_font_load("-adobe-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
-  gtk_widget_push_style (style);
-*/
+ *  
+ * style = gtk_style_new ();
+ * gdk_font_unref (style->font);
+ * style->font =
+ * gdk_font_load("-adobe-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
+ * gtk_widget_push_style (style);
+ */
     label = gtk_label_new (_(proc->name));
     gtk_misc_set_padding (GTK_MISC (label), 10, 10);
     gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
