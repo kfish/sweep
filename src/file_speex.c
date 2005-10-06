@@ -1575,6 +1575,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_window_set_title (GTK_WINDOW(dialog),
 			_("Sweep: Speex save options"));
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+  sweep_set_window_icon(GTK_WINDOW(dialog));
 
   attach_window_close_accel(GTK_WINDOW(dialog));
 
