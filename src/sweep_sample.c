@@ -396,11 +396,6 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   GtkWidget * button;
   GtkWidget * checkbutton;
   GtkWidget * ok_button;
-
-#ifdef DEVEL_CODE
-  GtkAccelGroup * accel_group;
-#endif
-
   GtkTooltips * tooltips;
 
 #define BUF_LEN 16
@@ -415,14 +410,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   g_signal_connect (G_OBJECT(dialog), "destroy",
 		      G_CALLBACK(sample_new_dialog_cancel_cb), dialog);
 
-#ifdef DEVEL_CODE
-  /* XXX: Causes Gtk-CRITICAL warnings at runtime */
-  accel_group = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW(dialog), accel_group);
-
- //@@ gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
- //@@	       GTK_OBJECT(dialog), "destroy");
-#endif
+  attach_window_close_accel(GTK_WINDOW(dialog));
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 

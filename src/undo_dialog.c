@@ -37,6 +37,7 @@
 #include "sweep_app.h"
 #include "edit.h"
 #include "interface.h"
+#include "callbacks.h"
 
 #include "../pixmaps/undo.xpm"
 #include "../pixmaps/redo.xpm"
@@ -341,7 +342,7 @@ undo_dialog_create (sw_sample * sample)
   GtkWidget * button;
   GtkWidget * scrolled;
   gchar * titles[] = { "", N_("Action") };
-
+  GClosure *gclosure;
   GtkAccelGroup * accel_group;
 
   if (undo_dialog == NULL) {
@@ -358,9 +359,14 @@ undo_dialog_create (sw_sample * sample)
     g_signal_connect (G_OBJECT(undo_dialog), "destroy",
 		      G_CALLBACK(undo_dialog_destroy), NULL);
 
- //@@   gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-//@@			 GTK_OBJECT(undo_dialog), "hide");
 
+   gclosure = g_cclosure_new  ((GCallback)hide_window_cb, NULL, NULL);
+   gtk_accel_group_connect (accel_group,
+                                             GDK_w,
+                                             GDK_CONTROL_MASK,
+                                             0, /* non of the GtkAccelFlags seem suitable? */
+                                             gclosure);
+    
     vbox = GTK_DIALOG(undo_dialog)->vbox;
 
     hbox = gtk_hbox_new (FALSE, 8);

@@ -269,4 +269,16 @@ normalise_cb (GtkWidget * widget, gpointer data);
 void
 show_info_dialog_cb (GtkWidget * widget, gpointer data);
 
+void 
+close_window_cb(GtkAccelGroup *accel_group,
+                                             GObject *acceleratable,
+                                             guint keyval,
+                                             GdkModifierType modifier);
+											 
+void 
+hide_window_cb(GtkAccelGroup *accel_group,
+                                             GObject *acceleratable,
+                                             guint keyval,
+                                             GdkModifierType modifier);
+
 #endif /* __CALLBACKS_H__ */

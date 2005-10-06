@@ -472,12 +472,3 @@ void attach_window_close_accel(GtkWindow *window)
                                              gclosure);
   gtk_window_add_accel_group (GTK_WINDOW(window), accel_group);
 }
-
-void close_window_cb(GtkAccelGroup *accel_group,
-                                             GObject *acceleratable,
-                                             guint keyval,
-                                             GdkModifierType modifier)
-{
-	if (GTK_IS_WINDOW(acceleratable))
-  		g_signal_emit_by_name(G_OBJECT(acceleratable), "destroy");
-}

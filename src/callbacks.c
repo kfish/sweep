@@ -961,3 +961,23 @@ show_info_dialog_cb (GtkWidget * widget, gpointer data)
 
   sample_show_info_dialog (view->sample);
 }
+
+void
+hide_window_cb (GtkAccelGroup *accel_group,
+                                             GObject *acceleratable,
+                                             guint keyval,
+                                             GdkModifierType modifier)
+{
+	if (GTK_IS_WINDOW(acceleratable))
+  		g_signal_emit_by_name(G_OBJECT(acceleratable), "hide");
+}
+
+void 
+close_window_cb (GtkAccelGroup *accel_group,
+                                             GObject *acceleratable,
+                                             guint keyval,
+                                             GdkModifierType modifier)
+{
+	if (GTK_IS_WINDOW(acceleratable))
+  		g_signal_emit_by_name(G_OBJECT(acceleratable), "destroy");
+}

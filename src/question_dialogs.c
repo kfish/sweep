@@ -96,8 +96,6 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GtkWidget * label;
   GtkWidget * pixmap;
 
-  GtkAccelGroup * accel_group;
-
   window = gtk_dialog_new ();
   sweep_set_window_icon (GTK_WINDOW(window));
 
@@ -110,14 +108,10 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
 
   g_object_set_data (G_OBJECT(window), "default", sample);
 
-  accel_group = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW(window), accel_group);
-
   g_signal_connect (G_OBJECT(window), "destroy",
 		      G_CALLBACK(question_dialog_destroy_cb), window);
 
-//@@ gtk_accel_group_connect (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-//@@		       GTK_OBJECT(window), "destroy");
+  attach_window_close_accel(GTK_WINDOW(window));
 
   g_object_set_data (G_OBJECT(window), "quit_nofiles",
 		       GINT_TO_POINTER((gint)quit_if_no_files));
