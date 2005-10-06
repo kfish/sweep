@@ -981,3 +981,30 @@ close_window_cb (GtkAccelGroup *accel_group,
 	if (GTK_IS_WINDOW(acceleratable))
   		g_signal_emit_by_name(G_OBJECT(acceleratable), "destroy");
 }
+ 
+/*
+ * Prime the label with the largest string then fetch the width.
+ * now we can lock the width via gtk_widget_set_usize() to prevent
+ * the wobble wobble caused by using a variable width font.
+ * Just a hackish replacement for the belated gtk_label_set_width_chars()
+ * don't try this at home kids, karma will get you. (oh well.. it works.) 
+ */
+void  
+hack_max_label_width_cb (GtkWidget *widget,
+							GtkStyle *previous_style,
+                            gpointer user_data)
+{
+  PangoRectangle logical_rect, ink_rect;
+  const gchar *saved;
+	
+  if (!GTK_IS_LABEL(widget))
+	  return;
+  saved = strdup(gtk_label_get_text(GTK_LABEL(widget)));
+  gtk_label_set_text(GTK_LABEL(widget), "00:00:00.000");
+  pango_layout_get_extents (gtk_label_get_layout (GTK_LABEL(widget)), &ink_rect, &logical_rect);
+  gtk_label_set_text(GTK_LABEL(widget), saved);
+  
+  if(saved != NULL)
+  g_free((gpointer)saved);
+  gtk_widget_set_usize(GTK_WIDGET(widget),  PANGO_PIXELS (ink_rect.width) + 8, -1);
+}

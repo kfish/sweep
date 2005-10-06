@@ -280,5 +280,10 @@ hide_window_cb(GtkAccelGroup *accel_group,
                                              GObject *acceleratable,
                                              guint keyval,
                                              GdkModifierType modifier);
+											 
+void  
+hack_max_label_width_cb (GtkWidget *widget,
+							GtkStyle *previous_style,
+                            gpointer user_data);
 
 #endif /* __CALLBACKS_H__ */
