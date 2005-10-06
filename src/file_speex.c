@@ -105,6 +105,7 @@
 #include "view.h"
 
 #include "../pixmaps/xifish.xpm"
+#include "../pixmaps/speex_logo.xpm"
 
 /* MAINTENANCE:
  *
@@ -1565,6 +1566,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   GtkWidget * separator;
   GtkTooltips * tooltips;
+  GtkWidget *speex_logo;
 
 /*  GtkStyle * style; */
 
@@ -1592,7 +1594,6 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_add (GTK_CONTAINER(ebox), vbox);
   gtk_widget_show (vbox);
 
-#if 0
   /* Ogg Speex pixmaps */
 
   hbox = gtk_hbox_new (FALSE, 0);
@@ -1600,22 +1601,13 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_set_border_width (GTK_CONTAINER(hbox), 4);
   gtk_widget_show (hbox);
 
-  pixmap = create_widget_from_xpm (dialog, white_ogg_xpm);
-  gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 0);
-  gtk_widget_show (pixmap);
+  speex_logo = create_widget_from_xpm (dialog, speex_logo_xpm);
+  gtk_box_pack_start (GTK_BOX(hbox), speex_logo, FALSE, FALSE, 0);
+  gtk_widget_show (speex_logo);
 
-  pixmap = create_widget_from_xpm (dialog, speexword2_xpm);
-  gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 0);
-  gtk_widget_show (pixmap);
-#endif
+   /* filename */
 
-  /* filename */
-
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER(hbox), 4);
-  gtk_widget_show (hbox);
-
+  
 /* worth changing this over to pango?
 
   style = gtk_style_new ();
@@ -1625,7 +1617,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_widget_push_style (style);
 */
   label = gtk_label_new (g_basename (pathname));
-  gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
   
 /* gtk_widget_pop_style (); */
