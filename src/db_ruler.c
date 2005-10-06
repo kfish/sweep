@@ -117,7 +117,6 @@ db_ruler_class_init (DbRulerClass *klass)
   widget_class = (GtkWidgetClass*) klass;
   ruler_class = (GtkRulerClass*) klass;
 
- //@@ widget_class->realize = db_ruler_realize;
   widget_class->button_press_event = db_ruler_button_press;
   widget_class->motion_notify_event = db_ruler_motion_notify;
   widget_class->button_release_event = db_ruler_button_release;
@@ -157,61 +156,6 @@ db_ruler_init (DbRuler *db_ruler)
   DB_RULER(db_ruler)->dragging = FALSE;
 }
 
-/*static void
-db_ruler_realize (GtkWidget * widget)
-{
-  GtkRuler * ruler;
-  GdkWindowAttr attributes;
-  gint attributes_mask;
-  GdkVisual * visual;
-
-  g_return_if_fail (widget != NULL);
-  g_return_if_fail (GTK_IS_DB_RULER (widget));
-
-  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
-
-  ruler = GTK_RULER(widget);
-
-  attributes.x = widget->allocation.x;
-  attributes.y = widget->allocation.y;
-  attributes.width = widget->allocation.width;
-  attributes.height = widget->allocation.height;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget)
-    | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
-    | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK
-    | GDK_LEAVE_NOTIFY_MASK;
-      attributes.visual = gdk_rgb_get_visual();
- //@@ attributes.visual = gdk_drawable_get_visual (GDK_DRAWABLE(widget));
-  attributes.colormap = gdk_colormap_new (attributes.visual, TRUE);
-  //@@attributes.colormap = gtk_widget_get_colormap (widget);
-
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  widget->window = gdk_window_new (widget->parent->window,
-				   &attributes, attributes_mask);
-
-  widget->style = gtk_style_attach (widget->style, widget->window);
-
-  gtk_style_set_background(widget->style, widget->window, GTK_STATE_NORMAL);
-
-  gdk_window_set_user_data(widget->window, widget);
-
-  visual = gdk_drawable_get_visual (GDK_DRAWABLE(widget->window));
-
-  if (ruler->backing_store != NULL) {
-    g_object_unref (ruler->backing_store);
-  }
-
-  ruler->backing_store = gdk_pixmap_new (widget->window,
-					 widget->allocation.width,
-					 widget->allocation.height,
-					 visual->depth);
-
-  ruler->non_gr_exp_gc = gdk_gc_new (widget->window);
-  gdk_gc_copy (ruler->non_gr_exp_gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
-}
-*/
 GtkWidget*
 db_ruler_new (void)
 {
@@ -321,7 +265,6 @@ db_ruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
   GdkGC *gc, *bg_gc;
-  //@@ GdkFont *font;
   gint i;
   gint width, height;
   gint xthickness;
@@ -351,11 +294,9 @@ db_ruler_draw_ticks (GtkRuler *ruler)
 
   gc = widget->style->fg_gc[GTK_STATE_NORMAL];
   bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
-  //@@ font = widget->style->font;
 
   xthickness = widget->style->xthickness;
   ythickness = widget->style->ythickness;
-  //@@ digit_height = font->ascent; /* assume descent == 0 ? */
 
   width = widget->allocation.width - ( xthickness * 2) ;
   /*  height = widget->allocation.height - ythickness * 2;*/

@@ -1604,7 +1604,6 @@ static gint
 sample_display_expose (GtkWidget *widget,
 		       GdkEventExpose *event)
 {
- //@@ SampleDisplay * s = (SampleDisplay *)widget;
   GdkRectangle * a;
   a = &event->area;
 
@@ -1613,24 +1612,7 @@ sample_display_expose (GtkWidget *widget,
 	   a->x, a->y, a->width, a->height, event->count);
 #endif
 
-#ifdef DOUBLE_BUFFER
-	
-//@@  sample_display_draw (widget, a);
- /* gdk_draw_pixmap(widget->window, s->fg_gc, s->backing_pixmap,
-		  a->x, a->y,
-		  a->x, a->y,
-		  a->width, a->height); */
-#else
-//@@  gtk_widget_queue_draw_area (GTK_WIDGET(s), a->x, a->y, a->width, a->height);
-
- /* area.x = a->x;
-  area.y = a->y;
-  area.width = a->width;
-  area.height = a->height;
-  */
   sample_display_draw (widget, a);
- //@@ hohum: gtk_widget_draw (widget, &area);
-#endif
 
   return FALSE;
 }
@@ -2451,7 +2433,12 @@ sample_display_focus_in (GtkWidget * widget, GdkEventFocus * event)
   g_return_val_if_fail (IS_SAMPLE_DISPLAY(widget), FALSE);
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_HAS_FOCUS);
- //@@ gtk_widget_draw_focus (widget);
+ /*
+  * FIXME: nonexistant in GTK+-2.0
+  * docs say draw in the expose function. draw what though?
+  * 	
+  *	gtk_widget_draw_focus (widget);
+  */
 
   s = SAMPLE_DISPLAY(widget);
 
@@ -2475,7 +2462,12 @@ sample_display_focus_out (GtkWidget * widget, GdkEventFocus * event)
   g_return_val_if_fail (IS_SAMPLE_DISPLAY(widget), FALSE);
 
   GTK_WIDGET_UNSET_FLAGS (widget, GTK_HAS_FOCUS);
- //@@ gtk_widget_draw_focus (widget);
+ /*
+  * FIXME: nonexistant in GTK+-2.0
+  * docs say draw in the expose function. draw what though?
+  * 	
+  *	gtk_widget_draw_focus (widget);
+  */
 
   s = SAMPLE_DISPLAY(widget);
 
@@ -2770,7 +2762,6 @@ sample_display_class_init (SampleDisplayClass *class)
   widget_class->realize = sample_display_realize;
   widget_class->size_allocate = sample_display_size_allocate;
   widget_class->expose_event = sample_display_expose;
-//@@  widget_class->draw = sample_display_draw;
   widget_class->size_request = sample_display_size_request;
   widget_class->button_press_event = sample_display_button_press;
   widget_class->button_release_event = sample_display_button_release;
@@ -2816,9 +2807,6 @@ sample_display_class_init (SampleDisplayClass *class)
 					 			  g_cclosure_marshal_VOID__VOID,
                                   G_TYPE_NONE, 0);
 
-//@@  gtk_object_class_add_signals(object_class, sample_display_signals,
-//@@			       LAST_SIGNAL);
-    
   class->selection_changed = NULL;
   class->window_changed = NULL;
   class->mouse_offset_changed = NULL;
