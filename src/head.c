@@ -447,7 +447,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
 
     button = create_pixmap_button (window, playrev_xpm,
 				   _("Reverse mode (toggle)"),
-				   NULL, SW_TOOLBAR_TOGGLE_BUTTON,
+				   style, SW_TOOLBAR_TOGGLE_BUTTON,
 				   G_CALLBACK (hctl_reverse_toggled_cb), NULL, NULL, hctl);
 
 	g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
@@ -465,7 +465,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
 
     button = create_pixmap_button (window, loop_xpm,
 				   _("Loop mode recording (toggle)"),
-				   NULL, SW_TOOLBAR_TOGGLE_BUTTON,
+				   style, SW_TOOLBAR_TOGGLE_BUTTON,
 				   G_CALLBACK (hctl_loop_toggled_cb), NULL, NULL, hctl);
     g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
 									0, 0, 0, hctl);
@@ -484,7 +484,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
 
     button = create_pixmap_button (window, recpausesel_xpm,
 				   _("Record into selection"),
-				   NULL, SW_TOOLBAR_TOGGLE_BUTTON,
+				   style, SW_TOOLBAR_TOGGLE_BUTTON,
 				   G_CALLBACK (hctl_record_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
@@ -501,7 +501,7 @@ g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
     hctl->go_toggle = button;
 
     button = create_pixmap_button (window, stop_xpm, _("Stop"),
-				   NULL, SW_TOOLBAR_BUTTON,
+				   style, SW_TOOLBAR_BUTTON,
 				   G_CALLBACK (hctl_record_stop_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
@@ -514,7 +514,7 @@ g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
     button
       = create_pixmap_button (window, prevtrk_xpm,
 			      _("Go to beginning"),
-			      NULL, SW_TOOLBAR_BUTTON,
+			      style, SW_TOOLBAR_BUTTON,
 			      G_CALLBACK (hctl_goto_start_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
@@ -525,7 +525,7 @@ g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
     
     button
       = create_pixmap_button (window, rew_xpm, _("Rewind"),
-			      NULL, SW_TOOLBAR_BUTTON,
+			      style, SW_TOOLBAR_BUTTON,
 			      NULL,
 			      G_CALLBACK (hctl_rewind_pressed_cb),
 			      G_CALLBACK (hctl_repeater_released_cb), hctl);
@@ -538,7 +538,7 @@ g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
     
     button
       = create_pixmap_button (window, ff_xpm, _("Fast forward"),
-			      NULL, SW_TOOLBAR_BUTTON,
+			      style, SW_TOOLBAR_BUTTON,
 			      NULL,
 			      G_CALLBACK (hctl_ffwd_pressed_cb),
 			      G_CALLBACK (hctl_repeater_released_cb),
@@ -553,7 +553,7 @@ g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
     button
       = create_pixmap_button (window, nexttrk_xpm,
 			      _("Go to the end"),
-			      NULL, SW_TOOLBAR_BUTTON,
+			      style, SW_TOOLBAR_BUTTON,
 			      G_CALLBACK (hctl_goto_end_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
