@@ -299,8 +299,7 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   GtkWidget *filesel;
   char * load_current_file;
   gint win_width, win_height;
-  GtkAccelGroup * accel_group;
-
+ 
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
 
@@ -309,15 +308,10 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (filesel, win_width, win_height);
 
-  accel_group = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW(filesel), accel_group);
-
   g_signal_connect (G_OBJECT(filesel), "destroy",
                      G_CALLBACK(sample_load_destroy_cb), filesel);
 
-/*  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(filesel), "destroy");
-*/
+  attach_window_close_accel(GTK_WINDOW(filesel));
   load_current_file = prefs_get_string (LAST_LOAD_KEY);
 
   if(load_current_file) {
@@ -766,6 +760,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   sample = view->sample;
 
   filesel = gtk_file_selection_new(_("Sweep: Save file"));
+  attach_window_close_accel(GTK_WINDOW(filesel));
   sweep_set_window_icon (GTK_WINDOW(filesel));
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (filesel, win_width, win_height);
