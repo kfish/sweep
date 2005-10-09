@@ -285,5 +285,10 @@ void
 hack_max_label_width_cb (GtkWidget *widget,
 							GtkStyle *previous_style,
                             gpointer user_data);
+							
+void  
+hack_max_combo_width_cb (GtkWidget *widget,
+							GtkStyle *previous_style,
+                            gpointer user_data);
 
 #endif /* __CALLBACKS_H__ */

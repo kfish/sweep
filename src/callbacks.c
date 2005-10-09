@@ -1000,11 +1000,31 @@ hack_max_label_width_cb (GtkWidget *widget,
   if (!GTK_IS_LABEL(widget))
 	  return;
   saved = strdup(gtk_label_get_text(GTK_LABEL(widget)));
-  gtk_label_set_text(GTK_LABEL(widget), "00:00:00.000");
+  gtk_label_set_text(GTK_LABEL(widget), "00:00:00.0000");
   pango_layout_get_extents (gtk_label_get_layout (GTK_LABEL(widget)), &ink_rect, &logical_rect);
   gtk_label_set_text(GTK_LABEL(widget), saved);
   
   if(saved != NULL)
   g_free((gpointer)saved);
-  gtk_widget_set_usize(GTK_WIDGET(widget),  PANGO_PIXELS (ink_rect.width) + 8, -1);
+  gtk_widget_set_usize(GTK_WIDGET(widget),  PANGO_PIXELS (ink_rect.width), -1);
+}
+
+void  
+hack_max_combo_width_cb (GtkWidget *widget,
+							GtkStyle *previous_style,
+                            gpointer user_data)
+{
+  PangoRectangle logical_rect, ink_rect;
+  GtkWidget *tmp_entry;
+	
+  if (!GTK_IS_ENTRY(widget))
+	  return;
+  tmp_entry = gtk_entry_new();
+  gtk_widget_set_style(tmp_entry, gtk_style_copy(widget->style));
+  gtk_entry_set_text(GTK_ENTRY(tmp_entry), "00:00:00.0000.");
+  
+  pango_layout_get_extents (gtk_entry_get_layout (GTK_ENTRY(tmp_entry)), &ink_rect, &logical_rect);
+  gtk_widget_destroy(tmp_entry);
+  
+  gtk_widget_set_usize(GTK_WIDGET(GTK_ENTRY(widget)),  PANGO_PIXELS (ink_rect.width), -1);
 }

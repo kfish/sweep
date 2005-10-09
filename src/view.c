@@ -2172,11 +2172,13 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   zoom_combo_items = g_list_append (zoom_combo_items, "00:00:00.001");
 
   zoom_combo = gtk_combo_new ();
- /* FIXME: how to get string width with pango?
-  * gtk_widget_set_usize
-  * (GTK_COMBO(zoom_combo)->entry,
-  * gdk_string_width (style_dark_grey->font, " 00:00:00.000 "), -1);
-  */
+  
+ /* connect hack_max_combo_width_cb to the theme change signal so zoom_combo is 
+  * kept at an appropriate size regardless of font or theme changes.
+  *
+  * replace with gtk_entry_set_width_chars() when GTK+-2.6 is used by mainstream distro's */
+  g_signal_connect (G_OBJECT(GTK_COMBO(zoom_combo)->entry), "style_set", G_CALLBACK(hack_max_combo_width_cb), NULL);
+  
   gtk_combo_set_popdown_strings (GTK_COMBO(zoom_combo), zoom_combo_items);
   gtk_combo_set_value_in_list (GTK_COMBO(zoom_combo), FALSE, TRUE);
 
@@ -2766,16 +2768,16 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   label = gtk_label_new (NO_TIME);
   gtk_box_pack_start (GTK_BOX(tool_hbox), label, FALSE, FALSE, 0);
   
- /* force the sizing of the toolbar now, to prevent the toolbar wobble
-  * that occurs when not using a fixed width font. */     
-  hack_max_label_width_cb (label, NULL, NULL);
+ /* connect hack_max_label_width_cb to the theme change signal so label is 
+  * kept at an appropriate size regardless of font or theme changes. 
+  *
+  * replace with gtk_label_set_width_chars() when GTK+-2.6 is used by mainstream distro's */
+  g_signal_connect (G_OBJECT(label), "style_set", G_CALLBACK(hack_max_label_width_cb), NULL);
+   
   gtk_widget_show (label); 
   view->pos = label;
   
- /* connect hack_max_label_width_cb to the theme change event so label is 
-  * kept at an appropriate size regardless of font or theme.  */
-  g_signal_connect (G_OBJECT(label), "style_set", G_CALLBACK(hack_max_label_width_cb), NULL);
-   
+
   /* progress bar */
   frame = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 0);
