@@ -33,7 +33,8 @@ Summary of library dependencies:
 
 REQUIRED:
 
-        * GTK+ 1.2, standard in most distributions and available from:
+        * GTK+ 2.0, (version 2.2.0 or higher) standard in most 
+	  distributions and available from:
 
 	    http://www.gtk.org/
 
@@ -53,9 +54,9 @@ OPTIONAL:
 
 	* libmad (MPEG audio loading), available from:
 
-	    http://www.mars.org/home/rob/proj/mpeg/
+	    http://www.underbit.com/products/mad/	
 	
-	* Speex library (an open speech compression format):
+ 	* Speex library (an open speech compression format):
 
 	    http://www.speex.org/
 
@@ -82,7 +83,7 @@ Detailed information and new releases of Sweep can be found at:
 Mailing Lists
 -------------
 
-There are three mailing lists related to sweep:
+There are four mailing lists related to sweep:
 
 sweep-announce
         which contains only announcements about new releases of sweep.
@@ -93,6 +94,9 @@ sweep-users
 
 sweep-devel
         For discussion about sweep development related issues. 
+
+sweep-i18n
+	For discussion of language translation issues.
 
 Archives of each list are available on the World Wide Web via the
 Sweep homepage. You can also subscribe or unsubscribe via a web
@@ -107,6 +111,8 @@ unsubscribe via an email interface, send a message with just the word
         sweep-users-request@lists.sourceforge.net
   or
         sweep-devel-request@lists.sourceforge.net
+  or
+	sweep-i18n-request@lists.sourceforge.net
 
 as appropriate.
 
