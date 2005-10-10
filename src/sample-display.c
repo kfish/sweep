@@ -2050,6 +2050,26 @@ sample_display_on_sel (SampleDisplay * s, gint x, gint y)
 }
 
 static gint
+sample_display_scroll_event(GtkWidget *widget,
+				 GdkEventScroll *event)
+{
+  SampleDisplay *s;
+	
+  s = SAMPLE_DISPLAY(widget);
+  if (event->direction == GDK_SCROLL_UP)		/* mouse wheel scroll up */
+  {
+	view_zoom_in (s->view, 2.0);
+	return TRUE;
+  }
+  else if (event->direction == GDK_SCROLL_DOWN)		/* mouse wheel scroll down */
+  {
+	view_zoom_out (s->view, 2.0);
+	return TRUE;
+  }
+  return FALSE; /* redundant? */
+}
+
+static gint
 sample_display_button_press (GtkWidget      *widget,
 			     GdkEventButton *event)
 {
@@ -2071,17 +2091,6 @@ sample_display_button_press (GtkWidget      *widget,
   gtk_widget_grab_focus (widget);
 
   sample = s->view->sample;
-
-  /* Deal with buttons 4 & 5 (mouse wheel) separately */
-  if (event->button == 4) {
-    /* mouse wheel up */
-    view_zoom_in (s->view, 2.0);
-    return TRUE;
-  } else if (event->button == 5) {
-    /* mouse wheel down */
-    view_zoom_out (s->view, 2.0);
-    return TRUE;
-  }
 
   if (s->meta_down && s->view->current_tool == TOOL_SCRUB &&
       s->selecting == SELECTING_PLAYMARKER) {
@@ -2765,6 +2774,7 @@ sample_display_class_init (SampleDisplayClass *class)
   widget_class->size_request = sample_display_size_request;
   widget_class->button_press_event = sample_display_button_press;
   widget_class->button_release_event = sample_display_button_release;
+  widget_class->scroll_event = sample_display_scroll_event;
   widget_class->motion_notify_event = sample_display_motion_notify;
   widget_class->enter_notify_event = sample_display_enter_notify;
   widget_class->leave_notify_event = sample_display_leave_notify;
