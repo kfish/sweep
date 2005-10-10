@@ -2056,14 +2056,12 @@ sample_display_scroll_event(GtkWidget *widget,
   SampleDisplay *s;
 	
   s = SAMPLE_DISPLAY(widget);
-  if (event->direction == GDK_SCROLL_UP)		/* mouse wheel scroll up */
-  {
-	view_zoom_in (s->view, 2.0);
+	
+  if (event->direction == GDK_SCROLL_UP) {    /* mouse wheel scroll up */
+  	view_zoom_in (s->view, 2.0);
 	return TRUE;
-  }
-  else if (event->direction == GDK_SCROLL_DOWN)		/* mouse wheel scroll down */
-  {
-	view_zoom_out (s->view, 2.0);
+  }  else if (event->direction == GDK_SCROLL_DOWN) {   /* mouse wheel scroll down */
+  	view_zoom_out (s->view, 2.0);
 	return TRUE;
   }
   return FALSE; /* redundant? */
