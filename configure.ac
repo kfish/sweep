@@ -63,20 +63,26 @@ dnl
 dnl  Detect Gthread, GLib and GTK+ libraries
 dnl
 
-PKG_CHECK_MODULES(GTK, glib-2.0 >=  2.2.0
-                       )
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >=  2.2.0, HAVE_GTK="yes", sweep_config_ok="no")
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
+if test "x$HAVE_GTK" != xyes ; then
+    AC_CHECK_LIB(gtk-x11-2.0, gtk_init, HAVE_GTK="maybe", sweep_config_ok="no")
+fi
 
-PKG_CHECK_MODULES(GLIB, gtk+-2.0 >=  2.2.0
-                       )
+PKG_CHECK_MODULES(GLIB, glib-2.0 >=  2.2.0, HAVE_GLIB="yes", sweep_config_ok="no")
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
+if test "x$HAVE_GLIB" != xyes ; then
+  AC_CHECK_LIB(glib-2.0, g_list_append, HAVE_GLIB="maybe", sweep_config_ok="no")
+fi
 
-PKG_CHECK_MODULES(GTHREADS, gthread-2.0 >=  2.2.0
-                       )
+PKG_CHECK_MODULES(GTHREADS, gthread-2.0 >=  2.2.0, HAVE_GTHREADS="yes", sweep_config_ok="no")
 AC_SUBST(GTHREADS_CFLAGS)
 AC_SUBST(GTHREADS_LIBS)
+if test "x$HAVE_GTHREADS" != xyes ; then
+  AC_CHECK_LIB(gthread-2.0, g_thread_init, HAVE_GTHREADS="maybe", sweep_config_ok="no")
+fi
 
 dnl
 dnl  Detect libsndfile 1.0
@@ -490,29 +496,30 @@ AC_MSG_RESULT([
 *** misconfigured on your system:
 ])
 
-if test "x$HAVE_GLIB" != xyes ; then
+if test "x$HAVE_GLIB" != xyes ||  test "x$HAVE_GTHREADS" != xyes; then
   AC_MSG_RESULT([
-*** GLib version 1.2.x, available from  http://www.gtk.org/
+*** GLib version 2.2.x or greater, available from  http://www.gtk.org/
 ])
 fi
-if test "x$HAVE_GLIB" = xmaybe ; then
+
+if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTHREADS" = xmaybe; then
   AC_MSG_RESULT([
-      Development files missing: The libglib binary seems
-      to be installed, but the glib-config program required
-      for building programs could not be found.
+      Development files missing: The libglib-2.0 binary seems
+      to be installed, but the pkg-config tool cannot find its build
+      information.
 ])
 fi
 
 if test "x$HAVE_GTK" != xyes ; then
   AC_MSG_RESULT([
-*** GTK+ version 1.2.x, available from  http://www.gtk.org/
+*** GTK+ version 2.2.x or greater, available from  http://www.gtk.org/
 ])
 fi
 if test "x$HAVE_GTK" = xmaybe ; then
   AC_MSG_RESULT([
       Development files missing: The libgtk binary seems
-      to be installed, but the gtk-config program required
-      for building programs could not be found.
+      to be installed, but the pkg-config tool cannot find its build
+      information..
 ])
 fi
 
@@ -559,6 +566,7 @@ fi
 
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
    test "x$HAVE_LIBSNDFILE1" = xmaybe || test "x$HAVE_TDB" = xmaybe ||
+   test "x$HAVE_GTHREADS" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
   AC_MSG_RESULT([
 *** HOW TO FIX "development files missing": you have probably
