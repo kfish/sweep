@@ -1,8 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir)/include \
-			 @GTK_CFLAGS@ @GLIB_CFLAGS@ \
-                	@GTHREADS_CFLAGS@
+			 @GTK_CFLAGS@
 
 libdir = $(PACKAGE_PLUGIN_DIR)
 
@@ -10,7 +9,5 @@ lib_LTLIBRARIES = \
 	libreverse.la
 
 libreverse_la_SOURCES = reverse.c
-libreverse_la_LDFLAGS = -avoid-version -module \
-			 @GTK_LIBS@ @GLIB_LIBS@ \
-                @GTHREADS_LIBS@
+libreverse_la_LDFLAGS = -avoid-version -module
 

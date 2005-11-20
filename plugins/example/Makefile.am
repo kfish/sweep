@@ -1,9 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir)/include \
-		 @GTK_CFLAGS@ @GLIB_CFLAGS@ \
-                @GTHREADS_CFLAGS@
-
+		 @GTK_CFLAGS@
 
 libdir = $(PACKAGE_PLUGIN_DIR)
 
@@ -15,7 +13,4 @@ libdir = $(PACKAGE_PLUGIN_DIR)
 noinst_LTLIBRARIES = libexample.la
 
 libexample_la_SOURCES = example.c
-libexample_la_LDFLAGS = -avoid-version -module \
-			 @GTK_LIBS@ @GLIB_LIBS@ \
-                @GTHREADS_LIBS@
-
+libexample_la_LDFLAGS = -avoid-version -module 

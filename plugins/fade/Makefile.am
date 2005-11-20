@@ -1,16 +1,11 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir)/include \
- 			 @GTK_CFLAGS@ @GLIB_CFLAGS@ \
-	                @GTHREADS_CFLAGS@
-
+ 			 @GTK_CFLAGS@
 libdir = $(PACKAGE_PLUGIN_DIR)
 
 lib_LTLIBRARIES = \
 	libfade.la
 
 libfade_la_SOURCES = fade.c
-libfade_la_LDFLAGS = -avoid-version -module \
-		 @GTK_LIBS@ @GLIB_LIBS@ \
-                @GTHREADS_LIBS@
-
+libfade_la_LDFLAGS = -avoid-version -module 
