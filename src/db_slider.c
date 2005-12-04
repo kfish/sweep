@@ -61,8 +61,8 @@ db_slider_class_init(DbSliderClass * klass)
 	                                 	 G_STRUCT_OFFSET (DbSliderClass, value_changed),
                                          NULL, 
                                          NULL,                
-										 g_cclosure_marshal_VOID__VOID,
-                                         G_TYPE_NONE, 0);
+										 g_cclosure_marshal_VOID__FLOAT,
+                                         G_TYPE_NONE, 1, G_TYPE_FLOAT);
   klass->value_changed = NULL;
 }
 
@@ -171,7 +171,7 @@ db_slider_value_changed_cb (GtkWidget * widget, gpointer data)
   g_free (db_text);
 
   g_signal_emit_by_name (GTK_OBJECT(slider), "value-changed",
-		   value);
+		 value);
 }
 
 static void
