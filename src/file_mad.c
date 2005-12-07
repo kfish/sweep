@@ -49,7 +49,7 @@
 
 #include <mad.h>
 
-#define BUFFER_LEN 1024
+#define BUFFER_LEN 4096
 
 #include <glib.h>
 #include <gdk/gdkkeysyms.h>
@@ -150,7 +150,7 @@ input(void *data, struct mad_stream *stream)
     info->offset = stream->next_frame - info->start;
     info->remaining = info->length - info->offset;
 
-    n = MIN (info->remaining, 1024);
+    n = MIN (info->remaining, BUFFER_LEN);
 
     if (n == info->remaining) {
 
@@ -171,7 +171,7 @@ input(void *data, struct mad_stream *stream)
       return MAD_FLOW_CONTINUE;
     }
   } else {
-    n = MIN (info->remaining, 1024);
+    n = MIN (info->remaining, BUFFER_LEN);
   }
 
   mad_stream_buffer(stream, info->start + info->offset, n);
