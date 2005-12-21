@@ -38,10 +38,10 @@ Charles Turner <vze26m98@optonline.net>
 	updated the alsa driver to work with recent alsa versions
 
 Peter Shorthose
-	various build and gettext fixes
-
+ gtk2 port and various tweaks/bug fixes
+ 
 Daniel Dreschers
-        ALSA 1.0 updates
+   ALSA 1.0 updates
 
 Borrowed Code
 =============
