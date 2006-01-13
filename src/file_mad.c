@@ -216,10 +216,13 @@ enum mad_flow output(void *data,
     info->nr_frames += pcm->length;
 
     if (info->nr_frames > sample->sounddata->nr_frames) {
-      sample->sounddata->data =
-	g_realloc (sample->sounddata->data,
+		g_mutex_lock(sample->sounddata->data_mutex);
+		
+		sample->sounddata->data = g_realloc(sample->sounddata->data,
 		   frames_to_bytes (sample->sounddata->format,
 				    info->nr_frames));
+	    g_mutex_unlock(sample->sounddata->data_mutex);
+
     }
     
     sample->sounddata->nr_frames = info->nr_frames;

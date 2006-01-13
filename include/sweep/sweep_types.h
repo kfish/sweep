@@ -111,7 +111,8 @@ struct _sw_sounddata {
   sw_framecount_t nr_frames;    /* nr frames */
 
   gpointer data;
-
+  GMutex * data_mutex; /* Mutex for access to sample data */
+	
   GList * sels;     /* selection: list of sw_sels */
   GMutex * sels_mutex; /* Mutex for access to sels */
 };

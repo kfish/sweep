@@ -91,6 +91,7 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
 
   s->sels = NULL;
   s->sels_mutex = g_mutex_new();
+  s->data_mutex = g_mutex_new();
 
   return s;
 }
@@ -119,6 +120,7 @@ sounddata_destroy (sw_sounddata * sounddata)
 #endif
     sounddata_clear_selection (sounddata);
     g_free (sounddata);
+    g_mutex_free(sounddata->data_mutex);
   }
 }
 

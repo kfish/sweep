@@ -183,11 +183,12 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
       
       p = po - (gdouble)si;
       si *= f->channels;
+      g_mutex_lock(head->sample->sounddata->data_mutex);
 
       if (interpolate) {
 	si_next = si+f->channels;
 	for (j = 0; j < f->channels; j++) {
-	  buf[b] = head->gain * (d[si] * p + d[si_next] * (1 - p));
+         buf[b] = head->gain * (((sw_audio_t *)head->sample->sounddata->data)[si] * p + ((sw_audio_t *)head->sample->sounddata->data)[si_next] * (1 - p));
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -200,7 +201,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 	}
       } else {
 	for (j = 0; j < f->channels; j++) {
-	  buf[b] = head->gain * d[si];
+	 buf[b] = head->gain * ((sw_audio_t *)head->sample->sounddata->data)[si];
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -212,6 +213,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 	  b++; si++;
 	}
       }
+     g_mutex_unlock(head->sample->sounddata->data_mutex);
     }
 
     if (head->scrubbing) {
