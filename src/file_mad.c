@@ -77,7 +77,20 @@ file_is_mpeg_audio (const char * pathname)
 {
   int fd;
 
-#define BUF_LEN 2048
+/* FIXME
+ * the mpeg frame marker can occur in non mpeg files so
+ * one blind check for a marker can produce a false postive.
+ * similarly, due to the metadata tags, the max
+ * frame size may also not be a large enough window within
+ * which to find a frame in a legal mpegfile. 
+ *
+ * reimplement this check as a contextual verfification of 
+ * a sequence of frames, starting from somewhere in the middle
+ * of a file. in the mean time, raise BUF_LEN from 2048 to 8192
+ * to mitigate the chance of a false negative. (with an increased 
+ * change of a false positive as a result.)
+ */
+#define BUF_LEN 8192 
   unsigned char buf[BUF_LEN];
   int n, i;
 
