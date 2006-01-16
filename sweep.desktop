@@ -1,9 +1,10 @@
 [Desktop Entry]
 Name=Sweep
-Comment=Sound Editor
+GenericName=Sound Editor
+Comment=Sweep Sound Editor
 Encoding=Legacy-Mixed
 Exec=sweep
-Icon=sweep.png
+Icon=sweep.svg
 MimeType=audio/x-wav
-Terminal=0
+Terminal=false
 Type=Application

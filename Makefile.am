@@ -7,10 +7,10 @@ SUBDIRS = m4 intl po include src plugins doc
 pkgdata_DATA = sweep_logo.ppm
 
 desktop_DATA = sweep.desktop
-desktopdir = $(datadir)/gnome/apps/Multimedia
+desktopdir = $(datadir)/applications
 
 pixmapdir = $(datadir)/pixmaps
-pixmap_DATA = sweep.png
+pixmap_DATA = sweep.svg
 
 EXTRA_DIST = config.rpath mkinstalldirs  $(desktop_DATA) $(pkgdata_DATA)  $(pixmap_DATA) \
              sweep.spec README.Solaris README.ALSA README.i18n acconfig.h TODO
@@ -41,4 +41,3 @@ dist-hook:
 	    fi \
 	  done \
 	fi
-
