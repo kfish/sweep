@@ -368,12 +368,13 @@ AC_ARG_ENABLE(alsa,
 
 if test "x${ac_enable_alsa}" != xno ; then
 
-  AC_CHECK_HEADERS(alsa/asoundlib.h)
-  if test "x${ac_cv_header_alsa_asoundlib_h}" = xyes ; then
-    AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.])
-    LIBS="$LIBS -lasound"
-  fi
-
+  PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
+                  HAVE_ALSA="yes", sweep_config_ok="no")
+  AC_SUBST(ALSA_CFLAGS)
+  AC_SUBST(ALSA_LIBS)
+  if test "x$HAVE_ALSA" != xyes ; then
+    AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
+  fi	
   sweep_config_driver="ALSA"
 fi
 
@@ -539,8 +540,31 @@ if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
 fi
 if test "x$HAVE_LIBSNDFILE0" = xyes ; then
     AC_MSG_RESULT([
-      Incorrect version: Your system appears to have an old
+      Development files missing: Your system appears to have an old
       version of libsndfile (below 1.0.0) installed.
+])
+fi
+
+if test "x$HAVE_ALSA" = xmaybe ; then
+    AC_MSG_RESULT([
+      Development files missing: alsa-lib 1.0.0 or greater seems to exist
+      on your system, however the pkg-config tool cannot find the
+      build information.
+])
+fi
+
+if test "x$HAVE_ALSA" != xyes ; then
+  AC_MSG_RESULT([
+*** alsa-lib version 1.0.0 or greater, available from
+*** http://alsa-project.org/
+])
+fi
+
+if test "x$HAVE_VORBIS" = xmaybe ; then
+    AC_MSG_RESULT([
+      Development files missing: The libogg, libvorbis, libvorbisenc and
+      libvorbisfile library binaries seem to be installed, but building of
+      a test program failed.
 ])
 fi
 
@@ -549,13 +573,7 @@ if test "x$HAVE_VORBIS" != xyes ; then
 *** Ogg Vorbis libraries, available from  http://www.xiph.org/ogg/vorbis/
 ])
 fi
-if test "x$HAVE_VORBIS" = xmaybe ; then
-    AC_MSG_RESULT([
-      Development files missing: The libogg, libvorbis, libvorbisenc and
-      libvorbisfile library binaries seem to be installed, but building of
-      a test program failed.
-])
-fi 
+
 if test "x$HAVE_VORBIS" != xyes ; then
     AC_MSG_RESULT([
 *** Or, to build a version of Sweep without Ogg Vorbis support, do:
@@ -566,7 +584,7 @@ fi
 
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
    test "x$HAVE_LIBSNDFILE1" = xmaybe || test "x$HAVE_TDB" = xmaybe ||
-   test "x$HAVE_GTHREADS" = xmaybe ||
+   test "x$HAVE_GTHREADS" = xmaybe || test "x$HAVE_ALSA" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
   AC_MSG_RESULT([
 *** HOW TO FIX "development files missing": you have probably
