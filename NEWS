@@ -1,3 +1,52 @@
+Tue Jan 17 2006 -- Version 0.9.0
+--------------------------------
+
+This release is the first in a new unstable series.
+
+Changes include:
+
+  * complete port of the interface to gtk2
+  * improved mp3 detection and loading
+  * a new SVG icon for sweep (Alex Kloss)
+  * corrected a note to key mapping for pc keyboard playback (Paul Brossier)
+  * an updated Spanish translation (Waldo Ramirez Montano)
+  * an updated Polish translation (Radoslaw Korzeniewski)
+  * more minor tweaks and improvements.
+
+  This first release based on gtk2 begins what we hope will be a short 
+  lived unstable series, leading up to the stable 1.0 release.
+	
+  The priority will be ensuring that the gtk2 port really is complete 
+  and bug free, but it's likely that a few important or useful new 
+  features will be squeezed in. 
+  
+  Hopefully including:
+			
+			* jack support 
+			* simple file loading via drag and drop
+			* some form of LADSPA plugin browser (with bookmarks, search etc)
+ 			* modular drivers (no more hardcoded default) 
+			
+  when 1.0 is released, work will begin on what will become sweep 2.0.
+  this will be based around Conrad's libremix library and will enable sweep
+  to perform on disk editing (removing the need to load entire files into
+  memory), non destructive editing and much more besides. 
+			
+
+the only significant change over 0.8.4 comes from the use of gtk2
+for the interface. as such, you will now need gtk-2.0 (version 2.2.0 or greater)
+and it's dependencies to use sweep and the associated development packages
+to build sweep 0.9.0 from source.
+both of these are standard in most distributions and you probably have them
+installed already.
+
+if not, gtk-2.0 can be found here: 
+	
+	http://www.gtk.org/ 
+	
+or via your distribution's package system. (apt, rpm etc)
+
+
 Mon Aug 22 2005 -- Version 0.8.4
 --------------------------------
 
@@ -340,4 +389,3 @@ Mark Taylor writes:
         http://www.sulaco.org/mp3/winamp/winamp.html
 
 (Screenshots on this page show sweep version 0.0.6).
-
