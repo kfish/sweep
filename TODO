@@ -8,6 +8,8 @@ information, mail sweep-devel@lists.sourceforge.net
 	* markers
 	* region list management
 	* recording source management
+	* LADSPA browser
+	* modular drivers
 
 Done
 ----
