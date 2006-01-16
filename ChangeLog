@@ -1,3 +1,14 @@
+Tue Jan 17 17:00:00 GMT 2006 Peter Shorthose <kickback@users.sourceforge.net>
+
+	* ported the interface to gtk-+2.0
+	* mp3 loading and playback whilst loading bugs fixed
+	* corrected a note to key mapping for pc keyboard playback (Paul Brossier)
+	* a new SVG icon for sweep (Alex Kloss)
+	* an updated spanish translation (Waldo Ramirez Montano)
+  	* an updated Polish translation (Radoslaw Korzeniewski)
+  	* more minor tweaks and improvements.
+	* released 0.9.0
+
 Mon Aug 22 21:54:30 EST 2005 Conrad Parker <conrad@metadecks.org>
 
 	* updated for ALSA 1.0 (Daniel Dreschers, Charles Turner)
@@ -426,5 +437,3 @@ Thu Apr 27 09:03:24 EST 2000 Conrad Parker <conrad@vergenet.net>
 	* fixed playmarker update bug when closing a sample
 	* added position indicator
 	* added button pixmaps to toolbox and play/stop buttons
-
-
