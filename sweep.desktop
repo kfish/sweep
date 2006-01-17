@@ -2,10 +2,10 @@
 Name=Sweep
 GenericName=Sound Editor
 Comment=Sweep Sound Editor
-Encoding=Legacy-Mixed
+Categories=Application;AudioVideo;
+Encoding=UTF-8
 Exec=sweep
 Icon=sweep.svg
 MimeType=audio/x-wav
 Terminal=false
 Type=Application
-Categories=GTK;Application;Music;Audio;Recorder;Player;
