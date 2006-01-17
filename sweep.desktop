@@ -8,3 +8,4 @@ Icon=sweep.svg
 MimeType=audio/x-wav
 Terminal=false
 Type=Application
+Categories=GTK;Application;Music;Audio;Recorder;Player;
