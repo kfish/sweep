@@ -1,6 +1,6 @@
 Tue Jan 17 17:00:00 GMT 2006 Peter Shorthose <kickback@users.sourceforge.net>
 
-	* ported the interface to gtk-+2.0
+	* ported the interface to gtk+-2.0
 	* mp3 loading and playback whilst loading bugs fixed
 	* corrected a note to key mapping for pc keyboard playback (Paul Brossier)
 	* a new SVG icon for sweep (Alex Kloss)
