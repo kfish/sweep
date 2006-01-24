@@ -372,6 +372,7 @@ if test "x${ac_enable_alsa}" != xno ; then
                   HAVE_ALSA="yes", sweep_config_ok="no")
   AC_SUBST(ALSA_CFLAGS)
   AC_SUBST(ALSA_LIBS)
+  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
   if test "x$HAVE_ALSA" != xyes ; then
     AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
   fi	
