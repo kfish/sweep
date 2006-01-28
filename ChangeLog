@@ -1,3 +1,8 @@
+Sun Jan 29 04:00:00 GMT 2006 Peter Shorthose <kickback@users.sourceforge.net>
+
+	* fixed --enable-alsa configure option
+	* released 0.9.1
+
 Wed Jan 18 04:10:00 GMT 2006 Peter Shorthose <kickback@users.sourceforge.net>
 
 	* ported the interface to gtk+-2.0
