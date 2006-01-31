@@ -66,6 +66,8 @@ db_ruler_motion_notify (GtkWidget *widget, GdkEventMotion *event);
 static gint
 db_ruler_leave_notify (GtkWidget * widget, GdkEventCrossing * event);
 
+static gboolean db_ruler_scroll_event (GtkWidget * widget, GdkEventScroll *event);
+
 static void db_ruler_draw_ticks    (GtkRuler       *ruler);
 static void db_ruler_draw_pos      (GtkRuler       *ruler);
 
@@ -117,10 +119,12 @@ db_ruler_class_init (DbRulerClass *klass)
   widget_class = (GtkWidgetClass*) klass;
   ruler_class = (GtkRulerClass*) klass;
 
+  widget_class->realize = db_ruler_realize;
   widget_class->button_press_event = db_ruler_button_press;
   widget_class->motion_notify_event = db_ruler_motion_notify;
   widget_class->button_release_event = db_ruler_button_release;
   widget_class->leave_notify_event = db_ruler_leave_notify;
+  widget_class->scroll_event = db_ruler_scroll_event;
 
   ruler_class->draw_ticks = db_ruler_draw_ticks;
   ruler_class->draw_pos = db_ruler_draw_pos;
@@ -154,6 +158,60 @@ db_ruler_init (DbRuler *db_ruler)
   widget->requisition.height = widget->style->ythickness * 2 + 1;
 
   DB_RULER(db_ruler)->dragging = FALSE;
+}
+
+static void
+db_ruler_realize (GtkWidget * widget)
+{
+  GtkRuler * ruler;
+  GdkWindowAttr attributes;
+  gint attributes_mask;
+  GdkVisual * visual;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (GTK_IS_DB_RULER (widget));
+
+  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+
+  ruler = GTK_RULER(widget);
+
+  attributes.x = widget->allocation.x;
+  attributes.y = widget->allocation.y;
+  attributes.width = widget->allocation.width;
+  attributes.height = widget->allocation.height;
+  attributes.wclass = GDK_INPUT_OUTPUT;
+  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.event_mask = gtk_widget_get_events (widget)
+    | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
+    | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK
+    | GDK_LEAVE_NOTIFY_MASK | GDK_SCROLL_MASK;
+
+  attributes.visual = gtk_widget_get_visual (widget);
+  attributes.colormap = gtk_widget_get_colormap (widget);
+
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+  widget->window = gdk_window_new (widget->parent->window,
+				   &attributes, attributes_mask);
+
+  widget->style = gtk_style_attach (widget->style, widget->window);
+
+  gtk_style_set_background(widget->style, widget->window, GTK_STATE_NORMAL);
+
+  gdk_window_set_user_data(widget->window, widget);
+
+  visual = gdk_window_get_visual (widget->window);
+
+  if (ruler->backing_store != NULL) {
+    gdk_pixmap_unref (ruler->backing_store);
+  }
+
+  ruler->backing_store = gdk_pixmap_new (widget->window,
+					 widget->allocation.width,
+					 widget->allocation.height,
+					 visual->depth);
+
+  ruler->non_gr_exp_gc = gdk_gc_new (widget->window);
+  gdk_gc_copy (ruler->non_gr_exp_gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
 }
 
 GtkWidget*
@@ -214,9 +272,7 @@ db_ruler_motion_notify (GtkWidget *widget, GdkEventMotion *event)
 static gint
 db_ruler_button_press (GtkWidget * widget, GdkEventButton * event)
 {
-  GtkRuler * ruler = GTK_RULER(widget);
-  int y;
-  float delta;
+   int y;
 
   gdk_window_get_pointer (event->window, NULL, &y, NULL);
   
@@ -224,18 +280,6 @@ db_ruler_button_press (GtkWidget * widget, GdkEventButton * event)
   case 1:
     DB_RULER(widget)->y = y;
     DB_RULER(widget)->dragging = TRUE;
-    break;
-  case 4:
-    delta = ruler->upper - ruler->lower;
-    gtk_ruler_set_range (ruler, ruler->lower + delta/8, ruler->upper - delta/8,
-			 (ruler->upper - ruler->lower)/2.0, 2.0);    
-    g_signal_emit_by_name (ruler, "changed");
-    break;
-  case 5:
-    delta = ruler->upper - ruler->lower;
-    gtk_ruler_set_range (ruler, ruler->lower - delta/8, ruler->upper + delta/8,
-			 (ruler->upper - ruler->lower)/2.0, 2.0);    
-    g_signal_emit_by_name (ruler, "changed");
     break;
   default:
     break;
@@ -250,6 +294,31 @@ db_ruler_button_release (GtkWidget * widget, GdkEventButton * event)
   DB_RULER(widget)->dragging = FALSE;
 
   return TRUE;
+}
+
+static gboolean
+db_ruler_scroll_event (GtkWidget *widget, GdkEventScroll *event)
+{
+  GtkRuler * ruler = GTK_RULER(widget);
+  float delta;
+
+  if (event->direction == GDK_SCROLL_UP) {    /* mouse wheel scroll up */
+  	
+	delta = ruler->upper - ruler->lower;
+    gtk_ruler_set_range (ruler, ruler->lower + delta/8, ruler->upper - delta/8,
+			 (ruler->upper - ruler->lower)/2.0, 2.0);    
+    g_signal_emit_by_name (ruler, "changed");
+	return TRUE;
+	  
+  }  else if (event->direction == GDK_SCROLL_DOWN) {   /* mouse wheel scroll down */
+  	
+    delta = ruler->upper - ruler->lower;
+    gtk_ruler_set_range (ruler, ruler->lower - delta/8, ruler->upper + delta/8,
+			 (ruler->upper - ruler->lower)/2.0, 2.0);    
+    g_signal_emit_by_name (ruler, "changed");
+	return TRUE;
+  }
+  return FALSE; /* redundant? */
 }
 
 static gint
