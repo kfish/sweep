@@ -1,4 +1,4 @@
-Sun Jan 29 2006 -- Sweep 0.9.1 Released
+Mon Jan 30 2006 -- Sweep 0.9.1 Released
 =======================================
 
 Sweep is an audio editor and live playback tool for GNU/Linux, BSD and
@@ -9,7 +9,7 @@ Scrubby who enjoys mixing around in your files.
 
 This release is available as a source tarball at:
 
-    http://prdownloads.sourceforge.net/sweep/sweep-0.9.1.tar.gz?download
+    http://prdownloads.sourceforge.net/sweep/sweep-0.9.1.tar.bz2?download
 
 
 New in this release
