@@ -796,8 +796,10 @@ speex_sample_save_thread (sw_op_instance * inst)
   /* write header */
 
   {
+    long bytes = op.bytes;
     op.packet = (unsigned char *)
-      speex_header_to_packet (&header, (int*)&(op.bytes));
+      speex_header_to_packet (&header, &bytes);
+    op.bytes = bytes;
     op.b_o_s = 1;
     op.e_o_s = 0;
     op.granulepos = 0;
