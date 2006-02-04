@@ -227,7 +227,7 @@ static gchar * selection_mode_names[SELECTION_MODE_MAX] = {
 
 static guint sample_display_signals[LAST_SIGNAL] = { 0 };
 
-static gchar sel_dash_list[2] = { 4, 4 }; /* Equivalent to GDK's default
+static gint8 sel_dash_list[2] = { 4, 4 }; /* Equivalent to GDK's default
 					  *  dash list.
 					  */
 
