@@ -10,3 +10,7 @@ lib_LTLIBRARIES = \
 
 libecho_la_SOURCES = echo.c
 libecho_la_LDFLAGS = -avoid-version -module
+
+install: all
+	mkdir -p $(DESTDIR)/$(libdir)
+	$(INSTALL_PROGRAM) .libs/libecho.so $(DESTDIR)/$(libdir);

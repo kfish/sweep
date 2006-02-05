@@ -10,3 +10,7 @@ lib_LTLIBRARIES = \
 
 libbyenergy_la_SOURCES = byenergy.c
 libbyenergy_la_LDFLAGS = -avoid-version -module
+
+install: all
+	mkdir -p $(DESTDIR)/$(libdir)
+	$(INSTALL_PROGRAM) .libs/libbyenergy.so $(DESTDIR)/$(libdir);

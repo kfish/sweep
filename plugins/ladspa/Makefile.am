@@ -10,3 +10,7 @@ lib_LTLIBRARIES = \
 
 libladspameta_la_SOURCES = ladspameta.c ladspa.h
 libladspameta_la_LDFLAGS = -avoid-version -module
+
+install: all
+	mkdir -p $(DESTDIR)/$(libdir)
+	$(INSTALL_PROGRAM) .libs/libladspameta.so $(DESTDIR)/$(libdir);

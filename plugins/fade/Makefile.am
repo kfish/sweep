@@ -9,3 +9,7 @@ lib_LTLIBRARIES = \
 
 libfade_la_SOURCES = fade.c
 libfade_la_LDFLAGS = -avoid-version -module 
+
+install: all
+	mkdir -p $(DESTDIR)/$(libdir)
+	$(INSTALL_PROGRAM) .libs/libfade.so $(DESTDIR)/$(libdir);
