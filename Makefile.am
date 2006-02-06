@@ -4,7 +4,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = m4 intl po include src plugins doc
 
-pkgdata_DATA = sweep_logo.ppm
+pkgdata_DATA = sweep_splash.png
 
 desktop_DATA = sweep.desktop
 desktopdir = $(datadir)/applications
