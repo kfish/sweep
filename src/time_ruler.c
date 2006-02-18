@@ -231,7 +231,6 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 
   upper = ruler->upper / TIME_RULER(ruler)->samplerate;
   lower = ruler->lower / TIME_RULER(ruler)->samplerate;
-  printf("upper = %f. lower = %f.\n", upper, lower);
 
   if ((upper - lower) == 0) 
     return;
@@ -265,7 +264,6 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	          (gdouble) subdivide[i];
       if (subd_incr * fabs(increment) <= MINIMUM_INCR) 
 	continue;
-	    printf("subd_incr = %f.\n", subd_incr);
 
       /* Calculate the length of the tickmarks. Make sure that
        * this length increases for each set of ticks
