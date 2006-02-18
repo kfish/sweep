@@ -288,7 +288,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
       callback.data = stereo;
       speex_decoder_ctl(st, SPEEX_SET_HANDLER, &callback);
     }
-  if (!*rate)
+  if (*rate==-1)
     *rate = header->rate;
   /* Adjust rate if --force-* options are used */
   if (forceMode!=-1)
@@ -343,7 +343,7 @@ sample_load_speex_data (sw_op_instance * inst)
   void * st = NULL;
   SpeexBits bits;
   int frame_size = 0;
-  int rate;
+  int rate = -1;
   int channels = -1;
   int extra_headers;
   SpeexStereoState stereo = SPEEX_STEREO_STATE_INIT;
