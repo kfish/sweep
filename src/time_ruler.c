@@ -178,11 +178,11 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   gint xthickness;
   gint ythickness;
   gint length, ideal_length;
-  gfloat lower, upper;		/* Upper and lower limits, in ruler units */
-  gfloat increment, abs_increment; /* Number of pixels per unit */
+  gdouble lower, upper;		/* Upper and lower limits, in ruler units */
+  gdouble increment, abs_increment; /* Number of pixels per unit */
   gint scale;			/* Number of units per major unit */
-  gfloat subd_incr;
-  gfloat start, end, cur;
+  gdouble subd_incr;
+  gdouble start, end, cur;
 #define UNIT_STR_LEN 32
   gchar unit_str[UNIT_STR_LEN];
   gint digit_height;
@@ -231,12 +231,13 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 
   upper = ruler->upper / TIME_RULER(ruler)->samplerate;
   lower = ruler->lower / TIME_RULER(ruler)->samplerate;
+  printf("upper = %f. lower = %f.\n", upper, lower);
 
   if ((upper - lower) == 0) 
     return;
 
-  increment = (gfloat) width / (upper - lower);
-  abs_increment = (gfloat) fabs((double)increment);
+  increment = (gdouble) width / (upper - lower);
+  abs_increment = (gdouble) fabs((double)increment);
 
   /* determine the scale
    *  We calculate the text size as for the vruler instead of using
@@ -246,8 +247,9 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   scale = ceil (ruler->max_size / TIME_RULER(ruler)->samplerate);
   snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)scale);
   /*  snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)scale, 10.0);*/
-  /*  text_width = strlen (unit_str) * digit_height + 1;*/
-  text_width = PANGO_PIXELS (ink_rect.width) + 2;
+
+ text_width = strlen (unit_str) * digit_height + 1;
+
   for (scale = 0; scale < MAXIMUM_SCALES; scale++)
     if (ruler_scale[scale] * abs_increment > 2 * text_width)
       break;
@@ -259,10 +261,11 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   length = 0;
   for (i = MAXIMUM_SUBDIVIDE - 1; i >= 0; i--)
     {
-      subd_incr = (gfloat) ruler_scale[scale] / 
-	          (gfloat) subdivide[i];
+      subd_incr = (gdouble) ruler_scale[scale] / 
+	          (gdouble) subdivide[i];
       if (subd_incr * fabs(increment) <= MINIMUM_INCR) 
 	continue;
+	    printf("subd_incr = %f.\n", subd_incr);
 
       /* Calculate the length of the tickmarks. Make sure that
        * this length increases for each set of ticks
@@ -291,7 +294,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 			 pos, height + ythickness, 
 			 pos, height - length + ythickness);
 
-	  /* draw label */
+	  /* draw label */ 
 	  if (i == 0)
 	    {
 #if 1
