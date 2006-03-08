@@ -38,6 +38,7 @@
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_typeconvert.h>
 #include <sweep/sweep_sample.h>
+#include <sweep/sweep_undo.h>
 
 #include "view.h"
 
@@ -1506,6 +1507,9 @@ view_destroy_cb (GtkWidget * widget, gpointer data)
 
   sample_display_stop_marching_ants (SAMPLE_DISPLAY(view->display));
 
+  if (view->sample->op_progress_tag != -1)
+    gtk_timeout_remove(view->sample->op_progress_tag);
+  cancel_active_op (view->sample);
   sample_remove_view(view->sample, view);
   gtk_widget_destroy (GTK_WIDGET (view->display));
 
