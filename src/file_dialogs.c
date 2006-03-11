@@ -278,11 +278,14 @@ sample_load_destroy_cb (GtkWidget * widget, gpointer data)
 static void
 sample_load_ok_cb(GtkWidget * widget, gpointer data)
 {
-  gchar *dir;
+  gchar **dir;
+  gint i;
 
-  dir = (gchar *)gtk_file_selection_get_filename(GTK_FILE_SELECTION(data));
-
-  sample_load(dir);
+  dir = (gchar **)gtk_file_selection_get_selections(GTK_FILE_SELECTION(data));
+  for( i = 0; dir[i]; i++)
+    {
+      sample_load(dir[i]);
+    }
 
   gtk_widget_destroy(GTK_WIDGET(data));
 }
@@ -304,6 +307,7 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   win_height = gdk_screen_height () / 2;
 
   filesel = gtk_file_selection_new(_("Sweep: Load file"));
+  gtk_file_selection_set_select_multiple(GTK_FILE_SELECTION(filesel), TRUE);
   sweep_set_window_icon (GTK_WINDOW(filesel));
   gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (filesel, win_width, win_height);
