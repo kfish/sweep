@@ -295,6 +295,14 @@ samplerate_dialog_cancel_cb (GtkWidget * widget, gpointer data)
   sample_set_edit_state (sample, SWEEP_EDIT_STATE_IDLE);
 }
 
+static gboolean samplerate_dialog_delete_event_cb( GtkWidget *widget,
+                              GdkEvent  *event,
+                              gpointer   data )
+{
+    samplerate_dialog_cancel_cb(widget, data);
+    return FALSE; 
+}
+
 static void
 src_update_ok_button (GtkWidget * widget)
 {
@@ -436,6 +444,8 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Resample"));
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+  
+  g_signal_connect (G_OBJECT (dialog), "delete_event", G_CALLBACK (samplerate_dialog_delete_event_cb), sample);
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 
