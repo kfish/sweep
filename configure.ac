@@ -1,5 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
 
+dnl Require minimum autoconf version
+AC_PREREQ(2.50)
+
 AC_INIT(configure.ac)
 AM_INIT_AUTOMAKE(sweep, 0.9.1)
 AM_CONFIG_HEADER(config.h)
@@ -438,10 +441,18 @@ packagesrcdir=`cd $srcdir && pwd`
 AC_DEFINE_UNQUOTED([PACKAGE_SOURCE_DIR], "${packagesrcdir}", [Define the PACKAGE_SOURCE_DIR.])
 
 
+AC_ARG_ENABLE(gcc-werror,
+	AC_HELP_STRING([--enable-gcc-werror], [enable -Werror in all Makefiles]))
+
 dnl Use -Wall if we have gcc.
 dnl changequote(,)dnl
 if test "x$ac_cv_prog_gcc" = xyes ; then
   CFLAGS="$CFLAGS -Wall"
+
+  if test x$enable_gcc_werror = "xyes" ; then
+    CFLAGS="$CFLAGS -Werror"
+	fi
+
 fi
 dnl changequote([,])dnl
 
