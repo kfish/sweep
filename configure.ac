@@ -91,55 +91,15 @@ dnl
 dnl  Detect libsndfile 1.0
 dnl
 
-LIBSNDFILE_VERSION="???"
-
-# !!! libsndfile0 backport
-
-ac_enable_libsndfile0=no
-AC_ARG_ENABLE(libsndfile0,
-     [  --enable-libsndfile0    enable building against libsndfile version 0],
-     [ ac_enable_libsndfile0=yes ])
-
-if test "x${ac_enable_libsndfile0}" != xno ; then
-
-  HAVE_LIBSNDFILE1="ignore"
-
-  AC_CHECK_LIB(sndfile, sf_open_read, HAVE_LIBSNDFILE0="yes")
-  AC_CHECK_LIB(sndfile, sf_command, HAVE_LIBSNDFILE0="yes")
-
-  if test "x$HAVE_LIBSNDFILE0" = xyes ; then
-    SNDFILE_LIBS="-lsndfile"
-    AC_SUBST(SNDFILE_LIBS)
-    LIBSNDFILE_VERSION="0"
-  else
-    AC_MSG_ERROR([
-***
-*** You have explicitly enabled to build against libsndfile version 0,
-*** but there is no compatible version of libsndfile version 0 installed.
-***
-*** To continue this build, you must first install libsndfile version
-*** 0.27.0 or 0.28.0.
-***
-*** Note that unless you are building against an older system distribution,
-*** it is highly recommended that you install and build against
-*** libsndfile version 1.
-***
-])
-  fi
-
-else # !!!
-
 PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
                   HAVE_LIBSNDFILE1="yes", HAVE_LIBSNDFILE1="no")
 
 if test "x$HAVE_LIBSNDFILE1" = xyes ; then
   AC_DEFINE([HAVE_LIBSNDFILE1], [], [Define if we have libsndfile1.])
   AC_SUBST(SNDFILE_LIBS)
-  LIBSNDFILE_VERSION="1"
 else
   sweep_config_ok="no"
   AC_CHECK_LIB(sndfile, sf_open, HAVE_LIBSNDFILE1="maybe")
-  AC_CHECK_LIB(sndfile, sf_open_read, HAVE_LIBSNDFILE0="yes")
 fi
 
 if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
@@ -163,8 +123,6 @@ if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
 ])
   fi
 fi
-
-fi # !!! libsndfile0 backport
 
 AC_CHECK_SIZEOF(off_t,1)
 
@@ -550,12 +508,6 @@ if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
       information.
 ])
 fi
-if test "x$HAVE_LIBSNDFILE0" = xyes ; then
-    AC_MSG_RESULT([
-      Development files missing: Your system appears to have an old
-      version of libsndfile (below 1.0.0) installed.
-])
-fi
 
 if test "x$HAVE_ALSA" = xmaybe ; then
     AC_MSG_RESULT([
@@ -658,7 +610,7 @@ AC_MSG_RESULT([
 **
 **     Experimental code: ....... ${ac_enable_experimental}
 **     Audio device handling: ... $sweep_config_driver
-**     PCM: libsndfile version .. $LIBSNDFILE_VERSION
+**     PCM: libsndfile .......... $HAVE_LIBSNDFILE1
 **     Ogg Vorbis support: ...... $HAVE_VORBIS
 **     MPEG (MP3) loading: ...... $HAVE_MAD
 **     Speex support: ........... $HAVE_SPEEX
