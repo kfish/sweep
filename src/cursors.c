@@ -138,10 +138,10 @@ init_cursors (void)
 				zoom_out_x_hot, zoom_out_y_hot);
 
   bitmap =
-    gdk_bitmap_create_from_data (NULL, needle_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) needle_bits,
 				 needle_width, needle_height);
   mask =
-    gdk_bitmap_create_from_data (NULL, needle_mask_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) needle_mask_bits,
 				 needle_mask_width, needle_mask_height);
 
   sweep_cursors[SWEEP_CURSOR_NEEDLE] =
@@ -150,10 +150,10 @@ init_cursors (void)
 
 
   bitmap =
-    gdk_bitmap_create_from_data (NULL, hand_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) hand_bits,
 				 hand_width, hand_height);
   mask =
-    gdk_bitmap_create_from_data (NULL, hand_mask_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) hand_mask_bits,
 				 hand_mask_width, hand_mask_height);
 
   sweep_cursors[SWEEP_CURSOR_MOVE] =
