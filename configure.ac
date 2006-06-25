@@ -322,7 +322,7 @@ dnl Test for ALSA -- requires explicit enabling
 dnl
 
 
-ac_enable_alsa=no
+ac_enable_alsa=yes
 AC_ARG_ENABLE(alsa,
      [  --enable-alsa           enable use of ALSA, and disable use of OSS ],
      [ ac_enable_alsa=yes ])
