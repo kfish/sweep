@@ -1,3 +1,9 @@
+Sun Jun 25 2006
+---------------
+
+the default driver is now the ALSA driver. see README.OSS for 
+information on using the OSS driver instead. 
+
 Wed Apr 30 2003
 ---------------
 

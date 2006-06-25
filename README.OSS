@@ -1,0 +1,7 @@
+Sun Jun 25 2006
+---------------
+
+the OSS driver is no longer the default. to build sweep with the
+OSS driver, add --disable-alsa to your configure flags.
+eg:
+    ./configure --disable-alsa 
