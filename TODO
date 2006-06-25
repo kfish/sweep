@@ -2,7 +2,6 @@ This is an unstructured list of TODO items for Sweep. For up-to-date
 information, mail sweep-devel@lists.sourceforge.net
 
 	* JACK support
-	* FLAC support
 	* caching of undo data on disk
 	* sample bank management
 	* markers
@@ -10,11 +9,3 @@ information, mail sweep-devel@lists.sourceforge.net
 	* recording source management
 	* LADSPA browser
 	* modular drivers
-
-Done
-----
-
-	* ALSA 0.9 support
-	* Ogg Vorbis support
-	* MP3 support (read-only)
-	* GTK2 port
