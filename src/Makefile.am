@@ -34,7 +34,6 @@ sweep_SOURCES = \
 	edit.c edit.h \
 	file_dialogs.c file_dialogs.h \
 	file_sndfile.h \
-	file_sndfile0.c \
 	file_sndfile1.c \
 	file_mad.c \
 	file_speex.c \
