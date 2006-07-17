@@ -3,11 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # Alexandre Prokoudine <avp@altlinux.ru>, 2003
-#: src/sample-display.c:216
+#: src/sample-display.c:220
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-02-18 06:57+1100\n"
+"Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
+"POT-Creation-Date: 2006-07-17 18:28+1000\n"
 "PO-Revision-Date: 2003-04-17 16:06+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -42,129 +43,128 @@ msgstr "Открыть файл"
 msgid "WARNING: Build includes incomplete development code.\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Эта версия включает нестабильный код.\n"
 
-#: src/main.c:183
+#: src/main.c:185
 msgid "Sweep version"
 msgstr "Версия Sweep -- "
 
-#: src/main.c:184
+#: src/main.c:186
 msgid "Sweep plugin API version"
 msgstr "Версия API для модулей Sweep -- "
 
-#: src/main.c:190
+#: src/main.c:192
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr "Использование: %s [параметр ...] [файлы ...]\n"
 
-#: src/main.c:191
+#: src/main.c:193
 msgid "Valid options are:\n"
 msgstr "Корректными параметрами являются:\n"
 
-#: src/main.c:192
+#: src/main.c:194
 msgid "  -h --help                Output this help.\n"
 msgstr "  -h --help                Показывает эту справку.\n"
 
-#: src/main.c:193
+#: src/main.c:195
 msgid "  -v --version             Output version info.\n"
 msgstr "  -v --version             Показывает информацию о версии программы.\n"
 
-#: src/main.c:194
-msgid "  --display <display>      Use the designated X display.\n"
-msgstr "  --display <display>      Использовать передаваемый параметру номер X-сессии.\n"
-
 #: src/main.c:196
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr ""
+"  --display <display>      Использовать передаваемый параметру номер X-"
+"сессии.\n"
+
+#: src/main.c:198
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
 msgstr "  --no-toolbox             Не показывать окно с инструментами.\n"
 
-#: src/about_dialog.c:78
-msgid "About Sweep"
-msgstr "О программе Sweep"
-
-#: src/about_dialog.c:124
+#: src/about_dialog.c:99
 msgid "This is Sweep version"
 msgstr "Это Sweep версии "
 
-#: src/about_dialog.c:142
+#: src/about_dialog.c:119
 msgid "http://sweep.sourceforge.net/"
 msgstr "http://sweep.sourceforge.net/"
 
-#: src/callbacks.c:920 src/callbacks.c:933 src/edit.c:1568 src/edit.c:1642
+#: src/callbacks.c:925 src/callbacks.c:938 src/edit.c:1568 src/edit.c:1642
 #: src/edit.c:1726
 msgid "Clipboard empty"
 msgstr "Буфер обмена пуст"
 
-#: src/channelops.c:144
+#: src/channelops.c:146
 #, c-format
 msgid "Duplicate to %d channels"
 msgstr "Продублировать в %d каналов"
 
-#: src/channelops.c:146
+#: src/channelops.c:148
 #, c-format
 msgid "Duplicate from %d to %d channels"
 msgstr "Продублировать из %d в %d каналов"
 
-#: src/channelops.c:205
+#: src/channelops.c:207
 msgid "Sweep: Duplicate channel"
 msgstr "Sweep: продублировать канал"
 
-#: src/channelops.c:212 src/channelops.c:696
+#: src/channelops.c:214 src/channelops.c:698
 #, c-format
 msgid "Currently: %d channels"
 msgstr "Сейчас: %d каналов"
 
-#: src/channelops.c:219 src/channelops.c:702
+#: src/channelops.c:221 src/channelops.c:704
 msgid "Output channels"
 msgstr "Выходные каналы"
 
-#. OK
-#: src/channelops.c:229 src/channelops.c:712 src/driver.c:369
-#: src/file_sndfile0.c:498 src/file_sndfile1.c:281 src/param.c:777
-#: src/question_dialogs.c:140 src/question_dialogs.c:200
-#: src/question_dialogs.c:249 src/sweep_sample.c:1909 src/undo_dialog.c:428
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:369
+#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:140
+#: src/question_dialogs.c:200 src/question_dialogs.c:249
+#: src/sweep_sample.c:1918 src/undo_dialog.c:440
 msgid "OK"
 msgstr "ОК"
 
-#. Cancel
-#: src/channelops.c:240 src/channelops.c:723 src/driver.c:382
-#: src/file_sndfile0.c:508 src/file_sndfile1.c:291 src/param.c:786
-#: src/question_dialogs.c:154 src/view.c:505 src/view.c:2767
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:382
+#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:154
+#: src/view.c:508 src/view.c:2801
 msgid "Cancel"
 msgstr "Отменить"
 
-#: src/channelops.c:345 src/view.c:356
+#: src/channelops.c:347 src/view.c:359
 msgid "Mix down to mono"
 msgstr ""
 
-#: src/channelops.c:443 src/view.c:333
+#: src/channelops.c:445 src/view.c:336
 msgid "Remove left channel"
 msgstr "Удалить левый канал"
 
-#: src/channelops.c:453 src/view.c:343
+#: src/channelops.c:455 src/view.c:346
 msgid "Remove right channel"
 msgstr "Удалить правый канал"
 
-#: src/channelops.c:537
+#: src/channelops.c:539
 msgid "Swap channels"
 msgstr "Поменять каналы местами"
 
-#: src/channelops.c:539
+#: src/channelops.c:541
 msgid "Not stereo"
 msgstr "Не стерео"
 
-#: src/channelops.c:641
+#: src/channelops.c:643
 #, c-format
 msgid "Convert from %d to %d channels"
 msgstr "Сконвертировать из %d в %d каналов"
 
-#: src/channelops.c:690
+#: src/channelops.c:692
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: Добавить/удалить каналы"
 
-#. Changes ... info
+#: src/driver.c:364
+msgid "Sweep: audio device configuration"
+msgstr ""
+
 #: src/driver.c:405
 msgid "Changes to device settings will take effect on next playback."
-msgstr "Изменения в настройках устройства будут учтены при следующем воспроизведении."
+msgstr ""
+"Изменения в настройках устройства будут учтены при следующем воспроизведении."
 
-#. Device name
 #: src/driver.c:419
 msgid "Device name"
 msgstr "Имя устройства"
@@ -177,7 +177,7 @@ msgstr "Указать основное устройство для воспроизведения и записи"
 msgid "Main device:"
 msgstr "Основное устройство:"
 
-#: src/driver.c:449 src/driver.c:631 src/samplerate.c:549
+#: src/driver.c:449 src/driver.c:631 src/samplerate.c:570
 msgid "Default"
 msgstr "По умолчанию"
 
@@ -197,8 +197,8 @@ msgstr "Поменять местами"
 msgid "Swap main and monitor devices."
 msgstr "Поменять местами основное и мониторинговое устройства"
 
-#: src/driver.c:516 src/driver.c:617 src/file_speex.c:1964
-#: src/file_vorbis.c:1366 src/samplerate.c:535 src/sweep_sample.c:539
+#: src/driver.c:516 src/driver.c:617 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
 msgid "Reset"
 msgstr "Перезагрузить"
 
@@ -206,8 +206,8 @@ msgstr "Перезагрузить"
 msgid "Reset to the last remembered device names."
 msgstr "Установить последние запомненные имена устройств"
 
-#: src/driver.c:530 src/file_speex.c:1978 src/file_vorbis.c:1380
-#: src/param.c:745 src/sweep_sample.c:550
+#: src/driver.c:530 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:747 src/sweep_sample.c:543
 msgid "Defaults"
 msgstr "Стандартные установки"
 
@@ -215,7 +215,6 @@ msgstr "Стандартные установки"
 msgid "Set to default device names."
 msgstr "Указать стандартные имена устройств"
 
-#. Buffering
 #: src/driver.c:549
 msgid "Device buffering"
 msgstr "Буфферизация устройства"
@@ -261,7 +260,7 @@ msgstr "Указать стандартную буфферизацию устройства"
 msgid "No selection to copy"
 msgstr "Нет копируемого выделения"
 
-#: src/edit.c:1308 src/view.c:565 src/view.c:1306
+#: src/edit.c:1308 src/view.c:568 src/view.c:1308
 msgid "Copy"
 msgstr "Скопировать"
 
@@ -269,7 +268,7 @@ msgstr "Скопировать"
 msgid "No selection to cut"
 msgstr "Нет вырезаемого выделения"
 
-#: src/edit.c:1358 src/view.c:555 src/view.c:1300
+#: src/edit.c:1358 src/view.c:558 src/view.c:1302
 msgid "Cut"
 msgstr "Вырезать"
 
@@ -277,7 +276,7 @@ msgstr "Вырезать"
 msgid "No selection to clear"
 msgstr "Нет очищаемого выделения"
 
-#: src/edit.c:1404 src/view.c:575 src/view.c:1312
+#: src/edit.c:1404 src/view.c:578 src/view.c:1314
 msgid "Clear"
 msgstr "Очистить"
 
@@ -285,7 +284,7 @@ msgstr "Очистить"
 msgid "No selection to delete"
 msgstr "Нет удаляемого выделения"
 
-#: src/edit.c:1447 src/view.c:547
+#: src/edit.c:1447 src/view.c:550
 msgid "Delete"
 msgstr "Удалить"
 
@@ -293,7 +292,7 @@ msgstr "Удалить"
 msgid "Nothing to crop out"
 msgstr "Нет обрезаемого по краям выделения"
 
-#: src/edit.c:1498 src/view.c:587 src/view.c:1318 src/view.c:2010
+#: src/edit.c:1498 src/view.c:590 src/view.c:1320 src/view.c:2024
 msgid "Crop"
 msgstr "Обрезать по краям"
 
@@ -313,11 +312,11 @@ msgstr "Вставить обычным способом"
 msgid "Paste xfade"
 msgstr ""
 
-#: src/file_dialogs.c:69
+#: src/file_dialogs.c:73
 msgid "MP3 export unsupported"
 msgstr "Экспорт в MP3 не поддерживается"
 
-#: src/file_dialogs.c:70
+#: src/file_dialogs.c:74
 msgid ""
 "Export to MP3 format cannot legally be supported in free software\n"
 "due to patent licensing restrictions.\n"
@@ -326,16 +325,20 @@ msgid ""
 "provides better quality and is free."
 msgstr ""
 
-#: src/file_dialogs.c:153
+#: src/file_dialogs.c:99
+msgid "Raw PCM (headerless)"
+msgstr ""
+
+#: src/file_dialogs.c:157
 #, c-format
 msgid "%s does not exist."
 msgstr "%s не существует"
 
-#: src/file_dialogs.c:154
+#: src/file_dialogs.c:158
 msgid "Directory does not exist"
 msgstr "Каталога не существует"
 
-#: src/file_dialogs.c:253
+#: src/file_dialogs.c:259
 #, c-format
 msgid ""
 "Unable to read\n"
@@ -344,11 +347,11 @@ msgstr ""
 "Невозможно прочитать\n"
 "%s"
 
-#: src/file_dialogs.c:301
+#: src/file_dialogs.c:309
 msgid "Sweep: Load file"
 msgstr "Sweep: открыть файл"
 
-#: src/file_dialogs.c:367
+#: src/file_dialogs.c:374
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -361,24 +364,24 @@ msgstr ""
 "\n"
 "Согласившись, вы не сможете отменить предыдущие изменения."
 
-#: src/file_dialogs.c:371
+#: src/file_dialogs.c:378
 msgid "Revert file"
 msgstr "Развернуть файл"
 
-#: src/file_dialogs.c:372 src/view.c:457
+#: src/file_dialogs.c:379 src/view.c:460
 msgid "Revert"
 msgstr "Развернуть"
 
-#: src/file_dialogs.c:372
+#: src/file_dialogs.c:379
 msgid "Don't revert"
 msgstr "Не разворачивать"
 
-#: src/file_dialogs.c:542
+#: src/file_dialogs.c:549
 #, c-format
 msgid "Save as %s cancelled"
 msgstr "Сохранение под именем \"%s\" отменено"
 
-#: src/file_dialogs.c:592
+#: src/file_dialogs.c:599
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
@@ -387,40 +390,44 @@ msgstr ""
 "Вы не имеете права на запись\n"
 "%s"
 
-#: src/file_dialogs.c:595
+#: src/file_dialogs.c:602
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr "\"%s\" существует. Перезаписать?"
 
-#: src/file_dialogs.c:596
+#: src/file_dialogs.c:603
 msgid "File exists"
 msgstr "Файл с таким именем существует"
 
-#: src/file_dialogs.c:597
+#: src/file_dialogs.c:604
 msgid "Overwrite"
 msgstr "Перезаписать"
 
-#: src/file_dialogs.c:597
+#: src/file_dialogs.c:604
 msgid "Don't overwrite"
 msgstr "Не перезаписывать"
 
-#: src/file_dialogs.c:642
+#: src/file_dialogs.c:649
 msgid "By extension"
 msgstr "По расширению"
 
-#: src/file_dialogs.c:759
+#: src/file_dialogs.c:707
+msgid "MP3 (Use Ogg Vorbis instead)"
+msgstr ""
+
+#: src/file_dialogs.c:766
 msgid "Sweep: Save file"
 msgstr "Sweep: сохранить файл"
 
-#: src/file_dialogs.c:787
+#: src/file_dialogs.c:796
 msgid "Save Options"
 msgstr " Параметры сохранения "
 
-#: src/file_dialogs.c:796
+#: src/file_dialogs.c:805
 msgid "Determine File Type:"
 msgstr "Определить тип файла:"
 
-#: src/file_dialogs.c:873
+#: src/file_dialogs.c:883
 #, c-format
 msgid ""
 "%s\n"
@@ -433,89 +440,41 @@ msgstr ""
 "\n"
 "Вы действительно хотите сохранить?"
 
-#: src/file_dialogs.c:877 src/sweep_undo.c:327 src/view.c:3499
+#: src/file_dialogs.c:887 src/sweep_undo.c:331 src/view.c:3552
 msgid "File modified"
 msgstr "Файл изменился"
 
-#. OK
-#: src/file_dialogs.c:878 src/file_speex.c:2134 src/file_vorbis.c:1629
-#: src/view.c:438 src/view.c:1924
+#: src/file_dialogs.c:888 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/view.c:441 src/view.c:1938
 msgid "Save"
 msgstr "Сохранить"
 
-#. Cancel
-#: src/file_dialogs.c:878 src/file_speex.c:2145 src/file_vorbis.c:1640
+#: src/file_dialogs.c:888 src/file_speex.c:2138 src/file_vorbis.c:1622
 msgid "Don't save"
 msgstr "Не сохранять"
 
-#: src/file_sndfile0.c:539 src/file_sndfile1.c:323
+#: src/file_sndfile1.c:327
 msgid "Powered by libsndfile"
 msgstr "При помощи libsndfile"
 
-#. Options
-#. XXX: prepend major format name
-#: src/file_sndfile0.c:564 src/file_sndfile1.c:348
+#: src/file_sndfile1.c:354
 msgid "Encoding"
 msgstr "Кодирование"
 
-#: src/file_sndfile0.c:584 src/file_sndfile1.c:369
+#: src/file_sndfile1.c:375
 msgid "Encoding:"
 msgstr "Кодирование:"
 
-#: src/file_sndfile0.c:642 src/file_sndfile0.c:663 src/file_sndfile1.c:441
-#: src/sweep_sample.c:1863
+#: src/file_sndfile1.c:447
 msgid "Sampling rate:"
 msgstr "Частота дискретизации:"
 
-#: src/file_sndfile0.c:715 src/sweep_sample.c:1864
-msgid "Channels:"
-msgstr "Каналы:"
-
-#: src/file_sndfile0.c:725 src/sw_chooser.c:63 src/view.c:3544 src/view.c:3557
-#: src/view.c:3596
-msgid "Mono"
-msgstr "Моно"
-
-#: src/file_sndfile0.c:727
-msgid "Mono (mixdown)"
-msgstr ""
-
-#: src/file_sndfile0.c:739 src/sw_chooser.c:64 src/view.c:3544 src/view.c:3557
-#: src/view.c:3599
-msgid "Stereo"
-msgstr "Стерео"
-
-#: src/file_sndfile0.c:743
-msgid "Stereo (duplicate)"
-msgstr "Стерео (продублировать)"
-
-#: src/file_sndfile0.c:761
-msgid "Bitwidth:"
-msgstr ""
-
-#: src/file_sndfile0.c:770
-msgid "8 bit"
-msgstr "8 битов"
-
-#: src/file_sndfile0.c:780
-msgid "16 bit"
-msgstr "16 битов"
-
-#: src/file_sndfile0.c:790
-msgid "24 bit"
-msgstr "24 бита"
-
-#: src/file_sndfile0.c:800
-msgid "32 bit"
-msgstr "32 бита"
-
-#. About
-#: src/file_sndfile0.c:811 src/file_sndfile1.c:474 src/file_speex.c:2085
-#: src/file_vorbis.c:1580 src/samplerate.c:563
+#: src/file_sndfile1.c:480 src/file_speex.c:2078 src/file_vorbis.c:1562
+#: src/samplerate.c:584
 msgid "About"
 msgstr "О библиотеке"
 
-#: src/file_sndfile0.c:827 src/file_sndfile1.c:490
+#: src/file_sndfile1.c:496
 msgid ""
 "Libsndfile is a C library by Erik de Castro Lopo\n"
 "for reading and writing files containing sampled sound."
@@ -523,40 +482,7 @@ msgstr ""
 "Libsndfile - это библиотека на языке C (Erik de Castro Lopo),\n"
 "предназаченная для чтения и записи звуковых файлов."
 
-#. Conrad wrote the libsndfile0 interface, Erik ported it to libsndfile1
-#: src/file_sndfile0.c:839 src/file_speex.c:2127 src/file_vorbis.c:1622
-#: src/samplerate.c:590
-msgid ""
-"This user interface by Conrad Parker,\n"
-"Copyright (C) 2002 CSIRO Australia.\n"
-"\n"
-msgstr ""
-"Пользовательский интерфейс придуман\n"
-"Конрадом Паркером,\n"
-"Copyright (C) 2002 CSIRO Австралия.\n"
-"\n"
-
-#: src/file_sndfile0.c:906 src/file_sndfile1.c:544
-msgid "Sweep: Save PCM options"
-msgstr "Sweep: Параметры сохранения PCM файла"
-
-#: src/file_sndfile0.c:1070 src/file_sndfile1.c:713
-msgid "Sweep: Load Raw PCM options"
-msgstr "Sweep: Параметры загрузки Raw PCM файла"
-
-#: src/file_sndfile0.c:1120 src/file_sndfile1.c:765 src/file_mad.c:417
-#: src/file_speex.c:567 src/file_vorbis.c:322
-#, c-format
-msgid "Loading %s"
-msgstr "Загружается \"%s\""
-
-#: src/file_sndfile0.c:1344 src/file_sndfile1.c:992 src/file_speex.c:1062
-#: src/file_vorbis.c:700
-#, c-format
-msgid "Saving %s"
-msgstr "Сохраняется \"%s\""
-
-#: src/file_sndfile1.c:501
+#: src/file_sndfile1.c:507
 msgid ""
 "This user interface by Erik de Castro Lopo\n"
 " and Conrad Parker,\n"
@@ -570,187 +496,213 @@ msgstr ""
 "Copyright (C) 2002 CSIRO Австралия.\n"
 "\n"
 
-#: src/file_speex.c:1004 src/file_speex.c:1024
+#: src/file_sndfile1.c:550
+msgid "Sweep: Save PCM options"
+msgstr "Sweep: Параметры сохранения PCM файла"
+
+#: src/file_sndfile1.c:719
+msgid "Sweep: Load Raw PCM options"
+msgstr "Sweep: Параметры загрузки Raw PCM файла"
+
+#: src/file_sndfile1.c:771 src/file_mad.c:435 src/file_speex.c:577
+#: src/file_vorbis.c:324
+#, c-format
+msgid "Loading %s"
+msgstr "Загружается \"%s\""
+
+#: src/file_sndfile1.c:998 src/file_speex.c:1074 src/file_vorbis.c:702
+#, c-format
+msgid "Saving %s"
+msgstr "Сохраняется \"%s\""
+
+#: src/file_speex.c:1016 src/file_speex.c:1036
 msgid "Speex encoding results"
 msgstr "Результаты кодирования при помощи Speex"
 
-#: src/file_speex.c:1196
+#: src/file_speex.c:1208
 msgid "Narrowband ~8 kHz (telephone quality)"
 msgstr "Узкополосный ~8 КГц (телефонное качество)"
 
-#: src/file_speex.c:1197
+#: src/file_speex.c:1209
 msgid "Wideband ~16 kHz"
 msgstr "Широкополосный ~16 КГц"
 
-#: src/file_speex.c:1199
+#: src/file_speex.c:1211
 msgid "Ultra-wideband 32-48 kHz"
 msgstr "Ультраширокополосный 32-48 Кгц"
 
-#: src/file_speex.c:1206
+#: src/file_speex.c:1218
 msgid "Constant bitrate (CBR) with no features"
 msgstr "Обычная постоянная битовая частота (CBR)"
 
-#: src/file_speex.c:1209
+#: src/file_speex.c:1221
 msgid "CBR with Voice Activity Detection (VAD)"
 msgstr "CBR с определением активности голоса (VAD)"
 
-#: src/file_speex.c:1210
+#: src/file_speex.c:1222
 msgid "VAD generates low bitrate comfort noise to replace non-speech"
 msgstr "VAD заменяет неголосовые фрагменты мягким шумом"
 
-#: src/file_speex.c:1213
+#: src/file_speex.c:1225
 msgid "CBR with VAD and Discontinuous Transmission (DTX)"
 msgstr "CBR с VAD и дискретной трансмиссией (DTX)"
 
-#: src/file_speex.c:1214
+#: src/file_speex.c:1226
 msgid "DTX marks extended pauses with a minimum bitrate signal"
 msgstr ""
 
-#: src/file_speex.c:1217
+#: src/file_speex.c:1229
+#, fuzzy
+msgid "Variable bitrate (VBR) with VAD"
+msgstr "Переменная битовая частота (VBR)"
+
+#: src/file_speex.c:1230
+msgid ""
+"VBR allows the bitrate to adapt to the complexity of the speech; this "
+"selection uses VBR without DTX, which may improve performance compared to "
+"full VBR in the presence of background noise."
+msgstr ""
+
+#: src/file_speex.c:1235
 msgid "Variable bitrate (VBR) with all features"
 msgstr "Переменная битовая частота (VBR)"
 
-#: src/file_speex.c:1218
+#: src/file_speex.c:1236
 msgid ""
 "VBR allows the bitrate to adapt to the complexity of the speech, and handles "
 "pauses using VAD and DTX"
 msgstr ""
-"VBR позволяет адаптировать битовую частоту к характеристикам "
-"голоса и управляет паузами при помощи VAD и DTX."
+"VBR позволяет адаптировать битовую частоту к характеристикам голоса и "
+"управляет паузами при помощи VAD и DTX."
 
-#: src/file_speex.c:1222
+#: src/file_speex.c:1240
 msgid "Constant bitrate (CBR)"
 msgstr "Постоянная битовая частота (CBR)"
 
-#: src/file_speex.c:1224
+#: src/file_speex.c:1242
 msgid "Variable bitrate (VBR)"
 msgstr "Переменная битовая частота (VBR)"
 
-#: src/file_speex.c:1225
+#: src/file_speex.c:1243
 msgid "VBR allows the bitrate to adapt to the complexity of the speech."
-msgstr ""
-"VBR позволяет адаптировать битовую частоту к характеристикам "
-"голоса"
+msgstr "VBR позволяет адаптировать битовую частоту к характеристикам голоса"
 
-#: src/file_speex.c:1280 src/file_speex.c:1810
+#: src/file_speex.c:1298 src/file_speex.c:1803
 msgid "Average bitrate"
 msgstr "Средняя битовая частота"
 
-#: src/file_speex.c:1283
+#: src/file_speex.c:1301
 msgid "Maximum bitrate"
 msgstr "Максимальная битовая частота"
 
-#: src/file_speex.c:1476 src/file_vorbis.c:1011
+#: src/file_speex.c:1494 src/file_vorbis.c:1013
 msgid "Hack the planet!"
 msgstr ""
 
-#: src/file_speex.c:1564
+#: src/file_speex.c:1580
 msgid "Sweep: Speex save options"
 msgstr "Sweep: параметры сохранения в Speex"
 
-#: src/file_speex.c:1638
+#: src/file_speex.c:1631
 msgid "Speex encoding"
 msgstr "Кодирование в Speex"
 
-#: src/file_speex.c:1651
+#: src/file_speex.c:1644
 msgid "Mode:"
 msgstr "Режим:"
 
-#: src/file_speex.c:1677
+#: src/file_speex.c:1670
 msgid "Auto"
 msgstr "Авто"
 
-#: src/file_speex.c:1686
+#: src/file_speex.c:1679
 msgid ""
 "Automatically select the encoding mode based on the sampling rate of the "
 "file."
 msgstr ""
-"Автоматически выбрать режим кодирования на основе частоты "
-"дискретизации файла"
+"Автоматически выбрать режим кодирования на основе частоты дискретизации файла"
 
-#: src/file_speex.c:1739 src/file_vorbis.c:1178
+#: src/file_speex.c:1732 src/file_vorbis.c:1160
 msgid "Encoding quality:"
 msgstr "Качество кодирования:"
 
-#: src/file_speex.c:1782
+#: src/file_speex.c:1775
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file)."
 msgstr ""
-"Качество кодирования задаётся числом в промежутке от 0 "
-"(наихудшее качество, наименьший размер файла) и 10 (наивысшее "
-"качество, наибольший размер файла)."
+"Качество кодирования задаётся числом в промежутке от 0 (наихудшее качество, "
+"наименьший размер файла) и 10 (наивысшее качество, наибольший размер файла)."
 
-#: src/file_speex.c:1792
+#: src/file_speex.c:1785
 msgid "Enable bitrate management"
 msgstr "Вручную задать битовую частоту"
 
-#: src/file_speex.c:1805
+#: src/file_speex.c:1798
 msgid ""
 "For non-VBR (constant bitrate) encoding, this sets the maximum bitrate.For "
 "VBR encoding, this sets the average bitrate."
 msgstr ""
-"Позволяет задать максимальную битовую частоту для CBR "
-"и среднюю битовую частоту для VBR."
+"Позволяет задать максимальную битовую частоту для CBR и среднюю битовую "
+"частоту для VBR."
 
-#: src/file_speex.c:1828
+#: src/file_speex.c:1821
 msgid "bps"
 msgstr "бит/сек"
 
-#: src/file_speex.c:1834
+#: src/file_speex.c:1827
 msgid "Extra"
 msgstr "Дополнительно"
 
-#: src/file_speex.c:1856
+#: src/file_speex.c:1849
 msgid "Encoding complexity:"
 msgstr "Качество кодирования:"
 
-#: src/file_speex.c:1895
+#: src/file_speex.c:1888
 msgid ""
 "This sets the encoding speed/quality tradeoff between 0 (faster encoding) "
 "and 10 (slower encoding)"
 msgstr ""
-"Здесь можно установить соотношение скорости и качества "
-"кодирования от 0 (высокая скорость) до 10 (низкая скорость)."
+"Здесь можно установить соотношение скорости и качества кодирования от 0 "
+"(высокая скорость) до 10 (низкая скорость)."
 
-#: src/file_speex.c:1911
+#: src/file_speex.c:1904
 msgid "Speex frames per Ogg packet:"
 msgstr "Speex-кадров на один Ogg-пакет:"
 
-#: src/file_speex.c:1937
+#: src/file_speex.c:1930
 msgid ""
 "Number of Speex frames to pack into each Ogg packet. Higher values save "
 "space at low bitrates."
 msgstr ""
-"Количество Speex-кадров, помещаемых в один Ogg-пакет. Чем больше "
-"значение, тем меньше места занимает файл при низкой битовой частоте."
+"Количество Speex-кадров, помещаемых в один Ogg-пакет. Чем больше значение, "
+"тем меньше места занимает файл при низкой битовой частоте."
 
-#: src/file_speex.c:1952 src/file_vorbis.c:1354
+#: src/file_speex.c:1945 src/file_vorbis.c:1336
 msgid "Remember these encoding options"
 msgstr "Запомнить эти параметры кодирования"
 
-#: src/file_speex.c:1972 src/file_vorbis.c:1374
+#: src/file_speex.c:1965 src/file_vorbis.c:1356
 msgid "Reset to the last remembered encoding options."
 msgstr "Установить предыдущие запомненные параметры кодирования."
 
-#: src/file_speex.c:1987
+#: src/file_speex.c:1980
 msgid "Automatically select best encoding options for this file."
 msgstr "Автоматически выбрать лучшие параметры кодирования для этого файла."
 
-#. Ogg stream
-#: src/file_speex.c:1992 src/file_vorbis.c:1487
+#: src/file_speex.c:1985 src/file_vorbis.c:1469
 msgid "Ogg stream"
 msgstr "Ogg-поток"
 
-#: src/file_speex.c:2005 src/file_vorbis.c:1500
+#: src/file_speex.c:1998 src/file_vorbis.c:1482
 msgid "Ogg stream serial number:"
 msgstr "Серийный номер Ogg-потока:"
 
-#: src/file_speex.c:2026 src/file_vorbis.c:1521
+#: src/file_speex.c:2019 src/file_vorbis.c:1503
 msgid "Remember this serial number"
 msgstr "Запомнить этот серийный номер"
 
-#: src/file_speex.c:2036 src/file_vorbis.c:1531
+#: src/file_speex.c:2029 src/file_vorbis.c:1513
 msgid ""
 "Remember this serial number for future re-use.\n"
 "USE OF THIS OPTION IS NOT RECOMMENDED.\n"
@@ -762,20 +714,19 @@ msgid ""
 "for each file encoded."
 msgstr ""
 
-#. Randomise serialno!
-#: src/file_speex.c:2063 src/file_vorbis.c:1558
+#: src/file_speex.c:2056 src/file_vorbis.c:1540
 msgid "Randomize!"
 msgstr "Получить случайное значение!"
 
-#: src/file_speex.c:2070 src/file_vorbis.c:1565
+#: src/file_speex.c:2063 src/file_vorbis.c:1547
 msgid ""
 "Generate a random serial number for the Ogg bitstream. The number will "
 "change while this button is held down."
 msgstr ""
-"Создаёт случайный серийный номер для Ogg-потока. Номер будет "
-"беспрерывно меняться, пока кнопка нажата."
+"Создаёт случайный серийный номер для Ogg-потока. Номер будет беспрерывно "
+"меняться, пока кнопка нажата."
 
-#: src/file_speex.c:2101
+#: src/file_speex.c:2094
 msgid ""
 "Speex is a high quality speech codec designed for\n"
 "voice over IP (VoIP) and file-based compression.\n"
@@ -785,7 +736,7 @@ msgstr ""
 "речи, предназначенный для передачи голоса по сети (VoIP)\n"
 "и сжатия звуковых файл."
 
-#: src/file_speex.c:2112
+#: src/file_speex.c:2105
 msgid ""
 "Ogg, Speex, Xiph.org Foundation and their logos\n"
 "are trademarks (tm) of the Xiph.org Foundation.\n"
@@ -795,7 +746,18 @@ msgstr ""
 "являются торговыми марками (tm) Фонда Xiph.org\n"
 "и используются с его разрешения."
 
-#: src/file_vorbis.c:354
+#: src/file_speex.c:2120 src/file_vorbis.c:1604 src/samplerate.c:611
+msgid ""
+"This user interface by Conrad Parker,\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+msgstr ""
+"Пользовательский интерфейс придуман\n"
+"Конрадом Паркером,\n"
+"Copyright (C) 2002 CSIRO Австралия.\n"
+"\n"
+
+#: src/file_vorbis.c:356
 #, c-format
 msgid ""
 "Decoding %s\n"
@@ -804,161 +766,155 @@ msgid ""
 "%s"
 msgstr ""
 "Декодирование %s\n"
-"Кодирование произвел(а): %s\n "
-"\n"
+"Кодирование произвел(а): %s\n"
+" \n"
 "%s"
 
-#: src/file_vorbis.c:468
+#: src/file_vorbis.c:470
 msgid "Unsupported encoding mode"
 msgstr "Неподдерживаемый режим кодирования"
 
-#: src/file_vorbis.c:471
+#: src/file_vorbis.c:473
 msgid "Invalid encoding options"
 msgstr "Некорректные параметры кодирования"
 
-#: src/file_vorbis.c:641 src/file_vorbis.c:661
+#: src/file_vorbis.c:643 src/file_vorbis.c:663
 msgid "Ogg Vorbis encoding results"
 msgstr "Результаты кодирования в Ogg Vorbis"
 
-#: src/file_vorbis.c:1092
+#: src/file_vorbis.c:1089
 msgid "Sweep: Ogg Vorbis save options"
 msgstr "Sweep: Параметры сохранения в Ogg Vorbis"
 
-#. Encoding quality
-#: src/file_vorbis.c:1166
+#: src/file_vorbis.c:1148
 msgid "Vorbis encoding"
 msgstr "Кодирование в Vorbis"
 
-#: src/file_vorbis.c:1213
+#: src/file_vorbis.c:1195
 msgid ""
 "Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
 "quality, largest file) using variable bitrate mode (VBR)."
 msgstr ""
 "Качество кодирования задаётся числом  между 0 (наихудшее качество, "
-"наименьший размер файла) и 10 (наивысшее качество, наибольший "
-"размер файла) при помощи переменной битовой частоты (VBR)."
+"наименьший размер файла) и 10 (наивысшее качество, наибольший размер файла) "
+"при помощи переменной битовой частоты (VBR)."
 
-#: src/file_vorbis.c:1223
+#: src/file_vorbis.c:1205
 msgid "Enable bitrate management engine"
 msgstr "Включить ручное управление битовой частотой"
 
-#: src/file_vorbis.c:1229
+#: src/file_vorbis.c:1211
 msgid ""
 "This enables average bitrate mode (ABR). You must suggest a nominal average "
 "bitrate and may specify minimum and maximum bounds.\n"
 "For best results it is generally recommended that you use the variable "
 "bitrate 'encoding quality' control (above) instead."
 msgstr ""
-"Включается режим номинальной битовой частоты (ABR). Вам "
-"необходимо ввести номинальное значение битовой частоты и указать "
-"минимальное и максимальное от неё отклонение.\n"
-"Для достижения наилучшего результата рекомендуется использовать "
-"регулятор качества кодирования для переменной битовой частоты, "
-"находящийся выше."
+"Включается режим номинальной битовой частоты (ABR). Вам необходимо ввести "
+"номинальное значение битовой частоты и указать минимальное и максимальное от "
+"неё отклонение.\n"
+"Для достижения наилучшего результата рекомендуется использовать регулятор "
+"качества кодирования для переменной битовой частоты, находящийся выше."
 
-#: src/file_vorbis.c:1239
+#: src/file_vorbis.c:1221
 msgid "Bitrate management engine"
 msgstr " Ручное управление битовой частотой "
 
-#: src/file_vorbis.c:1265
+#: src/file_vorbis.c:1247
 msgid "Nominal bitrate (ABR):"
 msgstr "Номинальная битовая частота (ABR):"
 
-#: src/file_vorbis.c:1278
-msgid "Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
+#: src/file_vorbis.c:1260
+msgid ""
+"Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
 msgstr ""
-"Укажите номинальную битовую частоту, значение которой будет "
-"взято за основу для кодирования"
+"Укажите номинальную битовую частоту, значение которой будет взято за основу "
+"для кодирования"
 
-#: src/file_vorbis.c:1282 src/file_vorbis.c:1311 src/file_vorbis.c:1341
+#: src/file_vorbis.c:1264 src/file_vorbis.c:1293 src/file_vorbis.c:1323
 msgid "kbps"
 msgstr "КБайт/сек"
 
-#: src/file_vorbis.c:1294
+#: src/file_vorbis.c:1276
 msgid "Minimum bitrate:"
 msgstr "Минимальная битовая частота:"
 
-#: src/file_vorbis.c:1307
+#: src/file_vorbis.c:1289
 msgid ""
 "Specify a minimum bitrate, useful for encoding for a fixed-size channel. "
 "(Optional)"
 msgstr ""
-"Укажите минимальную битовую частоту. Этот необязательный "
-"параметр полезен в том случае, если речь идёт о канале "
-"фиксированного размера."
+"Укажите минимальную битовую частоту. Этот необязательный параметр полезен в "
+"том случае, если речь идёт о канале фиксированного размера."
 
-#: src/file_vorbis.c:1324
+#: src/file_vorbis.c:1306
 msgid "Maximum bitrate:"
 msgstr "Максимальная битовая частота:"
 
-#: src/file_vorbis.c:1337
-msgid "Specify a maximum bitrate, useful for streaming applications. (Optional)"
+#: src/file_vorbis.c:1319
+msgid ""
+"Specify a maximum bitrate, useful for streaming applications. (Optional)"
 msgstr ""
-"Укажите минимальную битовую частоту. Этот необязательный "
-"параметр полезен в том случае, если результат кодирования "
-"будет использоваться в приложениях для работы с поточным звуком."
+"Укажите минимальную битовую частоту. Этот необязательный параметр полезен в "
+"том случае, если результат кодирования будет использоваться в приложениях "
+"для работы с поточным звуком."
 
-#: src/file_vorbis.c:1388
+#: src/file_vorbis.c:1370
 msgid "Set to default encoding options."
 msgstr "Установить стандартные параметры кодирования"
 
-#. Metadata
-#: src/file_vorbis.c:1395
+#: src/file_vorbis.c:1377
 msgid "Metadata"
 msgstr "Метаданные"
 
-#. These fields and descriptions derived from libvorbis API documentation:
-#. * /usr/share/doc/libvorbis-dev/v-comment.html
-#.
-#: src/file_vorbis.c:1417
+#: src/file_vorbis.c:1399
 msgid "Title:"
 msgstr "Название:"
 
-#: src/file_vorbis.c:1417
+#: src/file_vorbis.c:1399
 msgid "Track/Work name"
 msgstr "Имя дорожки/композиции"
 
-#: src/file_vorbis.c:1419
+#: src/file_vorbis.c:1401
 msgid "Version:"
 msgstr "Версия:"
 
-#: src/file_vorbis.c:1420
+#: src/file_vorbis.c:1402
 msgid ""
 "The version field may be used to differentiate multiple versions of the same "
 "track title in a single collection. (e.g. remix info)"
 msgstr ""
-"Поле \"Версия\" может использоваться для задания версий вариантов "
-"одной и той же дорожки (например, ремиксов)"
+"Поле \"Версия\" может использоваться для задания версий вариантов одной и "
+"той же дорожки (например, ремиксов)"
 
-#: src/file_vorbis.c:1424
+#: src/file_vorbis.c:1406
 msgid "Album:"
 msgstr "Альбом:"
 
-#: src/file_vorbis.c:1425
+#: src/file_vorbis.c:1407
 msgid "The collection name to which this track belongs"
 msgstr "Имя сборника, в состав которого входит данная дорожка"
 
-#: src/file_vorbis.c:1427
+#: src/file_vorbis.c:1409
 msgid "Artist:"
 msgstr "Автор:"
 
-#: src/file_vorbis.c:1428
+#: src/file_vorbis.c:1410
 msgid ""
 "The artist generally considered responsible for the work. In popular music "
 "this is usually the performing band or singer. For classical music it would "
 "be the composer. For an audio book it would be the author of the original "
 "text."
 msgstr ""
-"В поле \"Автор\" обычно записываается один или несколько "
-"человек, \"ответственных\" за его создание, например, певец или "
-"группа; в случае с классической музыкой таким человеком является "
-"композитор и т.д."
+"В поле \"Автор\" обычно записываается один или несколько человек, "
+"\"ответственных\" за его создание, например, певец или группа; в случае с "
+"классической музыкой таким человеком является композитор и т.д."
 
-#: src/file_vorbis.c:1434
+#: src/file_vorbis.c:1416
 msgid "Performer:"
 msgstr "Исполнитель:"
 
-#: src/file_vorbis.c:1435
+#: src/file_vorbis.c:1417
 msgid ""
 "The artist(s) who performed the work. In classical music this would be the "
 "conductor, orchestra, soloists. In an audio book it would be the actor who "
@@ -966,23 +922,26 @@ msgid ""
 "and is omitted."
 msgstr ""
 "Человек или группа лиц, воплотивших музыкальную идею. В случае с "
-"классической музыкой это могут быть дирижёр, оркестр, солисты. В "
-"современной музыке \"Автор\" и \"Исполнитель\" могут быть одним и "
-"тем же человеком или группой лиц."
+"классической музыкой это могут быть дирижёр, оркестр, солисты. В современной "
+"музыке \"Автор\" и \"Исполнитель\" могут быть одним и тем же человеком или "
+"группой лиц."
 
-#: src/file_vorbis.c:1442
+#: src/file_vorbis.c:1424
 msgid "Copyright:"
 msgstr "Авторское право:"
 
-#: src/file_vorbis.c:1443
-msgid "Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
-msgstr "Краткая информация об авторском праве, например, '2003 Наша группа' или '2003 Моё имя'"
+#: src/file_vorbis.c:1425
+msgid ""
+"Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
+msgstr ""
+"Краткая информация об авторском праве, например, '2003 Наша группа' или "
+"'2003 Моё имя'"
 
-#: src/file_vorbis.c:1446
+#: src/file_vorbis.c:1428
 msgid "License:"
 msgstr "Лицензия:"
 
-#: src/file_vorbis.c:1447
+#: src/file_vorbis.c:1429
 msgid ""
 "License information, eg, 'All Rights Reserved', 'Any Use Permitted', a URL "
 "to a license such as a Creative Commons license (\"www.creativecommons.org/"
@@ -990,80 +949,78 @@ msgid ""
 "the terms of the Open Audio License. see http://www.eff.org/IP/Open_licenses/"
 "eff_oal.html for details'), etc."
 msgstr ""
-"Информация о лицензии, например, \"Все права защищены\", URL "
-"на текст лицензии - например, Всеобщая музыкальная лицензия "
-"(\"www.где-то.там\") или Открытая лицензия на звуковые данные "
-"(\"распространяется на условиях Открытой лицензии на звуковые "
-"данные, текст которой читайте по адресу http://www.eff.org/IP/Open_licenses/"
-"eff_oal.html\") и т.д."
+"Информация о лицензии, например, \"Все права защищены\", URL на текст "
+"лицензии - например, Всеобщая музыкальная лицензия (\"www.где-то.там\") или "
+"Открытая лицензия на звуковые данные (\"распространяется на условиях "
+"Открытой лицензии на звуковые данные, текст которой читайте по адресу http://"
+"www.eff.org/IP/Open_licenses/eff_oal.html\") и т.д."
 
-#: src/file_vorbis.c:1456
+#: src/file_vorbis.c:1438
 msgid "Organization:"
 msgstr "Организация:"
 
-#: src/file_vorbis.c:1457
+#: src/file_vorbis.c:1439
 msgid "Name of the organization producing the track (i.e. the 'record label')"
 msgstr "Имя организации, спродюсировавшей запись (т.н. \"лейбл\")"
 
-#: src/file_vorbis.c:1460
+#: src/file_vorbis.c:1442
 msgid "Description:"
 msgstr "Описание:"
 
-#: src/file_vorbis.c:1461
+#: src/file_vorbis.c:1443
 msgid "A short text description of the contents"
 msgstr "Короткое описание содержания"
 
-#: src/file_vorbis.c:1463
+#: src/file_vorbis.c:1445
 msgid "Genre:"
 msgstr "Жанр:"
 
-#: src/file_vorbis.c:1464
+#: src/file_vorbis.c:1446
 msgid "A short text indication of music genre"
 msgstr "Короткое описание, именование жанра"
 
-#: src/file_vorbis.c:1466
+#: src/file_vorbis.c:1448
 msgid "Date:"
 msgstr "Дата:"
 
-#: src/file_vorbis.c:1467
+#: src/file_vorbis.c:1449
 msgid "Date the track was recorded"
 msgstr "Дата записи дорожки"
 
-#: src/file_vorbis.c:1469
+#: src/file_vorbis.c:1451
 msgid "Location:"
 msgstr "Местоположение:"
 
-#: src/file_vorbis.c:1470
+#: src/file_vorbis.c:1452
 msgid "Location where track was recorded"
 msgstr "Описание, именование места записи дорожки"
 
-#: src/file_vorbis.c:1472
+#: src/file_vorbis.c:1454
 msgid "Contact:"
 msgstr "Контакты:"
 
-#: src/file_vorbis.c:1473
+#: src/file_vorbis.c:1455
 msgid ""
 "Contact information for the creators or distributors of the track. This "
 "could be a URL, an email address, the physical address of the producing "
 "label."
 msgstr ""
-"Контактная информация о создателях и дистрибьюторах дорожки. "
-"Это может быть URL, -email, физический или юридический адрес "
-"пордюсерской организации."
+"Контактная информация о создателях и дистрибьюторах дорожки. Это может быть "
+"URL, -email, физический или юридический адрес пордюсерской организации."
 
-#: src/file_vorbis.c:1478
+#: src/file_vorbis.c:1460
 msgid "ISRC:"
 msgstr "ISRC:"
 
-#: src/file_vorbis.c:1479
+#: src/file_vorbis.c:1461
 msgid ""
 "ISRC number for the track; see the ISRC intro page (http://www.ifpi.org/site-"
 "content/online/isrc_intro.html) for more information on ISRC numbers."
 msgstr ""
-"ISRC-номер дорожки. Подробнее об ISRC читайте по адресу "
-"http://www.ifpi.org/site-content/online/isrc_intro.html"
+"ISRC-номер дорожки. Подробнее об ISRC читайте по адресу http://www.ifpi.org/"
+"site-content/online/isrc_intro.html"
 
-#: src/file_vorbis.c:1596
+#: src/file_vorbis.c:1578
 msgid ""
 "Ogg Vorbis is a high quality general purpose\n"
 "perceptual audio codec. It is free, open and\n"
@@ -1073,7 +1030,7 @@ msgstr ""
 "алгоритм сжатия. Его исходный код свободен, \n"
 "бесплатен и незащищён патентами."
 
-#: src/file_vorbis.c:1607
+#: src/file_vorbis.c:1589
 msgid ""
 "Ogg, Vorbis, Xiph.org Foundation and their logos\n"
 "are trademarks (tm) of the Xiph.org Foundation.\n"
@@ -1084,154 +1041,153 @@ msgstr ""
 "В данном программном продукте используются\n"
 "с их разрешения."
 
-#: src/head.c:399 src/view.c:2450
+#: src/head.c:408 src/view.c:2472
 msgid "Cursor position (indicator)"
 msgstr "Позиция курсора (индикатор)"
 
-#: src/head.c:455
+#: src/head.c:449
+#, fuzzy
+msgid "Reverse mode (toggle)"
+msgstr "Режим обратного воспроизведения (переключить)"
+
+#: src/head.c:467
 msgid "Loop mode recording (toggle)"
 msgstr "Запись в цикле (переключить)"
 
-#: src/head.c:474
+#: src/head.c:486
 msgid "Record into selection"
 msgstr "Записать в выделение"
 
-#: src/head.c:490 src/view.c:1218
+#: src/head.c:503 src/view.c:1220
 msgid "Stop"
 msgstr "Остановить"
 
-#: src/head.c:503
+#: src/head.c:516
 msgid "Go to beginning"
 msgstr "Перейти к началу"
 
-#: src/head.c:514 src/view.c:2605
+#: src/head.c:527 src/view.c:2631
 msgid "Rewind"
 msgstr "Перемотать назад"
 
-#: src/head.c:527 src/view.c:2617
+#: src/head.c:540 src/view.c:2643
 msgid "Fast forward"
 msgstr "Перемотать вперёд"
 
-#: src/head.c:542
+#: src/head.c:555
 msgid "Go to the end"
 msgstr "Перейти к концу"
 
-#: src/interface.c:250
+#: src/interface.c:271
 msgid "Sweep"
 msgstr "Sweep"
 
-#. File
-#: src/interface.c:275 src/view.c:414
+#: src/interface.c:296 src/view.c:417
 msgid "File"
 msgstr "Файл"
 
-#: src/interface.c:280
+#: src/interface.c:301
 msgid "New"
 msgstr "Новый"
 
-#: src/interface.c:289
+#: src/interface.c:310
 msgid "Open"
 msgstr "Открыть"
 
-#: src/interface.c:298 src/sweep_sample.c:807 src/sweep_sample.c:815
-#: src/view.c:489
+#: src/interface.c:319 src/sweep_sample.c:800 src/sweep_sample.c:808
+#: src/view.c:492
 msgid "Quit"
 msgstr "Выйти"
 
-#: src/interface.c:309 src/view.c:1229
+#: src/interface.c:330 src/view.c:1231
 msgid "Help"
 msgstr "Справка"
 
-#: src/interface.c:314
+#: src/interface.c:335
 msgid "About..."
 msgstr "О программе..."
 
-#. Radio group
-#: src/interface.c:337 src/view.c:666
+#: src/interface.c:358 src/view.c:669
 msgid "Select"
 msgstr "Выделить"
 
-#: src/interface.c:338
+#: src/interface.c:359
 msgid "Select regions of a sample"
 msgstr "Выделить фрагменты семпла"
 
-#: src/interface.c:339
+#: src/interface.c:360
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
 "add discontinuous regions to the selection."
 msgstr ""
-"Этот инструмент позволяет выделять фрагменты семпла. Впоследствии "
-"вы можете отредактировать эти фрагменты, применить к ним эффекты. "
-"Удерживайте нажатой клавишу Shift для расширения выделенного "
-"фрагмента."
+"Этот инструмент позволяет выделять фрагменты семпла. Впоследствии вы можете "
+"отредактировать эти фрагменты, применить к ним эффекты. Удерживайте нажатой "
+"клавишу Shift для расширения выделенного фрагмента."
 
-#. Radio group
-#: src/interface.c:356
+#: src/interface.c:377
 msgid "Move"
 msgstr "Переместить"
 
-#: src/interface.c:357
+#: src/interface.c:378
 msgid "Move regions in a sample"
 msgstr "Переместить фрагменты в семпле"
 
-#: src/interface.c:358
+#: src/interface.c:379
 msgid "With this tool you can move selected regions of a sample."
-msgstr "При помощи этого инструмента вы можете перемещать выделенные фрагменты семпла."
+msgstr ""
+"При помощи этого инструмента вы можете перемещать выделенные фрагменты "
+"семпла."
 
-#. Radio group
-#: src/interface.c:370
+#: src/interface.c:391
 msgid "Scrub"
 msgstr ""
 
-#: src/interface.c:371
+#: src/interface.c:392
 msgid "Locate sounds directly"
 msgstr ""
 
-#: src/interface.c:372
+#: src/interface.c:393
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
 msgstr ""
 
-#. Radio group
-#: src/interface.c:389
+#: src/interface.c:410
 msgid "Zoom"
 msgstr "Масштаб"
 
-#: src/interface.c:390
+#: src/interface.c:411
 msgid "Zoom in & out"
 msgstr "Приблизить или отдалить"
 
-#: src/interface.c:391
+#: src/interface.c:412
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
 
-#. Radio group
-#: src/interface.c:407
+#: src/interface.c:428
 msgid "Pencil"
 msgstr "Карандаш"
 
-#: src/interface.c:408
+#: src/interface.c:429
 msgid "Edit PCM sample values"
 msgstr "Редактировать значения PCM-семпла"
 
-#: src/interface.c:409
+#: src/interface.c:430
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr ""
 
-#. Radio group
-#: src/interface.c:420
+#: src/interface.c:441
 msgid "Noise"
 msgstr "Шум"
 
-#: src/interface.c:421
+#: src/interface.c:442
 msgid "Add noise"
 msgstr "Добавить шум"
 
-#: src/interface.c:422
+#: src/interface.c:443
 msgid "Randomise PCM values"
 msgstr "Получить случайные значения для PCM"
 
@@ -1379,11 +1335,29 @@ msgstr "Си бемоль 5"
 msgid "B5"
 msgstr "Си 5"
 
+#: src/param.c:117
+#, c-format
+msgid "TRUE"
+msgstr ""
+
+#: src/param.c:118
+#, c-format
+msgid "FALSE"
+msgstr ""
+
+#: src/param.c:738
+msgid "Parameters"
+msgstr ""
+
+#: src/param.c:769
+msgid "Preview"
+msgstr ""
+
 #: src/paste_dialogs.c:221
 msgid "Start gain"
 msgstr "Начальная громкость"
 
-#: src/paste_dialogs.c:223 src/record.c:474 src/record.c:492
+#: src/paste_dialogs.c:223 src/record.c:490 src/record.c:508
 #: plugins/echo/echo.c:61
 msgid "Gain"
 msgstr "Громкость"
@@ -1396,7 +1370,6 @@ msgstr ""
 msgid "Sweep: Paste mix"
 msgstr "Sweep: Вставка смешиванием"
 
-#. Source
 #: src/paste_dialogs.c:257
 msgid "Source"
 msgstr "Источник"
@@ -1413,7 +1386,6 @@ msgstr "Конечная громкость"
 msgid "Invert phase"
 msgstr "Фаза инвертации"
 
-#. Destination
 #: src/paste_dialogs.c:295
 msgid "Destination"
 msgstr "Место назначения"
@@ -1423,14 +1395,13 @@ msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
 msgstr ""
-"Показывает общую продолжительность буфера обмена, которая "
-"совпадает с максимальной продолжительностью вставки."
+"Показывает общую продолжительность буфера обмена, которая совпадает с "
+"максимальной продолжительностью вставки."
 
 #: src/paste_dialogs.c:362
 msgid "Clipboard duration:"
 msgstr "Продолжительность буфера обмена:"
 
-#. OK
 #: src/paste_dialogs.c:375
 msgid "Crossfade"
 msgstr ""
@@ -1447,7 +1418,32 @@ msgstr ""
 msgid "Don't mix"
 msgstr "Не смешивать"
 
-#: src/record.c:94 src/record.c:529
+#: src/preferences.c:60
+msgid "Error creating ~/.sweep"
+msgstr ""
+
+#: src/preferences.c:64
+#, c-format
+msgid "Created %s/ mode %04o\n"
+msgstr ""
+
+#: src/preferences.c:71
+msgid "Error on ~/.sweep"
+msgstr ""
+
+#: src/preferences.c:80
+msgid "Error setting permissions on ~/.sweep"
+msgstr ""
+
+#: src/preferences.c:87
+msgid "Error accessing ~/.sweep"
+msgstr ""
+
+#: src/preferences.c:112
+msgid "Error opening ~/.sweep/preferences.tdb"
+msgstr ""
+
+#: src/record.c:94 src/record.c:545
 msgid "Ready to record"
 msgstr "Готов к записи"
 
@@ -1455,105 +1451,98 @@ msgstr "Готов к записи"
 msgid "No selection to record into"
 msgstr "Не записываемого выделения"
 
-#: src/record.c:428
+#: src/record.c:444
 msgid "Sweep: Record"
 msgstr "Sweep: Запись"
 
-#: src/record.c:444 src/undo_dialog.c:366
+#: src/record.c:460 src/undo_dialog.c:376
 msgid "File:"
 msgstr "Файл:"
 
-#. Old signal
-#: src/record.c:467
+#: src/record.c:483
 msgid "Previous sound"
 msgstr "Предыдущий звук"
 
-#: src/record.c:481
+#: src/record.c:497
 msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
 msgstr ""
 
-#. New signal
-#: src/record.c:487
+#: src/record.c:503
 msgid "Recorded sound"
 msgstr "Записанный звук"
 
-#: src/record.c:499
+#: src/record.c:515
 msgid ""
 "This slider allows you to reduce the level of the recorded sound. Set it to "
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
 "record silence."
 msgstr ""
 
-#. NONE
-#: src/sample-display.c:217
+#: src/sample-display.c:221
 msgid "New selection"
 msgstr "Новое выделение"
 
-#. REPLACE
-#: src/sample-display.c:218
+#: src/sample-display.c:222
 msgid "Selection: add/modify region"
 msgstr "Выделение: добавить/изменить фрагмент"
 
-#. INTERSECT
-#: src/sample-display.c:219
+#: src/sample-display.c:223
 msgid "Selection: subtract region"
 msgstr "Выделение: вычесть фрагмент"
 
-#: src/samplerate.c:101 src/samplerate.c:165
+#: src/samplerate.c:103 src/samplerate.c:167
 msgid "Resample error"
 msgstr "Ошибка при смене частоты дискретизации"
 
-#: src/samplerate.c:102 src/samplerate.c:166
+#: src/samplerate.c:104 src/samplerate.c:168
 msgid "libsamplerate error"
 msgstr "ошибка libsamplerate"
 
-#: src/samplerate.c:223
+#: src/samplerate.c:234
 #, c-format
 msgid "Resample from %d Hz to %d Hz"
 msgstr "Смена частоты дискретизации с %d Гц на %d Гц"
 
-#: src/samplerate.c:426
+#: src/samplerate.c:445
 msgid "Sweep: Resample"
 msgstr "Sweep: Изменить частоту дискретизации"
 
-#. Conversion
-#: src/samplerate.c:446
+#: src/samplerate.c:467
 msgid "Conversion"
 msgstr " Преобразование "
 
-#: src/samplerate.c:453
+#: src/samplerate.c:474
 #, c-format
 msgid "Current sample rate: %d Hz"
 msgstr "Текущая частота дискретизации: %d Гц"
 
-#: src/samplerate.c:462
+#: src/samplerate.c:483
 msgid "New sample rate"
 msgstr "Новая частота дискретизации"
 
-#. Quality
-#: src/samplerate.c:473
+#: src/samplerate.c:494
 msgid "Quality"
 msgstr "Качество"
 
-#: src/samplerate.c:480
+#: src/samplerate.c:501
 msgid "Converter"
 msgstr " Преобразователь "
 
-#: src/samplerate.c:523
+#: src/samplerate.c:544
 msgid "Remember this quality"
 msgstr "Запомнить это значение"
 
-#: src/samplerate.c:543
+#: src/samplerate.c:564
 msgid "Reset to the last remembered quality."
 msgstr "Вернуться к последнему запомненному значению"
 
-#: src/samplerate.c:557
+#: src/samplerate.c:578
 msgid "Set to default quality."
 msgstr "Установить стандартное значение"
 
-#: src/samplerate.c:579
+#: src/samplerate.c:600
 msgid ""
 "Secret Rabbit Code (aka libsamplerate) is a\n"
 "Sample Rate Converter for audio by Erik de Castro Lopo\n"
@@ -1561,94 +1550,102 @@ msgstr ""
 "Secret Rabbit Code (известный как libsamplerate)  -  это\n"
 "Преобразователь частоты дискретизации Эрика де Кастро Лопо\n"
 
-#. OK
-#: src/samplerate.c:599
+#: src/samplerate.c:620
 msgid "Resample"
 msgstr "Преобразовать"
 
-#. Cancel
-#: src/samplerate.c:612
+#: src/samplerate.c:633
 msgid "Don't resample"
 msgstr "Не преобразовывать"
 
-#: src/sw_chooser.c:47 src/sw_chooser.c:62
+#: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
 msgstr "Своё значение"
 
-#: src/sw_chooser.c:48
+#: src/sw_chooser.c:52
 msgid "192000 Hz (Studio quality)"
 msgstr "192000 Гц (студийное качество)"
 
-#: src/sw_chooser.c:49
+#: src/sw_chooser.c:53
 msgid " 96000 Hz (High quality)"
 msgstr " 96000 Гц (высокое качество)"
 
-#: src/sw_chooser.c:50
+#: src/sw_chooser.c:54
 msgid " 48000 Hz (DAT quality)"
 msgstr " 48000 Гц (качество DAT-записи)"
 
-#: src/sw_chooser.c:51
+#: src/sw_chooser.c:55
 msgid " 44100 Hz (CD quality)"
 msgstr " 44100 Гц (качество CD)"
 
-#: src/sw_chooser.c:52
+#: src/sw_chooser.c:56
 msgid " 32000 Hz (Ultra-wideband voice quality)"
 msgstr " 32000 Гц (очень высокое качество для записи голоса)"
 
-#: src/sw_chooser.c:53
+#: src/sw_chooser.c:57
 msgid " 22050 Hz"
 msgstr " 22050 Гц"
 
-#: src/sw_chooser.c:54
+#: src/sw_chooser.c:58
 msgid " 16000 Hz (Wideband voice quality)"
 msgstr " 16000 Гц (высокое качество для записи голоса)"
 
-#: src/sw_chooser.c:55
+#: src/sw_chooser.c:59
 msgid " 11025 Hz"
 msgstr " 11025 Гц"
 
-#: src/sw_chooser.c:56
+#: src/sw_chooser.c:60
 msgid "  8000 Hz (Narrowband voice quality)"
 msgstr "  8000 Гц (низкое качество для записи голоса)"
 
-#: src/sw_chooser.c:57
+#: src/sw_chooser.c:61
 msgid "  4000 Hz (Low quality)"
 msgstr "  4000 Гц (низкое качество)"
 
-#: src/sw_chooser.c:65
+#: src/sw_chooser.c:67 src/view.c:3597 src/view.c:3610 src/view.c:3649
+#, c-format
+msgid "Mono"
+msgstr "Моно"
+
+#: src/sw_chooser.c:68 src/view.c:3597 src/view.c:3610 src/view.c:3652
+#, c-format
+msgid "Stereo"
+msgstr "Стерео"
+
+#: src/sw_chooser.c:69
 msgid "Quadraphonic"
 msgstr "Квадрофония"
 
-#: src/sw_chooser.c:292
+#: src/sw_chooser.c:306
 msgid "Custom: "
 msgstr "Своё значение: "
 
-#: src/sw_chooser.c:327
+#: src/sw_chooser.c:341
 msgid "Sampling rate"
 msgstr "Частота дискретизации"
 
-#: src/sw_chooser.c:329
+#: src/sw_chooser.c:343
 msgid "Hz"
 msgstr "Гц"
 
-#: src/sw_chooser.c:353 src/view.c:1001
+#: src/sw_chooser.c:367 src/view.c:1003
 msgid "Channels"
 msgstr "Каналы"
 
-#: src/sw_chooser.c:355 src/view.c:3603
+#: src/sw_chooser.c:369 src/view.c:3656
 msgid "channels"
 msgstr "каналов"
 
-#: src/sweep_filter.c:121
+#: src/sweep_filter.c:125
 msgid "No selection to process"
 msgstr "Нет обрабатываемого выделения"
 
-#: src/sweep_sample.c:115 src/view.c:3542 src/view.c:3548 src/view.c:3555
-#: src/view.c:3561
+#: src/sweep_sample.c:119 src/view.c:3595 src/view.c:3601 src/view.c:3608
+#: src/view.c:3614
 msgid "Untitled"
 msgstr "Безымянный"
 
-#: src/sweep_sample.c:320
+#: src/sweep_sample.c:324
 msgid "Overflow"
 msgstr "Переполнение"
 
@@ -1656,66 +1653,65 @@ msgstr "Переполнение"
 msgid "Sweep: New file"
 msgstr "Sweep: Новый файл"
 
-#: src/sweep_sample.c:442
+#: src/sweep_sample.c:435
 msgid "Name:"
 msgstr "Имя:"
 
-#: src/sweep_sample.c:462 src/sweep_sample.c:1866
+#: src/sweep_sample.c:455
 msgid "Duration:"
 msgstr "Продолжительность:"
 
-#: src/sweep_sample.c:478
+#: src/sweep_sample.c:471
 msgid "hh:mm:ss.xxx"
 msgstr "чч:мм:сс:xxx"
 
-#: src/sweep_sample.c:521
+#: src/sweep_sample.c:514
 msgid "Remember this format"
 msgstr "Запомнить этот формат"
 
-#: src/sweep_sample.c:527
-msgid "Remember this sampling rate and channel configuration for creating new files."
+#: src/sweep_sample.c:520
+msgid ""
+"Remember this sampling rate and channel configuration for creating new files."
 msgstr ""
-"Запомниьт это значение  частоты дискретизации и "
-"конфигурацию каналов для создания новых файлов"
+"Запомниьт это значение  частоты дискретизации и конфигурацию каналов для "
+"создания новых файлов"
 
-#: src/sweep_sample.c:547
+#: src/sweep_sample.c:540
 msgid "Reset to the last remembered format for new files."
 msgstr "Вернуться к последнему запомненному формату новых файлов"
 
-#: src/sweep_sample.c:558
+#: src/sweep_sample.c:551
 msgid "Set to the default format for new files."
 msgstr "Установить стандартное значение формата новых файлов"
 
-#: src/sweep_sample.c:574
+#: src/sweep_sample.c:567
 msgid ""
 "Indicates the amount of data memory which will be allocated for the selected "
 "duration and format. All audio data is processed internally in 32 bit "
 "floating point format."
 msgstr ""
 
-#: src/sweep_sample.c:589 src/sweep_sample.c:1865
+#: src/sweep_sample.c:582
 msgid "Data memory:"
 msgstr "Объём данных:"
 
-#. OK
-#: src/sweep_sample.c:601
+#: src/sweep_sample.c:594
 msgid "Create"
 msgstr "Создать"
 
-#. Cancel
-#: src/sweep_sample.c:613
+#: src/sweep_sample.c:606
 msgid "Don't create"
 msgstr "Не создавать"
 
-#: src/sweep_sample.c:781
+#: src/sweep_sample.c:774
 msgid "Excellent!!!"
 msgstr "Великолепно!!!"
 
-#: src/sweep_sample.c:803
+#: src/sweep_sample.c:796
 msgid "Files unsaved"
 msgstr "Файлы не сохранены"
 
-#: src/sweep_sample.c:804
+#: src/sweep_sample.c:797
 msgid ""
 "Some files are unsaved. If you quit, all changes will be lost.\n"
 "\n"
@@ -1726,15 +1722,15 @@ msgstr ""
 "\n"
 "Вы уверены, что хотите выйти из программы?"
 
-#: src/sweep_sample.c:807 src/sweep_sample.c:815
+#: src/sweep_sample.c:800 src/sweep_sample.c:808
 msgid "Don't quit"
 msgstr "Не выходить"
 
-#: src/sweep_sample.c:811
+#: src/sweep_sample.c:804
 msgid "Files playing"
 msgstr "Воспроизводимые файлы"
 
-#: src/sweep_sample.c:812
+#: src/sweep_sample.c:805
 msgid ""
 "No files are unsaved, but some files are currently playing.\n"
 "\n"
@@ -1744,45 +1740,79 @@ msgstr ""
 "сейчас воспроизводятся.\n"
 "Вы действительно хотите выйти?"
 
-#. Select
-#: src/sweep_sample.c:1472 src/view.c:1362
+#: src/sweep_sample.c:1465 src/view.c:1364
 msgid "Invert selection"
 msgstr "Перевернуть выделение"
 
-#. Select
-#: src/sweep_sample.c:1492 src/view.c:1370 src/view.c:1464
+#: src/sweep_sample.c:1485 src/view.c:1372 src/view.c:1466
 msgid "Select all"
 msgstr "Выделить всё"
 
-#: src/sweep_sample.c:1512 src/view.c:1378
+#: src/sweep_sample.c:1505 src/view.c:1380
 msgid "Select none"
 msgstr "Ничего не выделять"
 
-#: src/sweep_sample.c:1532
+#: src/sweep_sample.c:1525
 msgid "Halve selection"
 msgstr "Уменьшить выделение"
 
-#: src/sweep_sample.c:1552
+#: src/sweep_sample.c:1545
 msgid "Double selection"
 msgstr "Удвоить выделение"
 
-#: src/sweep_sample.c:1575
+#: src/sweep_sample.c:1568
 msgid "Selection left"
 msgstr "Выделить влево"
 
-#: src/sweep_sample.c:1597
+#: src/sweep_sample.c:1590
 msgid "Selection right"
 msgstr "Выделить вправо"
 
-#: src/sweep_sample.c:1862
-msgid "Filename:"
-msgstr "Имя файла:"
+#: src/sweep_sample.c:1678
+#, fuzzy, c-format
+msgid "Insert selection ["
+msgstr "Перевернуть выделение"
 
-#: src/sweep_sample.c:1878
+#: src/sweep_sample.c:1731
+#, fuzzy, c-format
+msgid "Subtract selection ["
+msgstr "Удвоить выделение"
+
+#: src/sweep_sample.c:1776
+#, fuzzy, c-format
+msgid "Set selection ["
+msgstr "Новое выделение"
+
+#: src/sweep_sample.c:1875
 msgid "Sweep: File properties"
 msgstr "Sweep: Свойства файла"
 
-#: src/sweep_undo.c:323
+#: src/sweep_sample.c:1899
+#, fuzzy
+msgid "Filename: "
+msgstr "Имя файла:"
+
+#: src/sweep_sample.c:1901
+#, fuzzy
+msgid "Sampling rate: "
+msgstr "Частота дискретизации:"
+
+#: src/sweep_sample.c:1903
+#, fuzzy
+msgid "Channels: "
+msgstr "Каналы:"
+
+#: src/sweep_sample.c:1905
+#, fuzzy
+msgid "Data memory: "
+msgstr "Объём данных:"
+
+#: src/sweep_sample.c:1907
+#, fuzzy
+msgid "Duration: "
+msgstr "Продолжительность:"
+
+#: src/sweep_undo.c:327
 #, c-format
 msgid ""
 "%s\n"
@@ -1795,518 +1825,507 @@ msgstr ""
 "\n"
 "Вы хотите продолжить редактирование этого буфера?"
 
-#: src/sweep_undo.c:328
+#: src/sweep_undo.c:332
 msgid "Continue editing"
 msgstr "Продолжить редактирование"
 
-#: src/sweep_undo.c:328
+#: src/sweep_undo.c:332
 msgid "Reread from disk"
 msgstr "Перечитать с диска"
 
-#: src/sweep_undo.c:426 src/sweep_undo.c:484
+#: src/sweep_undo.c:430 src/sweep_undo.c:488
 msgid "Nothing to undo"
 msgstr "Нечего отменить"
 
-#: src/sweep_undo.c:507 src/sweep_undo.c:563
+#: src/sweep_undo.c:511 src/sweep_undo.c:567
 msgid "Nothing to redo"
 msgstr "Нечего повторить"
 
-#: src/undo_dialog.c:154
+#: src/undo_dialog.c:159
 msgid "Original data"
 msgstr "Первоначальные данные"
 
-#: src/undo_dialog.c:339
+#: src/undo_dialog.c:344
 msgid "Action"
 msgstr "Действие"
 
-#: src/undo_dialog.c:346
+#: src/undo_dialog.c:351
 msgid "Sweep: History"
 msgstr "Sweep: История изменений"
 
-#: src/undo_dialog.c:383 src/view.c:515 src/view.c:2029
+#: src/undo_dialog.c:393 src/view.c:518 src/view.c:2043
 msgid "Undo"
 msgstr "Отменить"
 
-#: src/undo_dialog.c:391 src/view.c:526 src/view.c:2038
+#: src/undo_dialog.c:401 src/view.c:529 src/view.c:2052
 msgid "Redo"
 msgstr "Повторить"
 
-#: src/undo_dialog.c:414
+#: src/undo_dialog.c:426
 msgid "Revert to selected state"
 msgstr "Вернуться к отмеченному уровню"
 
-#. Cancel
-#: src/undo_dialog.c:440 src/view.c:480 src/view.c:3500
+#: src/undo_dialog.c:452 src/view.c:483 src/view.c:3553
 msgid "Close"
 msgstr "Закрыть"
 
-#: src/view.c:301
+#: src/view.c:304
 msgid "Duplicate to stereo"
 msgstr "Продублировать в стерео"
 
-#: src/view.c:311
+#: src/view.c:314
 msgid "Duplicate to multichannel"
 msgstr "Продублировать в многоканальную дорожку"
 
-#: src/view.c:323
+#: src/view.c:326
 msgid "Swap left and right"
 msgstr "Поменять местами левый и правый каналы"
 
-#: src/view.c:367
+#: src/view.c:370
 msgid "Add/Remove channels"
 msgstr "Добавить/удалить каналы"
 
-#: src/view.c:420 src/view.c:1910
+#: src/view.c:423 src/view.c:1924
 msgid "New ..."
 msgstr "Новый..."
 
-#: src/view.c:429 src/view.c:1917
+#: src/view.c:432 src/view.c:1931
 msgid "Open ..."
 msgstr "Открыть..."
 
-#: src/view.c:449
+#: src/view.c:452
 msgid "Save As ..."
 msgstr "Сохранить как..."
 
-#: src/view.c:469
+#: src/view.c:472
 msgid "Properties ..."
 msgstr "Свойства..."
 
-#. Edit
-#: src/view.c:499 src/view.c:1292
+#: src/view.c:502 src/view.c:1294
 msgid "Edit"
 msgstr "Правка"
 
-#: src/view.c:537
+#: src/view.c:540
 msgid "Show history ..."
 msgstr "Показать историю изменений..."
 
-#: src/view.c:603 src/view.c:1328
+#: src/view.c:606 src/view.c:1330
 msgid "Paste: Insert"
 msgstr ""
 
-#: src/view.c:613 src/view.c:1334
+#: src/view.c:616 src/view.c:1336
 msgid "Paste: Mix"
 msgstr ""
 
-#: src/view.c:623 src/view.c:1340
+#: src/view.c:626 src/view.c:1342
 msgid "Paste: Crossfade"
 msgstr ""
 
-#: src/view.c:633
+#: src/view.c:636
 msgid "Paste as New"
 msgstr "Вставить в новый файл"
 
-#: src/view.c:647
+#: src/view.c:650
 msgid "Preview Cut/Cursor"
 msgstr ""
 
-#: src/view.c:656
+#: src/view.c:659
 msgid "Pre-roll to Cursor"
 msgstr ""
 
-#: src/view.c:672
+#: src/view.c:675
 msgid "Invert"
 msgstr "Перевернуть"
 
-#: src/view.c:681
+#: src/view.c:684
 msgid "All"
 msgstr "Всё"
 
-#: src/view.c:690
+#: src/view.c:693
 msgid "None"
 msgstr "Ничего"
 
-#: src/view.c:704
+#: src/view.c:707
 msgid "Halve"
 msgstr "Уменьшить"
 
-#: src/view.c:714
+#: src/view.c:717
 msgid "Double"
 msgstr "Удвоить"
 
-#: src/view.c:724
+#: src/view.c:727
 msgid "Shift left"
 msgstr "Сдвинуть влево"
 
-#: src/view.c:734
+#: src/view.c:737
 msgid "Shift right"
 msgstr "Сдвинуть вправо"
 
-#. View
-#: src/view.c:745
+#: src/view.c:748
 msgid "View"
 msgstr "Вид"
 
-#: src/view.c:752 src/view.c:2190
+#: src/view.c:755 src/view.c:2209
 msgid "Autoscroll: follow playback cursor"
 msgstr "Автопрокрутка: следовать за курсором при воспроизведении"
 
-#: src/view.c:766
+#: src/view.c:769
 msgid "Center"
 msgstr "Центр"
 
-#. Zoom in
-#: src/view.c:779 src/view.c:2129
+#: src/view.c:782 src/view.c:2144
 msgid "Zoom in"
 msgstr "Приблизить"
 
-#. Zoom out
-#: src/view.c:788 src/view.c:2138
+#: src/view.c:791 src/view.c:2153
 msgid "Zoom out"
 msgstr "Отдалить"
 
-#. Zoom
-#: src/view.c:797 src/view.c:1267
+#: src/view.c:800 src/view.c:1269
 msgid "Zoom to selection"
 msgstr "Уместить выделение в окне"
 
-#: src/view.c:804
+#: src/view.c:807
 msgid "Left"
 msgstr "Левый"
 
-#: src/view.c:813
+#: src/view.c:816
 msgid "Right"
 msgstr "Правый"
 
-#. Zoom
-#: src/view.c:823 src/view.c:1273 src/view.c:1432
+#: src/view.c:826 src/view.c:1275 src/view.c:1434
 msgid "Zoom normal"
 msgstr "Обычный вид"
 
-#. Zoom all
-#: src/view.c:829 src/view.c:1279 src/view.c:1438 src/view.c:2120
+#: src/view.c:832 src/view.c:1281 src/view.c:1440 src/view.c:2135
 msgid "Zoom all"
 msgstr "Показать всё"
 
-#: src/view.c:838
+#: src/view.c:841
 msgid "1:1"
 msgstr "1:1"
 
-#. Store view
-#: src/view.c:851
+#: src/view.c:854
 msgid "Remember as"
 msgstr "Запомнить как"
 
-#: src/view.c:868 src/view.c:898
+#: src/view.c:871 src/view.c:901
 msgid "Area 1"
 msgstr "Область 1"
 
-#: src/view.c:869 src/view.c:899
+#: src/view.c:872 src/view.c:902
 msgid "Area 2"
 msgstr "Область 2"
 
-#: src/view.c:870 src/view.c:900
+#: src/view.c:873 src/view.c:903
 msgid "Area 3"
 msgstr "Область 3"
 
-#: src/view.c:871 src/view.c:901
+#: src/view.c:874 src/view.c:904
 msgid "Area 4"
 msgstr "Область 4"
 
-#: src/view.c:872 src/view.c:902
+#: src/view.c:875 src/view.c:905
 msgid "Area 5"
 msgstr "Область 5"
 
-#: src/view.c:873 src/view.c:903
+#: src/view.c:876 src/view.c:906
 msgid "Area 6"
 msgstr "Область 6"
 
-#: src/view.c:874 src/view.c:904
+#: src/view.c:877 src/view.c:907
 msgid "Area 7"
 msgstr "Область 7"
 
-#: src/view.c:875 src/view.c:905
+#: src/view.c:878 src/view.c:908
 msgid "Area 8"
 msgstr "Область 8"
 
-#: src/view.c:876 src/view.c:906
+#: src/view.c:879 src/view.c:909
 msgid "Area 9"
 msgstr "Область 9"
 
-#: src/view.c:877 src/view.c:907
+#: src/view.c:880 src/view.c:910
 msgid "Area 10"
 msgstr "Область 10"
 
-#. Retrieve view
-#: src/view.c:881
+#: src/view.c:884
 msgid "Zoom to"
 msgstr "Приблизить до"
 
-#: src/view.c:913
+#: src/view.c:916
 msgid "Color scheme"
 msgstr "Цветовая схема"
 
-#: src/view.c:919
+#: src/view.c:922
 msgid "Decoder Red"
 msgstr ""
 
-#: src/view.c:927
+#: src/view.c:930
 msgid "Orangeboom"
 msgstr ""
 
-#: src/view.c:935
+#: src/view.c:938
 msgid "Lame Yellow"
 msgstr ""
 
-#: src/view.c:943
+#: src/view.c:946
 msgid "Coogee Bay Blue"
 msgstr ""
 
-#: src/view.c:951
+#: src/view.c:954
 msgid "Blackwattle"
 msgstr ""
 
-#: src/view.c:959
+#: src/view.c:962
 msgid "Frigid"
 msgstr ""
 
-#: src/view.c:967
+#: src/view.c:970
 msgid "Radar"
 msgstr ""
 
-#: src/view.c:975
+#: src/view.c:978
 msgid "Bluescreen"
 msgstr ""
 
-#. View
-#: src/view.c:988 src/view.c:1392 src/view.c:1478
+#: src/view.c:990 src/view.c:1394 src/view.c:1480
 msgid "New View"
 msgstr "Открыть в новом окне"
 
-#. Sample
-#: src/view.c:995
+#: src/view.c:997
 msgid "Sample"
 msgstr "Семпл"
 
-#: src/view.c:1010
+#: src/view.c:1012
 msgid "Resample ..."
 msgstr "Изменить частоту дискретизации..."
 
-#: src/view.c:1023
+#: src/view.c:1025
 msgid "Duplicate"
 msgstr "Продублировать"
 
-#. Filters
-#: src/view.c:1034 src/view.c:1348
+#: src/view.c:1036 src/view.c:1350
 msgid "Process"
 msgstr "Эффекты"
 
-#. Playback
-#: src/view.c:1043
+#: src/view.c:1045
 msgid "Playback"
 msgstr "Воспроизведение"
 
-#: src/view.c:1049
+#: src/view.c:1051
 msgid "Configure audio device ..."
 msgstr "Настроить аудиоустройство..."
 
-#: src/view.c:1059
+#: src/view.c:1061
 msgid "Transport"
 msgstr "Транспорт"
 
-#: src/view.c:1067
+#: src/view.c:1069
 msgid "Go to start of file"
 msgstr "Перейти к началу файла"
 
-#: src/view.c:1076
+#: src/view.c:1078
 msgid "Go to start of window"
 msgstr "Перейти к началу окна"
 
-#: src/view.c:1086
+#: src/view.c:1088
 msgid "Skip back"
 msgstr "Перейти назад"
 
-#: src/view.c:1096
+#: src/view.c:1098
 msgid "Skip forward"
 msgstr "Перейти вперёд"
 
-#: src/view.c:1105
+#: src/view.c:1107
 msgid "Go to end of window"
 msgstr "Перейти к концу окна"
 
-#: src/view.c:1114
+#: src/view.c:1116
 msgid "Go to end of file"
 msgstr "Перейти к концу файла"
 
-#: src/view.c:1127
+#: src/view.c:1129
 msgid "Play selection"
 msgstr "Воспроизвести выделение"
 
-#: src/view.c:1138
+#: src/view.c:1140
 msgid "Play sample"
 msgstr "Воспроизвести семпл"
 
-#: src/view.c:1148
+#: src/view.c:1150
 msgid "Play note"
 msgstr "Воспроизвести ноту"
 
-#: src/view.c:1167
+#: src/view.c:1169
 msgid "Toggle monitoring"
 msgstr "Переключить мониторинг"
 
-#: src/view.c:1176
+#: src/view.c:1178
 msgid "Toggle looping"
 msgstr "Переключить воспроизведение в цикле"
 
-#: src/view.c:1185
+#: src/view.c:1187
 msgid "Toggle muting"
 msgstr "Переключить заглушение"
 
-#: src/view.c:1194
+#: src/view.c:1196
 msgid "Toggle reverse playback"
 msgstr "Переключить обратное воспроизведение"
 
-#: src/view.c:1211
+#: src/view.c:1213
 msgid "Pause"
 msgstr "Приостановить"
 
-#: src/view.c:1235
+#: src/view.c:1237
 msgid "About MP3 export..."
 msgstr "Об экспорте в MP3..."
 
-#: src/view.c:1241
+#: src/view.c:1243
 msgid "About Sweep ..."
 msgstr "О программе Sweep..."
 
-#. Properties
-#: src/view.c:1405 src/view.c:1491
+#: src/view.c:1407 src/view.c:1493
 msgid "File properties ..."
 msgstr "Свойства файла..."
 
-#. Edit
-#: src/view.c:1450
+#: src/view.c:1452
 msgid "Paste"
 msgstr "Вставить"
 
-#: src/view.c:1933
+#: src/view.c:1947
 msgid "Save as ..."
 msgstr "Сохранить как..."
 
-#: src/view.c:1953
+#: src/view.c:1967
 msgid "Cut selection to clipboard"
 msgstr "Вырезать выделение в буфер обмена"
 
-#: src/view.c:1963
+#: src/view.c:1977
 msgid "Copy selection to clipboard"
 msgstr "Скопировать выделение в буфер обмена"
 
-#: src/view.c:1974
+#: src/view.c:1988
 msgid "Paste: insert clipboard at cursor position"
 msgstr "Вставка: вставить буфер обмена в позицию курсора"
 
-#: src/view.c:1985
+#: src/view.c:1999
 msgid "Paste: mix clipboard in from cursor position"
 msgstr "Вставка: смешать сигнал из буфера обмена с сигналом по позиции курсора"
 
-#: src/view.c:1996
+#: src/view.c:2010
 msgid "Paste: fade clipboard in from cursor position"
 msgstr ""
 
-#: src/view.c:2066
+#: src/view.c:2080
 msgid "Selector tool"
 msgstr "Инструмент выделения"
 
-#: src/view.c:2077
+#: src/view.c:2092
 msgid "\"Scrubby\" the scrub tool"
 msgstr "\"Скребыш\""
 
-#: src/view.c:2087
+#: src/view.c:2102
 msgid "Pencil tool"
 msgstr "\"Карандаш\""
 
-#: src/view.c:2095
+#: src/view.c:2110
 msgid "Noise tool"
 msgstr ""
 
-#: src/view.c:2300
+#: src/view.c:2200
+msgid "Visible length"
+msgstr ""
+
+#: src/view.c:2319
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
 msgstr "Вертикальное масштабирование [Shift + Arrow Up/Down]"
 
-#: src/view.c:2427
+#: src/view.c:2449
 msgid "Record ..."
 msgstr "Записать..."
 
-#: src/view.c:2503
+#: src/view.c:2525
 msgid "Reverse mode playback (toggle)"
 msgstr "Режим обратного воспроизведения (переключить)"
 
-#: src/view.c:2521
+#: src/view.c:2543
 msgid "Loop mode playback (toggle)"
 msgstr "Режим воспроизведения в цикле (переключить)"
 
-#. _("Play all / Pause    [Ctrl+Space / Enter]"),
-#: src/view.c:2545
+#: src/view.c:2567
 msgid "Play all / Pause    [Ctrl+Space]"
 msgstr "Воспроизвести всё / Приостановить [Ctrl+Space]"
 
-#. _("Play selection / Pause    [Space / Enter]"),
-#: src/view.c:2561
+#: src/view.c:2587
 msgid "Play selection / Pause    [Space]"
 msgstr "Воспроизвести выделение / Приостановить [Space]"
 
-#. _("Stop playback    [Space]"),
-#: src/view.c:2577
+#: src/view.c:2603
 msgid "Stop playback    [Enter]"
 msgstr "Остановить воспроизведение    [Enter]"
 
-#: src/view.c:2594
+#: src/view.c:2620
 msgid "Go to beginning    [Ctrl+Home]"
 msgstr "Перейти к началу    [Ctrl+Home]"
 
-#: src/view.c:2630
+#: src/view.c:2656
 msgid "Go to the end    [Ctrl+End]"
 msgstr "Перейти к концу    [Ctrl+End]"
 
-#: src/view.c:2644
+#: src/view.c:2670
 msgid "Muted playback (toggle)"
 msgstr "Приглушённое воспроизведение (переключить)"
 
-#: src/view.c:2664 src/view.c:2682
+#: src/view.c:2690 src/view.c:2708
 msgid "Playback gain slider (volume)"
 msgstr "Регулятор громкости воспроизведения"
 
-#: src/view.c:2694
+#: src/view.c:2720
 msgid "Monitor (toggle)"
 msgstr "Монитор (переключить)"
 
-#: src/view.c:3255
+#: src/view.c:2738
+msgid "SYNC"
+msgstr ""
+
+#: src/view.c:3295
 #, c-format
 msgid "Remembered as area %d"
 msgstr ""
 
-#: src/view.c:3273
+#: src/view.c:3313
 #, c-format
 msgid "No area remembered as %d"
 msgstr ""
 
-#: src/view.c:3276
+#: src/view.c:3316
 #, c-format
 msgid "Zoomed to area %d"
 msgstr ""
 
-#: src/view.c:3444 src/view.c:3448
+#: src/view.c:3498 src/view.c:3502
 msgid "Scrub!"
 msgstr ""
 
-#: src/view.c:3444 src/view.c:3450
+#: src/view.c:3498 src/view.c:3504
 msgid "Ready"
 msgstr "Готово"
 
-#: src/view.c:3497
+#: src/view.c:3550
 #, c-format
 msgid "%s has been modified. Close anyway?"
 msgstr "Файл \"%s\" изменился. Всё равно закрыть?"
 
-#: src/view.c:3500
+#: src/view.c:3553
 msgid "Don't close"
 msgstr "Не закрывать"
 
-#: src/view.c:3547 src/view.c:3560
+#: src/view.c:3600 src/view.c:3613
 msgid "*"
 msgstr "*"
 
-#: src/view.c:3563
+#: src/view.c:3616
 msgid "Empty"
 msgstr "Пустой"
 
@@ -2315,7 +2334,8 @@ msgid "Select regions above threshold"
 msgstr "Выделить фрагменты выше порога"
 
 #: plugins/byenergy/byenergy.c:59
-msgid "Whether to select those regions lying above a given threshold or below it."
+msgid ""
+"Whether to select those regions lying above a given threshold or below it."
 msgstr "Выделять ли фрагменты выше, либо ниже указанного порога"
 
 #: plugins/byenergy/byenergy.c:66
@@ -2443,3 +2463,36 @@ msgstr ""
 msgid "An example filter region plugin"
 msgstr ""
 
+#: plugins/fade/fade.c:144 plugins/fade/fade.c:157
+msgid "Fade in"
+msgstr ""
+
+#: plugins/fade/fade.c:152 plugins/fade/fade.c:173
+msgid "Fade out"
+msgstr ""
+
+#: plugins/fade/fade.c:158
+msgid "Apply a linear fade to the selection, fading in from silence"
+msgstr ""
+
+#: plugins/fade/fade.c:174
+msgid "Apply a linear fade to the selection, fading out to silence"
+msgstr ""
+
+#~ msgid "About Sweep"
+#~ msgstr "О программе Sweep"
+
+#~ msgid "Stereo (duplicate)"
+#~ msgstr "Стерео (продублировать)"
+
+#~ msgid "8 bit"
+#~ msgstr "8 битов"
+
+#~ msgid "16 bit"
+#~ msgstr "16 битов"
+
+#~ msgid "24 bit"
+#~ msgstr "24 бита"
+
+#~ msgid "32 bit"
+#~ msgstr "32 бита"

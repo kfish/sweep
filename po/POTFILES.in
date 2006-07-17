@@ -31,7 +31,6 @@ src/edit.h
 src/file_dialogs.c
 src/file_dialogs.h
 src/file_sndfile.h
-src/file_sndfile0.c
 src/file_sndfile1.c
 src/file_mad.c
 src/file_speex.c

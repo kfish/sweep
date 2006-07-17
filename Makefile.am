@@ -13,7 +13,7 @@ pixmapdir = $(datadir)/pixmaps
 pixmap_DATA = sweep.svg
 
 EXTRA_DIST = config.rpath mkinstalldirs  $(desktop_DATA) $(pkgdata_DATA)  $(pixmap_DATA) \
-             sweep.spec README.Solaris README.ALSA README.i18n acconfig.h TODO
+             sweep.spec README.Solaris README.ALSA README.i18n TODO
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
                        stamp-h.in \
