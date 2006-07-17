@@ -13,3 +13,6 @@ libnormalise_la_LDFLAGS = -avoid-version -module
 install: all
 	mkdir -p $(DESTDIR)/$(libdir)
 	$(INSTALL_PROGRAM) .libs/libnormalise.so $(DESTDIR)/$(libdir);
+
+uninstall:
+	rm -f $(DESTDIR)/$(libdir)/libnormalise.so

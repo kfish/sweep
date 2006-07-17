@@ -14,3 +14,6 @@ libreverse_la_LDFLAGS = -avoid-version -module
 install: all
 	mkdir -p $(DESTDIR)/$(libdir)
 	$(INSTALL_PROGRAM) .libs/libreverse.so $(DESTDIR)/$(libdir);
+
+uninstall:
+	rm -f $(DESTDIR)/$(libdir)/libreverse.so
