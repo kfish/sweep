@@ -129,39 +129,6 @@ libintl_printf (const char *format, ...)
   return retval;
 }
 
-DLL_EXPORTED
-int
-libintl_vsprintf (char *resultbuf, const char *format, va_list args)
-{
-  if (strchr (format, '$') == NULL)
-    return vsprintf (resultbuf, format, args);
-  else
-    {
-      size_t length = (size_t) ~0 / (4 * sizeof (char));
-      char *result = libintl_vasnprintf (resultbuf, &length, format, args);
-      if (result != resultbuf)
-	{
-	  free (result);
-	  return -1;
-	}
-      else
-	return length;
-    }
-}
-
-DLL_EXPORTED
-int
-libintl_sprintf (char *resultbuf, const char *format, ...)
-{
-  va_list args;
-  int retval;
-
-  va_start (args, format);
-  retval = libintl_vsprintf (resultbuf, format, args);
-  va_end (args);
-  return retval;
-}
-
 #if HAVE_SNPRINTF
 
 # if HAVE_DECL__SNPRINTF

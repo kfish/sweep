@@ -1,4 +1,4 @@
-/* vsprintf with automatic memory allocation.
+/* vasnprintf with automatic memory allocation.
    Copyright (C) 1999, 2002-2005 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
@@ -37,7 +37,7 @@
 # include "vasnprintf.h"
 #endif
 
-#include <stdio.h>	/* snprintf(), sprintf() */
+#include <stdio.h>	/* snprintf() */
 #include <stdlib.h>	/* abort(), malloc(), realloc(), free() */
 #include <string.h>	/* memcpy(), strlen() */
 #include <errno.h>	/* errno */
@@ -148,7 +148,7 @@ VASNPRINTF (CHAR_T *resultbuf, size_t *lengthp, const CHAR_T *format, va_list ar
     size_t length;
 
     /* Allocate a small buffer that will hold a directive passed to
-       sprintf or snprintf.  */
+       snprintf.  */
     buf_neededlength =
       xsum4 (7, d.max_width_length, d.max_precision_length, 6);
 #if HAVE_ALLOCA
@@ -271,239 +271,8 @@ VASNPRINTF (CHAR_T *resultbuf, size_t *lengthp, const CHAR_T *format, va_list ar
 		CHAR_T *p;
 		unsigned int prefix_count;
 		int prefixes[2];
-#if !USE_SNPRINTF
-		size_t tmp_length;
-		CHAR_T tmpbuf[700];
-		CHAR_T *tmp;
 
-		/* Allocate a temporary buffer of sufficient size for calling
-		   sprintf.  */
-		{
-		  size_t width;
-		  size_t precision;
-
-		  width = 0;
-		  if (dp->width_start != dp->width_end)
-		    {
-		      if (dp->width_arg_index != ARG_NONE)
-			{
-			  int arg;
-
-			  if (!(a.arg[dp->width_arg_index].type == TYPE_INT))
-			    abort ();
-			  arg = a.arg[dp->width_arg_index].a.a_int;
-			  width = (arg < 0 ? (unsigned int) (-arg) : arg);
-			}
-		      else
-			{
-			  const CHAR_T *digitp = dp->width_start;
-
-			  do
-			    width = xsum (xtimes (width, 10), *digitp++ - '0');
-			  while (digitp != dp->width_end);
-			}
-		    }
-
-		  precision = 6;
-		  if (dp->precision_start != dp->precision_end)
-		    {
-		      if (dp->precision_arg_index != ARG_NONE)
-			{
-			  int arg;
-
-			  if (!(a.arg[dp->precision_arg_index].type == TYPE_INT))
-			    abort ();
-			  arg = a.arg[dp->precision_arg_index].a.a_int;
-			  precision = (arg < 0 ? 0 : arg);
-			}
-		      else
-			{
-			  const CHAR_T *digitp = dp->precision_start + 1;
-
-			  precision = 0;
-			  while (digitp != dp->precision_end)
-			    precision = xsum (xtimes (precision, 10), *digitp++ - '0');
-			}
-		    }
-
-		  switch (dp->conversion)
-		    {
-
-		    case 'd': case 'i': case 'u':
-# ifdef HAVE_LONG_LONG
-		      if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
-					  * 0.30103 /* binary -> decimal */
-					  * 2 /* estimate for FLAG_GROUP */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      else
-# endif
-		      if (type == TYPE_LONGINT || type == TYPE_ULONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long) * CHAR_BIT
-					  * 0.30103 /* binary -> decimal */
-					  * 2 /* estimate for FLAG_GROUP */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      else
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned int) * CHAR_BIT
-					  * 0.30103 /* binary -> decimal */
-					  * 2 /* estimate for FLAG_GROUP */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      break;
-
-		    case 'o':
-# ifdef HAVE_LONG_LONG
-		      if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
-					  * 0.333334 /* binary -> octal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      else
-# endif
-		      if (type == TYPE_LONGINT || type == TYPE_ULONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long) * CHAR_BIT
-					  * 0.333334 /* binary -> octal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      else
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned int) * CHAR_BIT
-					  * 0.333334 /* binary -> octal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 1; /* account for leading sign */
-		      break;
-
-		    case 'x': case 'X':
-# ifdef HAVE_LONG_LONG
-		      if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
-					  * 0.25 /* binary -> hexadecimal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 2; /* account for leading sign or alternate form */
-		      else
-# endif
-		      if (type == TYPE_LONGINT || type == TYPE_ULONGINT)
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned long) * CHAR_BIT
-					  * 0.25 /* binary -> hexadecimal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 2; /* account for leading sign or alternate form */
-		      else
-			tmp_length =
-			  (unsigned int) (sizeof (unsigned int) * CHAR_BIT
-					  * 0.25 /* binary -> hexadecimal */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 2; /* account for leading sign or alternate form */
-		      break;
-
-		    case 'f': case 'F':
-# ifdef HAVE_LONG_DOUBLE
-		      if (type == TYPE_LONGDOUBLE)
-			tmp_length =
-			  (unsigned int) (LDBL_MAX_EXP
-					  * 0.30103 /* binary -> decimal */
-					  * 2 /* estimate for FLAG_GROUP */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 10; /* sign, decimal point etc. */
-		      else
-# endif
-			tmp_length =
-			  (unsigned int) (DBL_MAX_EXP
-					  * 0.30103 /* binary -> decimal */
-					  * 2 /* estimate for FLAG_GROUP */
-					 )
-			  + 1 /* turn floor into ceil */
-			  + 10; /* sign, decimal point etc. */
-		      tmp_length = xsum (tmp_length, precision);
-		      break;
-
-		    case 'e': case 'E': case 'g': case 'G':
-		    case 'a': case 'A':
-		      tmp_length =
-			12; /* sign, decimal point, exponent etc. */
-		      tmp_length = xsum (tmp_length, precision);
-		      break;
-
-		    case 'c':
-# if defined HAVE_WINT_T && !WIDE_CHAR_VERSION
-		      if (type == TYPE_WIDE_CHAR)
-			tmp_length = MB_CUR_MAX;
-		      else
-# endif
-			tmp_length = 1;
-		      break;
-
-		    case 's':
-# ifdef HAVE_WCHAR_T
-		      if (type == TYPE_WIDE_STRING)
-			{
-			  tmp_length =
-			    local_wcslen (a.arg[dp->arg_index].a.a_wide_string);
-
-#  if !WIDE_CHAR_VERSION
-			  tmp_length = xtimes (tmp_length, MB_CUR_MAX);
-#  endif
-			}
-		      else
-# endif
-			tmp_length = strlen (a.arg[dp->arg_index].a.a_string);
-		      break;
-
-		    case 'p':
-		      tmp_length =
-			(unsigned int) (sizeof (void *) * CHAR_BIT
-					* 0.25 /* binary -> hexadecimal */
-				       )
-			  + 1 /* turn floor into ceil */
-			  + 2; /* account for leading 0x */
-		      break;
-
-		    default:
-		      abort ();
-		    }
-
-		  if (tmp_length < width)
-		    tmp_length = width;
-
-		  tmp_length = xsum (tmp_length, 1); /* account for trailing NUL */
-		}
-
-		if (tmp_length <= sizeof (tmpbuf) / sizeof (CHAR_T))
-		  tmp = tmpbuf;
-		else
-		  {
-		    size_t tmp_memsize = xtimes (tmp_length, sizeof (CHAR_T));
-
-		    if (size_overflow_p (tmp_memsize))
-		      /* Overflow, would lead to out of memory.  */
-		      goto out_of_memory;
-		    tmp = (CHAR_T *) malloc (tmp_memsize);
-		    if (tmp == NULL)
-		      /* Out of memory.  */
-		      goto out_of_memory;
-		  }
-#endif
-
-		/* Construct the format string for calling snprintf or
-		   sprintf.  */
+		/* Construct the format string for calling snprintf.  */
 		p = buf;
 		*p++ = '%';
 		if (dp->flags & FLAG_GROUP)
@@ -566,7 +335,7 @@ VASNPRINTF (CHAR_T *resultbuf, size_t *lengthp, const CHAR_T *format, va_list ar
 		p[1] = '\0';
 #endif
 
-		/* Construct the arguments for calling snprintf or sprintf.  */
+		/* Construct the arguments for calling snprintf.  */
 		prefix_count = 0;
 		if (dp->width_arg_index != ARG_NONE)
 		  {
@@ -614,23 +383,6 @@ VASNPRINTF (CHAR_T *resultbuf, size_t *lengthp, const CHAR_T *format, va_list ar
 			retcount = SNPRINTF (result + length, maxlen, buf,  \
 					     prefixes[0], prefixes[1], arg, \
 					     &count);			    \
-			break;						    \
-		      default:						    \
-			abort ();					    \
-		      }
-#else
-# define SNPRINTF_BUF(arg) \
-		    switch (prefix_count)				    \
-		      {							    \
-		      case 0:						    \
-			count = sprintf (tmp, buf, arg);		    \
-			break;						    \
-		      case 1:						    \
-			count = sprintf (tmp, buf, prefixes[0], arg);	    \
-			break;						    \
-		      case 2:						    \
-			count = sprintf (tmp, buf, prefixes[0], prefixes[1],\
-					 arg);				    \
 			break;						    \
 		      default:						    \
 			abort ();					    \
@@ -833,15 +585,6 @@ VASNPRINTF (CHAR_T *resultbuf, size_t *lengthp, const CHAR_T *format, va_list ar
 			continue;
 #endif
 		      }
-
-#if USE_SNPRINTF
-		    /* The snprintf() result did fit.  */
-#else
-		    /* Append the sprintf() result.  */
-		    memcpy (result + length, tmp, count * sizeof (CHAR_T));
-		    if (tmp != tmpbuf)
-		      free (tmp);
-#endif
 
 		    length += count;
 		    break;

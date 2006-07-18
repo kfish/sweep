@@ -326,7 +326,7 @@ locale_charset ()
   static char buf[2 + 10 + 1];
 
   /* Woe32 has a function returning the locale's codepage as a number.  */
-  sprintf (buf, "CP%u", GetACP ());
+  snprintf (buf, sizeof (buf), "CP%u", GetACP ());
   codeset = buf;
 
 #elif defined OS2
@@ -377,7 +377,7 @@ locale_charset ()
 	codeset = "";
       else
 	{
-	  sprintf (buf, "CP%u", cp[0]);
+	  snprintf (buf, sizeof (buf), "CP%u", cp[0]);
 	  codeset = buf;
 	}
     }
