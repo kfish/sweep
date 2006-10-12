@@ -161,8 +161,7 @@ main (int argc, char *argv[])
 	       (strcmp (argv[i], "-v") == 0)) {
       show_version = TRUE;
       argv[i] = NULL;
-	} else if ((strcmp (argv[i], "--ignore-failed-lock") == 0) ||
-	       (strcmp (argv[i], "-v") == 0)) {
+	} else if ((strcmp (argv[i], "--ignore-failed-lock") == 0)) {
       ignore_failed_tdb_lock = TRUE;
       argv[i] = NULL;		   	   
 #if 0
