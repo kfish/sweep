@@ -39,6 +39,8 @@
 #include "tdb.h"
 
 static TDB_CONTEXT * prefs_tdb = NULL;
+gboolean ignore_failed_tdb_lock = FALSE;
+
 
 #define DIR_MODE (S_IRWXU)
 #define FILE_MODE (S_IRUSR | S_IWUSR)
@@ -109,9 +111,18 @@ prefs_init ()
   prefs_tdb = tdb_open (prefs_path, 0, 0, O_RDWR | O_CREAT, FILE_MODE);
 
   if (prefs_tdb == NULL) {
-    perror (_("Error opening ~/.sweep/preferences.tdb"));
+	  
+	if (ignore_failed_tdb_lock == TRUE)
+	{
+      prefs_tdb = tdb_open (prefs_path, 0, TDB_NOLOCK, O_RDWR | O_CREAT, FILE_MODE);
+	  if (prefs_tdb != NULL) {
+        fprintf(stderr,  "Warning: couldn't get lock to  ~/.sweep/preferences.tdb.\n"
+           "         opened without locking\n");
+		  return;
+      } 
+    }
+	perror (_("Error opening ~/.sweep/preferences.tdb"));
     exit (1);
-    return;
   }
 }
 

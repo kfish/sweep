@@ -45,7 +45,7 @@
 #include "play.h"
 
 extern void sweep_timeouts_init (void);
-
+extern gboolean ignore_failed_tdb_lock;
 /*
  * initial_sample_load ()
  *
@@ -161,6 +161,10 @@ main (int argc, char *argv[])
 	       (strcmp (argv[i], "-v") == 0)) {
       show_version = TRUE;
       argv[i] = NULL;
+	} else if ((strcmp (argv[i], "--ignore-failed-lock") == 0) ||
+	       (strcmp (argv[i], "-v") == 0)) {
+      ignore_failed_tdb_lock = TRUE;
+      argv[i] = NULL;		   	   
 #if 0
     } else if (strcmp (argv[i], "--no-toolbox") == 0) {
       show_toolbox = FALSE;
@@ -194,6 +198,11 @@ main (int argc, char *argv[])
     g_print (_("  -h --help                Output this help.\n"));
     g_print (_("  -v --version             Output version info.\n"));
     g_print (_("  --display <display>      Use the designated X display.\n"));
+    g_print (_("  --ignore-failed-lock     Continue when attempt to lock the\n"
+                      "                           preferences file fails.  For use when\n"
+                      "                           the users home directory is on an NFS\n"
+	                  "                           file system. (possibly unsafe) \n" ));
+
 #if 0
     g_print (_("  --no-toolbox             Do not show the toolbox window.\n"));
 #endif
@@ -242,4 +251,3 @@ main (int argc, char *argv[])
 
   exit (0);
 }
-
