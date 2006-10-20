@@ -434,8 +434,10 @@ rec_dialog_create (sw_sample * sample)
   if (rec_dialog == NULL) {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     sweep_set_window_icon (GTK_WINDOW(window));
-    rec_dialog = window;
-        
+
+	attach_window_close_accel(GTK_WINDOW(window));
+    rec_dialog = window;       
+	  
     main_vbox = gtk_vbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER(window), main_vbox);
     gtk_widget_show (main_vbox);
@@ -449,10 +451,7 @@ rec_dialog_create (sw_sample * sample)
 
     g_signal_connect (G_OBJECT(rec_dialog), "destroy",
 		       G_CALLBACK(rec_dialog_destroy), head);
-/*  FIXME: what's the equiv of gtk_accel_group_add
-    gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, 0,
- 			 GTK_OBJECT(rec_dialog), "hide");
-*/
+
     hbox = gtk_hbox_new (FALSE, 8);
     gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, TRUE, 8);
     gtk_widget_show (hbox);

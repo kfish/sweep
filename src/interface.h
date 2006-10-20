@@ -53,5 +53,10 @@ GtkWidget* create_toolbox (void);
 
 void 
 attach_window_close_accel(GtkWindow *window);
+void
+init_accels (void);
+
+void
+save_accels (void);
 
 #endif /* __INTERFACE_H__ */

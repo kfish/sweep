@@ -103,6 +103,10 @@
 void samplerate_dialog_new_cb (GtkWidget * widget, gpointer data);
 #endif
 
+static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label,
+                                                  gchar * accel_path, gpointer callback, gboolean nomodify,
+												  guint accel_key, GdkModifierType accel_mods, gpointer user_data);
+
 void
 view_set_vzoom (sw_view * view, sw_audio_t low, sw_audio_t high);
 
@@ -176,13 +180,10 @@ create_proc_menuitem (sw_procedure * proc, sw_view * view,
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(apply_procedure_cb), pi);
   gtk_widget_show(menuitem);
-
-  if (accel_group && proc->accel_key) {
-    gtk_widget_add_accelerator (menuitem, "activate", accel_group,
+/* these accels are not editable */
+ /*   gtk_widget_add_accelerator (menuitem, "activate", accel_group,
 				proc->accel_key, proc->accel_mods,
-				GTK_ACCEL_VISIBLE);
-  }
-
+				GTK_ACCEL_VISIBLE); */
 }
 
 static GtkWidget *
@@ -270,6 +271,7 @@ view_refresh_channelops_menu (sw_view * view)
   GtkWidget * submenu, * menuitem = NULL;
   GList * gl;
   int old_channels, channels;
+  GtkAccelGroup *accel_group;
 
   channels = view->sample->sounddata->format->channels;
 
@@ -297,83 +299,72 @@ view_refresh_channelops_menu (sw_view * view)
 
   /* Create the new channelops submenu */
   submenu = gtk_menu_new ();
+  accel_group = GTK_ACCEL_GROUP(g_object_get_data(G_OBJECT(view->window), "accel_group"));
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
+
   
   g_object_set_data (G_OBJECT(submenu), "default", GINT_TO_POINTER(channels));
 			    
   if (channels == 1) {
-    menuitem = gtk_menu_item_new_with_label(_("Duplicate to stereo"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(dup_stereo_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
-    view->channelops_widgets =
+	menuitem = create_view_menu_item (submenu, _("Duplicate to stereo"), 
+                                       "<Sweep-View>/Sample/Channels/Duplicate to stereo",
+                                       dup_stereo_cb, TRUE,
+                                       0, 0, view); 
+      view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
-    menuitem = gtk_menu_item_new_with_label(_("Duplicate to multichannel"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(dup_channels_dialog_new_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
+    menuitem = create_view_menu_item (submenu, _("Duplicate to multichannel"), 
+                                       "<Sweep-View>/Channels/Duplicate to multichannel",
+                                       dup_channels_dialog_new_cb, TRUE,
+                                       0, 0, view);  
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
+	  
   }
 
   if (channels == 2) {
-    menuitem = gtk_menu_item_new_with_label(_("Swap left and right"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(stereo_swap_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
+	  
+	menuitem = create_view_menu_item (submenu, _("Swap left and right"), 
+                                       "<Sweep-View>/Sample/Channels/Swap left and right",
+                                       stereo_swap_cb, TRUE,
+                                       0, 0, view); 
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
-    menuitem = gtk_menu_item_new_with_label(_("Remove left channel"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(remove_left_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
+	  
+	menuitem = create_view_menu_item (submenu, _("Remove left channel"), 
+                                       "<Sweep-View>/Sample/Channels/Remove left channel",
+                                       remove_left_cb, TRUE,
+                                       0, 0, view);
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
-    menuitem = gtk_menu_item_new_with_label(_("Remove right channel"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(remove_right_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
+	  
+	menuitem = create_view_menu_item (submenu, _("Remove right channel"), 
+                                       "<Sweep-View>/Sample/Channels/Remove right channel",
+                                       remove_right_cb, TRUE,
+                                       0, 0, view);	  
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
   }
 
   if (channels > 1) {
-    menuitem = gtk_menu_item_new_with_label(_("Mix down to mono"));
-    gtk_menu_append(GTK_MENU(submenu), menuitem);
-    g_signal_connect (G_OBJECT(menuitem), "activate",
-		       G_CALLBACK(mono_mixdown_cb), view);
-    gtk_widget_show(menuitem);
-    
-    NOMODIFY(menuitem);
+	  
+	menuitem = create_view_menu_item (submenu, _("Mix down to mono"), 
+                                       "<Sweep-View>/Sample/Channels/Mix down to mono",
+                                       mono_mixdown_cb, TRUE,
+                                       0, 0, view);		  
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
   }
 
-  menuitem = gtk_menu_item_new_with_label(_("Add/Remove channels"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(channels_dialog_new_cb), view);
-  gtk_widget_show(menuitem);
-  
-  NOMODIFY(menuitem);
+  	
+  menuitem = create_view_menu_item (submenu, _("Add/Remove channels"), 
+                                       "<Sweep-View>/Sample/Channels/Add/Remove channels",
+                                       channels_dialog_new_cb, TRUE,
+                                       0, 0, view);	
+
   view->channelops_widgets =
     g_list_append (view->channelops_widgets, menuitem);
   
@@ -386,6 +377,34 @@ view_refresh_channelops_menu (sw_view * view)
   return submenu;
 }
 
+/*
+ * Convenience function to Create and setup individual menuitems
+ */
+
+static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label,
+                                                  gchar * accel_path, gpointer callback, gboolean nomodify,
+												  guint accel_key, GdkModifierType accel_mods, gpointer user_data)
+{
+	GtkWidget * menuitem;
+	
+	menuitem = gtk_menu_item_new_with_label(label);
+	/* register accel path enabling runtime changes by the user */
+	gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), accel_path);
+	gtk_menu_append(GTK_MENU(menu), menuitem);
+	 g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(callback), user_data);
+	
+    /* register default key binding (if one is supplied */
+	if (accel_key)
+		 gtk_accel_map_add_entry  (accel_path, accel_key, accel_mods);
+
+/*	if (nomodify)
+	  NOMODIFY(menuitem);
+	*/
+	gtk_widget_show(menuitem);
+		
+	return menuitem;							  
+}
 
 /*
  * Populate a GtkMenu or GtkMenubar m
@@ -408,6 +427,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   /* Create a GtkAccelGroup and add it to the window. */
   accel_group = gtk_accel_group_new();
+  g_object_set_data(G_OBJECT(view->window), "accel_group", accel_group);
 #if 0
   if (GTK_IS_MENU(m))
     gtk_window_add_accel_group (GTK_WINDOW(view->window), accel_group);
@@ -418,341 +438,185 @@ create_view_menu (sw_view * view, GtkWidget * m)
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
+
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  menuitem = gtk_menu_item_new_with_label(_("New ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_new_empty_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_n, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (submenu, _("New ..."), "<Sweep-View>/File/New ...",
+                                                  sample_new_empty_cb, FALSE,
+												  GDK_n, GDK_CONTROL_MASK, view);
+   
+  create_view_menu_item (submenu, _("Open ..."), "<Sweep-View>/File/Open ...",
+                                                  sample_load_cb, FALSE,
+												  GDK_o, GDK_CONTROL_MASK, view);
+  
+  create_view_menu_item (submenu, _("Save"), "<Sweep-View>/File/Save",
+                                                  sample_save_cb, TRUE,
+												  GDK_s, GDK_CONTROL_MASK, view);
+												  
+  create_view_menu_item (submenu, _("Save As ..."), "<Sweep-View>/File/Save As ...",
+                                                  sample_save_as_cb, TRUE,
+												  0, 0, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Open ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_load_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_o, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("Save"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_save_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_s, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Save As ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_save_as_cb), view);
-  gtk_widget_show(menuitem);
-
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Revert"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_revert_cb), view);
-  gtk_widget_show(menuitem);
-
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Revert"), "<Sweep-View>/File/Revert",
+                                                  sample_revert_cb, TRUE,
+												  0, 0, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Properties ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(show_info_dialog_cb), view);
-  gtk_widget_show(menuitem);
-
+  create_view_menu_item (submenu, _("Properties ..."), "<Sweep-View>/File/Properties ...",
+                                                  show_info_dialog_cb, FALSE,
+												  0, 0, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
+  
+  create_view_menu_item (submenu, _("Close"), "<Sweep-View>/File/Close",
+                                                  exit_cb, FALSE,
+												  GDK_q, GDK_CONTROL_MASK, s);
 
-  menuitem = gtk_menu_item_new_with_label(_("Close"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(view_close_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_w, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("Quit"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(exit_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_q, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (submenu, _("Quit"), "<Sweep-View>/File/Quit",
+                                                  view_close_cb, FALSE,
+												  GDK_w, GDK_CONTROL_MASK, s);
+												  
 
   /* Edit */
   menuitem = gtk_menu_item_new_with_label(_("Edit"));
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), "<Sweep-View>/Edit");
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  menuitem = gtk_menu_item_new_with_label(_("Cancel"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(cancel_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Escape, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  menuitem = create_view_menu_item (submenu, _("Cancel"), "<Sweep-View>/Edit/Cancel",
+                                                  cancel_cb, TRUE,
+												  GDK_Escape, GDK_BUTTON1_MASK, view);
   NOREADY(menuitem);
+  
+  create_view_menu_item (submenu, _("Undo"), "<Sweep-View>/Edit/Undo",
+                                                  undo_cb, TRUE,
+												  GDK_z, GDK_CONTROL_MASK, view);
+  
+  create_view_menu_item (submenu, _("Redo"), "<Sweep-View>/Edit/Redo",
+                                                  redo_cb, TRUE,
+												  GDK_r, GDK_CONTROL_MASK, view);
+  
+  create_view_menu_item (submenu, _("Show history ..."), "<Sweep-View>/Edit/Show history ...",
+                                                  show_undo_dialog_cb, FALSE,
+												  0, 0, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Undo"));
+  menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(undo_cb), view);
   gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_z, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  
+  create_view_menu_item (submenu, _("Delete"), "<Sweep-View>/Edit/Delete",
+                                                  delete_cb, TRUE,
+												  0, 0, view);
+												  
+  create_view_menu_item (submenu, _("Cut"), "<Sweep-View>/Edit/Cut",
+                                                  cut_cb, TRUE,
+												  GDK_x, GDK_CONTROL_MASK, view);												  
+												  
+  create_view_menu_item (submenu, _("Copy"), "<Sweep-View>/Edit/Copy",
+                                                  copy_cb, TRUE,
+												  GDK_c, GDK_CONTROL_MASK, view);	
+ 
+  create_view_menu_item (submenu, _("Clear"), "<Sweep-View>/Edit/Clear",
+                                                  clear_cb, TRUE,
+												  0, 0, view);	
 
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Redo"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(redo_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_r, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Show history ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(show_undo_dialog_cb), view);
-  gtk_widget_show(menuitem);
+  create_view_menu_item (submenu, _("Crop"), "<Sweep-View>/Edit/Crop",
+                                                  crop_cb, TRUE,
+												  0, 0, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Delete"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(delete_cb), view);
-  gtk_widget_show(menuitem);
+  create_view_menu_item (submenu, _("Paste: Insert"), "<Sweep-View>/Edit/Paste: Insert",
+                                                  paste_cb, TRUE,
+												  GDK_v, GDK_CONTROL_MASK, view);
 
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Cut"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(cut_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_x, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Copy"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(copy_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_c, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Clear"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(clear_cb), view);
-  gtk_widget_show(menuitem);
-#if 0
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Delete, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-#endif
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Crop"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(crop_cb), view);
-  gtk_widget_show(menuitem);
-#if 0
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Delete, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-#endif
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Paste: Mix"), "<Sweep-View>/Edit/Paste: Mix",
+                                                  paste_mix_cb, TRUE,
+												  GDK_m, GDK_CONTROL_MASK, view);
+												  
+  create_view_menu_item (submenu, _("Paste: Crossfade"), "<Sweep-View>/Edit/Paste: Crossfade",
+                                                  paste_xfade_cb, TRUE,
+												  GDK_f, GDK_CONTROL_MASK, view);
+												  
+  create_view_menu_item (submenu, _("Paste as New"), "<Sweep-View>/Edit/Paste as New",
+                                                  paste_as_new_cb, TRUE,
+												  GDK_e, GDK_CONTROL_MASK, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Paste: Insert"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(paste_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_v, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Preview Cut/Cursor"), "<Sweep-View>/Edit/Preview Cut-Cursor",
+                                                  preview_cut_cb, FALSE,
+												  GDK_k, GDK_CONTROL_MASK, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Paste: Mix"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(paste_mix_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_m, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Pre-roll to Cursor"), "<Sweep-View>/Edit/Pre-roll to Cursor",
+                                                  preroll_cb, FALSE,
+												  GDK_k, GDK_SHIFT_MASK|GDK_CONTROL_MASK, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Paste: Crossfade"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(paste_xfade_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_f, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Paste as New"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(paste_as_new_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_e, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new(); /* Separator */
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  gtk_widget_show(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Preview Cut/Cursor"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(preview_cut_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_k, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("Pre-roll to Cursor"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(preroll_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_k, GDK_SHIFT_MASK|GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
 
   /* Select */
   menuitem = gtk_menu_item_new_with_label(_("Select"));
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
+
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  menuitem = gtk_menu_item_new_with_label(_("Invert"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(select_invert_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_i, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Invert"), "<Sweep-View>/Select/Invert",
+                                                  select_invert_cb, TRUE,
+												  GDK_i, GDK_CONTROL_MASK, s);
 
-  menuitem = gtk_menu_item_new_with_label(_("All"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(select_all_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_a, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("All"), "<Sweep-View>/Select/All",
+                                                  select_all_cb, TRUE,
+												  GDK_a, GDK_CONTROL_MASK, s);
 
-  menuitem = gtk_menu_item_new_with_label(_("None"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(select_none_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_a, GDK_SHIFT_MASK|GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("None"), "<Sweep-View>/Select/None",
+                                                  select_none_cb, TRUE,
+												  GDK_a, GDK_SHIFT_MASK|GDK_CONTROL_MASK, s);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Halve"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(selection_halve_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_semicolon, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Halve"), "<Sweep-View>/Select/Halve",
+                                                  selection_halve_cb, TRUE,
+												  GDK_semicolon, GDK_BUTTON1_MASK, s); 
+												  
+  create_view_menu_item (submenu, _("Double"), "<Sweep-View>/Select/Double",
+                                                  selection_double_cb, TRUE,
+												  GDK_quoteright, GDK_BUTTON1_MASK, s); 
+												  
+  create_view_menu_item (submenu, _("Shift left"), "<Sweep-View>/Select/Shift left",
+                                                  select_shift_left_cb, TRUE,
+												  GDK_less, GDK_BUTTON1_MASK, s); 
 
-  menuitem = gtk_menu_item_new_with_label(_("Double"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(selection_double_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_quoteright, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Shift left"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(select_shift_left_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_less, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Shift right"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(select_shift_right_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_greater, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  create_view_menu_item (submenu, _("Shift right"), "<Sweep-View>/Select/Shift right",
+                                                  select_shift_right_cb, TRUE,
+												  GDK_greater, GDK_BUTTON1_MASK, s); 
 
   /* View */
   menuitem = gtk_menu_item_new_with_label(_("View"));
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-
   menuitem = gtk_check_menu_item_new_with_label(_("Autoscroll: follow playback cursor"));
+  gtk_menu_item_set_accel_path(GTK_MENU_ITEM(menuitem), "<Sweep-View>/View/Autoscroll: follow playback cursor");
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(menuitem),
 				  view->following);
@@ -761,89 +625,56 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_widget_show(menuitem);
   view->follow_checkmenu = menuitem;
 
-  menuitem = gtk_menu_item_new(); /* Separator */
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  gtk_widget_show(menuitem);
-
-
-  menuitem = gtk_menu_item_new_with_label(_("Center"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-                    G_CALLBACK(zoom_center_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_slash, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(menuitem),
+				  view->following);
+  view->follow_checkmenu = menuitem;
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Zoom in"));
+  create_view_menu_item (submenu, _("Center"), "<Sweep-View>/View/Center",
+                                                  zoom_center_cb, FALSE,
+												  GDK_slash, GDK_BUTTON1_MASK, s); 
+												  
+  menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_in_cb), view);
   gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_equal, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  
+  create_view_menu_item (submenu, _("Zoom in"), "<Sweep-View>/View/Zoom in",
+                                                  zoom_in_cb, FALSE,
+												  GDK_equal, GDK_BUTTON1_MASK, view); 
 
-  menuitem = gtk_menu_item_new_with_label(_("Zoom out"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_out_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_minus, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (submenu, _("Zoom out"), "<Sweep-View>/View/Zoom out",
+                                                  zoom_out_cb, FALSE,
+												  GDK_minus, GDK_BUTTON1_MASK, view); 
 
-  menuitem = gtk_menu_item_new_with_label(_("Zoom to selection"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_to_sel_cb), s);
-  gtk_widget_show(menuitem);
+  create_view_menu_item (submenu, _("Zoom to selection"), "<Sweep-View>/View/Zoom to selection",
+                                                  zoom_to_sel_cb, FALSE,
+												  0, 0, s); 
+
 
 #if 0
-  menuitem = gtk_menu_item_new_with_label(_("Left"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_left_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Left, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (submenu, _("Left"), "<Sweep-View>/View/Left",
+                                                  zoom_left_cb, FALSE,
+												  GDK_Left, GDK_BUTTON1_MASK, s); 
 
-  menuitem = gtk_menu_item_new_with_label(_("Right"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_right_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Right, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (submenu, _("Right"), "<Sweep-View>/View/Right",
+                                                  zoom_right_cb, FALSE,
+												  GDK_Right, GDK_BUTTON1_MASK, s); 
 #endif
 
-  menuitem = gtk_menu_item_new_with_label(_("Zoom normal"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-                    G_CALLBACK(zoom_norm_cb), s);
-  gtk_widget_show(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Zoom all"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(zoom_all_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_1, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("1:1"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-                    G_CALLBACK(zoom_1to1_cb), s);
-  gtk_widget_show(menuitem);
-
+  create_view_menu_item (submenu, _("Zoom normal"), "<Sweep-View>/View/Zoom normal",
+                                                  zoom_norm_cb, FALSE,
+												  0, 0, s); 
+												  
+  create_view_menu_item (submenu, _("Zoom all"), "<Sweep-View>/View/Zoom all",
+                                                  zoom_all_cb, FALSE,
+												  GDK_1, GDK_CONTROL_MASK, view); 
+												  
+  create_view_menu_item (submenu, _("1:1"), "<Sweep-View>/View/1:1",
+                                                  zoom_1to1_cb, FALSE,
+												  0, 0, s);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
@@ -855,29 +686,31 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   subsubmenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (subsubmenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), subsubmenu);
 
-#define REMEMBER_AS(title,index) \
+
+#define REMEMBER_AS(title,index,accel_path) \
   menuitem = gtk_menu_item_new_with_label ((title));                         \
   g_object_set_data (G_OBJECT(menuitem), "default", GINT_TO_POINTER((index))); \
   gtk_menu_append (GTK_MENU(subsubmenu), menuitem);                          \
   gtk_widget_show (menuitem);                                                \
   g_signal_connect (G_OBJECT(menuitem), "activate",                       \
 		     G_CALLBACK(view_store_cb), view);                  \
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,             \
-			      GDK_KP_##index, GDK_CONTROL_MASK,              \
-			      GTK_ACCEL_VISIBLE);
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), accel_path); \
+  gtk_accel_map_add_entry  (accel_path,             \
+			      GDK_KP_##index, GDK_CONTROL_MASK); 
 
-  REMEMBER_AS(_("Area 1"), 1);
-  REMEMBER_AS(_("Area 2"), 2);
-  REMEMBER_AS(_("Area 3"), 3);
-  REMEMBER_AS(_("Area 4"), 4);
-  REMEMBER_AS(_("Area 5"), 5);
-  REMEMBER_AS(_("Area 6"), 6);
-  REMEMBER_AS(_("Area 7"), 7);
-  REMEMBER_AS(_("Area 8"), 8);
-  REMEMBER_AS(_("Area 9"), 9);
-  REMEMBER_AS(_("Area 10"), 0);
+  REMEMBER_AS(_("Area 1"), 1, "<Sweep-View>/View/Remember As/Area 1");
+  REMEMBER_AS(_("Area 2"), 2, "<Sweep-View>/View/Remember As/Area 2");
+  REMEMBER_AS(_("Area 3"), 3, "<Sweep-View>/View/Remember As/Area 3");
+  REMEMBER_AS(_("Area 4"), 4, "<Sweep-View>/View/Remember As/Area 4");
+  REMEMBER_AS(_("Area 5"), 5, "<Sweep-View>/View/Remember As/Area 5");
+  REMEMBER_AS(_("Area 6"), 6, "<Sweep-View>/View/Remember As/Area 6");
+  REMEMBER_AS(_("Area 7"), 7, "<Sweep-View>/View/Remember As/Area 7");
+  REMEMBER_AS(_("Area 8"), 8, "<Sweep-View>/View/Remember As/Area 8");
+  REMEMBER_AS(_("Area 9"), 9, "<Sweep-View>/View/Remember As/Area 9");
+  REMEMBER_AS(_("Area 10"), 0, "<Sweep-View>/View/Remember As/Area 10");
 
   /* Retrieve view */
 
@@ -885,34 +718,35 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   subsubmenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (subsubmenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), subsubmenu);
 
-#define ZOOM_TO(title,index) \
+#define ZOOM_TO(title,index,accel_path) \
   menuitem = gtk_menu_item_new_with_label ((title));                         \
   g_object_set_data (G_OBJECT(menuitem), "default", GINT_TO_POINTER((index))); \
   gtk_menu_append (GTK_MENU(subsubmenu), menuitem);                          \
   gtk_widget_show (menuitem);                                                \
   g_signal_connect (G_OBJECT(menuitem), "activate",                       \
 		     G_CALLBACK(view_retrieve_cb), view);               \
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,             \
-			      GDK_KP_##index, GDK_BUTTON1_MASK,                      \
-			      GTK_ACCEL_VISIBLE);
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), accel_path); \
+  gtk_accel_map_add_entry  (accel_path,             \
+			      GDK_KP_##index, GDK_BUTTON1_MASK);
 
-  ZOOM_TO(_("Area 1"), 1);
-  ZOOM_TO(_("Area 2"), 2);
-  ZOOM_TO(_("Area 3"), 3);
-  ZOOM_TO(_("Area 4"), 4);
-  ZOOM_TO(_("Area 5"), 5);
-  ZOOM_TO(_("Area 6"), 6);
-  ZOOM_TO(_("Area 7"), 7);
-  ZOOM_TO(_("Area 8"), 8);
-  ZOOM_TO(_("Area 9"), 9);
-  ZOOM_TO(_("Area 10"), 0);
+  ZOOM_TO(_("Area 1"), 1, "<Sweep-View>/View/Zoom To/Area 1");
+  ZOOM_TO(_("Area 2"), 2, "<Sweep-View>/View/Zoom To/Area 2");
+  ZOOM_TO(_("Area 3"), 3, "<Sweep-View>/View/Zoom To/Area 3");
+  ZOOM_TO(_("Area 4"), 4, "<Sweep-View>/View/Zoom To/Area 4");
+  ZOOM_TO(_("Area 5"), 5, "<Sweep-View>/View/Zoom To/Area 5");
+  ZOOM_TO(_("Area 6"), 6, "<Sweep-View>/View/Zoom To/Area 6");
+  ZOOM_TO(_("Area 7"), 7, "<Sweep-View>/View/Zoom To/Area 7");
+  ZOOM_TO(_("Area 8"), 8, "<Sweep-View>/View/Zoom To/Area 8");
+  ZOOM_TO(_("Area 9"), 9, "<Sweep-View>/View/Zoom To/Area 9");
+  ZOOM_TO(_("Area 10"), 0, "<Sweep-View>/View/Zoom To/Area 10");
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
-
+											  
   menuitem = gtk_menu_item_new_with_label(_("Color scheme"));
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
@@ -986,18 +820,17 @@ create_view_menu (sw_view * view, GtkWidget * m)
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("New View"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(view_new_cb), s);
-  gtk_widget_show(menuitem);
+  
+  create_view_menu_item (submenu, _("New View"), "<Sweep-View>/View/New View",
+                                                  view_new_cb, FALSE,
+												  0, 0, s);
 
   /* Sample */
   menuitem = gtk_menu_item_new_with_label(_("Sample"));
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
   menuitem = gtk_menu_item_new_with_label (_("Channels"));
@@ -1009,28 +842,19 @@ create_view_menu (sw_view * view, GtkWidget * m)
   view_refresh_channelops_menu (view);
 
 #ifdef HAVE_LIBSAMPLERATE
-  menuitem = gtk_menu_item_new_with_label(_("Resample ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(samplerate_dialog_new_cb), view);
-  gtk_widget_show(menuitem);
-
-  NOMODIFY(menuitem);
+  
+  create_view_menu_item (submenu, _("Resample ..."), "<Sweep-View>/Sample/Resample ...",
+                                                  samplerate_dialog_new_cb, TRUE,
+												  0, 0, view);
 #endif
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Duplicate"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(sample_new_copy_cb), s);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_d, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
-  NOMODIFY(menuitem);
+  
+  create_view_menu_item (submenu, _("Duplicate"), "<Sweep-View>/Sample/Duplicate",
+                                                  sample_new_copy_cb, TRUE,
+												  GDK_d, GDK_CONTROL_MASK, s);
 
   /* Filters */
   menuitem = gtk_menu_item_new_with_label(_("Process"));
@@ -1046,13 +870,12 @@ create_view_menu (sw_view * view, GtkWidget * m)
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  menuitem = gtk_menu_item_new_with_label(_("Configure audio device ..."));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(device_config_cb), view);
-  gtk_widget_show(menuitem);
+  create_view_menu_item (submenu, _("Configure audio device ..."), "<Sweep-View>/Playback/Configure audio device ...",
+                                                  device_config_cb, FALSE,
+												  0, 0, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
@@ -1062,91 +885,49 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   subsubmenu = gtk_menu_new();
+  gtk_menu_set_accel_group (GTK_MENU (subsubmenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), subsubmenu);
 
   NOALLOC(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Go to start of file"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(goto_start_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Home, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (subsubmenu, _("Go to start of file"), "<Sweep-View>/Playback/Transport/Go to start of file",
+                                                  goto_start_cb, FALSE,
+												  GDK_Home, GDK_CONTROL_MASK, view);
+												  									  
+  create_view_menu_item (subsubmenu, _("Go to start of window"), "<Sweep-View>/Playback/Transport/Go to start of window",
+                                                  goto_start_of_view_cb, FALSE,
+												  GDK_Home, GDK_BUTTON1_MASK, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Go to start of window"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(goto_start_of_view_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Home, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (subsubmenu, _("Skip back"), "<Sweep-View>/Playback/Transport/Skip back",
+                                                  page_back_cb, FALSE,
+												  GDK_Page_Up, GDK_BUTTON1_MASK, view);
 
+  create_view_menu_item (subsubmenu, _("Skip forward"), "<Sweep-View>/Playback/Transport/Skip forward",
+                                                  page_fwd_cb, FALSE,
+												  GDK_Page_Down, GDK_BUTTON1_MASK, view);
 
-  menuitem = gtk_menu_item_new_with_label(_("Skip back"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(page_back_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Page_Up, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (subsubmenu, _("Go to end of window"), "<Sweep-View>/Playback/Transport/Go to end of window",
+                                                  goto_end_of_view_cb, FALSE,
+												  GDK_End, GDK_BUTTON1_MASK, view);
 
-
-  menuitem = gtk_menu_item_new_with_label(_("Skip forward"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(page_fwd_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Page_Down, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("Go to end of window"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(goto_end_of_view_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_End, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-
-  menuitem = gtk_menu_item_new_with_label(_("Go to end of file"));
-  gtk_menu_append(GTK_MENU(subsubmenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(goto_end_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_End, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  create_view_menu_item (subsubmenu, _("Go to end of file"), "<Sweep-View>/Playback/Transport/Go to end of file",
+                                                  goto_end_cb, FALSE,
+												  GDK_End, GDK_CONTROL_MASK, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Play selection"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(play_view_sel_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_space, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-
+  menuitem = create_view_menu_item (submenu, _("Play selection"), "<Sweep-View>/Playback/Transport/Play selection",
+                                                  play_view_sel_cb, FALSE,
+												  GDK_space, GDK_BUTTON1_MASK, view);
   NOALLOC(menuitem);
-
-  menuitem = gtk_menu_item_new_with_label(_("Play sample"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(play_view_cb), view);
-  gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_space, GDK_CONTROL_MASK,
-			      GTK_ACCEL_VISIBLE);
+  
+  menuitem = create_view_menu_item (submenu, _("Play sample"), "<Sweep-View>/Playback/Transport/Play sample",
+                                                  play_view_cb, FALSE,
+												  GDK_space, GDK_CONTROL_MASK, view);
   NOALLOC(menuitem);
-
+										  
   menuitem = gtk_menu_item_new_with_label(_("Play note"));
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
@@ -1172,6 +953,10 @@ create_view_menu (sw_view * view, GtkWidget * m)
 				  view->sample->play_head->monitor);
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(monitor_toggle_cb), view);
+			 
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), 
+                               "<Sweep-View>/Playback/Transport/Toggle monitoring");
+  	 
   gtk_widget_show(menuitem);
   view->monitor_checkmenu = menuitem;
 
@@ -1181,6 +966,9 @@ create_view_menu (sw_view * view, GtkWidget * m)
 				  view->sample->play_head->looping);
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(loop_toggle_cb), view);
+
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), 
+                               "<Sweep-View>/Playback/Transport/Toggle looping");		 
   gtk_widget_show(menuitem);
   view->loop_checkmenu = menuitem;
 
@@ -1190,6 +978,8 @@ create_view_menu (sw_view * view, GtkWidget * m)
 				  view->sample->play_head->mute);
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(mute_toggle_cb), view);
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), 
+                               "<Sweep-View>/Playback/Transport/Toggle muting");
   gtk_widget_show(menuitem);
   view->mute_checkmenu = menuitem;
 
@@ -1200,34 +990,27 @@ create_view_menu (sw_view * view, GtkWidget * m)
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(playrev_toggle_cb), view);
   gtk_widget_show(menuitem);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_quoteleft, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
+  gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), 
+                               "<Sweep-View>/Playback/Transport/Toggle reverse playback");
+  gtk_accel_map_add_entry  ("<Sweep-View>/Playback/Transport/Toggle reverse playback",
+                             GDK_quoteleft, GDK_BUTTON1_MASK);	
+
   view->playrev_checkmenu = menuitem;
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-
-  menuitem = gtk_menu_item_new_with_label(_("Pause"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(pause_playback_cb), view);
-  gtk_widget_show(menuitem);
+  menuitem = create_view_menu_item (submenu, _("Pause"), "<Sweep-View>/Playback/Pause",
+                                                  pause_playback_cb, FALSE,
+												  0, 0, view);
   NOALLOC(menuitem);
 
-  menuitem = gtk_menu_item_new_with_label(_("Stop"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(stop_playback_cb), view);
-  gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-			      GDK_Return, GDK_BUTTON1_MASK,
-			      GTK_ACCEL_VISIBLE);
-  gtk_widget_show(menuitem);
-
+  menuitem = create_view_menu_item (submenu, _("Stop"), "<Sweep-View>/Playback/Stop",
+                                                  stop_playback_cb, FALSE,
+												  GDK_Return, GDK_BUTTON1_MASK, view);
   NOALLOC(menuitem);
-
+												  
   menuitem = gtk_menu_item_new_with_label (_("Help"));
   MENU_APPEND(m, menuitem);
   gtk_widget_show(menuitem);
@@ -2564,14 +2347,11 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   button
     = create_pixmap_button (window, playpaus_xpm,
 			    /* _("Play all / Pause    [Ctrl+Space / Enter]"),*/
-			    _("Play all / Pause    [Ctrl+Space]"),
+			    _("Play all / Pause"),
 			    style_green_grey, VIEW_TOOLBAR_TOGGLE_BUTTON,
 			    G_CALLBACK (play_view_button_cb),
 			    NULL, NULL, view);
 				
-		//@	gtk_widget_set_size_request     (button,
-         //@                                   65,
-          //@                                   50);
   gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -2584,7 +2364,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   button
     = create_pixmap_button (window, playpsel_xpm,
 			    /*_("Play selection / Pause    [Space / Enter]"),*/
-			    _("Play selection / Pause    [Space]"),
+			    _("Play selection / Pause"),
 			    style_green_grey, VIEW_TOOLBAR_TOGGLE_BUTTON,
 			    G_CALLBACK (play_view_sel_button_cb),
 			    NULL, NULL, view);
@@ -2600,7 +2380,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   button
     = create_pixmap_button (window, stop_xpm,
 			    /*_("Stop playback    [Space]"),*/
-			    _("Stop playback    [Enter]"),
+			    _("Stop playback"),
 			    style_green_grey, VIEW_TOOLBAR_BUTTON,
 			    G_CALLBACK (stop_playback_cb),
 			    NULL, NULL, view);
@@ -2617,7 +2397,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   button
     = create_pixmap_button (window, prevtrk_xpm,
-			    _("Go to beginning    [Ctrl+Home]"),
+			    _("Go to beginning"),
 			    style_green_grey, VIEW_TOOLBAR_BUTTON,
 			    G_CALLBACK (goto_start_cb), NULL, NULL, view);
   gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
@@ -2653,7 +2433,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   button
     = create_pixmap_button (window, nexttrk_xpm,
-			    _("Go to the end    [Ctrl+End]"),
+			    _("Go to the end"),
 			    style_green_grey, VIEW_TOOLBAR_BUTTON,
 			    G_CALLBACK (goto_end_cb), NULL, NULL, view);
   gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);

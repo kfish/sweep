@@ -217,7 +217,7 @@ main (int argc, char *argv[])
   if (no_files) {
     g_idle_add ((GSourceFunc)initial_sample_ask, NULL);
   }
-
+  
   /* initialise preferences */
   prefs_init ();
 
@@ -229,6 +229,9 @@ main (int argc, char *argv[])
 
   /* initialise styles */
   init_styles ();
+  
+  /* initialise key bindings (accelerators) */
+  init_accels ();
 
   /* initialise devices */
   init_devices ();
@@ -243,10 +246,16 @@ main (int argc, char *argv[])
   }
 #endif
 
+
+  
   gtk_main ();
+
 
   /* close preferences database */
   prefs_close ();
+  
+  /* save key bindings */
+  save_accels ();
 
   exit (0);
 }

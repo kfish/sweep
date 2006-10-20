@@ -52,7 +52,25 @@ GtkStyle * style_dark_grey;
 GtkStyle * style_red;
 
 
+void init_accels (void)
+{
+  gchar * accels_path;
+ 
+  accels_path = (char *)g_get_home_dir ();
+  accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
+  gtk_accel_map_load (accels_path);
+	
+}
 
+void save_accels (void)
+{
+  gchar * accels_path;
+ 
+  accels_path = (char *)g_get_home_dir ();
+  accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
+  gtk_accel_map_save (accels_path);
+	
+}
 
 
 void sweep_set_window_icon (GtkWindow *window)
