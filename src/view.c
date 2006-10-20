@@ -103,8 +103,8 @@
 void samplerate_dialog_new_cb (GtkWidget * widget, gpointer data);
 #endif
 
-static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label,
-                                                  gchar * accel_path, gpointer callback, gboolean nomodify,
+static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label, gchar * accel_path, 
+                                                  sw_view *view,gpointer callback, gboolean nomodify,
 												  guint accel_key, GdkModifierType accel_mods, gpointer user_data);
 
 void
@@ -308,13 +308,15 @@ view_refresh_channelops_menu (sw_view * view)
   if (channels == 1) {
 	menuitem = create_view_menu_item (submenu, _("Duplicate to stereo"), 
                                        "<Sweep-View>/Sample/Channels/Duplicate to stereo",
+	                                   view,
                                        dup_stereo_cb, TRUE,
                                        0, 0, view); 
       view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
-    menuitem = create_view_menu_item (submenu, _("Duplicate to multichannel"), 
+    menuitem = create_view_menu_item (submenu, _("Duplicate to multichannel"),
                                        "<Sweep-View>/Channels/Duplicate to multichannel",
+	                                   view,
                                        dup_channels_dialog_new_cb, TRUE,
                                        0, 0, view);  
     view->channelops_widgets =
@@ -326,6 +328,7 @@ view_refresh_channelops_menu (sw_view * view)
 	  
 	menuitem = create_view_menu_item (submenu, _("Swap left and right"), 
                                        "<Sweep-View>/Sample/Channels/Swap left and right",
+	                                   view,
                                        stereo_swap_cb, TRUE,
                                        0, 0, view); 
     view->channelops_widgets =
@@ -334,14 +337,16 @@ view_refresh_channelops_menu (sw_view * view)
 	  
 	menuitem = create_view_menu_item (submenu, _("Remove left channel"), 
                                        "<Sweep-View>/Sample/Channels/Remove left channel",
+	                                   view,
                                        remove_left_cb, TRUE,
                                        0, 0, view);
     view->channelops_widgets =
       g_list_append (view->channelops_widgets, menuitem);
 
 	  
-	menuitem = create_view_menu_item (submenu, _("Remove right channel"), 
+	menuitem = create_view_menu_item (submenu, _("Remove right channel"),
                                        "<Sweep-View>/Sample/Channels/Remove right channel",
+	                                   view,
                                        remove_right_cb, TRUE,
                                        0, 0, view);	  
     view->channelops_widgets =
@@ -351,8 +356,9 @@ view_refresh_channelops_menu (sw_view * view)
 
   if (channels > 1) {
 	  
-	menuitem = create_view_menu_item (submenu, _("Mix down to mono"), 
+	menuitem = create_view_menu_item (submenu, _("Mix down to mono"),
                                        "<Sweep-View>/Sample/Channels/Mix down to mono",
+	                                   view,
                                        mono_mixdown_cb, TRUE,
                                        0, 0, view);		  
     view->channelops_widgets =
@@ -362,6 +368,7 @@ view_refresh_channelops_menu (sw_view * view)
   	
   menuitem = create_view_menu_item (submenu, _("Add/Remove channels"), 
                                        "<Sweep-View>/Sample/Channels/Add/Remove channels",
+                                       view,
                                        channels_dialog_new_cb, TRUE,
                                        0, 0, view);	
 
@@ -381,8 +388,8 @@ view_refresh_channelops_menu (sw_view * view)
  * Convenience function to Create and setup individual menuitems
  */
 
-static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label,
-                                                  gchar * accel_path, gpointer callback, gboolean nomodify,
+static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label, gchar * accel_path, 
+                                                  sw_view *view,gpointer callback, gboolean nomodify,
 												  guint accel_key, GdkModifierType accel_mods, gpointer user_data)
 {
 	GtkWidget * menuitem;
@@ -398,9 +405,9 @@ static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label,
 	if (accel_key)
 		 gtk_accel_map_add_entry  (accel_path, accel_key, accel_mods);
 
-/*	if (nomodify)
+	if (nomodify)
 	  NOMODIFY(menuitem);
-	*/
+	
 	gtk_widget_show(menuitem);
 		
 	return menuitem;							  
@@ -442,23 +449,23 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  create_view_menu_item (submenu, _("New ..."), "<Sweep-View>/File/New ...",
+  create_view_menu_item (submenu, _("New ..."), "<Sweep-View>/File/New ...", view,
                                                   sample_new_empty_cb, FALSE,
 												  GDK_n, GDK_CONTROL_MASK, view);
    
-  create_view_menu_item (submenu, _("Open ..."), "<Sweep-View>/File/Open ...",
+  create_view_menu_item (submenu, _("Open ..."), "<Sweep-View>/File/Open ...", view,
                                                   sample_load_cb, FALSE,
 												  GDK_o, GDK_CONTROL_MASK, view);
   
-  create_view_menu_item (submenu, _("Save"), "<Sweep-View>/File/Save",
+  create_view_menu_item (submenu, _("Save"), "<Sweep-View>/File/Save", view,
                                                   sample_save_cb, TRUE,
 												  GDK_s, GDK_CONTROL_MASK, view);
 												  
-  create_view_menu_item (submenu, _("Save As ..."), "<Sweep-View>/File/Save As ...",
+  create_view_menu_item (submenu, _("Save As ..."), "<Sweep-View>/File/Save As ...", view,
                                                   sample_save_as_cb, TRUE,
 												  0, 0, view);
 
-  create_view_menu_item (submenu, _("Revert"), "<Sweep-View>/File/Revert",
+  create_view_menu_item (submenu, _("Revert"), "<Sweep-View>/File/Revert", view,
                                                   sample_revert_cb, TRUE,
 												  0, 0, view);
 
@@ -466,7 +473,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  create_view_menu_item (submenu, _("Properties ..."), "<Sweep-View>/File/Properties ...",
+  create_view_menu_item (submenu, _("Properties ..."), "<Sweep-View>/File/Properties ...", view,
                                                   show_info_dialog_cb, FALSE,
 												  0, 0, view);
 
@@ -474,11 +481,11 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   
-  create_view_menu_item (submenu, _("Close"), "<Sweep-View>/File/Close",
+  create_view_menu_item (submenu, _("Close"), "<Sweep-View>/File/Close", view,
                                                   exit_cb, FALSE,
 												  GDK_q, GDK_CONTROL_MASK, s);
 
-  create_view_menu_item (submenu, _("Quit"), "<Sweep-View>/File/Quit",
+  create_view_menu_item (submenu, _("Quit"), "<Sweep-View>/File/Quit", view,
                                                   view_close_cb, FALSE,
 												  GDK_w, GDK_CONTROL_MASK, s);
 												  
@@ -492,20 +499,20 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), "<Sweep-View>/Edit");
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  menuitem = create_view_menu_item (submenu, _("Cancel"), "<Sweep-View>/Edit/Cancel",
-                                                  cancel_cb, TRUE,
+  menuitem = create_view_menu_item (submenu, _("Cancel"), "<Sweep-View>/Edit/Cancel", view,
+                                                  cancel_cb, FALSE,
 												  GDK_Escape, GDK_BUTTON1_MASK, view);
   NOREADY(menuitem);
   
-  create_view_menu_item (submenu, _("Undo"), "<Sweep-View>/Edit/Undo",
+  create_view_menu_item (submenu, _("Undo"), "<Sweep-View>/Edit/Undo", view,
                                                   undo_cb, TRUE,
 												  GDK_z, GDK_CONTROL_MASK, view);
   
-  create_view_menu_item (submenu, _("Redo"), "<Sweep-View>/Edit/Redo",
+  create_view_menu_item (submenu, _("Redo"), "<Sweep-View>/Edit/Redo", view,
                                                   redo_cb, TRUE,
 												  GDK_r, GDK_CONTROL_MASK, view);
   
-  create_view_menu_item (submenu, _("Show history ..."), "<Sweep-View>/Edit/Show history ...",
+  create_view_menu_item (submenu, _("Show history ..."), "<Sweep-View>/Edit/Show history ...", view,
                                                   show_undo_dialog_cb, FALSE,
 												  0, 0, view);
 
@@ -513,23 +520,23 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   
-  create_view_menu_item (submenu, _("Delete"), "<Sweep-View>/Edit/Delete",
+  create_view_menu_item (submenu, _("Delete"), "<Sweep-View>/Edit/Delete", view,
                                                   delete_cb, TRUE,
 												  0, 0, view);
 												  
-  create_view_menu_item (submenu, _("Cut"), "<Sweep-View>/Edit/Cut",
+  create_view_menu_item (submenu, _("Cut"), "<Sweep-View>/Edit/Cut", view,
                                                   cut_cb, TRUE,
 												  GDK_x, GDK_CONTROL_MASK, view);												  
 												  
-  create_view_menu_item (submenu, _("Copy"), "<Sweep-View>/Edit/Copy",
+  create_view_menu_item (submenu, _("Copy"), "<Sweep-View>/Edit/Copy", view,
                                                   copy_cb, TRUE,
 												  GDK_c, GDK_CONTROL_MASK, view);	
  
-  create_view_menu_item (submenu, _("Clear"), "<Sweep-View>/Edit/Clear",
+  create_view_menu_item (submenu, _("Clear"), "<Sweep-View>/Edit/Clear", view,
                                                   clear_cb, TRUE,
 												  0, 0, view);	
 
-  create_view_menu_item (submenu, _("Crop"), "<Sweep-View>/Edit/Crop",
+  create_view_menu_item (submenu, _("Crop"), "<Sweep-View>/Edit/Crop", view,
                                                   crop_cb, TRUE,
 												  0, 0, view);
 
@@ -537,19 +544,19 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  create_view_menu_item (submenu, _("Paste: Insert"), "<Sweep-View>/Edit/Paste: Insert",
+  create_view_menu_item (submenu, _("Paste: Insert"), "<Sweep-View>/Edit/Paste: Insert", view,
                                                   paste_cb, TRUE,
 												  GDK_v, GDK_CONTROL_MASK, view);
 
-  create_view_menu_item (submenu, _("Paste: Mix"), "<Sweep-View>/Edit/Paste: Mix",
+  create_view_menu_item (submenu, _("Paste: Mix"), "<Sweep-View>/Edit/Paste: Mix", view,
                                                   paste_mix_cb, TRUE,
 												  GDK_m, GDK_CONTROL_MASK, view);
 												  
-  create_view_menu_item (submenu, _("Paste: Crossfade"), "<Sweep-View>/Edit/Paste: Crossfade",
+  create_view_menu_item (submenu, _("Paste: Crossfade"), "<Sweep-View>/Edit/Paste: Crossfade", view,
                                                   paste_xfade_cb, TRUE,
 												  GDK_f, GDK_CONTROL_MASK, view);
 												  
-  create_view_menu_item (submenu, _("Paste as New"), "<Sweep-View>/Edit/Paste as New",
+  create_view_menu_item (submenu, _("Paste as New"), "<Sweep-View>/Edit/Paste as New", view,
                                                   paste_as_new_cb, TRUE,
 												  GDK_e, GDK_CONTROL_MASK, view);
 
@@ -557,11 +564,11 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  create_view_menu_item (submenu, _("Preview Cut/Cursor"), "<Sweep-View>/Edit/Preview Cut-Cursor",
+  create_view_menu_item (submenu, _("Preview Cut/Cursor"), "<Sweep-View>/Edit/Preview Cut-Cursor", view,
                                                   preview_cut_cb, FALSE,
 												  GDK_k, GDK_CONTROL_MASK, view);
 
-  create_view_menu_item (submenu, _("Pre-roll to Cursor"), "<Sweep-View>/Edit/Pre-roll to Cursor",
+  create_view_menu_item (submenu, _("Pre-roll to Cursor"), "<Sweep-View>/Edit/Pre-roll to Cursor", view,
                                                   preroll_cb, FALSE,
 												  GDK_k, GDK_SHIFT_MASK|GDK_CONTROL_MASK, view);
 
@@ -575,15 +582,15 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  create_view_menu_item (submenu, _("Invert"), "<Sweep-View>/Select/Invert",
+  create_view_menu_item (submenu, _("Invert"), "<Sweep-View>/Select/Invert", view,
                                                   select_invert_cb, TRUE,
 												  GDK_i, GDK_CONTROL_MASK, s);
 
-  create_view_menu_item (submenu, _("All"), "<Sweep-View>/Select/All",
+  create_view_menu_item (submenu, _("All"), "<Sweep-View>/Select/All", view,
                                                   select_all_cb, TRUE,
 												  GDK_a, GDK_CONTROL_MASK, s);
 
-  create_view_menu_item (submenu, _("None"), "<Sweep-View>/Select/None",
+  create_view_menu_item (submenu, _("None"), "<Sweep-View>/Select/None", view,
                                                   select_none_cb, TRUE,
 												  GDK_a, GDK_SHIFT_MASK|GDK_CONTROL_MASK, s);
 
@@ -591,19 +598,19 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  create_view_menu_item (submenu, _("Halve"), "<Sweep-View>/Select/Halve",
+  create_view_menu_item (submenu, _("Halve"), "<Sweep-View>/Select/Halve", view,
                                                   selection_halve_cb, TRUE,
 												  GDK_semicolon, GDK_BUTTON1_MASK, s); 
 												  
-  create_view_menu_item (submenu, _("Double"), "<Sweep-View>/Select/Double",
+  create_view_menu_item (submenu, _("Double"), "<Sweep-View>/Select/Double", view,
                                                   selection_double_cb, TRUE,
 												  GDK_quoteright, GDK_BUTTON1_MASK, s); 
 												  
-  create_view_menu_item (submenu, _("Shift left"), "<Sweep-View>/Select/Shift left",
+  create_view_menu_item (submenu, _("Shift left"), "<Sweep-View>/Select/Shift left", view,
                                                   select_shift_left_cb, TRUE,
 												  GDK_less, GDK_BUTTON1_MASK, s); 
 
-  create_view_menu_item (submenu, _("Shift right"), "<Sweep-View>/Select/Shift right",
+  create_view_menu_item (submenu, _("Shift right"), "<Sweep-View>/Select/Shift right", view,
                                                   select_shift_right_cb, TRUE,
 												  GDK_greater, GDK_BUTTON1_MASK, s); 
 
@@ -633,7 +640,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  create_view_menu_item (submenu, _("Center"), "<Sweep-View>/View/Center",
+  create_view_menu_item (submenu, _("Center"), "<Sweep-View>/View/Center", view,
                                                   zoom_center_cb, FALSE,
 												  GDK_slash, GDK_BUTTON1_MASK, s); 
 												  
@@ -641,38 +648,38 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   
-  create_view_menu_item (submenu, _("Zoom in"), "<Sweep-View>/View/Zoom in",
+  create_view_menu_item (submenu, _("Zoom in"), "<Sweep-View>/View/Zoom in", view,
                                                   zoom_in_cb, FALSE,
 												  GDK_equal, GDK_BUTTON1_MASK, view); 
 
-  create_view_menu_item (submenu, _("Zoom out"), "<Sweep-View>/View/Zoom out",
+  create_view_menu_item (submenu, _("Zoom out"), "<Sweep-View>/View/Zoom out", view,
                                                   zoom_out_cb, FALSE,
 												  GDK_minus, GDK_BUTTON1_MASK, view); 
 
-  create_view_menu_item (submenu, _("Zoom to selection"), "<Sweep-View>/View/Zoom to selection",
+  create_view_menu_item (submenu, _("Zoom to selection"), "<Sweep-View>/View/Zoom to selection", view,
                                                   zoom_to_sel_cb, FALSE,
 												  0, 0, s); 
 
 
 #if 0
-  create_view_menu_item (submenu, _("Left"), "<Sweep-View>/View/Left",
+  create_view_menu_item (submenu, _("Left"), "<Sweep-View>/View/Left", view,
                                                   zoom_left_cb, FALSE,
 												  GDK_Left, GDK_BUTTON1_MASK, s); 
 
-  create_view_menu_item (submenu, _("Right"), "<Sweep-View>/View/Right",
+  create_view_menu_item (submenu, _("Right"), "<Sweep-View>/View/Right", view,
                                                   zoom_right_cb, FALSE,
 												  GDK_Right, GDK_BUTTON1_MASK, s); 
 #endif
 
-  create_view_menu_item (submenu, _("Zoom normal"), "<Sweep-View>/View/Zoom normal",
+  create_view_menu_item (submenu, _("Zoom normal"), "<Sweep-View>/View/Zoom normal", view,
                                                   zoom_norm_cb, FALSE,
 												  0, 0, s); 
 												  
-  create_view_menu_item (submenu, _("Zoom all"), "<Sweep-View>/View/Zoom all",
+  create_view_menu_item (submenu, _("Zoom all"), "<Sweep-View>/View/Zoom all", view,
                                                   zoom_all_cb, FALSE,
 												  GDK_1, GDK_CONTROL_MASK, view); 
 												  
-  create_view_menu_item (submenu, _("1:1"), "<Sweep-View>/View/1:1",
+  create_view_menu_item (submenu, _("1:1"), "<Sweep-View>/View/1:1", view,
                                                   zoom_1to1_cb, FALSE,
 												  0, 0, s);
 
@@ -821,7 +828,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   
-  create_view_menu_item (submenu, _("New View"), "<Sweep-View>/View/New View",
+  create_view_menu_item (submenu, _("New View"), "<Sweep-View>/View/New View", view,
                                                   view_new_cb, FALSE,
 												  0, 0, s);
 
@@ -843,7 +850,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
 #ifdef HAVE_LIBSAMPLERATE
   
-  create_view_menu_item (submenu, _("Resample ..."), "<Sweep-View>/Sample/Resample ...",
+  create_view_menu_item (submenu, _("Resample ..."), "<Sweep-View>/Sample/Resample ...", view,
                                                   samplerate_dialog_new_cb, TRUE,
 												  0, 0, view);
 #endif
@@ -852,7 +859,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   
-  create_view_menu_item (submenu, _("Duplicate"), "<Sweep-View>/Sample/Duplicate",
+  create_view_menu_item (submenu, _("Duplicate"), "<Sweep-View>/Sample/Duplicate", view,
                                                   sample_new_copy_cb, TRUE,
 												  GDK_d, GDK_CONTROL_MASK, s);
 
@@ -873,9 +880,11 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
-  create_view_menu_item (submenu, _("Configure audio device ..."), "<Sweep-View>/Playback/Configure audio device ...",
-                                                  device_config_cb, FALSE,
-												  0, 0, view);
+  create_view_menu_item (submenu, _("Configure audio device ..."),
+                                   "<Sweep-View>/Playback/Configure audio device ...",
+								   view,
+                                   device_config_cb, FALSE,
+                                   0, 0, view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
@@ -890,27 +899,34 @@ create_view_menu (sw_view * view, GtkWidget * m)
 
   NOALLOC(menuitem);
 
-  create_view_menu_item (subsubmenu, _("Go to start of file"), "<Sweep-View>/Playback/Transport/Go to start of file",
+  create_view_menu_item (subsubmenu, _("Go to start of file"),
+                                                 "<Sweep-View>/Playback/Transport/Go to start of file",
+                                                  view,
                                                   goto_start_cb, FALSE,
 												  GDK_Home, GDK_CONTROL_MASK, view);
 												  									  
   create_view_menu_item (subsubmenu, _("Go to start of window"), "<Sweep-View>/Playback/Transport/Go to start of window",
+                                                  view,
                                                   goto_start_of_view_cb, FALSE,
 												  GDK_Home, GDK_BUTTON1_MASK, view);
 
   create_view_menu_item (subsubmenu, _("Skip back"), "<Sweep-View>/Playback/Transport/Skip back",
+                                                  view,
                                                   page_back_cb, FALSE,
 												  GDK_Page_Up, GDK_BUTTON1_MASK, view);
 
   create_view_menu_item (subsubmenu, _("Skip forward"), "<Sweep-View>/Playback/Transport/Skip forward",
+                                                  view,
                                                   page_fwd_cb, FALSE,
 												  GDK_Page_Down, GDK_BUTTON1_MASK, view);
 
   create_view_menu_item (subsubmenu, _("Go to end of window"), "<Sweep-View>/Playback/Transport/Go to end of window",
+                                                  view,
                                                   goto_end_of_view_cb, FALSE,
 												  GDK_End, GDK_BUTTON1_MASK, view);
 
   create_view_menu_item (subsubmenu, _("Go to end of file"), "<Sweep-View>/Playback/Transport/Go to end of file",
+                                                  view,
                                                   goto_end_cb, FALSE,
 												  GDK_End, GDK_CONTROL_MASK, view);
 
@@ -919,11 +935,13 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_widget_show(menuitem);
 
   menuitem = create_view_menu_item (submenu, _("Play selection"), "<Sweep-View>/Playback/Transport/Play selection",
+                                                  view,
                                                   play_view_sel_cb, FALSE,
 												  GDK_space, GDK_BUTTON1_MASK, view);
   NOALLOC(menuitem);
   
   menuitem = create_view_menu_item (submenu, _("Play sample"), "<Sweep-View>/Playback/Transport/Play sample",
+                                                  view,
                                                   play_view_cb, FALSE,
 												  GDK_space, GDK_CONTROL_MASK, view);
   NOALLOC(menuitem);
@@ -1001,12 +1019,12 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 
-  menuitem = create_view_menu_item (submenu, _("Pause"), "<Sweep-View>/Playback/Pause",
+  menuitem = create_view_menu_item (submenu, _("Pause"), "<Sweep-View>/Playback/Pause", view,
                                                   pause_playback_cb, FALSE,
 												  0, 0, view);
   NOALLOC(menuitem);
 
-  menuitem = create_view_menu_item (submenu, _("Stop"), "<Sweep-View>/Playback/Stop",
+  menuitem = create_view_menu_item (submenu, _("Stop"), "<Sweep-View>/Playback/Stop", view,
                                                   stop_playback_cb, FALSE,
 												  GDK_Return, GDK_BUTTON1_MASK, view);
   NOALLOC(menuitem);
