@@ -44,6 +44,7 @@ typedef enum {
   TOOL_SCRUB,
   TOOL_PENCIL,
   TOOL_NOISE,
+  TOOL_HAND
 } sw_tool_t;
 
 /* View colors */
@@ -85,6 +86,8 @@ struct _sw_view {
   gint repeater_tag;
 
   gboolean following; /* whether or not to follow playmarker */
+
+  gint hand_offset;
 
   GtkWidget * window;
   GtkWidget * time_ruler;

@@ -52,6 +52,7 @@
 
 #include "../pixmaps/scrub.xpm"
 #include "../pixmaps/select.xpm"
+#include "../pixmaps/hand.xpm"
 #ifdef DEVEL_CODE
 #include "../pixmaps/pencil.xpm"
 #include "../pixmaps/spraycan.xpm"

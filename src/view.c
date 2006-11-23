@@ -1878,6 +1878,14 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   view->tool_buttons = NULL;
 
+  button = create_pixmap_button (window, hand_xpm, _("Hand tool"),
+				 style_light_grey, VIEW_TOOLBAR_TOGGLE_BUTTON,
+				 G_CALLBACK (view_set_tool_cb), NULL, NULL, view);
+  g_object_set_data (G_OBJECT(button), "default", GINT_TO_POINTER(TOOL_HAND));
+  gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+  view->tool_buttons = g_list_append (view->tool_buttons, button);
+
   button = create_pixmap_button (window, select_xpm, _("Selector tool"),
 				 style_light_grey, VIEW_TOOLBAR_TOGGLE_BUTTON,
 				 G_CALLBACK (view_set_tool_cb), NULL, NULL, view);

@@ -135,13 +135,17 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 12);
   gtk_widget_show (label);
 
+  /* New layout of buttons */
+
+  gtk_button_box_set_layout (GTK_BUTTON_BOX(GTK_DIALOG(window)->action_area), GTK_BUTTONBOX_SPREAD);
+
   /* OK */
 
   if (ok_answer == NULL) ok_answer = _("OK");
   ok_button = gtk_button_new_with_label (ok_answer);
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
-		      ok_button, FALSE, TRUE, 0);
+		      ok_button, TRUE, TRUE, 0);
   g_object_set_data (G_OBJECT(ok_button), "default", ok_callback);
   gtk_widget_show (ok_button);
   g_signal_connect (G_OBJECT(ok_button), "clicked",
@@ -155,7 +159,7 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
     button = gtk_button_new_with_label (no_answer);
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
-			button, FALSE, TRUE, 0);
+			button, TRUE, TRUE, 0);
     g_object_set_data (G_OBJECT(button), "default", no_callback);
     gtk_widget_show (button);
     g_signal_connect (G_OBJECT(button), "clicked",

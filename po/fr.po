@@ -3,7 +3,6 @@
 # Mathieu ROY <yeupou@altern.org>, 2000.
 #
 #: src/sample-display.c:220
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.0.8\n"

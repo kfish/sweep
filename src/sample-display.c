@@ -199,6 +199,7 @@ enum {
   SELECTING_PLAYMARKER,
   SELECTING_PENCIL,
   SELECTING_NOISE,
+  SELECTING_HAND,
 };
 
 enum {
@@ -633,14 +634,17 @@ sample_display_init_display (SampleDisplay *s,
   s->width = w;
   s->height = h;
 
-  if(s->backing_pixmap) {
-    g_object_unref(s->backing_pixmap);
-  }
   window = GTK_WIDGET(s)->window;
   visual = gdk_rgb_get_visual();
 
+#if DOUBLE_BUFFER
+  if(s->backing_pixmap) {
+    g_object_unref(s->backing_pixmap);
+  }
   s->backing_pixmap = gdk_pixmap_new (GTK_WIDGET(s)->window,  
                                       w, h, visual->depth);
+#endif
+
 }
 
 static void
@@ -1877,6 +1881,42 @@ sample_display_handle_pencil_motion (SampleDisplay * s, int x, int y)
 }
 
 static void
+sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
+{
+  sw_framecount_t move, vstart, vend;
+  sw_framecount_t step = PIXEL_TO_OFFSET(1);
+  GtkAdjustment * adj = GTK_ADJUSTMENT(s->view->adj);
+
+//  g_print("X: %i OLD: %i MOVE: %i STEP: %i\n", x, s->view->hand_offset, s->view->hand_offset - x, step);
+
+  if (s->view->hand_offset != x){
+    move = s->view->hand_offset - x;
+
+    vstart = s->view->start + move * step;
+    vend = s->view->end + move * step;
+
+    if (vstart < 0){
+	vstart = 0;
+	vend = adj->page_size;
+    }
+    if (vend > s->view->sample->sounddata->nr_frames){
+	vstart = s->view->sample->sounddata->nr_frames - adj->page_size; 
+	vend = s->view->sample->sounddata->nr_frames;
+    }
+
+    s->view->start = vstart;
+    s->view->end = vend;
+
+    view_refresh_display(s->view);
+
+    gtk_adjustment_set_value( GTK_ADJUSTMENT(s->view->adj), vstart);
+  }
+  s->view->hand_offset = x;
+}
+
+
+
+static void
 sample_display_handle_noise_motion (SampleDisplay * s, int x, int y)
 {
   sw_sample * sample;
@@ -2094,11 +2134,12 @@ sample_display_button_press (GtkWidget      *widget,
       s->selecting == SELECTING_PLAYMARKER) {
     gdk_window_get_pointer (event->window, &x, &y, &state);
     sample_display_handle_playmarker_motion (s, x, y);
-  } else if(s->selecting && event->button != last_button) {
+  } else 
+  if(s->selecting && event->button != last_button) {
     /* Cancel the current operation if a different button is pressed. */
     sample_display_clear_sel (s);
-  } else if (last_tmp_view && last_tmp_view != s->view &&
-	     event->button != last_button) {
+  } else 
+  if (last_tmp_view && last_tmp_view != s->view && event->button != last_button) {
     view_clear_last_tmp_view ();
   } else {
     last_button = event->button;
@@ -2157,6 +2198,12 @@ sample_display_button_press (GtkWidget      *widget,
 	  sample_display_handle_playmarker_motion (s, x, y);
 	}
 #endif
+	break;
+      case TOOL_HAND:
+	s->selecting = SELECTING_HAND;
+	s->view->hand_offset = x;
+	SET_CURSOR(widget, HAND);
+	sample_display_handle_hand_motion (s, x, y);
 	break;
       case TOOL_ZOOM:
 	o = XPOS_TO_OFFSET(x);
@@ -2294,6 +2341,9 @@ sample_display_button_release (GtkWidget      *widget,
   case TOOL_SCRUB:
     if (s->meta_down) return TRUE;
     break;
+  case TOOL_HAND:
+    s->view->hand_offset = -1;
+    break;
   case TOOL_MOVE:
     break;
   case TOOL_ZOOM:
@@ -2349,6 +2399,9 @@ sample_display_motion_notify (GtkWidget *widget,
       switch (s->selecting) {
       case SELECTING_PLAYMARKER:
 	sample_display_handle_playmarker_motion (s, x, y);
+	break;
+      case SELECTING_HAND:
+	sample_display_handle_hand_motion (s, x, y);
 	break;
       case SELECTING_PENCIL:
 	sample_display_handle_pencil_motion (s, x, y);

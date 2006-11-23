@@ -2508,29 +2508,3 @@ msgstr "Zastosuj liniowe zgłaśnianie do zaznaczenia, zgłaśniając od ciszy"
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "Zastosuj liniowe wyciszenie do zaznaczenia, wyciszając do ciszy"
 
-#~ msgid "About Sweep"
-#~ msgstr "O programie Sweep"
-
-#~ msgid "Channels:"
-#~ msgstr "Kanały:"
-
-#~ msgid "Mono (mixdown)"
-#~ msgstr "Mono (wymieszane)"
-
-#~ msgid "Stereo (duplicate)"
-#~ msgstr "Stereo (powielone)"
-
-#~ msgid "Bitwidth:"
-#~ msgstr "Szerokość bitowa:"
-
-#~ msgid "8 bit"
-#~ msgstr "8 bit"
-
-#~ msgid "16 bit"
-#~ msgstr "16 bit"
-
-#~ msgid "24 bit"
-#~ msgstr "24 bit"
-
-#~ msgid "32 bit"
-#~ msgstr "32 bit"

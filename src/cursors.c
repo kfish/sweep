@@ -99,6 +99,7 @@ init_cursors (void)
   /*  sweep_cursors[SWEEP_CURSOR_MOVE] = gdk_cursor_new (GDK_FLEUR);*/
   sweep_cursors[SWEEP_CURSOR_PENCIL] = gdk_cursor_new (GDK_PENCIL);
   sweep_cursors[SWEEP_CURSOR_NOISE] = gdk_cursor_new (GDK_SPRAYCAN);
+  sweep_cursors[SWEEP_CURSOR_HAND] = gdk_cursor_new (GDK_HAND1);
 
   create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_xpm);
   
