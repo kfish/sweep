@@ -1883,17 +1883,16 @@ sample_display_handle_pencil_motion (SampleDisplay * s, int x, int y)
 static void
 sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 {
-  sw_framecount_t move, vstart, vend;
-  sw_framecount_t step = PIXEL_TO_OFFSET(1);
+  gdouble move, vstart, vend;
+  gdouble step = (gdouble)(s->view->end - s->view->start) / ((gdouble)s->width);
   GtkAdjustment * adj = GTK_ADJUSTMENT(s->view->adj);
-
-//  g_print("X: %i OLD: %i MOVE: %i STEP: %i\n", x, s->view->hand_offset, s->view->hand_offset - x, step);
 
   if (s->view->hand_offset != x){
     move = s->view->hand_offset - x;
+    move *= step;
 
-    vstart = s->view->start + move * step;
-    vend = s->view->end + move * step;
+    vstart = s->view->start + move;
+    vend = s->view->end + move;
 
     if (vstart < 0){
 	vstart = 0;
@@ -1903,6 +1902,16 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 	vstart = s->view->sample->sounddata->nr_frames - adj->page_size; 
 	vend = s->view->sample->sounddata->nr_frames;
     }
+/*
+    g_print("X: %i OLD: %i MOVE: %f STEP: %f start: %i end: %i vstart: %f vend: %f fstart:%f fend: %f\n",
+		   x, s->view->hand_offset, move, step,
+		   s->view->start, s->view->end, vstart, vend, round(vstart), round(vend));
+*/
+    vstart = round(vstart);
+    vend = round(vend);
+
+    if (s->view->start != vstart && s->view->end != vend)
+	    s->view->hand_offset = x;
 
     s->view->start = vstart;
     s->view->end = vend;
@@ -1911,10 +1920,7 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 
     gtk_adjustment_set_value( GTK_ADJUSTMENT(s->view->adj), vstart);
   }
-  s->view->hand_offset = x;
 }
-
-
 
 static void
 sample_display_handle_noise_motion (SampleDisplay * s, int x, int y)

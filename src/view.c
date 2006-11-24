@@ -65,7 +65,7 @@
 
 #define USER_GTKRC
 
-/*#define SCROLL_SMOOTHLY*/
+/* #define SCROLL_SMOOTHLY */
 
 /* Default initial dimensions.
  * 
