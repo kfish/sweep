@@ -796,7 +796,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   /* write header */
 
   {
-    long bytes = op.bytes;
+    int bytes = op.bytes;
     op.packet = (unsigned char *)
       speex_header_to_packet (&header, &bytes);
     op.bytes = bytes;
