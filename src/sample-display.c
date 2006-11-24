@@ -1907,8 +1907,8 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 		   x, s->view->hand_offset, move, step,
 		   s->view->start, s->view->end, vstart, vend, round(vstart), round(vend));
 */
-    vstart = round(vstart);
-    vend = round(vend);
+    vstart = round(vstart + (move < 0 ? 0.5 : -0.5));
+    vend = round(vend + (move < 0 ? 0.5 : -0.5));
 
     if (s->view->start != vstart && s->view->end != vend)
 	    s->view->hand_offset = x;
