@@ -40,6 +40,10 @@
 #include "../pixmaps/zoom_in_mask.xbm"
 #include "../pixmaps/zoom_out.xbm"
 #include "../pixmaps/zoom_out_mask.xbm"
+#include "../pixmaps/cursor-openhand.xbm"
+#include "../pixmaps/cursor-openhand_mask.xbm"
+#include "../pixmaps/cursor-closedhand.xbm"
+#include "../pixmaps/cursor-closedhand_mask.xbm"
 
 GdkCursor * sweep_cursors[SWEEP_CURSOR_MAX];
 
@@ -99,22 +103,25 @@ init_cursors (void)
   /*  sweep_cursors[SWEEP_CURSOR_MOVE] = gdk_cursor_new (GDK_FLEUR);*/
   sweep_cursors[SWEEP_CURSOR_PENCIL] = gdk_cursor_new (GDK_PENCIL);
   sweep_cursors[SWEEP_CURSOR_NOISE] = gdk_cursor_new (GDK_SPRAYCAN);
-  sweep_cursors[SWEEP_CURSOR_HAND] = gdk_cursor_new (GDK_HAND1);
+
 
   create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_xpm);
   
   sweep_cursors[SWEEP_CURSOR_HORIZ] =
     gdk_cursor_new_from_pixmap (bitmap, mask, &white, &black, 8, 8);
 
+
   create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_plus_xpm);
   
   sweep_cursors[SWEEP_CURSOR_HORIZ_PLUS] =
     gdk_cursor_new_from_pixmap (bitmap, mask, &white, &black, 8, 8);
 
+
   create_bitmap_and_mask_from_xpm (&bitmap, &mask, horiz_minus_xpm);
   
   sweep_cursors[SWEEP_CURSOR_HORIZ_MINUS] =
     gdk_cursor_new_from_pixmap (bitmap, mask, &white, &black, 8, 8);
+
 
   bitmap =
     gdk_bitmap_create_from_data (NULL, zoom_in_bits,
@@ -160,6 +167,30 @@ init_cursors (void)
   sweep_cursors[SWEEP_CURSOR_MOVE] =
     gdk_cursor_new_from_pixmap (bitmap, mask, &black, &white,
 				hand_x_hot, hand_y_hot);
+
+
+  bitmap =
+    gdk_bitmap_create_from_data (NULL, (const gchar *) cursor_openhand_bits,
+				 cursor_openhand_width, cursor_openhand_height);
+  mask =
+    gdk_bitmap_create_from_data (NULL, (const gchar *) cursor_openhand_mask_bits,
+				 cursor_openhand_mask_width, cursor_openhand_mask_height);
+
+  sweep_cursors[SWEEP_CURSOR_HAND_OPEN] =
+    gdk_cursor_new_from_pixmap (bitmap, mask, &black, &white,
+				cursor_openhand_x_hot, cursor_openhand_y_hot);
+
+
+  bitmap =
+    gdk_bitmap_create_from_data (NULL, cursor_closedhand_bits,
+				 cursor_closedhand_width, cursor_closedhand_height);
+  mask =
+    gdk_bitmap_create_from_data (NULL, cursor_closedhand_mask_bits,
+				 cursor_closedhand_mask_width, cursor_closedhand_mask_height);
+
+  sweep_cursors[SWEEP_CURSOR_HAND_CLOSE] =
+    gdk_cursor_new_from_pixmap (bitmap, mask, &black, &white,
+				cursor_closedhand_x_hot, cursor_closedhand_y_hot);
 
 
 }

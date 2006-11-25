@@ -487,6 +487,9 @@ sample_display_set_default_cursor (SampleDisplay * s)
   case TOOL_NOISE:
     cursor = sweep_cursors[SWEEP_CURSOR_NOISE];
     break;
+  case TOOL_HAND:
+    cursor = sweep_cursors[SWEEP_CURSOR_HAND_OPEN];
+    break;
   default:
     cursor = NULL;
     break;
@@ -2208,7 +2211,7 @@ sample_display_button_press (GtkWidget      *widget,
       case TOOL_HAND:
 	s->selecting = SELECTING_HAND;
 	s->view->hand_offset = x;
-	SET_CURSOR(widget, HAND);
+	SET_CURSOR(widget, HAND_CLOSE);
 	sample_display_handle_hand_motion (s, x, y);
 	break;
       case TOOL_ZOOM:
