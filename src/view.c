@@ -3406,7 +3406,7 @@ view_refresh_title (sw_view * view)
 	     s->modified ? _("*") : "",
 	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
 #endif
-	     100 * (view->end - view->start) / s->sounddata->nr_frames);
+	     s->progress_percent);
   } else {
     snprintf(buf, BUF_LEN,
 #if 0
