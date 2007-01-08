@@ -256,7 +256,7 @@ sounddata_normalise_selection (sw_sounddata * sounddata)
   }
 
   /* Clear the old selection */
-  sounddata_clear_selection (sounddata->sels);
+  sounddata_clear_selection (sounddata);
 
   /* Set the newly created (normalised) selection */
   sounddata->sels = nsels;
