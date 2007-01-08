@@ -99,9 +99,21 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
 void
 sounddata_clear_selection (sw_sounddata * sounddata)
 {
+  GList * gl;
+  sw_sel * sel;
+
+  g_mutex_lock (sounddata->sels_mutex);
+
+  for (gl = sounddata->sels; gl; gl = gl->next){
+          sel = (sw_sel*)gl->data;
+          sel_free(sel);
+  }
+
   g_list_free(sounddata->sels);
 
   sounddata->sels = NULL;
+
+  g_mutex_unlock (sounddata->sels_mutex);
 };
 
 void
@@ -244,7 +256,7 @@ sounddata_normalise_selection (sw_sounddata * sounddata)
   }
 
   /* Clear the old selection */
-  g_list_free (sounddata->sels);
+  sounddata_clear_selection (sounddata->sels);
 
   /* Set the newly created (normalised) selection */
   sounddata->sels = nsels;

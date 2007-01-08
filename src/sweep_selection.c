@@ -51,6 +51,15 @@ sel_new (sw_framecount_t start, sw_framecount_t end)
   return sel;
 }
 
+void
+sel_free (sw_sel * sel)
+{
+  if (!sel)
+	return;
+
+  g_free(sel);
+}
+
 sw_sel *
 sel_copy (sw_sel * sel)
 {

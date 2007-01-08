@@ -24,6 +24,9 @@
 sw_sel *
 sel_new (sw_framecount_t start, sw_framecount_t end);
 
+void
+sel_free (sw_sel * sel);
+
 sw_sel *
 sel_copy (sw_sel * sel);
 
