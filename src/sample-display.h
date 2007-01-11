@@ -89,6 +89,9 @@ struct _SampleDisplay
   gint pulsing_tag; /* gtk_timeout tag for cursor pulse */
   gboolean pulse;
 
+  gint hand_scroll_tag;   /* gtk_timeout tag for natural hand scrolling */
+  gint hand_scroll_delta; /* natural hand scrolling */
+
   /* Window panning */
   int selecting_x0;  /* the coordinate where the mouse was clicked */
   int selecting_wins0; /* stored value of view->v_start when the mouse

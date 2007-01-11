@@ -111,6 +111,7 @@ extern GdkCursor * sweep_cursors[];
 
 #define MARCH_INTERVAL 300
 #define PULSE_INTERVAL 450
+#define HAND_SCROLL_INTERVAL 50
 
 extern sw_view * last_tmp_view;
 
@@ -1625,6 +1626,37 @@ sample_display_expose (GtkWidget *widget,
 }
 
 static gint
+sample_display_hand_scroll (SampleDisplay * s)
+{
+  gint new_win_start, win_length;
+  gfloat step;
+  
+  win_length = s->view->end - s->view->start;
+
+  step = win_length * 1.0 / s->width;
+
+  new_win_start = s->view->start + s->hand_scroll_delta * step;
+  
+  new_win_start = CLAMP(new_win_start, 0,
+			s->view->sample->sounddata->nr_frames -
+			(s->view->end - s->view->start));
+
+  if(new_win_start != s->view->start) {
+    sample_display_set_window (s,
+			       new_win_start,
+			       new_win_start + win_length);
+  } else {
+	  s->hand_scroll_delta = 0;
+  }
+/*
+  g_print ("s->delta: %i new_win_start: %i\n", s->hand_scroll_delta, new_win_start);
+*/
+  s->hand_scroll_delta *= 0.98;
+
+  return (s->hand_scroll_delta != 0);
+}
+
+static gint
 sample_display_scroll_left (gpointer data)
 {
   SampleDisplay * s = (SampleDisplay *)data;
@@ -1889,7 +1921,15 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
   gdouble move, vstart, vend;
   gdouble step = (gdouble)(s->view->end - s->view->start) / ((gdouble)s->width);
   GtkAdjustment * adj = GTK_ADJUSTMENT(s->view->adj);
+  gint delta;
 
+  delta = s->view->hand_offset - x;
+
+  s->hand_scroll_delta *= 0.9;
+
+  if (abs (delta) > abs (s->hand_scroll_delta))
+	  s->hand_scroll_delta = delta;
+  
   if (s->view->hand_offset != x){
     move = s->view->hand_offset - x;
     move *= step;
@@ -1905,12 +1945,8 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 	vstart = s->view->sample->sounddata->nr_frames - adj->page_size; 
 	vend = s->view->sample->sounddata->nr_frames;
     }
-/*
-    g_print("X: %i OLD: %i MOVE: %f STEP: %f start: %i end: %i vstart: %f vend: %f fstart:%f fend: %f\n",
-		   x, s->view->hand_offset, move, step,
-		   s->view->start, s->view->end, vstart, vend, round(vstart), round(vend));
-*/
-    vstart = round(vstart + (move < 0 ? 0.5 : -0.5));
+    
+	vstart = round(vstart + (move < 0 ? 0.5 : -0.5));
     vend = round(vend + (move < 0 ? 0.5 : -0.5));
 
     if (s->view->start != vstart && s->view->end != vend)
@@ -2209,19 +2245,24 @@ sample_display_button_press (GtkWidget      *widget,
 #endif
 	break;
       case TOOL_HAND:
-	s->selecting = SELECTING_HAND;
-	s->view->hand_offset = x;
-	SET_CURSOR(widget, HAND_CLOSE);
-	sample_display_handle_hand_motion (s, x, y);
+	    s->selecting = SELECTING_HAND;
+	    s->view->hand_offset = x;
+	    s->hand_scroll_delta = 0;
+	    if (s->hand_scroll_tag){
+		   g_source_remove (s->hand_scroll_tag);
+		   s->hand_scroll_tag = 0;
+	    }
+	    SET_CURSOR(widget, HAND_CLOSE);
+	    sample_display_handle_hand_motion (s, x, y);
 	break;
       case TOOL_ZOOM:
-	o = XPOS_TO_OFFSET(x);
-	view_center_on (s->view, o);
-	if (state & GDK_SHIFT_MASK) {
-	  view_zoom_out (s->view, 2.0);
-	} else {
-	  view_zoom_in (s->view, 2.0);
-	}
+	    o = XPOS_TO_OFFSET(x);
+	    view_center_on (s->view, o);
+	    if (state & GDK_SHIFT_MASK) {
+	      view_zoom_out (s->view, 2.0);
+	    } else {
+	      view_zoom_in (s->view, 2.0);
+	    }
 	break;
       case TOOL_PENCIL:
 	s->selecting = SELECTING_PENCIL;
@@ -2352,6 +2393,11 @@ sample_display_button_release (GtkWidget      *widget,
     break;
   case TOOL_HAND:
     s->view->hand_offset = -1;
+
+    s->hand_scroll_tag = g_timeout_add (HAND_SCROLL_INTERVAL,
+		    (GSourceFunc)sample_display_hand_scroll,
+		    s);
+
     break;
   case TOOL_MOVE:
     break;
@@ -2410,8 +2456,8 @@ sample_display_motion_notify (GtkWidget *widget,
 	sample_display_handle_playmarker_motion (s, x, y);
 	break;
       case SELECTING_HAND:
-	sample_display_handle_hand_motion (s, x, y);
-	break;
+	    sample_display_handle_hand_motion (s, x, y);
+	    break;
       case SELECTING_PENCIL:
 	sample_display_handle_pencil_motion (s, x, y);
 	break;
@@ -2928,6 +2974,7 @@ sample_display_init (SampleDisplay *s)
   s->marching = FALSE;
   s->pulsing_tag = 0;
   s->pulse = FALSE;
+  s->hand_scroll_tag = 0;
   s->mouse_x = 0;
   s->mouse_offset = 0;
   s->scroll_left_tag = 0;
