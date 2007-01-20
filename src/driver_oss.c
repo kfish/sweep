@@ -444,6 +444,9 @@ static sw_driver _driver_oss = {
   flush_dev_dsp,
   drain_dev_dsp,
   close_dev_dsp,
+  "oss_primary_device",
+  "oss_monitor_device",
+  "oss_log_frags"
 };
 
 #else

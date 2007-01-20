@@ -95,7 +95,7 @@ pcmio_get_main_dev (void)
 {
   char * main_dev;
 
-  main_dev = prefs_get_string (DEV_KEY);
+  main_dev = prefs_get_string (pref->primary_device_key);
 
   if (main_dev == NULL) return pcmio_get_default_main_dev();
   
@@ -107,7 +107,7 @@ pcmio_get_monitor_dev (void)
 {
   char * monitor_dev;
 
-  monitor_dev = prefs_get_string (MONITOR_DEV_KEY);
+  monitor_dev = prefs_get_string (pref->monitor_device_key);
 
   if (monitor_dev == NULL) return pcmio_get_default_monitor_dev ();
   
@@ -130,8 +130,7 @@ pcmio_get_log_frags (void)
 {
   int * log_frags;
 
-  log_frags = prefs_get_int (LOG_FRAGS_KEY);
-
+  log_frags = prefs_get_int (pref->log_frags_key);
   if (log_frags == NULL) return DEFAULT_LOG_FRAGS;
   else return (*log_frags);
 }
@@ -163,17 +162,17 @@ config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   adj = g_object_get_data (G_OBJECT(dialog), "buff_adj");
 
-  prefs_set_int (LOG_FRAGS_KEY, adj->value);
+  prefs_set_int (pref->log_frags_key, adj->value);
 
   main_dev =
     gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
 
-  prefs_set_string (DEV_KEY, (gchar *)main_dev);
+  prefs_set_string (pref->primary_device_key, (gchar *)main_dev);
 
   if (monitor_checked (dialog)) {
     monitor_dev =
       gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry)); 
-    prefs_set_string (MONITOR_DEV_KEY, (gchar *)monitor_dev);
+    prefs_set_string (pref->monitor_device_key, (gchar *)monitor_dev);
 
     prefs_set_int (USE_MONITOR_KEY, 1);
   } else {

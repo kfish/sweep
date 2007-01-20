@@ -124,6 +124,9 @@ static sw_driver _driver_solaris = {
   flush_dev_audio,
   drain_dev_audio,
   close_dev_audio,
+  "solaris_primary_device",
+  "solaris_monitor_device",
+  "solaris_log_frags"
 };
 
 #else

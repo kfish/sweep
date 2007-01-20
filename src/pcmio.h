@@ -23,10 +23,6 @@
 
 #include <glib.h>
 
-#define DEV_KEY "OSS_Device"
-#define MONITOR_DEV_KEY "OSS_MonitorDevice"
-#define LOG_FRAGS_KEY "OSS_Logfrags"
-
 #define USE_MONITOR_KEY "UseMonitor"
 
 #define DEFAULT_LOG_FRAGS 6

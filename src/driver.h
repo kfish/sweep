@@ -51,6 +51,10 @@ struct _sw_driver {
   void (*flush) (sw_handle * handle);
   void (*drain) (sw_handle * handle);
   void (*close) (sw_handle * handle);
+  
+  char * primary_device_key;
+  char * monitor_device_key;
+  char * log_frags_key;
 };
 
 void

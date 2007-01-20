@@ -451,7 +451,10 @@ static sw_driver _driver_alsa = {
   alsa_device_reset,
   alsa_device_flush,
   alsa_device_drain,
-  alsa_device_close
+  alsa_device_close,
+  "alsa_primary_device",
+  "alsa_monitor_device",
+  "alsa_log_frags"
 };
 
 #else
