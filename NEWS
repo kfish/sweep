@@ -4,7 +4,7 @@ Tue Jan 30 2007 -- Version 0.9.2
 New in this release:
 
 	* ALSA is now the default driver. see README.OSS for oss
-	* minimum gtk version raised to 2.4
+	* minimum supported gtk version raised to 2.4 
 	* added the "hand tool" for panning the display with inertia
 	  (Radoslaw Korzeniewski)
 	* can now open multiple files via the gtk file selector
@@ -13,7 +13,6 @@ New in this release:
 	* remove support for libsndfile0 (Erik de Castro Lopo)
 	* remove direct flac support as it's supported by libsndfile now
 	  (Erik de Castro Lopo)
-	* fix make distcheck (Erik de Castro Lopo)
 	* added a new slash screen (Pascal Klein)
 	* fix segfault when closing windows while others were still loading
 	* other bugs addressed and changes made. run "svn log" on a copy of svn

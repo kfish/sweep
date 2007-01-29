@@ -10,7 +10,6 @@ Tue Jan 30 00:00:00 GMT 2007 Peter Shorthose <kickback@users.sourceforge.net>
 	* remove support for libsndfile0 (Erik de Castro Lopo)
 	* remove direct flac support as it's supported by libsndfile now
 	  (Erik de Castro Lopo)
-	* fix make distcheck (Erik de Castro Lopo)
 	* added a new slash screen (Pascal Klein)
 	* fix segfault when closing windows while others were still loading
 	* other bugs addressed and changes made. run "svn log" on a copy of svn
