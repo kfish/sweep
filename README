@@ -33,7 +33,7 @@ Summary of library dependencies:
 
 REQUIRED:
 
-        * GTK+ 2.0, (version 2.2.0 or higher) standard in most 
+        * GTK+ 2.0, (version 2.4.0 or higher) standard in most 
 	  distributions and available from:
 
 	    http://www.gtk.org/

@@ -4,7 +4,7 @@ dnl Require minimum autoconf version
 AC_PREREQ(2.50)
 
 AC_INIT(configure.ac)
-AM_INIT_AUTOMAKE(sweep, 0.9.1)
+AM_INIT_AUTOMAKE(sweep, 0.9.2)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -66,7 +66,7 @@ dnl
 dnl  Detect Gthread, GLib and GTK+ libraries
 dnl
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >=  2.2.0, HAVE_GTK="yes", sweep_config_ok="no")
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >=  2.4.0, HAVE_GTK="yes", sweep_config_ok="no")
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 if test "x$HAVE_GTK" != xyes ; then
@@ -600,6 +600,7 @@ plugins/example/Makefile
 doc/Makefile
 intl/Makefile
 po/Makefile.in
+doc/sweep.1
 ])
 
 AC_MSG_RESULT([
