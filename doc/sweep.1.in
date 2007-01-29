@@ -5,6 +5,7 @@ Sweep - a sound wave editor
 .B sweep
 [\-h] [\-\-help] [-v] [\-\-version]
 [\-\-display \fIdisplay\fP]
+[\-\-ignore\-failed\-lock]
 [\fIfilename\fP]...
 
 .SH DESCRIPTION
@@ -19,6 +20,13 @@ Display a list of all commandline options.
 .TP 8
 .B \-v, \-\-version
 Output the version info.
+.TP 8
+.B \-\-ignore\-failed\-lock
+Continue when attempt to lock the
+preferences file fails.
+For use when the users home directory
+is on an NFS
+file system. (possibly unsafe) 
 .TP 8
 .B \-\-display \fIdisplay\fP
 Use the designated X display.
