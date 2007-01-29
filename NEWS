@@ -13,7 +13,7 @@ New in this release:
 	* remove support for libsndfile0 (Erik de Castro Lopo)
 	* remove direct flac support as it's supported by libsndfile now
 	  (Erik de Castro Lopo)
-	* added a new slash screen (Pascal Klein)
+	* added a new splash screen (Pascal Klein)
 	* fix segfault when closing windows while others were still loading
 	* other bugs addressed and changes made. run "svn log" on a copy of svn
 	  trunk for details, or check http://trac.metadecks.org/timeline
