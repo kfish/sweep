@@ -182,10 +182,10 @@ init_cursors (void)
 
 
   bitmap =
-    gdk_bitmap_create_from_data (NULL, cursor_closedhand_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) cursor_closedhand_bits,
 				 cursor_closedhand_width, cursor_closedhand_height);
   mask =
-    gdk_bitmap_create_from_data (NULL, cursor_closedhand_mask_bits,
+    gdk_bitmap_create_from_data (NULL, (const gchar *) cursor_closedhand_mask_bits,
 				 cursor_closedhand_mask_width, cursor_closedhand_mask_height);
 
   sweep_cursors[SWEEP_CURSOR_HAND_CLOSE] =
