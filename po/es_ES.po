@@ -1,12 +1,12 @@
 # Spanish translation of sweep
 # Juan Manuel Martínez <negromartinez@interlap.com.ar>
 #
-#: src/sample-display.c:220
+#: src/sample-display.c:222
 msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.5.13\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2006-07-17 18:28+1000\n"
+"POT-Creation-Date: 2007-02-03 14:52+0000\n"
 "PO-Revision-Date: 2005-12-02 23:06-0600\n"
 "Last-Translator: Waldo Ramírez Montaño <waldo.ramirez@correo.unam.mx>\n"
 "Language-Team: Spanish <LL@li.org>\n"
@@ -40,36 +40,44 @@ msgstr "Cargar uno existente"
 msgid "WARNING: Build includes incomplete development code.\n"
 msgstr "ATENCION: la compilación incluye código en desarrollo.\n"
 
-#: src/main.c:185
+#: src/main.c:188
 msgid "Sweep version"
 msgstr "Versión de Sweep"
 
-#: src/main.c:186
+#: src/main.c:189
 msgid "Sweep plugin API version"
 msgstr "Versión de la API de Sweep"
 
-#: src/main.c:192
+#: src/main.c:195
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr "Uso: %s [opción...] [archivos...]\n"
 
-#: src/main.c:193
+#: src/main.c:196
 msgid "Valid options are:\n"
 msgstr "Las opciones válidas son:\n"
 
-#: src/main.c:194
+#: src/main.c:197
 msgid "  -h --help                Output this help.\n"
 msgstr "  -h --help                Muestra esta ayuda.\n"
 
-#: src/main.c:195
+#: src/main.c:198
 msgid "  -v --version             Output version info.\n"
 msgstr "  -v --version             Muestra la versión.\n"
 
-#: src/main.c:196
+#: src/main.c:199
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr "  --display <display>      Usa el display X especificado.\n"
 
-#: src/main.c:198
+#: src/main.c:200
+msgid ""
+"  --ignore-failed-lock     Continue when attempt to lock the\n"
+"                           preferences file fails.  For use when\n"
+"                           the users home directory is on an NFS\n"
+"                           file system. (possibly unsafe) \n"
+msgstr ""
+
+#: src/main.c:206
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
 msgstr "  --no-toolbox             No muestra la ventana de herramientas.\n"
 
@@ -109,16 +117,16 @@ msgstr "Actualmente: %d canales"
 msgid "Output channels"
 msgstr "Canales de salida"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:369
-#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:140
-#: src/question_dialogs.c:200 src/question_dialogs.c:249
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
+#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:144
+#: src/question_dialogs.c:204 src/question_dialogs.c:253
 #: src/sweep_sample.c:1918 src/undo_dialog.c:440
 msgid "OK"
 msgstr "Ok"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:382
-#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:154
-#: src/view.c:508 src/view.c:2801
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
+#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:158
+#: src/view.c:502 src/view.c:2607
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -126,11 +134,11 @@ msgstr "Cancelar"
 msgid "Mix down to mono"
 msgstr "Mezclar y reducir a Mono"
 
-#: src/channelops.c:445 src/view.c:336
+#: src/channelops.c:445 src/view.c:338
 msgid "Remove left channel"
 msgstr "Eliminar canal izquierdo"
 
-#: src/channelops.c:455 src/view.c:346
+#: src/channelops.c:455 src/view.c:347
 msgid "Remove right channel"
 msgstr "Eliminar canal derecho"
 
@@ -151,71 +159,71 @@ msgstr "Convertir de %d a %d canales"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: Agregar/Eliminar canales"
 
-#: src/driver.c:364
+#: src/driver.c:363
 msgid "Sweep: audio device configuration"
 msgstr "Swwep: configuración del dispositivo de audio"
 
-#: src/driver.c:405
+#: src/driver.c:404
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
 "Los cambios en el dispositivo de salida tendrán efecto la próxima vez que "
 "reproduzca el audio."
 
-#: src/driver.c:419
+#: src/driver.c:418
 msgid "Device name"
 msgstr "Nombre del dispositivo"
 
-#: src/driver.c:425
+#: src/driver.c:424
 msgid "Set the main device for playback and recording"
 msgstr "Establece el dispositivo principal para reproducción y grabación"
 
-#: src/driver.c:435
+#: src/driver.c:434
 msgid "Main device:"
 msgstr "Dispositivo principal:"
 
-#: src/driver.c:449 src/driver.c:631 src/samplerate.c:570
+#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
 msgid "Default"
 msgstr "Predefinido"
 
-#: src/driver.c:462
+#: src/driver.c:461
 msgid "Use a different device for monitoring"
 msgstr "Usar un dispositivo distinto para el monitoreo"
 
-#: src/driver.c:474
+#: src/driver.c:473
 msgid "Monitor output:"
 msgstr "Salida del monitor:"
 
-#: src/driver.c:499
+#: src/driver.c:498
 msgid "Swap"
 msgstr "Intercambiar"
 
-#: src/driver.c:507
+#: src/driver.c:506
 msgid "Swap main and monitor devices."
 msgstr "Intercambiar los dispositivos Principal y Monitor"
 
-#: src/driver.c:516 src/driver.c:617 src/file_speex.c:1957
+#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
 #: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
 msgid "Reset"
 msgstr "Reinicializar"
 
-#: src/driver.c:524
+#: src/driver.c:523
 msgid "Reset to the last remembered device names."
 msgstr "Reinicializa los dispositivos a los últimos valores conocidos"
 
-#: src/driver.c:530 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
 #: src/param.c:747 src/sweep_sample.c:543
 msgid "Defaults"
 msgstr "Predeterminados"
 
-#: src/driver.c:538
+#: src/driver.c:537
 msgid "Set to default device names."
 msgstr "Establece los dispositivos a los valores predeterminados."
 
-#: src/driver.c:549
+#: src/driver.c:548
 msgid "Device buffering"
 msgstr "Dispositivo de pre-lectura"
 
-#: src/driver.c:559
+#: src/driver.c:558
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -223,7 +231,7 @@ msgstr ""
 "Baja latencia /\n"
 "Más interrupciones"
 
-#: src/driver.c:581
+#: src/driver.c:580
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -231,7 +239,7 @@ msgstr ""
 "Alta latencia /\n"
 "Menos interrupciones"
 
-#: src/driver.c:585
+#: src/driver.c:584
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -246,15 +254,15 @@ msgstr ""
 "Los valores bajos mejoran la respuesta, pero pueden degradar la calidad del "
 "audio en sistemas damasiado cargados."
 
-#: src/driver.c:604
+#: src/driver.c:603
 msgid "Remember these options"
 msgstr "Recordar estas opciones"
 
-#: src/driver.c:625
+#: src/driver.c:624
 msgid "Reset to the last remembered device buffering."
 msgstr "Reinicializar el dispositivo de pre-lectura al último valor recordado."
 
-#: src/driver.c:639
+#: src/driver.c:638
 msgid "Set to default device buffering."
 msgstr "Establece el dispositivo de pre-lectura al valor predeterminado."
 
@@ -262,7 +270,7 @@ msgstr "Establece el dispositivo de pre-lectura al valor predeterminado."
 msgid "No selection to copy"
 msgstr "Ninguna selección a copiar"
 
-#: src/edit.c:1308 src/view.c:568 src/view.c:1308
+#: src/edit.c:1308 src/view.c:531 src/view.c:1109
 msgid "Copy"
 msgstr "Copiar"
 
@@ -270,7 +278,7 @@ msgstr "Copiar"
 msgid "No selection to cut"
 msgstr "Ninguna selección a cortar"
 
-#: src/edit.c:1358 src/view.c:558 src/view.c:1302
+#: src/edit.c:1358 src/view.c:527 src/view.c:1103
 msgid "Cut"
 msgstr "Cortar"
 
@@ -278,7 +286,7 @@ msgstr "Cortar"
 msgid "No selection to clear"
 msgstr "Ninguna selección a limpiar"
 
-#: src/edit.c:1404 src/view.c:578 src/view.c:1314
+#: src/edit.c:1404 src/view.c:535 src/view.c:1115
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -286,7 +294,7 @@ msgstr "Limpiar"
 msgid "No selection to delete"
 msgstr "Ninguna selección a borrar"
 
-#: src/edit.c:1447 src/view.c:550
+#: src/edit.c:1447 src/view.c:523
 msgid "Delete"
 msgstr "Borrar"
 
@@ -294,7 +302,7 @@ msgstr "Borrar"
 msgid "Nothing to crop out"
 msgstr "Nada para recortar"
 
-#: src/edit.c:1498 src/view.c:590 src/view.c:1320 src/view.c:2024
+#: src/edit.c:1498 src/view.c:539 src/view.c:1121 src/view.c:1825
 msgid "Crop"
 msgstr "Recortar"
 
@@ -376,7 +384,7 @@ msgstr ""
 msgid "Revert file"
 msgstr "Revertir archivo"
 
-#: src/file_dialogs.c:379 src/view.c:460
+#: src/file_dialogs.c:379 src/view.c:468
 msgid "Revert"
 msgstr "Revertir"
 
@@ -448,12 +456,12 @@ msgstr ""
 "\n"
 "¿Está seguro que desea guardarlo?"
 
-#: src/file_dialogs.c:887 src/sweep_undo.c:331 src/view.c:3552
+#: src/file_dialogs.c:887 src/sweep_undo.c:331 src/view.c:3358
 msgid "File modified"
 msgstr "Archivo modificado"
 
 #: src/file_dialogs.c:888 src/file_speex.c:2127 src/file_vorbis.c:1611
-#: src/view.c:441 src/view.c:1938
+#: src/view.c:460 src/view.c:1739
 msgid "Save"
 msgstr "Guardar"
 
@@ -1073,7 +1081,7 @@ msgstr ""
 "son marcas registradas de la fundación Xiph.org.\n"
 "Usado con autorización."
 
-#: src/head.c:408 src/view.c:2472
+#: src/head.c:408 src/view.c:2281
 msgid "Cursor position (indicator)"
 msgstr "Posición del cursor (indicador)"
 
@@ -1089,64 +1097,64 @@ msgstr "Grabación en modo cíclico (activar/desactivar)"
 msgid "Record into selection"
 msgstr "Grabación dentro de la selección"
 
-#: src/head.c:503 src/view.c:1220
+#: src/head.c:503 src/view.c:1027
 msgid "Stop"
 msgstr "Detener"
 
-#: src/head.c:516
+#: src/head.c:516 src/view.c:2426
 msgid "Go to beginning"
 msgstr "Ir al comienzo"
 
-#: src/head.c:527 src/view.c:2631
+#: src/head.c:527 src/view.c:2437
 msgid "Rewind"
 msgstr "Rebobinar"
 
-#: src/head.c:540 src/view.c:2643
+#: src/head.c:540 src/view.c:2449
 msgid "Fast forward"
 msgstr "Avance rápido"
 
-#: src/head.c:555
+#: src/head.c:555 src/view.c:2462
 msgid "Go to the end"
 msgstr "Ir al final"
 
-#: src/interface.c:271
+#: src/interface.c:289
 msgid "Sweep"
 msgstr "Sweep"
 
-#: src/interface.c:296 src/view.c:417
+#: src/interface.c:314 src/view.c:444
 msgid "File"
 msgstr "Archivo"
 
-#: src/interface.c:301
+#: src/interface.c:319
 msgid "New"
 msgstr "Nuevo"
 
-#: src/interface.c:310
+#: src/interface.c:328
 msgid "Open"
 msgstr "Abrir"
 
-#: src/interface.c:319 src/sweep_sample.c:800 src/sweep_sample.c:808
-#: src/view.c:492
+#: src/interface.c:337 src/sweep_sample.c:800 src/sweep_sample.c:808
+#: src/view.c:488
 msgid "Quit"
 msgstr "Salir"
 
-#: src/interface.c:330 src/view.c:1231
+#: src/interface.c:348 src/view.c:1032
 msgid "Help"
 msgstr "Ayuda"
 
-#: src/interface.c:335
+#: src/interface.c:353
 msgid "About..."
 msgstr "Sobre..."
 
-#: src/interface.c:358 src/view.c:669
+#: src/interface.c:376 src/view.c:577
 msgid "Select"
 msgstr "Selección"
 
-#: src/interface.c:359
+#: src/interface.c:377
 msgid "Select regions of a sample"
 msgstr "Selecciona regiones de un muestreo"
 
-#: src/interface.c:360
+#: src/interface.c:378
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -1157,28 +1165,28 @@ msgstr ""
 "Mantenga presionada la tecla shift mientras selecciona para agregar regiones "
 "discontínuas a la selección."
 
-#: src/interface.c:377
+#: src/interface.c:395
 msgid "Move"
 msgstr "Mover"
 
-#: src/interface.c:378
+#: src/interface.c:396
 msgid "Move regions in a sample"
 msgstr "Mueve regiones en un muestreo"
 
-#: src/interface.c:379
+#: src/interface.c:397
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 "Con esta herramienta puede mover las regiones seleccionadas de un muestreo."
 
-#: src/interface.c:391
+#: src/interface.c:409
 msgid "Scrub"
 msgstr "Scrub"
 
-#: src/interface.c:392
+#: src/interface.c:410
 msgid "Locate sounds directly"
 msgstr "Encontrar sonidos directamente"
 
-#: src/interface.c:393
+#: src/interface.c:411
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
@@ -1187,15 +1195,15 @@ msgstr ""
 "lado en la vista para mover instantáneamente la posición de reproducción a "
 "esa parte del muestreo."
 
-#: src/interface.c:410
+#: src/interface.c:428
 msgid "Zoom"
 msgstr "Zoom"
 
-#: src/interface.c:411
+#: src/interface.c:429
 msgid "Zoom in & out"
 msgstr "Aumenta o disminuye"
 
-#: src/interface.c:412
+#: src/interface.c:430
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
@@ -1204,171 +1212,171 @@ msgstr ""
 "agrandar esa parte del muestreo. Mantenga presionada la tecla shift para "
 "disminuir la vusta."
 
-#: src/interface.c:428
+#: src/interface.c:446
 msgid "Pencil"
 msgstr "Lápiz"
 
-#: src/interface.c:429
+#: src/interface.c:447
 msgid "Edit PCM sample values"
 msgstr "Modifica los valores PCM de un muestreo"
 
-#: src/interface.c:430
+#: src/interface.c:448
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr "Cuando está a nivel de muestreos individuales, haga click para editar"
 
-#: src/interface.c:441
+#: src/interface.c:459
 msgid "Noise"
 msgstr "Ruido"
 
-#: src/interface.c:442
+#: src/interface.c:460
 msgid "Add noise"
 msgstr "Agrega ruido"
 
-#: src/interface.c:443
+#: src/interface.c:461
 msgid "Randomise PCM values"
 msgstr "Aleatoriza los valores PCM"
 
-#: src/notes.c:60
+#: src/notes.c:61
 msgid "C3"
 msgstr "Do    3"
 
-#: src/notes.c:61
+#: src/notes.c:62
 msgid "C#3"
 msgstr "Do#  3"
 
-#: src/notes.c:62
+#: src/notes.c:63
 msgid "D3"
 msgstr "Re    3"
 
-#: src/notes.c:63
+#: src/notes.c:64
 msgid "Eb3"
 msgstr "Mib  3"
 
-#: src/notes.c:64
+#: src/notes.c:65
 msgid "E3"
 msgstr "Mi    3"
 
-#: src/notes.c:65
+#: src/notes.c:66
 msgid "F3"
 msgstr "Fa    3"
 
-#: src/notes.c:66
+#: src/notes.c:67
 msgid "F#3"
 msgstr "Fa#  3"
 
-#: src/notes.c:67
+#: src/notes.c:68
 msgid "G3"
 msgstr "Sol   3"
 
-#: src/notes.c:68
+#: src/notes.c:69
 msgid "G#3"
 msgstr "Sol# 3"
 
-#: src/notes.c:69
+#: src/notes.c:70
 msgid "A3"
 msgstr "La    3"
 
-#: src/notes.c:70
+#: src/notes.c:71
 msgid "Bb3"
 msgstr "Sib   3"
 
-#: src/notes.c:71
+#: src/notes.c:72
 msgid "B3"
 msgstr "Si     3"
 
-#: src/notes.c:73
+#: src/notes.c:74
 msgid "C4"
 msgstr "Do    4"
 
-#: src/notes.c:75
+#: src/notes.c:76
 msgid "C#4"
 msgstr "Do#  4"
 
-#: src/notes.c:76
+#: src/notes.c:77
 msgid "D4"
 msgstr "Re    4"
 
-#: src/notes.c:77
+#: src/notes.c:78
 msgid "Eb4"
 msgstr "Mib  4"
 
-#: src/notes.c:78
+#: src/notes.c:79
 msgid "E4"
 msgstr "Mi    4"
 
-#: src/notes.c:79
+#: src/notes.c:80
 msgid "F4"
 msgstr "Fa    4"
 
-#: src/notes.c:80
+#: src/notes.c:81
 msgid "F#4"
 msgstr "Fa#  4"
 
-#: src/notes.c:81
+#: src/notes.c:82
 msgid "G4"
 msgstr "Sol   4"
 
-#: src/notes.c:82
+#: src/notes.c:83
 msgid "G#4"
 msgstr "Sol# 4"
 
-#: src/notes.c:83
+#: src/notes.c:84
 msgid "A4"
 msgstr "La    4"
 
-#: src/notes.c:84
+#: src/notes.c:85
 msgid "Bb4"
 msgstr "Sib   4"
 
-#: src/notes.c:85
+#: src/notes.c:86
 msgid "B4"
 msgstr "Si     4"
 
-#: src/notes.c:87
+#: src/notes.c:88
 msgid "C5"
 msgstr "Do    5"
 
-#: src/notes.c:88
+#: src/notes.c:89
 msgid "C#5"
 msgstr "Do#  5"
 
-#: src/notes.c:89
+#: src/notes.c:90
 msgid "D5"
 msgstr "Re    5"
 
-#: src/notes.c:90
+#: src/notes.c:91
 msgid "D#5"
 msgstr "Re#  5"
 
-#: src/notes.c:91
+#: src/notes.c:92
 msgid "E5"
 msgstr "Mi    5"
 
-#: src/notes.c:93
+#: src/notes.c:94
 msgid "F5"
 msgstr "Fa    5"
 
-#: src/notes.c:94
+#: src/notes.c:95
 msgid "F#5"
 msgstr "Fa#  5"
 
-#: src/notes.c:95
+#: src/notes.c:96
 msgid "G5"
 msgstr "Sol   5"
 
-#: src/notes.c:96
+#: src/notes.c:97
 msgid "G#5"
 msgstr "Sol# 5"
 
-#: src/notes.c:97
+#: src/notes.c:98
 msgid "A5"
 msgstr "La    5"
 
-#: src/notes.c:98
+#: src/notes.c:99
 msgid "Bb5"
 msgstr "Sib   5"
 
-#: src/notes.c:99
+#: src/notes.c:100
 msgid "B5"
 msgstr "Si    5"
 
@@ -1394,7 +1402,7 @@ msgstr "Sonido preliminar"
 msgid "Start gain"
 msgstr "Ganancia inicial"
 
-#: src/paste_dialogs.c:223 src/record.c:490 src/record.c:508
+#: src/paste_dialogs.c:223 src/record.c:489 src/record.c:507
 #: plugins/echo/echo.c:61
 msgid "Gain"
 msgstr "Ganancia"
@@ -1455,32 +1463,32 @@ msgstr "No intermezclar"
 msgid "Don't mix"
 msgstr "No mezclar"
 
-#: src/preferences.c:60
+#: src/preferences.c:62
 msgid "Error creating ~/.sweep"
 msgstr "Error al crear ~/.sweep"
 
-#: src/preferences.c:64
+#: src/preferences.c:66
 #, c-format
 msgid "Created %s/ mode %04o\n"
 msgstr "Se creó %s/ modo %04o\n"
 
-#: src/preferences.c:71
+#: src/preferences.c:73
 msgid "Error on ~/.sweep"
 msgstr "Error en ~/.sweep"
 
-#: src/preferences.c:80
+#: src/preferences.c:82
 msgid "Error setting permissions on ~/.sweep"
 msgstr "Error al poner los permisos de ~/.sweep"
 
-#: src/preferences.c:87
+#: src/preferences.c:89
 msgid "Error accessing ~/.sweep"
 msgstr "Error al acceder a ~/.sweep"
 
-#: src/preferences.c:112
+#: src/preferences.c:124
 msgid "Error opening ~/.sweep/preferences.tdb"
 msgstr "Error al acceder a ~/.sweep/preferences.tdb"
 
-#: src/record.c:94 src/record.c:545
+#: src/record.c:94 src/record.c:544
 msgid "Ready to record"
 msgstr "Listo para grabar"
 
@@ -1488,19 +1496,19 @@ msgstr "Listo para grabar"
 msgid "No selection to record into"
 msgstr "No hay ninguna selección en la que grabar"
 
-#: src/record.c:444
+#: src/record.c:446
 msgid "Sweep: Record"
 msgstr "Sweep: Grabar"
 
-#: src/record.c:460 src/undo_dialog.c:376
+#: src/record.c:459 src/undo_dialog.c:376
 msgid "File:"
 msgstr "Archivo:"
 
-#: src/record.c:483
+#: src/record.c:482
 msgid "Previous sound"
 msgstr "Sonido anterior"
 
-#: src/record.c:497
+#: src/record.c:496
 msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
@@ -1509,11 +1517,11 @@ msgstr ""
 "anterior del buffer. Al ponerlo en -inf dB se sobreescribe el sonido "
 "anterior."
 
-#: src/record.c:503
+#: src/record.c:502
 msgid "Recorded sound"
 msgstr "Sonido grabado"
 
-#: src/record.c:515
+#: src/record.c:514
 msgid ""
 "This slider allows you to reduce the level of the recorded sound. Set it to "
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
@@ -1523,15 +1531,15 @@ msgstr ""
 "en 0 dB se graba sin reducción. Tenga en cuenta que al ponerlo en -in dB se "
 "grabará silenciado."
 
-#: src/sample-display.c:221
+#: src/sample-display.c:223
 msgid "New selection"
 msgstr "Nueva selección"
 
-#: src/sample-display.c:222
+#: src/sample-display.c:224
 msgid "Selection: add/modify region"
 msgstr "Selección: agregar/modificar región"
 
-#: src/sample-display.c:223
+#: src/sample-display.c:225
 msgid "Selection: subtract region"
 msgstr "Selección: sustraer región"
 
@@ -1645,12 +1653,12 @@ msgstr "  8000 Hz (Calidad de voz de banda angosta)"
 msgid "  4000 Hz (Low quality)"
 msgstr "  4000 Hz (Baja calidad)"
 
-#: src/sw_chooser.c:67 src/view.c:3597 src/view.c:3610 src/view.c:3649
+#: src/sw_chooser.c:67 src/view.c:3403 src/view.c:3416 src/view.c:3455
 #, c-format
 msgid "Mono"
 msgstr "Mono"
 
-#: src/sw_chooser.c:68 src/view.c:3597 src/view.c:3610 src/view.c:3652
+#: src/sw_chooser.c:68 src/view.c:3403 src/view.c:3416 src/view.c:3458
 #, c-format
 msgid "Stereo"
 msgstr "Stereo"
@@ -1671,11 +1679,11 @@ msgstr "Frecuencia de muestreo"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/sw_chooser.c:367 src/view.c:1003
+#: src/sw_chooser.c:367 src/view.c:843
 msgid "Channels"
 msgstr "Canales"
 
-#: src/sw_chooser.c:369 src/view.c:3656
+#: src/sw_chooser.c:369 src/view.c:3462
 msgid "channels"
 msgstr "canales"
 
@@ -1683,8 +1691,8 @@ msgstr "canales"
 msgid "No selection to process"
 msgstr "No hay ninguna selección para procesar"
 
-#: src/sweep_sample.c:119 src/view.c:3595 src/view.c:3601 src/view.c:3608
-#: src/view.c:3614
+#: src/sweep_sample.c:119 src/view.c:3401 src/view.c:3407 src/view.c:3414
+#: src/view.c:3420
 msgid "Untitled"
 msgstr "Sin título"
 
@@ -1786,15 +1794,15 @@ msgstr ""
 "\n"
 "Está seguro que desea salir?"
 
-#: src/sweep_sample.c:1465 src/view.c:1364
+#: src/sweep_sample.c:1465 src/view.c:1165
 msgid "Invert selection"
 msgstr "Invertir selección"
 
-#: src/sweep_sample.c:1485 src/view.c:1372 src/view.c:1466
+#: src/sweep_sample.c:1485 src/view.c:1173 src/view.c:1267
 msgid "Select all"
 msgstr "Seleccionar todo"
 
-#: src/sweep_sample.c:1505 src/view.c:1380
+#: src/sweep_sample.c:1505 src/view.c:1181
 msgid "Select none"
 msgstr "Sin selección"
 
@@ -1894,11 +1902,11 @@ msgstr "Acción"
 msgid "Sweep: History"
 msgstr "Sweep: Historial"
 
-#: src/undo_dialog.c:393 src/view.c:518 src/view.c:2043
+#: src/undo_dialog.c:393 src/view.c:507 src/view.c:1844
 msgid "Undo"
 msgstr "Deshacer"
 
-#: src/undo_dialog.c:401 src/view.c:529 src/view.c:2052
+#: src/undo_dialog.c:401 src/view.c:511 src/view.c:1853
 msgid "Redo"
 msgstr "Rehacer"
 
@@ -1906,467 +1914,467 @@ msgstr "Rehacer"
 msgid "Revert to selected state"
 msgstr "Revertir al estado seleccionado"
 
-#: src/undo_dialog.c:452 src/view.c:483 src/view.c:3553
+#: src/undo_dialog.c:452 src/view.c:484 src/view.c:3359
 msgid "Close"
 msgstr "Cerrar"
 
-#: src/view.c:304
+#: src/view.c:309
 msgid "Duplicate to stereo"
 msgstr "Duplicar a stereo"
 
-#: src/view.c:314
+#: src/view.c:317
 msgid "Duplicate to multichannel"
 msgstr "Duplicar a multicanal"
 
-#: src/view.c:326
+#: src/view.c:329
 msgid "Swap left and right"
 msgstr "Intercambiar izquierda y derecha"
 
-#: src/view.c:370
+#: src/view.c:369
 msgid "Add/Remove channels"
 msgstr "Agregar/Eliminar canales"
 
-#: src/view.c:423 src/view.c:1924
+#: src/view.c:452 src/view.c:1725
 msgid "New ..."
 msgstr "Nuevo..."
 
-#: src/view.c:432 src/view.c:1931
+#: src/view.c:456 src/view.c:1732
 msgid "Open ..."
 msgstr "Abrir..."
 
-#: src/view.c:452
+#: src/view.c:464
 msgid "Save As ..."
 msgstr "Guardar como..."
 
-#: src/view.c:472
+#: src/view.c:476
 msgid "Properties ..."
 msgstr "Propiedades..."
 
-#: src/view.c:502 src/view.c:1294
+#: src/view.c:494 src/view.c:1095
 msgid "Edit"
 msgstr "Editar"
 
-#: src/view.c:540
+#: src/view.c:515
 msgid "Show history ..."
 msgstr "Mostrar historial..."
 
-#: src/view.c:606 src/view.c:1330
+#: src/view.c:547 src/view.c:1131
 msgid "Paste: Insert"
 msgstr "Pegar: Insertar"
 
-#: src/view.c:616 src/view.c:1336
+#: src/view.c:551 src/view.c:1137
 msgid "Paste: Mix"
 msgstr "Pegar: Mezclar"
 
-#: src/view.c:626 src/view.c:1342
+#: src/view.c:555 src/view.c:1143
 msgid "Paste: Crossfade"
 msgstr "Pegar: Intermezclar desvaneciendo"
 
-#: src/view.c:636
+#: src/view.c:559
 msgid "Paste as New"
 msgstr "Pegar como Nuevo archivo"
 
-#: src/view.c:650
+#: src/view.c:567
 msgid "Preview Cut/Cursor"
 msgstr "Previsualizar Cortar/Cursor"
 
-#: src/view.c:659
+#: src/view.c:571
 msgid "Pre-roll to Cursor"
 msgstr "Pre-roll hasta el cursor"
 
-#: src/view.c:675
+#: src/view.c:585
 msgid "Invert"
 msgstr "Invertir"
 
-#: src/view.c:684
+#: src/view.c:589
 msgid "All"
 msgstr "Todo"
 
-#: src/view.c:693
+#: src/view.c:593
 msgid "None"
 msgstr "Nada"
 
-#: src/view.c:707
+#: src/view.c:601
 msgid "Halve"
 msgstr "Dividir"
 
-#: src/view.c:717
+#: src/view.c:605
 msgid "Double"
 msgstr "Duplicar"
 
-#: src/view.c:727
+#: src/view.c:609
 msgid "Shift left"
 msgstr "Pasar a la izquierda"
 
-#: src/view.c:737
+#: src/view.c:613
 msgid "Shift right"
 msgstr "Pasar a la derecha"
 
-#: src/view.c:748
+#: src/view.c:618
 msgid "View"
 msgstr "Ver"
 
-#: src/view.c:755 src/view.c:2209
+#: src/view.c:625 src/view.c:2018
 msgid "Autoscroll: follow playback cursor"
 msgstr "Autoscroll: seguir el cursor de reproducción"
 
-#: src/view.c:769
+#: src/view.c:643
 msgid "Center"
 msgstr "Centrar"
 
-#: src/view.c:782 src/view.c:2144
+#: src/view.c:651 src/view.c:1953
 msgid "Zoom in"
 msgstr "Agrandar"
 
-#: src/view.c:791 src/view.c:2153
+#: src/view.c:655 src/view.c:1962
 msgid "Zoom out"
 msgstr "Reducir"
 
-#: src/view.c:800 src/view.c:1269
+#: src/view.c:659 src/view.c:1070
 msgid "Zoom to selection"
 msgstr "Agrandar la selección"
 
-#: src/view.c:807
+#: src/view.c:665
 msgid "Left"
 msgstr "Izquierda"
 
-#: src/view.c:816
+#: src/view.c:669
 msgid "Right"
 msgstr "Derecha"
 
-#: src/view.c:826 src/view.c:1275 src/view.c:1434
+#: src/view.c:674 src/view.c:1076 src/view.c:1235
 msgid "Zoom normal"
 msgstr "Zoom normal"
 
-#: src/view.c:832 src/view.c:1281 src/view.c:1440 src/view.c:2135
+#: src/view.c:678 src/view.c:1082 src/view.c:1241 src/view.c:1944
 msgid "Zoom all"
 msgstr "Zoom total"
 
-#: src/view.c:841
+#: src/view.c:682
 msgid "1:1"
 msgstr "1:1"
 
-#: src/view.c:854
+#: src/view.c:692
 msgid "Remember as"
 msgstr "Recordar como"
 
-#: src/view.c:871 src/view.c:901
+#: src/view.c:711 src/view.c:742
 msgid "Area 1"
 msgstr "Área 1"
 
-#: src/view.c:872 src/view.c:902
+#: src/view.c:712 src/view.c:743
 msgid "Area 2"
 msgstr "Área 2"
 
-#: src/view.c:873 src/view.c:903
+#: src/view.c:713 src/view.c:744
 msgid "Area 3"
 msgstr "Área 3"
 
-#: src/view.c:874 src/view.c:904
+#: src/view.c:714 src/view.c:745
 msgid "Area 4"
 msgstr "Área 4"
 
-#: src/view.c:875 src/view.c:905
+#: src/view.c:715 src/view.c:746
 msgid "Area 5"
 msgstr "Área 5"
 
-#: src/view.c:876 src/view.c:906
+#: src/view.c:716 src/view.c:747
 msgid "Area 6"
 msgstr "Área 6"
 
-#: src/view.c:877 src/view.c:907
+#: src/view.c:717 src/view.c:748
 msgid "Area 7"
 msgstr "Área 7"
 
-#: src/view.c:878 src/view.c:908
+#: src/view.c:718 src/view.c:749
 msgid "Area 8"
 msgstr "Área 8"
 
-#: src/view.c:879 src/view.c:909
+#: src/view.c:719 src/view.c:750
 msgid "Area 9"
 msgstr "Área 9"
 
-#: src/view.c:880 src/view.c:910
+#: src/view.c:720 src/view.c:751
 msgid "Area 10"
 msgstr "Área 10"
 
-#: src/view.c:884
+#: src/view.c:724
 msgid "Zoom to"
 msgstr "Agrandar a"
 
-#: src/view.c:916
+#: src/view.c:757
 msgid "Color scheme"
 msgstr "Esquema de colores"
 
-#: src/view.c:922
+#: src/view.c:763
 msgid "Decoder Red"
 msgstr "Rojo profundo"
 
-#: src/view.c:930
+#: src/view.c:771
 msgid "Orangeboom"
 msgstr "Naranja mecánica"
 
-#: src/view.c:938
+#: src/view.c:779
 msgid "Lame Yellow"
 msgstr "Amarillo debil"
 
-#: src/view.c:946
+#: src/view.c:787
 msgid "Coogee Bay Blue"
 msgstr "Susurro Azul"
 
-#: src/view.c:954
+#: src/view.c:795
 msgid "Blackwattle"
 msgstr "Marrón glacé"
 
-#: src/view.c:962
+#: src/view.c:803
 msgid "Frigid"
 msgstr "Blancanieves"
 
-#: src/view.c:970
+#: src/view.c:811
 msgid "Radar"
 msgstr "Verde radar"
 
-#: src/view.c:978
+#: src/view.c:819
 msgid "Bluescreen"
 msgstr "Pantalla azul"
 
-#: src/view.c:990 src/view.c:1394 src/view.c:1480
+#: src/view.c:831 src/view.c:1195 src/view.c:1281
 msgid "New View"
 msgstr "Nueva vista"
 
-#: src/view.c:997
+#: src/view.c:836
 msgid "Sample"
 msgstr "Muestreo"
 
-#: src/view.c:1012
+#: src/view.c:853
 msgid "Resample ..."
 msgstr "Remuestrear..."
 
-#: src/view.c:1025
+#: src/view.c:862
 msgid "Duplicate"
 msgstr "Duplicar"
 
-#: src/view.c:1036 src/view.c:1350
+#: src/view.c:867 src/view.c:1151
 msgid "Process"
 msgstr "Procesar"
 
-#: src/view.c:1045
+#: src/view.c:876
 msgid "Playback"
 msgstr "Reproducción"
 
-#: src/view.c:1051
+#: src/view.c:883
 msgid "Configure audio device ..."
 msgstr "Configurar dispositivo de audio..."
 
-#: src/view.c:1061
+#: src/view.c:893
 msgid "Transport"
 msgstr "Transportar"
 
-#: src/view.c:1069
+#: src/view.c:902
 msgid "Go to start of file"
 msgstr "Ir al comienzo del archivo"
 
-#: src/view.c:1078
+#: src/view.c:908
 msgid "Go to start of window"
 msgstr "Ir al comienzo de la ventana"
 
-#: src/view.c:1088
+#: src/view.c:913
 msgid "Skip back"
 msgstr "Saltear hacia atrás"
 
-#: src/view.c:1098
+#: src/view.c:918
 msgid "Skip forward"
 msgstr "Saltear hacia adelante"
 
-#: src/view.c:1107
+#: src/view.c:923
 msgid "Go to end of window"
 msgstr "Ir al final de la ventana"
 
-#: src/view.c:1116
+#: src/view.c:928
 msgid "Go to end of file"
 msgstr "Ir al final del archivo"
 
-#: src/view.c:1129
+#: src/view.c:937
 msgid "Play selection"
 msgstr "Reproducir la selección"
 
-#: src/view.c:1140
+#: src/view.c:943
 msgid "Play sample"
 msgstr "Reproducir muestreo"
 
-#: src/view.c:1150
+#: src/view.c:949
 msgid "Play note"
 msgstr "Reproducir nota"
 
-#: src/view.c:1169
+#: src/view.c:968
 msgid "Toggle monitoring"
 msgstr "Activar/desactivar el Monitor"
 
-#: src/view.c:1178
+#: src/view.c:981
 msgid "Toggle looping"
 msgstr "Activar/Desactivar el modo cíclico"
 
-#: src/view.c:1187
+#: src/view.c:993
 msgid "Toggle muting"
 msgstr "Activar/Desactivar mudo"
 
-#: src/view.c:1196
+#: src/view.c:1004
 msgid "Toggle reverse playback"
 msgstr "Activar/Desactivar la reproducción en reversa"
 
-#: src/view.c:1213
+#: src/view.c:1022
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/view.c:1237
+#: src/view.c:1038
 msgid "About MP3 export..."
 msgstr "Información sobre la exportación a MP3..."
 
-#: src/view.c:1243
+#: src/view.c:1044
 msgid "About Sweep ..."
 msgstr "Sobre Sweep..."
 
-#: src/view.c:1407 src/view.c:1493
+#: src/view.c:1208 src/view.c:1294
 msgid "File properties ..."
 msgstr "Propiedades del archivo..."
 
-#: src/view.c:1452
+#: src/view.c:1253
 msgid "Paste"
 msgstr "Pegar"
 
-#: src/view.c:1947
+#: src/view.c:1748
 msgid "Save as ..."
 msgstr "Guardar como..."
 
-#: src/view.c:1967
+#: src/view.c:1768
 msgid "Cut selection to clipboard"
 msgstr "Cortar la selección al portapapeles"
 
-#: src/view.c:1977
+#: src/view.c:1778
 msgid "Copy selection to clipboard"
 msgstr "Copiar la selección al portapapeles"
 
-#: src/view.c:1988
+#: src/view.c:1789
 msgid "Paste: insert clipboard at cursor position"
 msgstr "Pegar: insertar el portapapeles en la posición del cursor"
 
-#: src/view.c:1999
+#: src/view.c:1800
 msgid "Paste: mix clipboard in from cursor position"
 msgstr "Pegar: mezclar el portapapeles desde la posición del cursor"
 
-#: src/view.c:2010
+#: src/view.c:1811
 msgid "Paste: fade clipboard in from cursor position"
 msgstr "Pegar: desvanecer el portapapeles desde la posición del cursor"
 
-#: src/view.c:2080
+#: src/view.c:1881
+#, fuzzy
+msgid "Hand tool"
+msgstr "Herramienta lápiz"
+
+#: src/view.c:1889
 msgid "Selector tool"
 msgstr "Herramienta seleccionar"
 
-#: src/view.c:2092
+#: src/view.c:1901
 msgid "\"Scrubby\" the scrub tool"
 msgstr "\"Scrubby\" la herramienta para fregar"
 
-#: src/view.c:2102
+#: src/view.c:1911
 msgid "Pencil tool"
 msgstr "Herramienta lápiz"
 
-#: src/view.c:2110
+#: src/view.c:1919
 msgid "Noise tool"
 msgstr "Herramienta de ruido"
 
-#: src/view.c:2200
+#: src/view.c:2009
 msgid "Visible length"
 msgstr "Largo visible"
 
-#: src/view.c:2319
+#: src/view.c:2128
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
 msgstr "Zoom vertical [Shift + Flecha Arriba/Abajo]"
 
-#: src/view.c:2449
+#: src/view.c:2258
 msgid "Record ..."
 msgstr "Grabar..."
 
-#: src/view.c:2525
+#: src/view.c:2334
 msgid "Reverse mode playback (toggle)"
 msgstr "Modo de reproducción en reversa (activar/desactivar)"
 
-#: src/view.c:2543
+#: src/view.c:2352
 msgid "Loop mode playback (toggle)"
 msgstr "Modo de reproducción cíclica (activar/desactivar)"
 
-#: src/view.c:2567
-msgid "Play all / Pause    [Ctrl+Space]"
+#: src/view.c:2376
+#, fuzzy
+msgid "Play all / Pause"
 msgstr "Reproducir todo / Pausa    [Ctrl+Espacio]"
 
-#: src/view.c:2587
-msgid "Play selection / Pause    [Space]"
+#: src/view.c:2393
+#, fuzzy
+msgid "Play selection / Pause"
 msgstr "Reproducir la selección / Pausa    [Espacio]"
 
-#: src/view.c:2603
-msgid "Stop playback    [Enter]"
+#: src/view.c:2409
+#, fuzzy
+msgid "Stop playback"
 msgstr "Detener la reproducción    [Enter]"
 
-#: src/view.c:2620
-msgid "Go to beginning    [Ctrl+Home]"
-msgstr "Ir al inicio    [Ctrl+Inicio]"
-
-#: src/view.c:2656
-msgid "Go to the end    [Ctrl+End]"
-msgstr "Ir al final    [Ctrl+Fin]"
-
-#: src/view.c:2670
+#: src/view.c:2476
 msgid "Muted playback (toggle)"
 msgstr "Reproducción silenciada (activar/desactivar)"
 
-#: src/view.c:2690 src/view.c:2708
+#: src/view.c:2496 src/view.c:2514
 msgid "Playback gain slider (volume)"
 msgstr "Deslizador de ganancia de la reproducción (volumen)"
 
-#: src/view.c:2720
+#: src/view.c:2526
 msgid "Monitor (toggle)"
 msgstr "Monitor (activar/desactivar)"
 
-#: src/view.c:2738
+#: src/view.c:2544
 msgid "SYNC"
 msgstr "SYNC"
 
-#: src/view.c:3295
+#: src/view.c:3101
 #, c-format
 msgid "Remembered as area %d"
 msgstr "Area recordada como %d"
 
-#: src/view.c:3313
+#: src/view.c:3119
 #, c-format
 msgid "No area remembered as %d"
 msgstr "No hay ningún area reacordada como %d"
 
-#: src/view.c:3316
+#: src/view.c:3122
 #, c-format
 msgid "Zoomed to area %d"
 msgstr "Agrandado al área %d"
 
-#: src/view.c:3498 src/view.c:3502
+#: src/view.c:3304 src/view.c:3308
 msgid "Scrub!"
 msgstr "Fregado!"
 
-#: src/view.c:3498 src/view.c:3504
+#: src/view.c:3304 src/view.c:3310
 msgid "Ready"
 msgstr "Listo"
 
-#: src/view.c:3550
+#: src/view.c:3356
 #, c-format
 msgid "%s has been modified. Close anyway?"
 msgstr "%s ha sido modificado. Cerrar de todos modos?"
 
-#: src/view.c:3553
+#: src/view.c:3359
 msgid "Don't close"
 msgstr "No cerrar"
 
-#: src/view.c:3600 src/view.c:3613
+#: src/view.c:3406 src/view.c:3419
 msgid "*"
 msgstr "*"
 
-#: src/view.c:3616
+#: src/view.c:3422
 msgid "Empty"
 msgstr "Vacío"
 
@@ -2524,6 +2532,12 @@ msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
 "Aplicar un desvanecido lineal a la selección, desapareciendo hasta el "
 "silencio"
+
+#~ msgid "Go to beginning    [Ctrl+Home]"
+#~ msgstr "Ir al inicio    [Ctrl+Inicio]"
+
+#~ msgid "Go to the end    [Ctrl+End]"
+#~ msgstr "Ir al final    [Ctrl+Fin]"
 
 #~ msgid "About Sweep"
 #~ msgstr "Acerca de Sweep"

@@ -1,12 +1,12 @@
 # Greek Translation of Sweep.
 # Dokianakis Fanis <madf@hellug.gr>, 2003.
 #
-#: src/sample-display.c:220
+#: src/sample-display.c:222
 msgid ""
 msgstr ""
 "Project-Id-Version: Sweep 0.8.1\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2006-07-17 18:28+1000\n"
+"POT-Creation-Date: 2007-02-03 14:52+0000\n"
 "PO-Revision-Date: 2003-02-08 05:40+0200\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -40,36 +40,44 @@ msgstr "Άνοιγμα αρχείου"
 msgid "WARNING: Build includes incomplete development code.\n"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή η έκδοση περιέχει ημιτελή, υπό ανάπτυξη κώδικα.\n"
 
-#: src/main.c:185
+#: src/main.c:188
 msgid "Sweep version"
 msgstr "Έκδοση sweep"
 
-#: src/main.c:186
+#: src/main.c:189
 msgid "Sweep plugin API version"
 msgstr "Έκδοση API των αρθρωμάτων του sweep"
 
-#: src/main.c:192
+#: src/main.c:195
 #, c-format
 msgid "Usage: %s [option ...] [files ...]\n"
 msgstr "Χρήση: %s [επιλογές ...] [αρχεία ...]\n"
 
-#: src/main.c:193
+#: src/main.c:196
 msgid "Valid options are:\n"
 msgstr "Έγκυρες επιλογές είναι:\n"
 
-#: src/main.c:194
+#: src/main.c:197
 msgid "  -h --help                Output this help.\n"
 msgstr "  -h --help                Απεικόνιση αυτής της βοήθειας.\n"
 
-#: src/main.c:195
+#: src/main.c:198
 msgid "  -v --version             Output version info.\n"
 msgstr "  -v --version             Απεικόνιση πληροφοριών έκδοσης.\n"
 
-#: src/main.c:196
+#: src/main.c:199
 msgid "  --display <display>      Use the designated X display.\n"
 msgstr "  --display <display>      Χρήση της συγκεκριμένης οθόνης X.\n"
 
-#: src/main.c:198
+#: src/main.c:200
+msgid ""
+"  --ignore-failed-lock     Continue when attempt to lock the\n"
+"                           preferences file fails.  For use when\n"
+"                           the users home directory is on an NFS\n"
+"                           file system. (possibly unsafe) \n"
+msgstr ""
+
+#: src/main.c:206
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
 msgstr "  --no-toolbox             Απόκρυψη του παραθύρου της εργαλειοθήκης.\n"
 
@@ -109,16 +117,16 @@ msgstr "Αυτή τη στιγμή: %d κανάλια"
 msgid "Output channels"
 msgstr "Εξαγωγή καναλιών"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:369
-#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:140
-#: src/question_dialogs.c:200 src/question_dialogs.c:249
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
+#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:144
+#: src/question_dialogs.c:204 src/question_dialogs.c:253
 #: src/sweep_sample.c:1918 src/undo_dialog.c:440
 msgid "OK"
 msgstr "Εντάξει"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:382
-#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:154
-#: src/view.c:508 src/view.c:2801
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
+#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:158
+#: src/view.c:502 src/view.c:2607
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -126,11 +134,11 @@ msgstr "Ακύρωση"
 msgid "Mix down to mono"
 msgstr "Μίξη σε μονοφωνικό"
 
-#: src/channelops.c:445 src/view.c:336
+#: src/channelops.c:445 src/view.c:338
 msgid "Remove left channel"
 msgstr "Αφαίρεση αριστερού καναλιού"
 
-#: src/channelops.c:455 src/view.c:346
+#: src/channelops.c:455 src/view.c:347
 msgid "Remove right channel"
 msgstr "Αφαίρεση δεξιού καναλιού"
 
@@ -151,70 +159,70 @@ msgstr "Μετατροπή από %d σε %d κανάλια"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: Προσθήκη/Αφαίρεση καναλιών"
 
-#: src/driver.c:364
+#: src/driver.c:363
 msgid "Sweep: audio device configuration"
 msgstr ""
 
-#: src/driver.c:405
+#: src/driver.c:404
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
 "Αλλαγές στις ρυθμίσεις συσκευών θα ενεργοποιηθούν στην επόμενη αναπαραγωγή."
 
-#: src/driver.c:419
+#: src/driver.c:418
 msgid "Device name"
 msgstr "Όνομα συσκευής"
 
-#: src/driver.c:425
+#: src/driver.c:424
 msgid "Set the main device for playback and recording"
 msgstr ""
 
-#: src/driver.c:435
+#: src/driver.c:434
 msgid "Main device:"
 msgstr ""
 
-#: src/driver.c:449 src/driver.c:631 src/samplerate.c:570
+#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
 msgid "Default"
 msgstr "Εξ ορισμού"
 
-#: src/driver.c:462
+#: src/driver.c:461
 msgid "Use a different device for monitoring"
 msgstr "Χρήση διαφορετικής συσκευής για παρακολούθηση"
 
-#: src/driver.c:474
+#: src/driver.c:473
 msgid "Monitor output:"
 msgstr "Έξοδος παρακολούθησης:"
 
-#: src/driver.c:499
+#: src/driver.c:498
 msgid "Swap"
 msgstr "Εναλλαγή"
 
-#: src/driver.c:507
+#: src/driver.c:506
 msgid "Swap main and monitor devices."
 msgstr "Εναλλαγή μεταξύ κύριας και συσκευής παρακολούθησης."
 
-#: src/driver.c:516 src/driver.c:617 src/file_speex.c:1957
+#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
 #: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
 msgid "Reset"
 msgstr "Επαναφορά"
 
-#: src/driver.c:524
+#: src/driver.c:523
 msgid "Reset to the last remembered device names."
 msgstr "Επαναφορά τών προηγούμενων ονομάτων των συσκευών."
 
-#: src/driver.c:530 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
 #: src/param.c:747 src/sweep_sample.c:543
 msgid "Defaults"
 msgstr "Εξ ορισμού"
 
-#: src/driver.c:538
+#: src/driver.c:537
 msgid "Set to default device names."
 msgstr "Χρήση σαν εξ ορισμού ονόματα συσκευών."
 
-#: src/driver.c:549
+#: src/driver.c:548
 msgid "Device buffering"
 msgstr "Buffering συσκευής"
 
-#: src/driver.c:559
+#: src/driver.c:558
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -222,7 +230,7 @@ msgstr ""
 "Χαμηλή καθυστέρηση /\n"
 "Περισσότερες απορρίψεις"
 
-#: src/driver.c:581
+#: src/driver.c:580
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -230,7 +238,7 @@ msgstr ""
 "Υψηλή καθυστέρηση /\n"
 "Λιγότερες απορρίψεις"
 
-#: src/driver.c:585
+#: src/driver.c:584
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -245,15 +253,15 @@ msgstr ""
 "Χαμηλές τιμές βελτιώνουν την ανταπόκριση αλλά μπορέί να μειώσουν την "
 "ποιότητα του ήχου σε συστήματα με μεγάλο φόρτο."
 
-#: src/driver.c:604
+#: src/driver.c:603
 msgid "Remember these options"
 msgstr "Απομνημόνευση αυτών των επιλογών"
 
-#: src/driver.c:625
+#: src/driver.c:624
 msgid "Reset to the last remembered device buffering."
 msgstr "Επαναφορά στο τελευταίο στη μνήμη  buffering της συσκευής."
 
-#: src/driver.c:639
+#: src/driver.c:638
 msgid "Set to default device buffering."
 msgstr "Χρήση σαν εξ ορισμού buffering συσκεύης."
 
@@ -261,7 +269,7 @@ msgstr "Χρήση σαν εξ ορισμού buffering συσκεύης."
 msgid "No selection to copy"
 msgstr "Καμμία επιλογή για αντιγραφή"
 
-#: src/edit.c:1308 src/view.c:568 src/view.c:1308
+#: src/edit.c:1308 src/view.c:531 src/view.c:1109
 msgid "Copy"
 msgstr "Αντιγραφή"
 
@@ -269,7 +277,7 @@ msgstr "Αντιγραφή"
 msgid "No selection to cut"
 msgstr "Καμμία επιλογή για αποκοπή"
 
-#: src/edit.c:1358 src/view.c:558 src/view.c:1302
+#: src/edit.c:1358 src/view.c:527 src/view.c:1103
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -277,7 +285,7 @@ msgstr "Αποκοπή"
 msgid "No selection to clear"
 msgstr "Καμμία επιλογή για καθαρισμό"
 
-#: src/edit.c:1404 src/view.c:578 src/view.c:1314
+#: src/edit.c:1404 src/view.c:535 src/view.c:1115
 msgid "Clear"
 msgstr "Καθαρισμός"
 
@@ -285,7 +293,7 @@ msgstr "Καθαρισμός"
 msgid "No selection to delete"
 msgstr "Καμμία επιλογή για διαγραφή"
 
-#: src/edit.c:1447 src/view.c:550
+#: src/edit.c:1447 src/view.c:523
 msgid "Delete"
 msgstr "Διαγραφή"
 
@@ -293,7 +301,7 @@ msgstr "Διαγραφή"
 msgid "Nothing to crop out"
 msgstr "Τίποτα για κόψιμο"
 
-#: src/edit.c:1498 src/view.c:590 src/view.c:1320 src/view.c:2024
+#: src/edit.c:1498 src/view.c:539 src/view.c:1121 src/view.c:1825
 msgid "Crop"
 msgstr "Κόψιμο"
 
@@ -373,7 +381,7 @@ msgstr ""
 msgid "Revert file"
 msgstr "Επιστροφή στο αρχείο"
 
-#: src/file_dialogs.c:379 src/view.c:460
+#: src/file_dialogs.c:379 src/view.c:468
 msgid "Revert"
 msgstr "Επιστροφή"
 
@@ -445,12 +453,12 @@ msgstr ""
 "\n"
 "Θέλετε σίγουρα να το αποθηκεύσετε;"
 
-#: src/file_dialogs.c:887 src/sweep_undo.c:331 src/view.c:3552
+#: src/file_dialogs.c:887 src/sweep_undo.c:331 src/view.c:3358
 msgid "File modified"
 msgstr "Το αρχείο τροποποιήθηκε"
 
 #: src/file_dialogs.c:888 src/file_speex.c:2127 src/file_vorbis.c:1611
-#: src/view.c:441 src/view.c:1938
+#: src/view.c:460 src/view.c:1739
 msgid "Save"
 msgstr "Αποθήκευση"
 
@@ -1052,7 +1060,7 @@ msgstr ""
 "τους είναι κατατεθέν (tm) του Ιδρύματος Xiph.org.\n"
 "Χρήση τους με άδεια."
 
-#: src/head.c:408 src/view.c:2472
+#: src/head.c:408 src/view.c:2281
 msgid "Cursor position (indicator)"
 msgstr "Θέση κέρσορα (δείκτης)"
 
@@ -1069,64 +1077,64 @@ msgstr "Ηχογράφηση κατάστασης βρόγχου (διακόπτης)"
 msgid "Record into selection"
 msgstr "Ηχογράφηση μέσα στην επιλογή"
 
-#: src/head.c:503 src/view.c:1220
+#: src/head.c:503 src/view.c:1027
 msgid "Stop"
 msgstr "Διακοπή"
 
-#: src/head.c:516
+#: src/head.c:516 src/view.c:2426
 msgid "Go to beginning"
 msgstr "Επιστροφή στην αρχή"
 
-#: src/head.c:527 src/view.c:2631
+#: src/head.c:527 src/view.c:2437
 msgid "Rewind"
 msgstr "Γρήγορα πίσω"
 
-#: src/head.c:540 src/view.c:2643
+#: src/head.c:540 src/view.c:2449
 msgid "Fast forward"
 msgstr "Γρήγορα μπροστά"
 
-#: src/head.c:555
+#: src/head.c:555 src/view.c:2462
 msgid "Go to the end"
 msgstr "Μετακίνηση στο τέλος"
 
-#: src/interface.c:271
+#: src/interface.c:289
 msgid "Sweep"
 msgstr "Sweep"
 
-#: src/interface.c:296 src/view.c:417
+#: src/interface.c:314 src/view.c:444
 msgid "File"
 msgstr "Αρχείο"
 
-#: src/interface.c:301
+#: src/interface.c:319
 msgid "New"
 msgstr "Νέο"
 
-#: src/interface.c:310
+#: src/interface.c:328
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: src/interface.c:319 src/sweep_sample.c:800 src/sweep_sample.c:808
-#: src/view.c:492
+#: src/interface.c:337 src/sweep_sample.c:800 src/sweep_sample.c:808
+#: src/view.c:488
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: src/interface.c:330 src/view.c:1231
+#: src/interface.c:348 src/view.c:1032
 msgid "Help"
 msgstr "Βοήθεια"
 
-#: src/interface.c:335
+#: src/interface.c:353
 msgid "About..."
 msgstr "Περί..."
 
-#: src/interface.c:358 src/view.c:669
+#: src/interface.c:376 src/view.c:577
 msgid "Select"
 msgstr "Επιλογή"
 
-#: src/interface.c:359
+#: src/interface.c:377
 msgid "Select regions of a sample"
 msgstr "Επιλογή περιοχών ενός δείγματος."
 
-#: src/interface.c:360
+#: src/interface.c:378
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -1137,27 +1145,27 @@ msgstr ""
 "Κρατήστε πατημένο το Shift ενώ επιλέγετε για να προσθέσετε μη συνεχής "
 "περιοχές στην επιλογή"
 
-#: src/interface.c:377
+#: src/interface.c:395
 msgid "Move"
 msgstr "Μετακίνηση"
 
-#: src/interface.c:378
+#: src/interface.c:396
 msgid "Move regions in a sample"
 msgstr "Μετακινεί περιοχές σε ένα δείγμα"
 
-#: src/interface.c:379
+#: src/interface.c:397
 msgid "With this tool you can move selected regions of a sample."
 msgstr "Με αυτό το εργαλείο μπορείτε να μετακινήσετε επιλεγμένες περιοχές."
 
-#: src/interface.c:391
+#: src/interface.c:409
 msgid "Scrub"
 msgstr "Scrub"
 
-#: src/interface.c:392
+#: src/interface.c:410
 msgid "Locate sounds directly"
 msgstr "Κατευθείαν εντοπισμός ήχων"
 
-#: src/interface.c:393
+#: src/interface.c:411
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
@@ -1166,15 +1174,15 @@ msgstr ""
 "απεικόνιση για άμεση μετακίνηση της θέσης αναπαραγωγής σε αυτό το μέρος στο "
 "δείγμα."
 
-#: src/interface.c:410
+#: src/interface.c:428
 msgid "Zoom"
 msgstr "Ζούμ"
 
-#: src/interface.c:411
+#: src/interface.c:429
 msgid "Zoom in & out"
 msgstr "Ζούμ μέσα & έξω"
 
-#: src/interface.c:412
+#: src/interface.c:430
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
@@ -1183,171 +1191,171 @@ msgstr ""
 "ζούμ προς τα μέσα σε αυτό το μέρος στο δείγμα. Με πατημένο Shift και κλικ "
 "για ζούμ προς τα έξω."
 
-#: src/interface.c:428
+#: src/interface.c:446
 msgid "Pencil"
 msgstr "Μολύβι"
 
-#: src/interface.c:429
+#: src/interface.c:447
 msgid "Edit PCM sample values"
 msgstr "Επεξεργασία τιμών PCM δείγματος"
 
-#: src/interface.c:430
+#: src/interface.c:448
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr "Όταν γίνει ζούμ σε μεμονομένα δείγματα, κλικ για επεξεργασία"
 
-#: src/interface.c:441
+#: src/interface.c:459
 msgid "Noise"
 msgstr "Θόρυβος"
 
-#: src/interface.c:442
+#: src/interface.c:460
 msgid "Add noise"
 msgstr "Προσθήκη θορύβου"
 
-#: src/interface.c:443
+#: src/interface.c:461
 msgid "Randomise PCM values"
 msgstr "Τυχαιοποίηση τιμών PCM"
 
-#: src/notes.c:60
+#: src/notes.c:61
 msgid "C3"
 msgstr "C3"
 
-#: src/notes.c:61
+#: src/notes.c:62
 msgid "C#3"
 msgstr "C#3"
 
-#: src/notes.c:62
+#: src/notes.c:63
 msgid "D3"
 msgstr "D3"
 
-#: src/notes.c:63
+#: src/notes.c:64
 msgid "Eb3"
 msgstr "Eb3"
 
-#: src/notes.c:64
+#: src/notes.c:65
 msgid "E3"
 msgstr "E3"
 
-#: src/notes.c:65
+#: src/notes.c:66
 msgid "F3"
 msgstr "F3"
 
-#: src/notes.c:66
+#: src/notes.c:67
 msgid "F#3"
 msgstr "F#3"
 
-#: src/notes.c:67
+#: src/notes.c:68
 msgid "G3"
 msgstr "G3"
 
-#: src/notes.c:68
+#: src/notes.c:69
 msgid "G#3"
 msgstr "G#3"
 
-#: src/notes.c:69
+#: src/notes.c:70
 msgid "A3"
 msgstr "A3"
 
-#: src/notes.c:70
+#: src/notes.c:71
 msgid "Bb3"
 msgstr "Bb3"
 
-#: src/notes.c:71
+#: src/notes.c:72
 msgid "B3"
 msgstr "B3"
 
-#: src/notes.c:73
+#: src/notes.c:74
 msgid "C4"
 msgstr "C4"
 
-#: src/notes.c:75
+#: src/notes.c:76
 msgid "C#4"
 msgstr "C#4"
 
-#: src/notes.c:76
+#: src/notes.c:77
 msgid "D4"
 msgstr "D4"
 
-#: src/notes.c:77
+#: src/notes.c:78
 msgid "Eb4"
 msgstr "Eb4"
 
-#: src/notes.c:78
+#: src/notes.c:79
 msgid "E4"
 msgstr "E4"
 
-#: src/notes.c:79
+#: src/notes.c:80
 msgid "F4"
 msgstr "F4"
 
-#: src/notes.c:80
+#: src/notes.c:81
 msgid "F#4"
 msgstr "F#4"
 
-#: src/notes.c:81
+#: src/notes.c:82
 msgid "G4"
 msgstr "G4"
 
-#: src/notes.c:82
+#: src/notes.c:83
 msgid "G#4"
 msgstr "G#4"
 
-#: src/notes.c:83
+#: src/notes.c:84
 msgid "A4"
 msgstr "A4"
 
-#: src/notes.c:84
+#: src/notes.c:85
 msgid "Bb4"
 msgstr "Bb4"
 
-#: src/notes.c:85
+#: src/notes.c:86
 msgid "B4"
 msgstr "B4"
 
-#: src/notes.c:87
+#: src/notes.c:88
 msgid "C5"
 msgstr "C5"
 
-#: src/notes.c:88
+#: src/notes.c:89
 msgid "C#5"
 msgstr "C#5"
 
-#: src/notes.c:89
+#: src/notes.c:90
 msgid "D5"
 msgstr "D5"
 
-#: src/notes.c:90
+#: src/notes.c:91
 msgid "D#5"
 msgstr "D#5"
 
-#: src/notes.c:91
+#: src/notes.c:92
 msgid "E5"
 msgstr "E5"
 
-#: src/notes.c:93
+#: src/notes.c:94
 msgid "F5"
 msgstr "F5"
 
-#: src/notes.c:94
+#: src/notes.c:95
 msgid "F#5"
 msgstr "F#5"
 
-#: src/notes.c:95
+#: src/notes.c:96
 msgid "G5"
 msgstr "G5"
 
-#: src/notes.c:96
+#: src/notes.c:97
 msgid "G#5"
 msgstr "G#5"
 
-#: src/notes.c:97
+#: src/notes.c:98
 msgid "A5"
 msgstr "A5"
 
-#: src/notes.c:98
+#: src/notes.c:99
 msgid "Bb5"
 msgstr "Bb5"
 
-#: src/notes.c:99
+#: src/notes.c:100
 msgid "B5"
 msgstr "B5"
 
@@ -1373,7 +1381,7 @@ msgstr ""
 msgid "Start gain"
 msgstr "Κέρδος αρχής"
 
-#: src/paste_dialogs.c:223 src/record.c:490 src/record.c:508
+#: src/paste_dialogs.c:223 src/record.c:489 src/record.c:507
 #: plugins/echo/echo.c:61
 msgid "Gain"
 msgstr "Κέρδος"
@@ -1434,32 +1442,32 @@ msgstr "Να μη γίνει crossfade"
 msgid "Don't mix"
 msgstr "Να μη γίνει μίξη"
 
-#: src/preferences.c:60
+#: src/preferences.c:62
 msgid "Error creating ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:64
+#: src/preferences.c:66
 #, c-format
 msgid "Created %s/ mode %04o\n"
 msgstr ""
 
-#: src/preferences.c:71
+#: src/preferences.c:73
 msgid "Error on ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:80
+#: src/preferences.c:82
 msgid "Error setting permissions on ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:87
+#: src/preferences.c:89
 msgid "Error accessing ~/.sweep"
 msgstr ""
 
-#: src/preferences.c:112
+#: src/preferences.c:124
 msgid "Error opening ~/.sweep/preferences.tdb"
 msgstr ""
 
-#: src/record.c:94 src/record.c:545
+#: src/record.c:94 src/record.c:544
 msgid "Ready to record"
 msgstr "Έτοιμο για ηχογράφηση"
 
@@ -1467,19 +1475,19 @@ msgstr "Έτοιμο για ηχογράφηση"
 msgid "No selection to record into"
 msgstr "Δεν υπάρχει επιλογή για ηχογράφηση μέσα"
 
-#: src/record.c:444
+#: src/record.c:446
 msgid "Sweep: Record"
 msgstr "Sweep: Ηχογράφηση"
 
-#: src/record.c:460 src/undo_dialog.c:376
+#: src/record.c:459 src/undo_dialog.c:376
 msgid "File:"
 msgstr "Αρχείο:"
 
-#: src/record.c:483
+#: src/record.c:482
 msgid "Previous sound"
 msgstr "Προηγούμενος ήχος"
 
-#: src/record.c:497
+#: src/record.c:496
 msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
@@ -1488,11 +1496,11 @@ msgstr ""
 "προηγούμενα περιεχόμενα της μνήμης. Τοποθέτηση σε -inf dB για να παραγραφεί "
 "ο προηγούμενος ήχος."
 
-#: src/record.c:503
+#: src/record.c:502
 msgid "Recorded sound"
 msgstr "Ηχογραφούμενος ήχος"
 
-#: src/record.c:515
+#: src/record.c:514
 msgid ""
 "This slider allows you to reduce the level of the recorded sound. Set it to "
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
@@ -1502,15 +1510,15 @@ msgstr ""
 "Τοποθέτηση στο 0 dB για ηχογράφηση χωρίς μείωση. Σημείωση ότι όταν είναι -"
 "inf dB θα ηχογραφηθεί σιωπή."
 
-#: src/sample-display.c:221
+#: src/sample-display.c:223
 msgid "New selection"
 msgstr "Νέα επιλογή"
 
-#: src/sample-display.c:222
+#: src/sample-display.c:224
 msgid "Selection: add/modify region"
 msgstr "Επιλογή: προσθήκη/τροποποίηση περιοχής"
 
-#: src/sample-display.c:223
+#: src/sample-display.c:225
 msgid "Selection: subtract region"
 msgstr "Επιλογή: αφαίρεση περιοχής"
 
@@ -1624,12 +1632,12 @@ msgstr "  8000 Hz (Ποιότητα φωνής στενής ζώνης)"
 msgid "  4000 Hz (Low quality)"
 msgstr "  4000 Hz (Χαμηλή ποιότητα)"
 
-#: src/sw_chooser.c:67 src/view.c:3597 src/view.c:3610 src/view.c:3649
+#: src/sw_chooser.c:67 src/view.c:3403 src/view.c:3416 src/view.c:3455
 #, c-format
 msgid "Mono"
 msgstr "Μονοφωνικό"
 
-#: src/sw_chooser.c:68 src/view.c:3597 src/view.c:3610 src/view.c:3652
+#: src/sw_chooser.c:68 src/view.c:3403 src/view.c:3416 src/view.c:3458
 #, c-format
 msgid "Stereo"
 msgstr "Στερεοφωνικό"
@@ -1650,11 +1658,11 @@ msgstr "Ρυθμός δειγματοληψίας"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/sw_chooser.c:367 src/view.c:1003
+#: src/sw_chooser.c:367 src/view.c:843
 msgid "Channels"
 msgstr "Κανάλια"
 
-#: src/sw_chooser.c:369 src/view.c:3656
+#: src/sw_chooser.c:369 src/view.c:3462
 msgid "channels"
 msgstr "Κανάλια"
 
@@ -1662,8 +1670,8 @@ msgstr "Κανάλια"
 msgid "No selection to process"
 msgstr "Δεν υπάρχει επιλογή για κατεργασία"
 
-#: src/sweep_sample.c:119 src/view.c:3595 src/view.c:3601 src/view.c:3608
-#: src/view.c:3614
+#: src/sweep_sample.c:119 src/view.c:3401 src/view.c:3407 src/view.c:3414
+#: src/view.c:3420
 msgid "Untitled"
 msgstr "Ανώνυμο"
 
@@ -1764,15 +1772,15 @@ msgstr ""
 "\n"
 "Θέλετε σίγουρα να εγκαταλείψετε;"
 
-#: src/sweep_sample.c:1465 src/view.c:1364
+#: src/sweep_sample.c:1465 src/view.c:1165
 msgid "Invert selection"
 msgstr "Αναστροφή επιλογής"
 
-#: src/sweep_sample.c:1485 src/view.c:1372 src/view.c:1466
+#: src/sweep_sample.c:1485 src/view.c:1173 src/view.c:1267
 msgid "Select all"
 msgstr "Επιλογή όλων"
 
-#: src/sweep_sample.c:1505 src/view.c:1380
+#: src/sweep_sample.c:1505 src/view.c:1181
 msgid "Select none"
 msgstr "Επιλογή τίποτα"
 
@@ -1876,11 +1884,11 @@ msgstr "Πράξη"
 msgid "Sweep: History"
 msgstr "Sweep: Ιστορία"
 
-#: src/undo_dialog.c:393 src/view.c:518 src/view.c:2043
+#: src/undo_dialog.c:393 src/view.c:507 src/view.c:1844
 msgid "Undo"
 msgstr "Ανάκτηση"
 
-#: src/undo_dialog.c:401 src/view.c:529 src/view.c:2052
+#: src/undo_dialog.c:401 src/view.c:511 src/view.c:1853
 msgid "Redo"
 msgstr "Ξαναεφαρμογή"
 
@@ -1888,467 +1896,467 @@ msgstr "Ξαναεφαρμογή"
 msgid "Revert to selected state"
 msgstr "Επιστροφή στην επιλεγμενη κατάσταση"
 
-#: src/undo_dialog.c:452 src/view.c:483 src/view.c:3553
+#: src/undo_dialog.c:452 src/view.c:484 src/view.c:3359
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: src/view.c:304
+#: src/view.c:309
 msgid "Duplicate to stereo"
 msgstr "Αντιγραφή σε στέρεοφωνικο"
 
-#: src/view.c:314
+#: src/view.c:317
 msgid "Duplicate to multichannel"
 msgstr "Αντιγραφή σε πολυφωνικό"
 
-#: src/view.c:326
+#: src/view.c:329
 msgid "Swap left and right"
 msgstr "Εναλλαγή αριστερού με δεξιού"
 
-#: src/view.c:370
+#: src/view.c:369
 msgid "Add/Remove channels"
 msgstr "Προσθήκη/Αφαίρεση καναλιών"
 
-#: src/view.c:423 src/view.c:1924
+#: src/view.c:452 src/view.c:1725
 msgid "New ..."
 msgstr "Νέο ..."
 
-#: src/view.c:432 src/view.c:1931
+#: src/view.c:456 src/view.c:1732
 msgid "Open ..."
 msgstr "Άνοιγμα ..."
 
-#: src/view.c:452
+#: src/view.c:464
 msgid "Save As ..."
 msgstr "Αποθήκευση Ως ..."
 
-#: src/view.c:472
+#: src/view.c:476
 msgid "Properties ..."
 msgstr "Ιδιότητες ..."
 
-#: src/view.c:502 src/view.c:1294
+#: src/view.c:494 src/view.c:1095
 msgid "Edit"
 msgstr "Επεξεργασία"
 
-#: src/view.c:540
+#: src/view.c:515
 msgid "Show history ..."
 msgstr "Εμφάνιση ιστορίας ..."
 
-#: src/view.c:606 src/view.c:1330
+#: src/view.c:547 src/view.c:1131
 msgid "Paste: Insert"
 msgstr "Επικόλληση: Εισαγωγή"
 
-#: src/view.c:616 src/view.c:1336
+#: src/view.c:551 src/view.c:1137
 msgid "Paste: Mix"
 msgstr "Επικόλληση: Μίξη"
 
-#: src/view.c:626 src/view.c:1342
+#: src/view.c:555 src/view.c:1143
 msgid "Paste: Crossfade"
 msgstr "Επικόλληση: Crossfade"
 
-#: src/view.c:636
+#: src/view.c:559
 msgid "Paste as New"
 msgstr "Επικόλληση σαν Νέο"
 
-#: src/view.c:650
+#: src/view.c:567
 msgid "Preview Cut/Cursor"
 msgstr "Δοκιμή Αποκοπής/Κέρσορα"
 
-#: src/view.c:659
+#: src/view.c:571
 msgid "Pre-roll to Cursor"
 msgstr "Εκκίνηση στο Κέρσορα"
 
-#: src/view.c:675
+#: src/view.c:585
 msgid "Invert"
 msgstr "Αναστροφή"
 
-#: src/view.c:684
+#: src/view.c:589
 msgid "All"
 msgstr "Όλα"
 
-#: src/view.c:693
+#: src/view.c:593
 msgid "None"
 msgstr "Κανένα"
 
-#: src/view.c:707
+#: src/view.c:601
 msgid "Halve"
 msgstr "Μισή"
 
-#: src/view.c:717
+#: src/view.c:605
 msgid "Double"
 msgstr "Διπλάσια"
 
-#: src/view.c:727
+#: src/view.c:609
 msgid "Shift left"
 msgstr "Κύλιση αριστερά"
 
-#: src/view.c:737
+#: src/view.c:613
 msgid "Shift right"
 msgstr "Κύλιση δεξιά"
 
-#: src/view.c:748
+#: src/view.c:618
 msgid "View"
 msgstr "Απεικόνιση"
 
-#: src/view.c:755 src/view.c:2209
+#: src/view.c:625 src/view.c:2018
 msgid "Autoscroll: follow playback cursor"
 msgstr "Αυτόματη κύλιση: ακολουθά τον κέρσορα"
 
-#: src/view.c:769
+#: src/view.c:643
 msgid "Center"
 msgstr "Κέντρο"
 
-#: src/view.c:782 src/view.c:2144
+#: src/view.c:651 src/view.c:1953
 msgid "Zoom in"
 msgstr "Ζούμ μέσα"
 
-#: src/view.c:791 src/view.c:2153
+#: src/view.c:655 src/view.c:1962
 msgid "Zoom out"
 msgstr "Ζούμ έξω"
 
-#: src/view.c:800 src/view.c:1269
+#: src/view.c:659 src/view.c:1070
 msgid "Zoom to selection"
 msgstr "Ζούμ στην επιλογή"
 
-#: src/view.c:807
+#: src/view.c:665
 msgid "Left"
 msgstr "Αριστερά"
 
-#: src/view.c:816
+#: src/view.c:669
 msgid "Right"
 msgstr "Δεξιά"
 
-#: src/view.c:826 src/view.c:1275 src/view.c:1434
+#: src/view.c:674 src/view.c:1076 src/view.c:1235
 msgid "Zoom normal"
 msgstr "Ζούμ σε κανονικό"
 
-#: src/view.c:832 src/view.c:1281 src/view.c:1440 src/view.c:2135
+#: src/view.c:678 src/view.c:1082 src/view.c:1241 src/view.c:1944
 msgid "Zoom all"
 msgstr "Ζούμ όλων"
 
-#: src/view.c:841
+#: src/view.c:682
 msgid "1:1"
 msgstr "1 προς 1"
 
-#: src/view.c:854
+#: src/view.c:692
 msgid "Remember as"
 msgstr "Απομνημόνευση ως"
 
-#: src/view.c:871 src/view.c:901
+#: src/view.c:711 src/view.c:742
 msgid "Area 1"
 msgstr "Περιοχή 1"
 
-#: src/view.c:872 src/view.c:902
+#: src/view.c:712 src/view.c:743
 msgid "Area 2"
 msgstr "Περιοχή 2"
 
-#: src/view.c:873 src/view.c:903
+#: src/view.c:713 src/view.c:744
 msgid "Area 3"
 msgstr "Περιοχή 3"
 
-#: src/view.c:874 src/view.c:904
+#: src/view.c:714 src/view.c:745
 msgid "Area 4"
 msgstr "Περιοχή 4"
 
-#: src/view.c:875 src/view.c:905
+#: src/view.c:715 src/view.c:746
 msgid "Area 5"
 msgstr "Περιοχή 5"
 
-#: src/view.c:876 src/view.c:906
+#: src/view.c:716 src/view.c:747
 msgid "Area 6"
 msgstr "Περιοχή 6"
 
-#: src/view.c:877 src/view.c:907
+#: src/view.c:717 src/view.c:748
 msgid "Area 7"
 msgstr "Περιοχή 7"
 
-#: src/view.c:878 src/view.c:908
+#: src/view.c:718 src/view.c:749
 msgid "Area 8"
 msgstr "Περιοχή 8"
 
-#: src/view.c:879 src/view.c:909
+#: src/view.c:719 src/view.c:750
 msgid "Area 9"
 msgstr "Περιοχή 9"
 
-#: src/view.c:880 src/view.c:910
+#: src/view.c:720 src/view.c:751
 msgid "Area 10"
 msgstr "Περιοχή 10"
 
-#: src/view.c:884
+#: src/view.c:724
 msgid "Zoom to"
 msgstr "Ζούμ σε"
 
-#: src/view.c:916
+#: src/view.c:757
 msgid "Color scheme"
 msgstr "Παλέτα χρωμάτων"
 
-#: src/view.c:922
+#: src/view.c:763
 msgid "Decoder Red"
 msgstr "Decoder Red"
 
-#: src/view.c:930
+#: src/view.c:771
 msgid "Orangeboom"
 msgstr "Orangeboom"
 
-#: src/view.c:938
+#: src/view.c:779
 msgid "Lame Yellow"
 msgstr "Lame Yellow"
 
-#: src/view.c:946
+#: src/view.c:787
 msgid "Coogee Bay Blue"
 msgstr "Coogee Bay Blue"
 
-#: src/view.c:954
+#: src/view.c:795
 msgid "Blackwattle"
 msgstr "Blackwattle"
 
-#: src/view.c:962
+#: src/view.c:803
 msgid "Frigid"
 msgstr "Frigid"
 
-#: src/view.c:970
+#: src/view.c:811
 msgid "Radar"
 msgstr "Radar"
 
-#: src/view.c:978
+#: src/view.c:819
 msgid "Bluescreen"
 msgstr "Bluescreen"
 
-#: src/view.c:990 src/view.c:1394 src/view.c:1480
+#: src/view.c:831 src/view.c:1195 src/view.c:1281
 msgid "New View"
 msgstr "Νέα Απεικόνιση"
 
-#: src/view.c:997
+#: src/view.c:836
 msgid "Sample"
 msgstr "Δείγμα"
 
-#: src/view.c:1012
+#: src/view.c:853
 msgid "Resample ..."
 msgstr "Επαναδειγματοληψία ..."
 
-#: src/view.c:1025
+#: src/view.c:862
 msgid "Duplicate"
 msgstr "Διπλασιασμός"
 
-#: src/view.c:1036 src/view.c:1350
+#: src/view.c:867 src/view.c:1151
 msgid "Process"
 msgstr "Κατεργασία"
 
-#: src/view.c:1045
+#: src/view.c:876
 msgid "Playback"
 msgstr "Αναπαραγωγή"
 
-#: src/view.c:1051
+#: src/view.c:883
 msgid "Configure audio device ..."
 msgstr "Ρύθμιση συσκευής ήχου ..."
 
-#: src/view.c:1061
+#: src/view.c:893
 msgid "Transport"
 msgstr "Μεταφορά"
 
-#: src/view.c:1069
+#: src/view.c:902
 msgid "Go to start of file"
 msgstr "Μετακίνηση στην αρχή του αρχείου"
 
-#: src/view.c:1078
+#: src/view.c:908
 msgid "Go to start of window"
 msgstr "Μετακίνηση στην αρχή του παραθύρου"
 
-#: src/view.c:1088
+#: src/view.c:913
 msgid "Skip back"
 msgstr "Πήδημα πίσω"
 
-#: src/view.c:1098
+#: src/view.c:918
 msgid "Skip forward"
 msgstr "Πήδημα μπροστά"
 
-#: src/view.c:1107
+#: src/view.c:923
 msgid "Go to end of window"
 msgstr "Μετακίνηση στο τέλος του παραθύρου"
 
-#: src/view.c:1116
+#: src/view.c:928
 msgid "Go to end of file"
 msgstr "Μετακίνηση στο τέλος του αρχείου"
 
-#: src/view.c:1129
+#: src/view.c:937
 msgid "Play selection"
 msgstr "Αναπαραγωγή επιλογής"
 
-#: src/view.c:1140
+#: src/view.c:943
 msgid "Play sample"
 msgstr "Αναπαραγωγή δείγματος"
 
-#: src/view.c:1150
+#: src/view.c:949
 msgid "Play note"
 msgstr "Αναπαραγωγή νότας"
 
-#: src/view.c:1169
+#: src/view.c:968
 msgid "Toggle monitoring"
 msgstr "Διακόπτης παρακολούθησης"
 
-#: src/view.c:1178
+#: src/view.c:981
 msgid "Toggle looping"
 msgstr "Διακόπτης επανάληψης"
 
-#: src/view.c:1187
+#: src/view.c:993
 msgid "Toggle muting"
 msgstr "Διακόπτης αποσιώπησης"
 
-#: src/view.c:1196
+#: src/view.c:1004
 msgid "Toggle reverse playback"
 msgstr "Διακόπτης ανάστροφης αναπαραγωγής"
 
-#: src/view.c:1213
+#: src/view.c:1022
 msgid "Pause"
 msgstr "Παύση"
 
-#: src/view.c:1237
+#: src/view.c:1038
 msgid "About MP3 export..."
 msgstr "Περί εξαγωγή MP3..."
 
-#: src/view.c:1243
+#: src/view.c:1044
 msgid "About Sweep ..."
 msgstr "Περί Sweep ..."
 
-#: src/view.c:1407 src/view.c:1493
+#: src/view.c:1208 src/view.c:1294
 msgid "File properties ..."
 msgstr "Ιδιότητες αρχείου ..."
 
-#: src/view.c:1452
+#: src/view.c:1253
 msgid "Paste"
 msgstr "Επικόλληση"
 
-#: src/view.c:1947
+#: src/view.c:1748
 msgid "Save as ..."
 msgstr "Αποθήκευση ως ..."
 
-#: src/view.c:1967
+#: src/view.c:1768
 msgid "Cut selection to clipboard"
 msgstr "Αποκοπή επιλογής στο πρόχειρο"
 
-#: src/view.c:1977
+#: src/view.c:1778
 msgid "Copy selection to clipboard"
 msgstr "Αντιγραφή επιλογής στο πρόχειρο"
 
-#: src/view.c:1988
+#: src/view.c:1789
 msgid "Paste: insert clipboard at cursor position"
 msgstr "Επικόλληση: εισαγωγή προχείρου στη θέση του κέρσορα"
 
-#: src/view.c:1999
+#: src/view.c:1800
 msgid "Paste: mix clipboard in from cursor position"
 msgstr "Επικόλληση: μίξη προχείρου από τη θέση του κέρσορα"
 
-#: src/view.c:2010
+#: src/view.c:1811
 msgid "Paste: fade clipboard in from cursor position"
 msgstr "Επικόλληση: εξασθένιση προχείρου από τη θέση του κέρσορα"
 
-#: src/view.c:2080
+#: src/view.c:1881
+#, fuzzy
+msgid "Hand tool"
+msgstr "Εργαλείο μολυβιού"
+
+#: src/view.c:1889
 msgid "Selector tool"
 msgstr "Εργαλείο επιλογής"
 
-#: src/view.c:2092
+#: src/view.c:1901
 msgid "\"Scrubby\" the scrub tool"
 msgstr "\"Scrubby\" το εργαλείο για scrub"
 
-#: src/view.c:2102
+#: src/view.c:1911
 msgid "Pencil tool"
 msgstr "Εργαλείο μολυβιού"
 
-#: src/view.c:2110
+#: src/view.c:1919
 msgid "Noise tool"
 msgstr "Εργαλείο θορύβου"
 
-#: src/view.c:2200
+#: src/view.c:2009
 msgid "Visible length"
 msgstr ""
 
-#: src/view.c:2319
+#: src/view.c:2128
 msgid "Vertical zoom [Shift + Arrow Up/Down]"
 msgstr "Κάθετο ζούμ [Shift + Arrow Up/Down]"
 
-#: src/view.c:2449
+#: src/view.c:2258
 msgid "Record ..."
 msgstr "Ηχογράφηση ..."
 
-#: src/view.c:2525
+#: src/view.c:2334
 msgid "Reverse mode playback (toggle)"
 msgstr "Αναπαραγωγή ανάστροφης κατάστασης (διακόπτης)"
 
-#: src/view.c:2543
+#: src/view.c:2352
 msgid "Loop mode playback (toggle)"
 msgstr "Αναπαραγωγή κατάστασης βρόγχου (διακόπτης)"
 
-#: src/view.c:2567
-msgid "Play all / Pause    [Ctrl+Space]"
+#: src/view.c:2376
+#, fuzzy
+msgid "Play all / Pause"
 msgstr "Αναπαραγωγή όλων / Παύση    [Ctrl+Space]"
 
-#: src/view.c:2587
-msgid "Play selection / Pause    [Space]"
+#: src/view.c:2393
+#, fuzzy
+msgid "Play selection / Pause"
 msgstr "Αναπαραγωγή επιλογής / Παύση    [Space]"
 
-#: src/view.c:2603
-msgid "Stop playback    [Enter]"
+#: src/view.c:2409
+#, fuzzy
+msgid "Stop playback"
 msgstr "Διακοπή αναπαραγωγής    [Enter]"
 
-#: src/view.c:2620
-msgid "Go to beginning    [Ctrl+Home]"
-msgstr "Μετακίνηση στην αρχή    [Ctrl+Home]"
-
-#: src/view.c:2656
-msgid "Go to the end    [Ctrl+End]"
-msgstr "Μετακίνηση στο τέλος    [Ctrl+End]"
-
-#: src/view.c:2670
+#: src/view.c:2476
 msgid "Muted playback (toggle)"
 msgstr "Αποσιωπημένη αναπαραγωγή (διακόπτης)"
 
-#: src/view.c:2690 src/view.c:2708
+#: src/view.c:2496 src/view.c:2514
 msgid "Playback gain slider (volume)"
 msgstr "Επιλογέας κέρδους αναπαραγωγής (ένταση)"
 
-#: src/view.c:2720
+#: src/view.c:2526
 msgid "Monitor (toggle)"
 msgstr "Παρακολούθηση (διακόπτης)"
 
-#: src/view.c:2738
+#: src/view.c:2544
 msgid "SYNC"
 msgstr ""
 
-#: src/view.c:3295
+#: src/view.c:3101
 #, c-format
 msgid "Remembered as area %d"
 msgstr "Απομνημόνευση σαν περιοχή %d"
 
-#: src/view.c:3313
+#: src/view.c:3119
 #, c-format
 msgid "No area remembered as %d"
 msgstr "Δεν υπάρχει στη μνήμη η περιοχή %d"
 
-#: src/view.c:3316
+#: src/view.c:3122
 #, c-format
 msgid "Zoomed to area %d"
 msgstr "Ζούμ στη περιοχή %d"
 
-#: src/view.c:3498 src/view.c:3502
+#: src/view.c:3304 src/view.c:3308
 msgid "Scrub!"
 msgstr "Scrub!"
 
-#: src/view.c:3498 src/view.c:3504
+#: src/view.c:3304 src/view.c:3310
 msgid "Ready"
 msgstr "Έτοιμο"
 
-#: src/view.c:3550
+#: src/view.c:3356
 #, c-format
 msgid "%s has been modified. Close anyway?"
 msgstr "Το %s έχει αλλάξει. Να κλείσει;"
 
-#: src/view.c:3553
+#: src/view.c:3359
 msgid "Don't close"
 msgstr "Όχι κλείσιμο"
 
-#: src/view.c:3600 src/view.c:3613
+#: src/view.c:3406 src/view.c:3419
 msgid "*"
 msgstr "*"
 
-#: src/view.c:3616
+#: src/view.c:3422
 msgid "Empty"
 msgstr "Άδειο"
 
@@ -2501,6 +2509,12 @@ msgstr ""
 #: plugins/fade/fade.c:174
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
+
+#~ msgid "Go to beginning    [Ctrl+Home]"
+#~ msgstr "Μετακίνηση στην αρχή    [Ctrl+Home]"
+
+#~ msgid "Go to the end    [Ctrl+End]"
+#~ msgstr "Μετακίνηση στο τέλος    [Ctrl+End]"
 
 #~ msgid "About Sweep"
 #~ msgstr "Περί Sweep"
