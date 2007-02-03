@@ -286,6 +286,11 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
 
     handle->driver_rate = r;
     handle->driver_channels = c;
+	
+    if (c < 1) {
+      fprintf (stderr, "sweep: alsa_setup: alsa says channels == %i\n", c);
+      return;
+    }
   }
 
   if (snd_pcm_prepare (pcm_handle) < 0) {
