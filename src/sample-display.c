@@ -1946,8 +1946,8 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
 	vend = s->view->sample->sounddata->nr_frames;
     }
     
-	vstart = round(vstart + (move < 0 ? 0.5 : -0.5));
-    vend = round(vend + (move < 0 ? 0.5 : -0.5));
+	vstart = ceil(vstart + (move < 0 ? 0.5 : -0.5));
+    vend = ceil(vend + (move < 0 ? 0.5 : -0.5));
 
     if (s->view->start != vstart && s->view->end != vend)
 	    s->view->hand_offset = x;
