@@ -320,7 +320,7 @@ alsa_device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
   snd_pcm_uframes_t uframes;
   int err;
 
-  uframes = count / handle->driver_channels;
+  uframes = handle->driver_channels > 0 ? count / handle->driver_channels : 0;
 
   err = snd_pcm_readi (pcm_handle, buf, uframes);
 
@@ -361,7 +361,7 @@ alsa_device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
 #else
   /*printf ("sweep: alsa_write \n");*/
 
-  uframes = count / handle->driver_channels;
+  uframes = handle->driver_channels > 0 ? count / handle->driver_channels : 0;
   //printf ("sweep: alsa_write 1\n");
 
   // this basicaly ripped straight out of alsaplayer alsa-final driver:
