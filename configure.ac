@@ -324,8 +324,8 @@ dnl
 
 ac_enable_alsa=yes
 AC_ARG_ENABLE(alsa,
-     [  --enable-alsa           enable use of ALSA, and disable use of OSS ],
-     [ ac_enable_alsa=yes ])
+     [  --disable-alsa           Disable ALSA, and enable use of OSS],
+     [ ac_enable_alsa=no ])
 
 if test "x${ac_enable_alsa}" != xno ; then
 
