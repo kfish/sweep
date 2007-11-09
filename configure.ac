@@ -370,7 +370,7 @@ dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then
   AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${ac_default_prefix}/${DATADIRNAME}/locale", [Define the PACKAGE_LOCALE_DIR.])
 else
-  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRN     datarootdir = @datarootdir@AME}/locale")
+  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRNAME}/locale")
 fi
 
  if test "x${datadir}" = 'x${prefix}/share'; then
