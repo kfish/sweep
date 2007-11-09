@@ -370,19 +370,19 @@ dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then
   AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${ac_default_prefix}/${DATADIRNAME}/locale", [Define the PACKAGE_LOCALE_DIR.])
 else
-  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRNAME}/locale")
+  AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRN     datarootdir = @datarootdir@AME}/locale")
 fi
 
-dnl Set PACKAGE_DATA_DIR in config.h.
-if test "x${datadir}" = 'x${prefix}/share'; then
-  if test "x${prefix}" = xNONE; then
-    AC_DEFINE_UNQUOTED([PACKAGE_DATA_DIR], "${ac_default_prefix}/share/${PACKAGE}", [Define the PACKAGE_DATA_DIR.])
-  else
-    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}")
-  fi
-else
-  AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${datadir}/${PACKAGE}")
-fi
+ if test "x${datadir}" = 'x${prefix}/share'; then
+   if test "x${prefix}" = xNONE; then
+     PACKAGE_DATA_DIR='"${ac_default_prefix}/share/${PACKAGE}"'
+   else
+     PACKAGE_DATA_DIR='"${prefix}/share/${PACKAGE}"'
+   fi
+ else
+   PACKAGE_DATA_DIR='"${datadir}/${PACKAGE}"'
+ fi
+AC_SUBST(PACKAGE_DATA_DIR)
 
 dnl Set PACKAGE_PLUGIN_DIR in Makefiles and config.h.
 PACKAGE_PLUGIN_DIR=$libdir/sweep
