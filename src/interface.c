@@ -51,8 +51,44 @@ GtkStyle * style_red_grey;
 GtkStyle * style_dark_grey;
 GtkStyle * style_red;
 
+#if GTK_CHECK_VERSION (2, 10, 0)
+GtkRecentManager *recent_manager = NULL;
+#endif
 
-void init_accels (void)
+
+static void
+init_recent_manager(void)
+{
+#if GTK_CHECK_VERSION (2, 10, 0)
+
+  recent_manager = gtk_recent_manager_get_default();
+    
+  /* good idea / bad idea? */
+  if (!recent_manager)
+    recent_manager = gtk_recent_manager_new();
+    
+#endif    
+}
+
+void
+recent_manager_add_item (gchar *path)
+{
+#if GTK_CHECK_VERSION (2, 10, 0)
+
+  gchar *uri;
+    
+  //uri = g_strconcat("file:/", path, NULL);
+  uri = g_filename_to_uri(path, NULL, NULL);
+    
+  if (recent_manager != NULL)
+    gtk_recent_manager_add_item (recent_manager, uri);  
+    
+  g_free(uri);
+#endif    
+}
+
+static void
+init_accels (void)
 {
   gchar * accels_path;
  
@@ -62,7 +98,8 @@ void init_accels (void)
 	
 }
 
-void save_accels (void)
+void 
+save_accels (void)
 {
   gchar * accels_path;
  
@@ -73,7 +110,8 @@ void save_accels (void)
 }
 
 
-void sweep_set_window_icon (GtkWindow *window)
+void 
+sweep_set_window_icon (GtkWindow *window)
 {
   GdkPixbuf * window_icon;
   
@@ -489,4 +527,12 @@ void attach_window_close_accel(GtkWindow *window)
                                              0, /* non of the GtkAccelFlags seem suitable? */
                                              gclosure);
   gtk_window_add_accel_group (GTK_WINDOW(window), accel_group);
+}
+
+
+void init_ui (void)
+{
+  init_accels();
+  init_styles();
+  init_recent_manager();
 }

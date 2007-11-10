@@ -240,6 +240,9 @@ try_sample_load (char * pathname)
   if (sample == NULL)
     sample = sndfile_sample_load (pathname, TRUE);  
   
+  if (sample != NULL)
+        recent_manager_add_item (pathname);
+        
   return sample;
 }
 

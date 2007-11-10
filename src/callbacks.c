@@ -47,6 +47,7 @@
 #include "paste_dialogs.h"
 #include "print.h"
 #include "record.h"
+#include "file_dialogs.h"
 
 /*
  * Default zooming parameters.
@@ -1028,3 +1029,21 @@ hack_max_combo_width_cb (GtkWidget *widget,
   
   gtk_widget_set_usize(GTK_WIDGET(GTK_ENTRY(widget)),  PANGO_PIXELS (ink_rect.width), -1);
 }
+
+#if GTK_CHECK_VERSION (2, 10, 0)
+
+void
+recent_chooser_menu_activated_cb(GtkRecentChooser *chooser,
+                                 gpointer          user_data)
+{
+  gchar *uri = NULL;
+  gchar *path = NULL;
+
+  uri = gtk_recent_chooser_get_current_uri(chooser);
+  path = g_filename_from_uri(uri, NULL, NULL);
+  sample_load(path);
+
+  g_free (path);
+}
+
+#endif

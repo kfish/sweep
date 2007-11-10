@@ -113,6 +113,8 @@ view_set_vzoom (sw_view * view, sw_audio_t low, sw_audio_t high);
 extern GList * plugins;
 extern GdkCursor * sweep_cursors[];
 
+extern GtkRecentManager *recent_manager;
+
 extern GtkStyle * style_wb;
 extern GtkStyle * style_LCD;
 extern GtkStyle * style_light_grey;
@@ -456,7 +458,43 @@ create_view_menu (sw_view * view, GtkWidget * m)
   create_view_menu_item (submenu, _("Open ..."), "<Sweep-View>/File/Open ...", view,
                                                   sample_load_cb, FALSE,
 												  GDK_o, GDK_CONTROL_MASK, view);
+    
+#if GTK_CHECK_VERSION (2, 10, 0)
+
+  GtkWidget *recent_menu;
+  GtkRecentFilter * filter;
+    
+  if (recent_manager != NULL) {
+    recent_menu = 
+          gtk_recent_chooser_menu_new_for_manager(recent_manager);
+    gtk_widget_show(recent_menu);
+      
+    g_signal_connect(G_OBJECT(recent_menu),
+                     "item-activated",
+                     G_CALLBACK(recent_chooser_menu_activated_cb),
+                     NULL);
+                     
+
+     
+    filter = gtk_recent_filter_new();                
+    gtk_recent_filter_add_application(filter, g_get_application_name());
+      
+    gtk_recent_chooser_add_filter(GTK_RECENT_CHOOSER(recent_menu), filter);
+
+    
+    menuitem = gtk_menu_item_new_with_label(_("Open Recent"));
+    gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), 
+                                "<Sweep-View>/File/Open Recent");
+    gtk_menu_append(GTK_MENU(submenu), menuitem);
+
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), recent_menu);
   
+    gtk_widget_show(GTK_WIDGET(menuitem));
+  
+  }
+  
+#endif 
+    
   create_view_menu_item (submenu, _("Save"), "<Sweep-View>/File/Save", view,
                                                   sample_save_cb, TRUE,
 												  GDK_s, GDK_CONTROL_MASK, view);
@@ -1622,6 +1660,8 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 #ifdef DEVEL_CODE
   GtkWidget * notebook;
 #endif
+    
+
 
   GtkAccelGroup * accel_group;
 

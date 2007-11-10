@@ -227,11 +227,8 @@ main (int argc, char *argv[])
   /* initialise cursors */
   init_cursors ();
 
-  /* initialise styles */
-  init_styles ();
-  
-  /* initialise key bindings (accelerators) */
-  init_accels ();
+  /* initialise interface components */
+  init_ui ();
 
   /* initialise devices */
   init_devices ();

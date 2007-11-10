@@ -290,5 +290,10 @@ void
 hack_max_combo_width_cb (GtkWidget *widget,
 							GtkStyle *previous_style,
                             gpointer user_data);
+#if GTK_CHECK_VERSION(2, 10, 0)
+void
+recent_chooser_menu_activated_cb(GtkRecentChooser *chooser,
+                                 gpointer          user_data);
+#endif
 
 #endif /* __CALLBACKS_H__ */

@@ -32,13 +32,14 @@ create_color (int red, int green, int blue);
 GtkStyle *
 create_style (GdkColor * fg, GdkColor * bg, gboolean do_grade);
 
-void
-init_styles (void);
+void 
+init_ui(void);
 
 void
 sweep_set_window_icon (GtkWindow * window);
 
-
+void
+recent_manager_add_item (gchar *uri);
 
 GtkWidget *
 create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
@@ -53,8 +54,6 @@ GtkWidget* create_toolbox (void);
 
 void 
 attach_window_close_accel(GtkWindow *window);
-void
-init_accels (void);
 
 void
 save_accels (void);
