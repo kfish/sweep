@@ -474,7 +474,8 @@ create_view_menu (sw_view * view, GtkWidget * m)
                      G_CALLBACK(recent_chooser_menu_activated_cb),
                      NULL);
                      
-
+    gtk_recent_chooser_set_limit (GTK_RECENT_CHOOSER(recent_menu), 20);
+    gtk_recent_chooser_set_show_tips (GTK_RECENT_CHOOSER(recent_menu), TRUE);
      
     filter = gtk_recent_filter_new();                
     gtk_recent_filter_add_application(filter, g_get_application_name());
