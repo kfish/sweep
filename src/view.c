@@ -457,7 +457,7 @@ create_view_menu (sw_view * view, GtkWidget * m)
    
   create_view_menu_item (submenu, _("Open ..."), "<Sweep-View>/File/Open ...", view,
                                                   sample_load_cb, FALSE,
-												  GDK_o, GDK_CONTROL_MASK, view);
+												  GDK_o, GDK_CONTROL_MASK, view->window);
     
 #if GTK_CHECK_VERSION (2, 10, 0)
 
@@ -476,6 +476,8 @@ create_view_menu (sw_view * view, GtkWidget * m)
                      
     gtk_recent_chooser_set_limit (GTK_RECENT_CHOOSER(recent_menu), 20);
     gtk_recent_chooser_set_show_tips (GTK_RECENT_CHOOSER(recent_menu), TRUE);
+    gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER(recent_menu), 
+                                      GTK_RECENT_SORT_MRU);
      
     filter = gtk_recent_filter_new();                
     gtk_recent_filter_add_application(filter, g_get_application_name());
@@ -1772,7 +1774,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   button = create_pixmap_button (window, open_xpm, _("Open ..."),
 				 NULL, VIEW_TOOLBAR_BUTTON,
-				G_CALLBACK (sample_load_cb), NULL, NULL, NULL);
+				G_CALLBACK (sample_load_cb), NULL, NULL, window);
   gtk_button_set_relief (GTK_BUTTON(button), GTK_RELIEF_NONE);
   gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
   gtk_widget_show (button);

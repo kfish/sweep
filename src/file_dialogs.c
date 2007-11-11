@@ -272,70 +272,49 @@ sample_load (char * pathname)
   return NULL;
 }
 
-static void
-sample_load_destroy_cb (GtkWidget * widget, gpointer data)
-{
-  sample_bank_remove (NULL);
-}
-
-static void
-sample_load_ok_cb(GtkWidget * widget, gpointer data)
-{
-  gchar **dir;
-  gint i;
-
-  dir = (gchar **)gtk_file_selection_get_selections(GTK_FILE_SELECTION(data));
-  for( i = 0; dir[i]; i++)
-    {
-      sample_load(dir[i]);
-    }
-
-  gtk_widget_destroy(GTK_WIDGET(data));
-}
-
-static void
-sample_load_cancel_cb(GtkWidget * widget, gpointer data)
-{
-  gtk_widget_destroy(GTK_WIDGET(data));
-}
-
 void
 sample_load_cb(GtkWidget * widget, gpointer data)
 {
-  GtkWidget *filesel;
-  char * load_current_file;
+
+  GtkWidget *dialog;
+  gchar *load_current_file;
   gint win_width, win_height;
  
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
 
-  filesel = gtk_file_selection_new(_("Sweep: Load file"));
-  gtk_file_selection_set_select_multiple(GTK_FILE_SELECTION(filesel), TRUE);
-  sweep_set_window_icon (GTK_WINDOW(filesel));
-  gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
-  gtk_widget_set_size_request (filesel, win_width, win_height);
-
-  g_signal_connect (G_OBJECT(filesel), "destroy",
-                     G_CALLBACK(sample_load_destroy_cb), filesel);
-
-  attach_window_close_accel(GTK_WINDOW(filesel));
+  dialog = gtk_file_chooser_dialog_new ("Sweep: Open File",
+				      data,
+				      GTK_FILE_CHOOSER_ACTION_OPEN,
+				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+				      NULL);
+    
+  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+  gtk_widget_set_size_request (dialog, win_width, win_height);
+  
+  sweep_set_window_icon (GTK_WINDOW(dialog));
+  attach_window_close_accel(GTK_WINDOW(dialog));
+    
   load_current_file = prefs_get_string (LAST_LOAD_KEY);
+  
+  if (load_current_file) {
+      gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog), load_current_file);
+      
+      g_free(load_current_file);
+  }
+    
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+      
+    char *filename;
 
-  if(load_current_file) {
-      gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), 
-				      load_current_file);
-      free (load_current_file);
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    sample_load (filename);
+    g_free (filename);
   }
 
-  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
-                   "clicked", G_CALLBACK(sample_load_ok_cb), filesel);
-
-
-  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
-              "clicked", G_CALLBACK(sample_load_cancel_cb), filesel);
-
-
-  gtk_widget_show(filesel);
+  gtk_widget_destroy (dialog);  
+    
 }
 
 gboolean
@@ -557,69 +536,6 @@ overwrite_cancel_cb (GtkWidget * widget, gpointer data)
 }
 
 static void
-sample_save_as_ok_cb(GtkWidget * widget, gpointer data)
-{
-  sw_view * view = (sw_view *)data;
-  sw_sample * sample;
-  GtkWidget * filesel;
-  gchar * pathname;
-  struct stat statbuf;
-
-  save_as_data * sd;
-
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
-    
-  sample = view->sample;
-  filesel = gtk_widget_get_toplevel (widget);
-
-  pathname =
-    g_strdup (gtk_file_selection_get_filename(GTK_FILE_SELECTION(filesel)));
-
-  if (!sweep_dir_exists (pathname)) {
-    g_free (pathname);
-    return;
-  }
-
-  sd = g_malloc (sizeof (save_as_data));
-  sd->sample = sample;
-  sd->pathname = pathname;
-
-  if (stat (pathname, &statbuf) == -1) {
-    switch (errno) {
-    case ENOENT:
-      /* If it doesn't exist, it's ok to save as */
-      overwrite_ok_cb (NULL, sd);
-      break;
-    default:
-      sweep_perror (errno, pathname);
-      break;
-    }
-  } else {
-    /* file exists */
-    if (access(pathname, W_OK) == -1) {
-      sweep_perror (errno, _("You are not allowed to write to\n%s"), pathname);
-      g_free (sd);
-    } else {
-      snprintf (buf, BUF_LEN, _("%s exists. Overwrite?"), pathname);
-      question_dialog_new (sample, _("File exists"), buf,
-			   _("Overwrite"), _("Don't overwrite"),
-			   G_CALLBACK (overwrite_ok_cb), sd, G_CALLBACK (overwrite_cancel_cb), sd,
-			   SWEEP_EDIT_MODE_META);
-    }
-  }
-
-  gtk_widget_destroy(GTK_WIDGET(filesel));
-}
-
-static void
-sample_save_as_cancel_cb(GtkWidget * widget, gpointer data)
-{
-  gtk_widget_destroy(GTK_WIDGET(data));
-}
-
-static void
 file_set_format_cb (GtkWidget * widget, gpointer data)
 {
   sw_sample * sample = (sw_sample *)data;
@@ -747,53 +663,45 @@ create_save_menu (sw_sample * sample)
 void
 sample_save_as_cb(GtkWidget * widget, gpointer data)
 {
+  GtkWidget *dialog;
+  gint win_width, win_height;
   sw_view * view = (sw_view *)data;
   sw_sample * sample;
-  GtkWidget * filesel;
   GtkWidget * save_options;
   GtkWidget * frame;
   GtkWidget * hbox;
   GtkWidget * label;
   GtkWidget * option_menu;
   GtkWidget * save_menu;
+  struct stat statbuf;
+  gchar *filename;
+  gint retval;
+
+  save_as_data * sd;
+
+#undef BUF_LEN
+#define BUF_LEN 512
+  char buf[BUF_LEN];
 
   char * last_save;
 
-  gint win_width, win_height;
-
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
-
+    
   sample = view->sample;
 
-  filesel = gtk_file_selection_new(_("Sweep: Save file"));
-  attach_window_close_accel(GTK_WINDOW(filesel));
-  sweep_set_window_icon (GTK_WINDOW(filesel));
-  gtk_window_set_position (GTK_WINDOW (filesel), GTK_WIN_POS_CENTER);
-  gtk_widget_set_size_request (filesel, win_width, win_height);
-
-  if (!strcmp (g_dirname (sample->pathname), ".")) {
-
-    last_save = prefs_get_string (LAST_SAVE_KEY);
-
-    if(last_save) {
-      gchar * last_save_dir = g_dirname (last_save);
-      gchar * new_pathname =
-	g_strdup_printf ("%s%c%s",
-			 last_save_dir, G_DIR_SEPARATOR, sample->pathname);
-					      
-      gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), 
-				      new_pathname);
-
-      g_free (new_pathname);
-      g_free (last_save_dir);
-      g_free (last_save);
-    }
-  } else {
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), 
-				    sample->pathname);
-  }
-
+  dialog = gtk_file_chooser_dialog_new ("Sweep: Save file",
+				      GTK_WINDOW(view->window),
+				      GTK_FILE_CHOOSER_ACTION_SAVE,
+				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+				      NULL);
+          
+    
+  //gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+  attach_window_close_accel(GTK_WINDOW(dialog));
+  sweep_set_window_icon (GTK_WINDOW(dialog));
+    
   save_options = gtk_hbox_new (TRUE, 1);
 
   frame = gtk_frame_new (_("Save Options"));
@@ -819,19 +727,98 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   gtk_widget_show (frame);
 
   /* pack the containing save_options hbox into the save-dialog */
-  gtk_box_pack_end (GTK_BOX (GTK_FILE_SELECTION (filesel)->main_vbox),
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 		    save_options, FALSE, FALSE, 0);
 
   gtk_widget_show (save_options);
+    
+  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+  gtk_widget_set_size_request (dialog, win_width, win_height);
+    
+  if (strcmp (g_path_get_dirname(sample->pathname), ".") == 0) {
 
-  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button),
-                   "clicked", G_CALLBACK(sample_save_as_ok_cb), data);
+    last_save = prefs_get_string (LAST_SAVE_KEY);
 
-  g_signal_connect (G_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button),
-               "clicked", G_CALLBACK(sample_save_as_cancel_cb), filesel);
+    if (last_save != NULL) {
+      gchar * last_save_dir = g_dirname (last_save);
+            
+	  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER(dialog),
+				      last_save_dir);			      
+      gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER(dialog),
+				      sample->pathname);
 
+      g_free (last_save_dir);
+      g_free (last_save);
 
-  gtk_widget_show(filesel);
+    } 
+  } else {
+     retval =  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog), 
+				    sample->pathname);
+        /* FIXME: bug (local only?) causes gtk_file_chooser_set_filename
+           to fail silently in some cases*/
+        filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+        //printf("filename pre: %s\n", filename);
+        //printf("sample->pathname: %s\n", sample->pathname);
+
+  }
+ 
+  retval = gtk_dialog_run (GTK_DIALOG (dialog));
+                           
+  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+  //printf("filename post: %s\n", filename);
+  sample = view->sample;
+  sd = g_malloc (sizeof (save_as_data));
+  sd->sample = sample;
+  sd->pathname = filename;
+
+  if (retval == GTK_RESPONSE_ACCEPT) {
+    
+    if (!sweep_dir_exists (filename)) {
+      g_free (sd);  
+      g_free (filename);
+      return;
+    }
+
+    if (stat (filename, &statbuf) == -1) {
+      switch (errno) {
+      case ENOENT:
+        /* If it doesn't exist, it's ok to save as */
+        overwrite_ok_cb (NULL, sd);
+        break;
+      default:
+        sweep_perror (errno, filename);
+        break;
+      }
+    } else {
+      /* file exists */
+        
+      if (access(filename, W_OK) == -1) {
+        sweep_perror (errno, _("You are not allowed to write to\n%s"), filename);
+      } else {
+        snprintf (buf, BUF_LEN, _("%s exists. Overwrite?"), filename);
+
+        question_dialog_new (sample, _("File exists"), buf,
+		  	   _("Overwrite"), _("Don't overwrite"),
+			     G_CALLBACK (overwrite_ok_cb), sd, G_CALLBACK (overwrite_cancel_cb), sd,
+			     SWEEP_EDIT_MODE_META);
+      }
+    }
+    /* FIXME: wrapped this due to the above gtk_file_chooser_set_filename problem */
+    } else if (sd->pathname != NULL) {
+      gchar * msg;
+
+      msg = g_strdup_printf (_("Save as %s cancelled"), g_basename (sd->pathname));
+      sample_set_tmp_message (sd->sample, msg);
+      g_free (msg);
+      
+    } else {
+  
+    g_free (sd);
+    g_free (filename);
+    }
+  gtk_widget_destroy (dialog);
+    
+    
 }
 
 static void
