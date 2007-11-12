@@ -36,8 +36,8 @@ fade (sw_sample * sample, gfloat start, gfloat end)
   sw_sel * sel;
   sw_audio_t * d;
   gfloat factor = start;
-  sw_framecount_t op_total, run_total;
-  glong i;
+  sw_framecount_t op_total, run_total, frames_total;
+  glong i, j;
   sw_framecount_t offset, remaining, n;
 
   gboolean active = TRUE;
@@ -46,6 +46,8 @@ fade (sw_sample * sample, gfloat start, gfloat end)
   f = sounddata->format;
 
   op_total = sounddata_selection_nr_frames (sounddata) / 100;
+  frames_total = sounddata_selection_nr_frames (sounddata);
+
   if (op_total == 0) op_total = 1;
   run_total = 0;
 
@@ -104,18 +106,21 @@ fade (sw_sample * sample, gfloat start, gfloat end)
 
 	n = MIN(remaining, 1024);
 
-	factor = start + (end - start) * 0.01 *
-	  (gfloat)run_total / (gfloat)op_total;
+	for (i = 0; i < n; i++)
+	{
+		factor = start + (end - start) * 
+                  (gfloat)run_total++ / (gfloat)frames_total;
 
-	for (i=0; i < n * f->channels; i++) {
-	  d[i] = (sw_audio_t)((gfloat)d[i] * factor);
+		for (j = 0; j < f->channels; j++)
+		{
+			d[i*f->channels+j] = (sw_audio_t)((gfloat)d[i*f->channels+j] * factor);
+		}
 	}
 
 	remaining -= n;
 	offset += n;
 
-	run_total += n;
-	sample_set_progress_percent (sample, run_total * 100 / op_total);
+	sample_set_progress_percent (sample, run_total * frames_total);
       }
 
       g_mutex_unlock (sample->ops_mutex);
