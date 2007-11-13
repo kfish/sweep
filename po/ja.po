@@ -1,0 +1,2532 @@
+# Japanese translation file for sweep.
+# Copyright @ 2004 Free Software Foundation, Inc.
+# Norihiro YONEDA <aoba@avis.ne.jp>, 2007
+#
+#
+#: src/sample-display.c:222
+msgid ""
+msgstr ""
+"Project-Id-Version: sweep-0.8.2\n"
+"Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
+"POT-Creation-Date: 2007-11-13 14:58+0900\n"
+"PO-Revision-Date: 2004-04-26 12:31+0200\n"
+"Last-Translator: Norihiro YONEDA <aoba@avis.ne.jp>\n"
+"Language-Team: Puppy Linux Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.c:89
+msgid "Welcome to Sweep"
+msgstr "Sweepにようこそ"
+
+#: src/main.c:90
+msgid ""
+"Hello, my name is Scrubby. Welcome to Sweep!\n"
+"\n"
+"Would you like to create a new file or load an existing file?"
+msgstr ""
+"やあ、私の名前はスクラビーです。Sweepにようこそ！\n"
+"\n"
+"新しいファイルを作りますか？それともファイルをロードしますか？"
+
+#: src/main.c:94
+msgid "Create new file"
+msgstr "新しいファイルの作成"
+
+#: src/main.c:94
+msgid "Load existing file"
+msgstr "既存のファイルをロードする"
+
+#: src/main.c:129
+msgid "WARNING: Build includes incomplete development code.\n"
+msgstr "警告：ビルドは不完全な開発コードを含んでいます。\n"
+
+#: src/main.c:188
+msgid "Sweep version"
+msgstr "Sweep バージョン"
+
+#: src/main.c:189
+msgid "Sweep plugin API version"
+msgstr "Sweep プラグインAPIバージョン"
+
+#: src/main.c:195
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "使い方: %s [オプション ...] [ファイル ...]\n"
+
+#: src/main.c:196
+msgid "Valid options are:\n"
+msgstr "有効なオプションは:\n"
+
+#: src/main.c:197
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                このヘルプを出力。\n"
+
+#: src/main.c:198
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             バージョン情報を出力。\n"
+
+#: src/main.c:199
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <ディスプレイ>      指定のX表示を使う。\n"
+
+#: src/main.c:200
+msgid ""
+"  --ignore-failed-lock     Continue when attempt to lock the\n"
+"                           preferences file fails.  For use when\n"
+"                           the users home directory is on an NFS\n"
+"                           file system. (possibly unsafe) \n"
+msgstr ""
+"  --ignore-failed-lock     初期設定ファイルのロックに失敗する時\n"
+"                           続けて下さい。ユーザーホームディレクトリが\n"
+"                           NFSファイルシステム上にある時に\n"
+"                           使います。(たぶん安全でない)\n"
+
+#: src/main.c:206
+msgid "  --no-toolbox             Do not show the toolbox window.\n"
+msgstr "  --no-toolbox             ツールボックスウィンドウを表示しない。\n"
+
+#: src/about_dialog.c:99
+msgid "This is Sweep version"
+msgstr "Sweepのバージョンです"
+
+#: src/about_dialog.c:119
+msgid "http://sweep.sourceforge.net/"
+msgstr "http://sweep.sourceforge.net/"
+
+#: src/callbacks.c:926 src/callbacks.c:939 src/edit.c:1568 src/edit.c:1642
+#: src/edit.c:1726
+msgid "Clipboard empty"
+msgstr "クリップボードは空です"
+
+#: src/channelops.c:146
+#, c-format
+msgid "Duplicate to %d channels"
+msgstr "%d チャンネルに複写"
+
+#: src/channelops.c:148
+#, c-format
+msgid "Duplicate from %d to %d channels"
+msgstr "%d から %d チャンネルに複写"
+
+#: src/channelops.c:207
+msgid "Sweep: Duplicate channel"
+msgstr "Sweep: チャンネルを複写"
+
+#: src/channelops.c:214 src/channelops.c:698
+#, c-format
+msgid "Currently: %d channels"
+msgstr "現在: %d チャンネル"
+
+#: src/channelops.c:221 src/channelops.c:704
+msgid "Output channels"
+msgstr "出力チャンネル"
+
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
+#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:144
+#: src/question_dialogs.c:204 src/question_dialogs.c:253
+#: src/sweep_sample.c:1918 src/undo_dialog.c:440
+msgid "OK"
+msgstr "OK"
+
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
+#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:158
+#: src/view.c:543 src/view.c:2650
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: src/channelops.c:347 src/view.c:361
+msgid "Mix down to mono"
+msgstr "混ぜてモノラルにする"
+
+#: src/channelops.c:445 src/view.c:340
+msgid "Remove left channel"
+msgstr "左チャンネルを削除"
+
+#: src/channelops.c:455 src/view.c:349
+msgid "Remove right channel"
+msgstr "右チャンネルを削除"
+
+#: src/channelops.c:539
+msgid "Swap channels"
+msgstr "チャンネルを入れ換える"
+
+#: src/channelops.c:541
+msgid "Not stereo"
+msgstr "非ステレオ"
+
+#: src/channelops.c:643
+#, c-format
+msgid "Convert from %d to %d channels"
+msgstr "%d から %d チャンネルに変換"
+
+#: src/channelops.c:692
+msgid "Sweep: Add/Remove channels"
+msgstr "Sweep: チャンネルを追加/削除"
+
+#: src/driver.c:363
+msgid "Sweep: audio device configuration"
+msgstr "Sweep: オーディオデバイスの設定"
+
+#: src/driver.c:404
+msgid "Changes to device settings will take effect on next playback."
+msgstr "デバイス設定の変更は次の再生から有効になります。"
+
+#: src/driver.c:418
+msgid "Device name"
+msgstr "デバイス名"
+
+#: src/driver.c:424
+msgid "Set the main device for playback and recording"
+msgstr "再生録音用メインデバイスを設定"
+
+#: src/driver.c:434
+msgid "Main device:"
+msgstr "メインデバイス"
+
+#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
+msgid "Default"
+msgstr "デフォルト"
+
+#: src/driver.c:461
+msgid "Use a different device for monitoring"
+msgstr "モニタ用に別のデバイスを使う"
+
+#: src/driver.c:473
+msgid "Monitor output:"
+msgstr "モニタ出力"
+
+#: src/driver.c:498
+msgid "Swap"
+msgstr "入れ換え"
+
+#: src/driver.c:506
+msgid "Swap main and monitor devices."
+msgstr "メインとモニタのデバイスを入れ換える"
+
+#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
+msgid "Reset"
+msgstr "リセット"
+
+#: src/driver.c:523
+msgid "Reset to the last remembered device names."
+msgstr "最後に記憶されたデバイス名にリセット"
+
+#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:747 src/sweep_sample.c:543
+msgid "Defaults"
+msgstr "デフォルト"
+
+#: src/driver.c:537
+msgid "Set to default device names."
+msgstr "デフォルトデバイス名に設定"
+
+#: src/driver.c:548
+msgid "Device buffering"
+msgstr "デバイスバッファリング"
+
+#: src/driver.c:558
+msgid ""
+"Low latency /\n"
+"More dropouts"
+msgstr ""
+"低遅延 /\n"
+"高ドロップアウト"
+
+#: src/driver.c:580
+msgid ""
+"High latency /\n"
+"Fewer dropouts"
+msgstr ""
+"高遅延 /\n"
+"低ドロップアウト"
+
+#: src/driver.c:584
+msgid ""
+"Varying this slider controls the lag between cursor movements and playback. "
+"This is particularly noticeable when \"scrubbing\" during playback.\n"
+"\n"
+"Lower values improve responsiveness but may degrade audio quality on heavily-"
+"loaded systems."
+msgstr ""
+"このスライダを変える事でカーソルの動きと再生の間の遅れを操作します。これは再"
+"生中に \"スクラブ\" （scrubbing）を発生した時に特に目立ちます。\n"
+"\n"
+"低い値は反応を改善しますが、重い負荷のシステム上では音質を低下させるかも知れ"
+"ません。"
+
+#: src/driver.c:603
+msgid "Remember these options"
+msgstr "このオプションを記憶する"
+
+#: src/driver.c:624
+msgid "Reset to the last remembered device buffering."
+msgstr "最後に記憶されたデバイスバッファリングにリセット。"
+
+#: src/driver.c:638
+msgid "Set to default device buffering."
+msgstr "デフォルトのデバイスバッファリングに設定。"
+
+#: src/edit.c:1291
+msgid "No selection to copy"
+msgstr "コピーするものが選択されていません"
+
+#: src/edit.c:1308 src/view.c:572 src/view.c:1150
+msgid "Copy"
+msgstr "コピー"
+
+#: src/edit.c:1342
+msgid "No selection to cut"
+msgstr "切り取るものが選択されていません"
+
+#: src/edit.c:1358 src/view.c:568 src/view.c:1144
+msgid "Cut"
+msgstr "切り取り"
+
+#: src/edit.c:1388
+msgid "No selection to clear"
+msgstr "クリアするものが選択されていません"
+
+#: src/edit.c:1404 src/view.c:576 src/view.c:1156
+msgid "Clear"
+msgstr "クリア"
+
+#: src/edit.c:1430
+msgid "No selection to delete"
+msgstr "削除するセレクションはありません"
+
+#: src/edit.c:1447 src/view.c:564
+msgid "Delete"
+msgstr "削除"
+
+#: src/edit.c:1482
+msgid "Nothing to crop out"
+msgstr "トリミングするものはありません"
+
+#: src/edit.c:1498 src/view.c:580 src/view.c:1162 src/view.c:1868
+msgid "Crop"
+msgstr "トリミング"
+
+#: src/edit.c:1572 src/edit.c:1646 src/edit.c:1730
+msgid "Clipboard data has incompatible format"
+msgstr "クリップボードデータは、非互換フォーマットがあります"
+
+#: src/edit.c:1590
+msgid "Paste insert"
+msgstr "挿入して貼り付け"
+
+#: src/edit.c:1669
+msgid "Paste mix"
+msgstr "混ぜて貼り付け"
+
+#: src/edit.c:1757
+msgid "Paste xfade"
+msgstr "Xフェードして貼り付け"
+
+#: src/file_dialogs.c:73
+msgid "MP3 export unsupported"
+msgstr "MP3エクスポートはサポートされていません"
+
+#: src/file_dialogs.c:74
+msgid ""
+"Export to MP3 format cannot legally be supported in free software\n"
+"due to patent licensing restrictions.\n"
+"\n"
+"Please use Ogg Vorbis format instead, which\n"
+"provides better quality and is free."
+msgstr ""
+"MP3フォーマットへのエクスポートは、特許ライセンス規制のため\n"
+"無料ソフトで法的にサポートできません。\n"
+"\n"
+"その代わりにOgg Vorbisフォーマットを使って下さい。\n"
+"より良い音質を提供し、フリーです。"
+
+#: src/file_dialogs.c:99
+msgid "Raw PCM (headerless)"
+msgstr "生PCM（ヘッダーなし）"
+
+#: src/file_dialogs.c:157
+#, c-format
+msgid "%s does not exist."
+msgstr "%s は存在しません"
+
+#: src/file_dialogs.c:158
+msgid "Directory does not exist"
+msgstr "ディレクトリは存在しません"
+
+#: src/file_dialogs.c:262
+#, c-format
+msgid ""
+"Unable to read\n"
+"%s"
+msgstr ""
+"%s \n"
+"を読めません"
+
+#: src/file_dialogs.c:356
+#, c-format
+msgid ""
+"Are you sure you want to revert %s to\n"
+"%s?\n"
+"\n"
+"All changes and undo information will be lost."
+msgstr ""
+"本当に %s を\n"
+"%s に戻しますか？\n"
+"\n"
+"すべての変更とアンドゥ情報は失われます。"
+
+#: src/file_dialogs.c:360
+msgid "Revert file"
+msgstr "ファイルを戻す"
+
+#: src/file_dialogs.c:361 src/view.c:509
+msgid "Revert"
+msgstr "戻す"
+
+#: src/file_dialogs.c:361
+msgid "Don't revert"
+msgstr "戻さない"
+
+#: src/file_dialogs.c:531 src/file_dialogs.c:810
+#, c-format
+msgid "Save as %s cancelled"
+msgstr "%s で保存はキャンセルされました"
+
+#: src/file_dialogs.c:568
+msgid "By extension"
+msgstr "拡張子付き"
+
+#: src/file_dialogs.c:626
+msgid "MP3 (Use Ogg Vorbis instead)"
+msgstr "MP3（代わりにOgg Vorbisを使う）"
+
+#: src/file_dialogs.c:707
+msgid "Save Options"
+msgstr "オプションを保存"
+
+#: src/file_dialogs.c:716
+msgid "Determine File Type:"
+msgstr "ファイルタイプを決定"
+
+#: src/file_dialogs.c:796
+#, c-format
+msgid ""
+"You are not allowed to write to\n"
+"%s"
+msgstr ""
+"%s への書き込みは\n"
+"許可されていません"
+
+#: src/file_dialogs.c:798
+#, c-format
+msgid "%s exists. Overwrite?"
+msgstr "%s は存在します。上書きしますか？"
+
+#: src/file_dialogs.c:800
+msgid "File exists"
+msgstr "ファイルは存在します"
+
+#: src/file_dialogs.c:801
+msgid "Overwrite"
+msgstr "上書き"
+
+#: src/file_dialogs.c:801
+msgid "Don't overwrite"
+msgstr "上書きしない"
+
+#: src/file_dialogs.c:873
+#, c-format
+msgid ""
+"%s\n"
+" has changed on disk.\n"
+"\n"
+"Are you sure you want to save?"
+msgstr ""
+"%s\n"
+" はディスク上で変更されました。\n"
+"\n"
+"本当に保存しますか？"
+
+#: src/file_dialogs.c:877 src/sweep_undo.c:331 src/view.c:3401
+msgid "File modified"
+msgstr "ファイルは変更されました"
+
+#: src/file_dialogs.c:878 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/view.c:501 src/view.c:1782
+msgid "Save"
+msgstr "保存"
+
+#: src/file_dialogs.c:878 src/file_speex.c:2138 src/file_vorbis.c:1622
+msgid "Don't save"
+msgstr "保存しない"
+
+#: src/file_sndfile1.c:327
+msgid "Powered by libsndfile"
+msgstr "libsndfile で作動"
+
+#: src/file_sndfile1.c:354
+msgid "Encoding"
+msgstr "エンコード"
+
+#: src/file_sndfile1.c:375
+msgid "Encoding:"
+msgstr "エンコード:"
+
+#: src/file_sndfile1.c:447
+msgid "Sampling rate:"
+msgstr "サンプリングレート:"
+
+#: src/file_sndfile1.c:480 src/file_speex.c:2078 src/file_vorbis.c:1562
+#: src/samplerate.c:584
+msgid "About"
+msgstr "バージョン情報"
+
+#: src/file_sndfile1.c:496
+msgid ""
+"Libsndfile is a C library by Erik de Castro Lopo\n"
+"for reading and writing files containing sampled sound."
+msgstr ""
+"Libsndfileは、サンプリングされた音を含むファイルを読み書きするための\n"
+"Erik de Castro LopoによるCライブラリです。"
+
+#: src/file_sndfile1.c:507
+msgid ""
+"This user interface by Erik de Castro Lopo\n"
+" and Conrad Parker,\n"
+"Copyright (C) 2002 Erik de Castro Lopo\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+msgstr ""
+"このユーザインターフェースは Erik de Castro Lopo と\n"
+"Conrad Parker によります。\n"
+"Copyright (C) 2002 Erik de Castro Lopo\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+
+#: src/file_sndfile1.c:550
+msgid "Sweep: Save PCM options"
+msgstr "Sweep: PCMオプションを保存"
+
+#: src/file_sndfile1.c:719
+msgid "Sweep: Load Raw PCM options"
+msgstr "Sweep: 生PCMオプションをロード"
+
+#: src/file_sndfile1.c:771 src/file_mad.c:435 src/file_speex.c:577
+#: src/file_vorbis.c:324
+#, c-format
+msgid "Loading %s"
+msgstr "%s をロード中"
+
+#: src/file_sndfile1.c:998 src/file_speex.c:1074 src/file_vorbis.c:702
+#, c-format
+msgid "Saving %s"
+msgstr "%s を保存中"
+
+#: src/file_speex.c:1016 src/file_speex.c:1036
+msgid "Speex encoding results"
+msgstr "Speexエンコード結果"
+
+#: src/file_speex.c:1208
+msgid "Narrowband ~8 kHz (telephone quality)"
+msgstr "狭帯域 ~8 kHz（電話音質）"
+
+#: src/file_speex.c:1209
+msgid "Wideband ~16 kHz"
+msgstr "広帯域 ~16 kHz"
+
+#: src/file_speex.c:1211
+msgid "Ultra-wideband 32-48 kHz"
+msgstr "ウルトラ広帯域 32-48 kHz"
+
+#: src/file_speex.c:1218
+msgid "Constant bitrate (CBR) with no features"
+msgstr "固定ビットレート（CBR）特性なし"
+
+#: src/file_speex.c:1221
+msgid "CBR with Voice Activity Detection (VAD)"
+msgstr "音声活動検出付きCBR（VAD）"
+
+#: src/file_speex.c:1222
+msgid "VAD generates low bitrate comfort noise to replace non-speech"
+msgstr ""
+"VADは、非スピーチに置き換えるために低ビットレートの快適な音を生み出します。"
+
+#: src/file_speex.c:1225
+msgid "CBR with VAD and Discontinuous Transmission (DTX)"
+msgstr "VAD付きCBRと不連続送信（DTX）"
+
+#: src/file_speex.c:1226
+msgid "DTX marks extended pauses with a minimum bitrate signal"
+msgstr "DTXは、最小ビットレート信号で延長した一時停止をマークします。"
+
+#: src/file_speex.c:1229
+msgid "Variable bitrate (VBR) with VAD"
+msgstr "VAD付き可変ビットレート（VBR）"
+
+#: src/file_speex.c:1230
+msgid ""
+"VBR allows the bitrate to adapt to the complexity of the speech; this "
+"selection uses VBR without DTX, which may improve performance compared to "
+"full VBR in the presence of background noise."
+msgstr ""
+"VBRはビットレートをスピーチの複雑さに合わせる事ができます; この選択はDTXなし"
+"でVBRを使います。そしてバックグラウンドノイズがある場合 完全VBRと比較してパ"
+"フォーマンスを向上させるかも知れません。"
+
+#: src/file_speex.c:1235
+msgid "Variable bitrate (VBR) with all features"
+msgstr "可変ビットレート（VBR）全特性あり"
+
+#: src/file_speex.c:1236
+msgid ""
+"VBR allows the bitrate to adapt to the complexity of the speech, and handles "
+"pauses using VAD and DTX"
+msgstr ""
+"VBRはビットレートをスピーチの複雑さに合わせる事ができます。 そしてVADとDTXを"
+"使って一時停止を操作します。"
+
+#: src/file_speex.c:1240
+msgid "Constant bitrate (CBR)"
+msgstr "固定ビットレート（CBR）"
+
+#: src/file_speex.c:1242
+msgid "Variable bitrate (VBR)"
+msgstr "可変ビットレート（VBR）"
+
+#: src/file_speex.c:1243
+msgid "VBR allows the bitrate to adapt to the complexity of the speech."
+msgstr "VBRはビットレートをスピーチの複雑さに合わせる事ができます。"
+
+#: src/file_speex.c:1298 src/file_speex.c:1803
+msgid "Average bitrate"
+msgstr "平均ビットレート"
+
+#: src/file_speex.c:1301
+msgid "Maximum bitrate"
+msgstr "最大ビットレート"
+
+#: src/file_speex.c:1494 src/file_vorbis.c:1013
+msgid "Hack the planet!"
+msgstr "惑星にハック！"
+
+#: src/file_speex.c:1580
+msgid "Sweep: Speex save options"
+msgstr "Sweep: Speex保存オプション"
+
+#: src/file_speex.c:1631
+msgid "Speex encoding"
+msgstr "Speexエンコード"
+
+#: src/file_speex.c:1644
+msgid "Mode:"
+msgstr "モード:"
+
+#: src/file_speex.c:1670
+msgid "Auto"
+msgstr "自動"
+
+#: src/file_speex.c:1679
+msgid ""
+"Automatically select the encoding mode based on the sampling rate of the "
+"file."
+msgstr "ファイルのサンプリングレートを元にエンコードモードを自動的に選択。"
+
+#: src/file_speex.c:1732 src/file_vorbis.c:1160
+msgid "Encoding quality:"
+msgstr "エンコード品質"
+
+#: src/file_speex.c:1775
+msgid ""
+"Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
+"quality, largest file)."
+msgstr ""
+"エンコード品質は 0（最低品質、最小ファイル）と 10（最高品質、最大ファイル）の"
+"間です。"
+
+#: src/file_speex.c:1785
+msgid "Enable bitrate management"
+msgstr "ビットレート管理を有効"
+
+#: src/file_speex.c:1798
+msgid ""
+"For non-VBR (constant bitrate) encoding, this sets the maximum bitrate.For "
+"VBR encoding, this sets the average bitrate."
+msgstr ""
+"非VBR（固定ビットレート）エンコード用には最高ビットレートを設定します。VBRエ"
+"ンコード用には平均ビットレートを設定します。"
+
+#: src/file_speex.c:1821
+msgid "bps"
+msgstr "bps"
+
+#: src/file_speex.c:1827
+msgid "Extra"
+msgstr "追加"
+
+#: src/file_speex.c:1849
+msgid "Encoding complexity:"
+msgstr "エンコードの複雑さ"
+
+#: src/file_speex.c:1888
+msgid ""
+"This sets the encoding speed/quality tradeoff between 0 (faster encoding) "
+"and 10 (slower encoding)"
+msgstr ""
+"これは、0（より速いエンコード）と10（より遅いエンコード）の間で エンコード速"
+"度/音質妥協点を設定します。"
+
+#: src/file_speex.c:1904
+msgid "Speex frames per Ogg packet:"
+msgstr "Oggパケット当たりのSpeexフレーム"
+
+#: src/file_speex.c:1930
+msgid ""
+"Number of Speex frames to pack into each Ogg packet. Higher values save "
+"space at low bitrates."
+msgstr ""
+"各々のOggパケットに入れるSpeexフレーム数。より高い値は、低いビットレートで容"
+"量を節約します。"
+
+#: src/file_speex.c:1945 src/file_vorbis.c:1336
+msgid "Remember these encoding options"
+msgstr "エンコードオプションを記憶"
+
+#: src/file_speex.c:1965 src/file_vorbis.c:1356
+msgid "Reset to the last remembered encoding options."
+msgstr "最後に記憶したエンコードオプションにリセット"
+
+#: src/file_speex.c:1980
+msgid "Automatically select best encoding options for this file."
+msgstr "このファイルに最適なエンコードオプションを自動的に選択"
+
+#: src/file_speex.c:1985 src/file_vorbis.c:1469
+msgid "Ogg stream"
+msgstr "Ogg ストリーム"
+
+#: src/file_speex.c:1998 src/file_vorbis.c:1482
+msgid "Ogg stream serial number:"
+msgstr "Ogg ストリームシリアル番号："
+
+#: src/file_speex.c:2019 src/file_vorbis.c:1503
+msgid "Remember this serial number"
+msgstr "このシリアル番号を記憶"
+
+#: src/file_speex.c:2029 src/file_vorbis.c:1513
+msgid ""
+"Remember this serial number for future re-use.\n"
+"USE OF THIS OPTION IS NOT RECOMMENDED.\n"
+"Each encoded file should have a different serial number; re-use of Ogg "
+"serial numbers in different files may create incompatabilities with "
+"streaming applications. This option is provided for bitstream engineering "
+"purposes only.\n"
+"If this option is not checked, new serial numbers will be randomly generated "
+"for each file encoded."
+msgstr ""
+"このシリアル番号を今後の再利用のために記憶します。\n"
+"「このオプションの使用は推奨しません」\n"
+"エンコードされた各ファイルは違ったシリアル番号でなければいけません；別のファ"
+"イルでの Oggシリアル番号の再利用はストリーミングアプリケーションで不適合を生"
+"ずるかも知れません。このオプションはビットストリーム技術の目的だけに規定され"
+"ています。\n"
+"このオプションにチェックを入れないと、エンコードされた各ファイルにランダムに "
+"新しいシリアル番号が作り出されます。"
+
+#: src/file_speex.c:2056 src/file_vorbis.c:1540
+msgid "Randomize!"
+msgstr "ランダム化する！"
+
+#: src/file_speex.c:2063 src/file_vorbis.c:1547
+msgid ""
+"Generate a random serial number for the Ogg bitstream. The number will "
+"change while this button is held down."
+msgstr ""
+"Oggビットストリームのためにランダムなシリアル番号を作り出します。このボタンを"
+"押している間、数は変わります。"
+
+#: src/file_speex.c:2094
+msgid ""
+"Speex is a high quality speech codec designed for\n"
+"voice over IP (VoIP) and file-based compression.\n"
+"It is free, open and unpatented."
+msgstr ""
+"SpeexはIP（VoIP）とファイルに基づく圧縮について音声用に\n"
+"設計された高音質スピーチコーデックです。\n"
+"フリーで、オープンで特許権を付与されていません。"
+
+#: src/file_speex.c:2105
+msgid ""
+"Ogg, Speex, Xiph.org Foundation and their logos\n"
+"are trademarks (tm) of the Xiph.org Foundation.\n"
+"Used with permission."
+msgstr ""
+"Ogg, Speex, Xiph.org Foundation とそのロゴは\n"
+"the Xiph.org Foundation の登録商標（tm）です。\n"
+"許可を得て使用しています。"
+
+#: src/file_speex.c:2120 src/file_vorbis.c:1604 src/samplerate.c:611
+msgid ""
+"This user interface by Conrad Parker,\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+msgstr ""
+"このユーザインターフェースは Conrad Parker によります、\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+
+#: src/file_vorbis.c:356
+#, c-format
+msgid ""
+"Decoding %s\n"
+"Encoded by: %s\n"
+"\n"
+"%s"
+msgstr ""
+"%s をデコード中\n"
+"エンコード: %s\n"
+"\n"
+"%s"
+
+#: src/file_vorbis.c:470
+msgid "Unsupported encoding mode"
+msgstr "サポートされていないエンコードモード"
+
+#: src/file_vorbis.c:473
+msgid "Invalid encoding options"
+msgstr "無効なエンコードオプション"
+
+#: src/file_vorbis.c:643 src/file_vorbis.c:663
+msgid "Ogg Vorbis encoding results"
+msgstr "Ogg Vorbis エンコード結果"
+
+#: src/file_vorbis.c:1089
+msgid "Sweep: Ogg Vorbis save options"
+msgstr "Sweep: Ogg Vorbis 保存オプション"
+
+#: src/file_vorbis.c:1148
+msgid "Vorbis encoding"
+msgstr "Vorbis エンコード"
+
+#: src/file_vorbis.c:1195
+msgid ""
+"Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
+"quality, largest file) using variable bitrate mode (VBR)."
+msgstr ""
+"可変ビットレートモード（VBR）を使ったエンコード品質は 0（最低品質、最小ファイ"
+"ル）と 10（最高品質、最大ファイル）の間です。"
+
+#: src/file_vorbis.c:1205
+msgid "Enable bitrate management engine"
+msgstr "ビットレート管理エンジンを有効にする"
+
+#: src/file_vorbis.c:1211
+msgid ""
+"This enables average bitrate mode (ABR). You must suggest a nominal average "
+"bitrate and may specify minimum and maximum bounds.\n"
+"For best results it is generally recommended that you use the variable "
+"bitrate 'encoding quality' control (above) instead."
+msgstr ""
+"これは平均ビットレートモード（ABR）を有効にします。公称平均ビットレートを提示"
+"し 最小最大範囲を指定しなければなりません。\n"
+"最高の結果にするには、一般的に（上の）可変ビットレート「エンコード品質」 コン"
+"トロールを代わりに使う事を推奨します。"
+
+#: src/file_vorbis.c:1221
+msgid "Bitrate management engine"
+msgstr "ビットレート管理エンジン"
+
+#: src/file_vorbis.c:1247
+msgid "Nominal bitrate (ABR):"
+msgstr "公称ビットレート（ABR）："
+
+#: src/file_vorbis.c:1260
+msgid ""
+"Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
+msgstr ""
+"公称ビットレートを指定します。これはビットレートを平均化してエンコードを試み"
+"ます。"
+
+#: src/file_vorbis.c:1264 src/file_vorbis.c:1293 src/file_vorbis.c:1323
+msgid "kbps"
+msgstr "kbps"
+
+#: src/file_vorbis.c:1276
+msgid "Minimum bitrate:"
+msgstr "最小ビットレート："
+
+#: src/file_vorbis.c:1289
+msgid ""
+"Specify a minimum bitrate, useful for encoding for a fixed-size channel. "
+"(Optional)"
+msgstr ""
+"最小ビットレートを指定します。固定サイズチャンネルにエンコードする時に役に立"
+"ちます。（オプション）"
+
+#: src/file_vorbis.c:1306
+msgid "Maximum bitrate:"
+msgstr "最大ビットレート："
+
+#: src/file_vorbis.c:1319
+msgid ""
+"Specify a maximum bitrate, useful for streaming applications. (Optional)"
+msgstr ""
+"最大ビットレートを指定します。ストリーミングアプリケーションに役立ちます。"
+"（オプション）"
+
+#: src/file_vorbis.c:1370
+msgid "Set to default encoding options."
+msgstr "デフォルトエンコードオプションに設定"
+
+#: src/file_vorbis.c:1377
+msgid "Metadata"
+msgstr "メタデータ"
+
+#: src/file_vorbis.c:1399
+msgid "Title:"
+msgstr "タイトル："
+
+#: src/file_vorbis.c:1399
+msgid "Track/Work name"
+msgstr "トラック/作品名"
+
+#: src/file_vorbis.c:1401
+msgid "Version:"
+msgstr "バージョン："
+
+#: src/file_vorbis.c:1402
+msgid ""
+"The version field may be used to differentiate multiple versions of the same "
+"track title in a single collection. (e.g. remix info)"
+msgstr ""
+"バージョンフィールドは、シングルコレクションの中で同じトラックタイトルの複数"
+"バージョンを区別するのに用いられます。（例えば、リミックス情報）"
+
+#: src/file_vorbis.c:1406
+msgid "Album:"
+msgstr "アルバム："
+
+#: src/file_vorbis.c:1407
+msgid "The collection name to which this track belongs"
+msgstr "このトラックが属すコレクション名"
+
+#: src/file_vorbis.c:1409
+msgid "Artist:"
+msgstr "アーチスト："
+
+#: src/file_vorbis.c:1410
+msgid ""
+"The artist generally considered responsible for the work. In popular music "
+"this is usually the performing band or singer. For classical music it would "
+"be the composer. For an audio book it would be the author of the original "
+"text."
+msgstr ""
+"通常、作品に対して責任があると思われるアーティスト。ポピュラー音楽の中で、こ"
+"れは通常演奏バンドまたは歌手です。クラシック音楽では作曲家です。オーディオ"
+"ブックでは原文の著者です。"
+
+#: src/file_vorbis.c:1416
+msgid "Performer:"
+msgstr "演奏者："
+
+#: src/file_vorbis.c:1417
+msgid ""
+"The artist(s) who performed the work. In classical music this would be the "
+"conductor, orchestra, soloists. In an audio book it would be the actor who "
+"did the reading. In popular music this is typically the same as the ARTIST "
+"and is omitted."
+msgstr ""
+"作品を演奏したアーティスト（たち）。クラシック音楽では指揮者、オーケストラ、"
+"ソリストです。オーディオブックでは朗読した俳優です。ポピュラー音楽では「アー"
+"チスト」と典型的に同じで省略されます。"
+
+#: src/file_vorbis.c:1424
+msgid "Copyright:"
+msgstr "著作権："
+
+#: src/file_vorbis.c:1425
+msgid ""
+"Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
+msgstr "著作権帰属、例えば『2001 Nobody's Band』または『1999 Jack Moffitt』"
+
+#: src/file_vorbis.c:1428
+msgid "License:"
+msgstr "ライセンス："
+
+#: src/file_vorbis.c:1429
+msgid ""
+"License information, eg, 'All Rights Reserved', 'Any Use Permitted', a URL "
+"to a license such as a Creative Commons license (\"www.creativecommons.org/"
+"blahblah/license.html\") or the EFF Open Audio License ('distributed under "
+"the terms of the Open Audio License. see http://www.eff.org/IP/Open_licenses/"
+"eff_oal.html for details'), etc."
+msgstr ""
+"ライセンス情報、例えば、「著作権所有」「どんな使用でも許可」、ライセンスへの"
+"URL、例；Creative Commons license（\"www.creativecommons.org/blahblah/"
+"license.html\"）または、EFF Open Audio License（Open Audio Licenseの下に配布"
+"されます。詳細は、http://www.eff.org/IP/Open_licenses/eff_oal.htmlをご覧下さ"
+"い）など。"
+
+#: src/file_vorbis.c:1438
+msgid "Organization:"
+msgstr "団体："
+
+#: src/file_vorbis.c:1439
+msgid "Name of the organization producing the track (i.e. the 'record label')"
+msgstr "トラックを製作した団体名、例えば「レコードラベル」"
+
+#: src/file_vorbis.c:1442
+msgid "Description:"
+msgstr "解説"
+
+#: src/file_vorbis.c:1443
+msgid "A short text description of the contents"
+msgstr "内容についての短い解説文"
+
+#: src/file_vorbis.c:1445
+msgid "Genre:"
+msgstr "ジャンル："
+
+#: src/file_vorbis.c:1446
+msgid "A short text indication of music genre"
+msgstr "音楽ジャンルの短い表示文"
+
+#: src/file_vorbis.c:1448
+msgid "Date:"
+msgstr "日付："
+
+#: src/file_vorbis.c:1449
+msgid "Date the track was recorded"
+msgstr "トラックの録音日"
+
+#: src/file_vorbis.c:1451
+msgid "Location:"
+msgstr "場所："
+
+#: src/file_vorbis.c:1452
+msgid "Location where track was recorded"
+msgstr "トラックの録音場所"
+
+#: src/file_vorbis.c:1454
+msgid "Contact:"
+msgstr "連絡先："
+
+#: src/file_vorbis.c:1455
+msgid ""
+"Contact information for the creators or distributors of the track. This "
+"could be a URL, an email address, the physical address of the producing "
+"label."
+msgstr ""
+"トラックの製作者または販売者への連絡先。これはURL、電子メールアドレス、プロ"
+"デュースレーベルの実際の住所などです。"
+
+#: src/file_vorbis.c:1460
+msgid "ISRC:"
+msgstr "ISRC："
+
+#: src/file_vorbis.c:1461
+msgid ""
+"ISRC number for the track; see the ISRC intro page (http://www.ifpi.org/site-"
+"content/online/isrc_intro.html) for more information on ISRC numbers."
+msgstr ""
+"トラック用のISRC番号; ISRC番号に関する詳細な情報については、ISRC紹介ページ"
+"http://www.ifpi.org/site-content/online/isrc_intro.html を参照して下さい。"
+
+#: src/file_vorbis.c:1578
+msgid ""
+"Ogg Vorbis is a high quality general purpose\n"
+"perceptual audio codec. It is free, open and\n"
+"unpatented."
+msgstr ""
+"Ogg Vorbisは、高品質多目的知覚的なオーディオコーデックです。\n"
+"フリー、オープンで、特許権を付与されていません。"
+
+#: src/file_vorbis.c:1589
+msgid ""
+"Ogg, Vorbis, Xiph.org Foundation and their logos\n"
+"are trademarks (tm) of the Xiph.org Foundation.\n"
+"Used with permission."
+msgstr ""
+"Ogg, Speex, Xiph.org Foundation とそのロゴは\n"
+"the Xiph.org Foundation の登録商標（tm）です。\n"
+"許可を得て使用しています。"
+
+#: src/head.c:408 src/view.c:2324
+msgid "Cursor position (indicator)"
+msgstr "カーソル位置（インジケータ）"
+
+#: src/head.c:449
+msgid "Reverse mode (toggle)"
+msgstr "反転モード（切り替え）"
+
+#: src/head.c:467
+msgid "Loop mode recording (toggle)"
+msgstr "ループモード録音（切り替え）"
+
+#: src/head.c:486
+msgid "Record into selection"
+msgstr "セレクションに録音"
+
+#: src/head.c:503 src/view.c:1068
+msgid "Stop"
+msgstr "停止"
+
+#: src/head.c:516 src/view.c:2469
+msgid "Go to beginning"
+msgstr "最初に戻る"
+
+#: src/head.c:527 src/view.c:2480
+msgid "Rewind"
+msgstr "巻き戻し"
+
+#: src/head.c:540 src/view.c:2492
+msgid "Fast forward"
+msgstr "早送り"
+
+#: src/head.c:555 src/view.c:2505
+msgid "Go to the end"
+msgstr "最後に飛ぶ"
+
+#: src/interface.c:327
+msgid "Sweep"
+msgstr "Sweep"
+
+#: src/interface.c:352 src/view.c:446
+msgid "File"
+msgstr "ファイル"
+
+#: src/interface.c:357
+msgid "New"
+msgstr "新規"
+
+#: src/interface.c:366
+msgid "Open"
+msgstr "開く"
+
+#: src/interface.c:375 src/sweep_sample.c:800 src/sweep_sample.c:808
+#: src/view.c:529
+msgid "Quit"
+msgstr "終了"
+
+#: src/interface.c:386 src/view.c:1073
+msgid "Help"
+msgstr "ヘルプ"
+
+#: src/interface.c:391
+msgid "About..."
+msgstr "バージョン情報..."
+
+#: src/interface.c:414 src/view.c:618
+msgid "Select"
+msgstr "選択"
+
+#: src/interface.c:415
+msgid "Select regions of a sample"
+msgstr "サンプリング音の領域選択"
+
+#: src/interface.c:416
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"このツールによって、サンプリング音の領域を選択できます。そして選択領域を編集"
+"して効果を適用できます。不連続な領域をセレクションに追加するには選択する間、"
+"シフトキーを押さえていて下さい。"
+
+#: src/interface.c:433
+msgid "Move"
+msgstr "移動"
+
+#: src/interface.c:434
+msgid "Move regions in a sample"
+msgstr "サンプリング音に領域を移動"
+
+#: src/interface.c:435
+msgid "With this tool you can move selected regions of a sample."
+msgstr "このツールでサンプリング音の選択領域を移動できます。"
+
+#: src/interface.c:447
+msgid "Scrub"
+msgstr "スクラブ"
+
+#: src/interface.c:448
+msgid "Locate sounds directly"
+msgstr "音源を直接示す"
+
+#: src/interface.c:449
+msgid ""
+"Place the play marker on a sample. Click anywhere in a view to instantly "
+"move the playback position to that part of the sample."
+msgstr ""
+"再生マーカをサンプリング音に置いて表示の好きなところでクリックすると、再生位"
+"置は簡単にサンプリング音のその部分に移動します。"
+
+#: src/interface.c:466
+msgid "Zoom"
+msgstr "ズーム"
+
+#: src/interface.c:467
+msgid "Zoom in & out"
+msgstr "ズームインとズームアウト"
+
+#: src/interface.c:468
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"表示のズームイン、アウト。サンプリング音の一部分を拡大するには、表示のどこか"
+"をクリックして下さい。シフトキーを押してクリックすると縮小します。"
+
+#: src/interface.c:484
+msgid "Pencil"
+msgstr "鉛筆"
+
+#: src/interface.c:485
+msgid "Edit PCM sample values"
+msgstr "PCMサンプル値を編集"
+
+#: src/interface.c:486
+msgid "When zoomed down to individual  samples, click to edit"
+msgstr "個々のサンプルにズームした時、編集するにはクリックして下さい。"
+
+#: src/interface.c:497
+msgid "Noise"
+msgstr "ノイズ"
+
+#: src/interface.c:498
+msgid "Add noise"
+msgstr "ノイズを加える"
+
+#: src/interface.c:499
+msgid "Randomise PCM values"
+msgstr "PCM値をランダム化する"
+
+#: src/notes.c:61
+msgid "C3"
+msgstr "C3"
+
+#: src/notes.c:62
+msgid "C#3"
+msgstr "C#3"
+
+#: src/notes.c:63
+msgid "D3"
+msgstr "D3"
+
+#: src/notes.c:64
+msgid "Eb3"
+msgstr "Db3"
+
+#: src/notes.c:65
+msgid "E3"
+msgstr "E3"
+
+#: src/notes.c:66
+msgid "F3"
+msgstr "F3"
+
+#: src/notes.c:67
+msgid "F#3"
+msgstr "F#3"
+
+#: src/notes.c:68
+msgid "G3"
+msgstr "G3"
+
+#: src/notes.c:69
+msgid "G#3"
+msgstr "G#3"
+
+#: src/notes.c:70
+msgid "A3"
+msgstr "A3"
+
+#: src/notes.c:71
+msgid "Bb3"
+msgstr "Bb3"
+
+#: src/notes.c:72
+msgid "B3"
+msgstr "B3"
+
+#: src/notes.c:74
+msgid "C4"
+msgstr "C4"
+
+#: src/notes.c:76
+msgid "C#4"
+msgstr "C#4"
+
+#: src/notes.c:77
+msgid "D4"
+msgstr "D4"
+
+#: src/notes.c:78
+msgid "Eb4"
+msgstr "Eb4"
+
+#: src/notes.c:79
+msgid "E4"
+msgstr "E4"
+
+#: src/notes.c:80
+msgid "F4"
+msgstr "F4"
+
+#: src/notes.c:81
+msgid "F#4"
+msgstr "F#4"
+
+#: src/notes.c:82
+msgid "G4"
+msgstr "G4"
+
+#: src/notes.c:83
+msgid "G#4"
+msgstr "G#4"
+
+#: src/notes.c:84
+msgid "A4"
+msgstr "A4"
+
+#: src/notes.c:85
+msgid "Bb4"
+msgstr "Bb4"
+
+#: src/notes.c:86
+msgid "B4"
+msgstr "B4"
+
+#: src/notes.c:88
+msgid "C5"
+msgstr "C5"
+
+#: src/notes.c:89
+msgid "C#5"
+msgstr "C#5"
+
+#: src/notes.c:90
+msgid "D5"
+msgstr "D5"
+
+#: src/notes.c:91
+msgid "D#5"
+msgstr "D#5"
+
+#: src/notes.c:92
+msgid "E5"
+msgstr "E5"
+
+#: src/notes.c:94
+msgid "F5"
+msgstr "F5"
+
+#: src/notes.c:95
+msgid "F#5"
+msgstr "F#5"
+
+#: src/notes.c:96
+msgid "G5"
+msgstr "G5"
+
+#: src/notes.c:97
+msgid "G#5"
+msgstr "G#5"
+
+#: src/notes.c:98
+msgid "A5"
+msgstr "A5"
+
+#: src/notes.c:99
+msgid "Bb5"
+msgstr "Bb5"
+
+#: src/notes.c:100
+msgid "B5"
+msgstr "B5"
+
+#: src/param.c:117
+#, c-format
+msgid "TRUE"
+msgstr "真"
+
+#: src/param.c:118
+#, c-format
+msgid "FALSE"
+msgstr "偽"
+
+#: src/param.c:738
+msgid "Parameters"
+msgstr "パラメータ"
+
+#: src/param.c:769
+msgid "Preview"
+msgstr "プレビュー"
+
+#: src/paste_dialogs.c:221
+msgid "Start gain"
+msgstr "ゲイン開始"
+
+#: src/paste_dialogs.c:223 src/record.c:489 src/record.c:507
+#: plugins/echo/echo.c:61
+msgid "Gain"
+msgstr "ゲイン"
+
+#: src/paste_dialogs.c:230
+msgid "Sweep: Paste crossfade"
+msgstr "Sweep: クロスフェード貼り付け"
+
+#: src/paste_dialogs.c:232
+msgid "Sweep: Paste mix"
+msgstr "Sweep: ミックス貼り付け"
+
+#: src/paste_dialogs.c:257
+msgid "Source"
+msgstr "ソース"
+
+#: src/paste_dialogs.c:257
+msgid "Clipboard"
+msgstr "クリップボード"
+
+#: src/paste_dialogs.c:279 src/paste_dialogs.c:318
+msgid "End gain"
+msgstr "ゲイン終了"
+
+#: src/paste_dialogs.c:287 src/paste_dialogs.c:326
+msgid "Invert phase"
+msgstr "位相反転"
+
+#: src/paste_dialogs.c:295
+msgid "Destination"
+msgstr "行き先"
+
+#: src/paste_dialogs.c:345
+msgid ""
+"Indicates the total duration of the clipboard, which is the maximum length "
+"that will be pasted."
+msgstr "貼り付ける事ができる最大長クリップボードの全体の演奏時間を示します。"
+
+#: src/paste_dialogs.c:362
+msgid "Clipboard duration:"
+msgstr "演奏時時間をクリップボードへ："
+
+#: src/paste_dialogs.c:375
+msgid "Crossfade"
+msgstr "クロスフェード"
+
+#: src/paste_dialogs.c:375
+msgid "Mix"
+msgstr "ミックス"
+
+#: src/paste_dialogs.c:394
+msgid "Don't crossfade"
+msgstr "クロスフェードしない"
+
+#: src/paste_dialogs.c:394
+msgid "Don't mix"
+msgstr "ミックスしない"
+
+#: src/preferences.c:62
+msgid "Error creating ~/.sweep"
+msgstr "~/.sweepの作成エラー"
+
+#: src/preferences.c:66
+#, c-format
+msgid "Created %s/ mode %04o\n"
+msgstr "Created %s/ mode %04o\n"
+
+#: src/preferences.c:73
+msgid "Error on ~/.sweep"
+msgstr "~/.sweep でエラー"
+
+#: src/preferences.c:82
+msgid "Error setting permissions on ~/.sweep"
+msgstr "~/.sweep でパーミッションの設定エラー"
+
+#: src/preferences.c:89
+msgid "Error accessing ~/.sweep"
+msgstr "~/.sweep にアクセスエラー"
+
+#: src/preferences.c:124
+msgid "Error opening ~/.sweep/preferences.tdb"
+msgstr "~/.sweep/preferences.tdb のオープンエラー"
+
+#: src/record.c:94 src/record.c:544
+msgid "Ready to record"
+msgstr "録音の準備ができました"
+
+#: src/record.c:308
+msgid "No selection to record into"
+msgstr "録音するセレクションがありません"
+
+#: src/record.c:446
+msgid "Sweep: Record"
+msgstr "Sweep: 録音"
+
+#: src/record.c:459 src/undo_dialog.c:376
+msgid "File:"
+msgstr "ファイル："
+
+#: src/record.c:482
+msgid "Previous sound"
+msgstr "前の音"
+
+#: src/record.c:496
+msgid ""
+"This slider allows you to mix the new recording in with the previous "
+"contents of the buffer. Set it to -inf dB to overwrite the previous sound."
+msgstr ""
+"このスライダーは、新しい録音をバッファの前の内容にミックスさせる事ができま"
+"す。前の音に上書きする -inf dB に設定します。"
+
+#: src/record.c:502
+msgid "Recorded sound"
+msgstr "録音された音"
+
+#: src/record.c:514
+msgid ""
+"This slider allows you to reduce the level of the recorded sound. Set it to "
+"0 dB to record without any reduction. Note that setting this to -inf dB will "
+"record silence."
+msgstr ""
+"このスライダーは、録音された音のレベルを減らすことができます。持続時間なしで"
+"録音するには0dBに設定して下さい。注意、これを設定すると -inf dB は、無音を録"
+"音します。"
+
+#: src/sample-display.c:223
+msgid "New selection"
+msgstr "新しいセレクション"
+
+#: src/sample-display.c:224
+msgid "Selection: add/modify region"
+msgstr "セレクション： 領域の追加/変更"
+
+#: src/sample-display.c:225
+msgid "Selection: subtract region"
+msgstr "セレクション： 取り去った領域"
+
+#: src/samplerate.c:103 src/samplerate.c:167
+msgid "Resample error"
+msgstr "リサンプルエラー"
+
+#: src/samplerate.c:104 src/samplerate.c:168
+msgid "libsamplerate error"
+msgstr "libsamplerateエラー"
+
+#: src/samplerate.c:234
+#, c-format
+msgid "Resample from %d Hz to %d Hz"
+msgstr "%d Hz から %d Hz にリサンプル"
+
+#: src/samplerate.c:445
+msgid "Sweep: Resample"
+msgstr "Sweep: リサンプル"
+
+#: src/samplerate.c:467
+msgid "Conversion"
+msgstr "変換"
+
+#: src/samplerate.c:474
+#, c-format
+msgid "Current sample rate: %d Hz"
+msgstr "現在のサンプルレート： %d Hz"
+
+#: src/samplerate.c:483
+msgid "New sample rate"
+msgstr "新しいサンプルレート"
+
+#: src/samplerate.c:494
+msgid "Quality"
+msgstr "音質"
+
+#: src/samplerate.c:501
+msgid "Converter"
+msgstr "コンバータ"
+
+#: src/samplerate.c:544
+msgid "Remember this quality"
+msgstr "この音質を記憶する"
+
+#: src/samplerate.c:564
+msgid "Reset to the last remembered quality."
+msgstr "最後に記憶した音質にリセット"
+
+#: src/samplerate.c:578
+msgid "Set to default quality."
+msgstr "デフォルトの音質に設定"
+
+#: src/samplerate.c:600
+msgid ""
+"Secret Rabbit Code (aka libsamplerate) is a\n"
+"Sample Rate Converter for audio by Erik de Castro Lopo\n"
+msgstr ""
+"Secret Rabbit Code (aka libsamplerate) は Erik de Castro Lopo 氏が\n"
+"作ったオーディオ用サンプルレートコンバータです。\n"
+
+#: src/samplerate.c:620
+msgid "Resample"
+msgstr "リサンプル"
+
+#: src/samplerate.c:633
+msgid "Don't resample"
+msgstr "リサンプルしない"
+
+#: src/sw_chooser.c:51 src/sw_chooser.c:66
+msgid "Custom"
+msgstr "カスタム"
+
+#: src/sw_chooser.c:52
+msgid "192000 Hz (Studio quality)"
+msgstr "192000 Hz (スタジオ音質)"
+
+#: src/sw_chooser.c:53
+msgid " 96000 Hz (High quality)"
+msgstr " 96000 Hz (高音質)"
+
+#: src/sw_chooser.c:54
+msgid " 48000 Hz (DAT quality)"
+msgstr " 48000 Hz (DAT音質)"
+
+#: src/sw_chooser.c:55
+msgid " 44100 Hz (CD quality)"
+msgstr " 44100 Hz (CD音質)"
+
+#: src/sw_chooser.c:56
+msgid " 32000 Hz (Ultra-wideband voice quality)"
+msgstr " 32000 Hz (ウルトラ広帯域音質)"
+
+#: src/sw_chooser.c:57
+msgid " 22050 Hz"
+msgstr " 22050 Hz"
+
+#: src/sw_chooser.c:58
+msgid " 16000 Hz (Wideband voice quality)"
+msgstr " 16000 Hz (広帯域音質)"
+
+#: src/sw_chooser.c:59
+msgid " 11025 Hz"
+msgstr " 11025 Hz"
+
+#: src/sw_chooser.c:60
+msgid "  8000 Hz (Narrowband voice quality)"
+msgstr "  8000 Hz (狭帯域音質)"
+
+#: src/sw_chooser.c:61
+msgid "  4000 Hz (Low quality)"
+msgstr "  4000 Hz (低音質)"
+
+#: src/sw_chooser.c:67 src/view.c:3446 src/view.c:3459 src/view.c:3498
+#, c-format
+msgid "Mono"
+msgstr "モノラル"
+
+#: src/sw_chooser.c:68 src/view.c:3446 src/view.c:3459 src/view.c:3501
+#, c-format
+msgid "Stereo"
+msgstr "ステレオ"
+
+#: src/sw_chooser.c:69
+msgid "Quadraphonic"
+msgstr "４チャンネル"
+
+#: src/sw_chooser.c:306
+msgid "Custom: "
+msgstr "カスタム："
+
+#: src/sw_chooser.c:341
+msgid "Sampling rate"
+msgstr "サンプリングレート"
+
+#: src/sw_chooser.c:343
+msgid "Hz"
+msgstr "Hz"
+
+#: src/sw_chooser.c:367 src/view.c:884
+msgid "Channels"
+msgstr "チャンネル"
+
+#: src/sw_chooser.c:369 src/view.c:3505
+msgid "channels"
+msgstr "チャンネル"
+
+#: src/sweep_filter.c:125
+msgid "No selection to process"
+msgstr "加工するセレクションはありません"
+
+#: src/sweep_sample.c:119 src/view.c:3444 src/view.c:3450 src/view.c:3457
+#: src/view.c:3463
+msgid "Untitled"
+msgstr "無題"
+
+#: src/sweep_sample.c:324
+msgid "Overflow"
+msgstr "オーバーフロー"
+
+#: src/sweep_sample.c:407
+msgid "Sweep: New file"
+msgstr "Sweep: 新規ファイル"
+
+#: src/sweep_sample.c:435
+msgid "Name:"
+msgstr "名前："
+
+#: src/sweep_sample.c:455
+msgid "Duration:"
+msgstr "演奏時間："
+
+#: src/sweep_sample.c:471
+msgid "hh:mm:ss.xxx"
+msgstr "hh:mm:ss.xxx"
+
+#: src/sweep_sample.c:514
+msgid "Remember this format"
+msgstr "このフォーマットを記憶する"
+
+#: src/sweep_sample.c:520
+msgid ""
+"Remember this sampling rate and channel configuration for creating new files."
+msgstr "新規ファイル作成用にこのサンプリングレートとチャンネル設定を記憶する。"
+
+#: src/sweep_sample.c:540
+msgid "Reset to the last remembered format for new files."
+msgstr "新規ファイル用に最後に記憶したフォーマットにリセットする。"
+
+#: src/sweep_sample.c:551
+msgid "Set to the default format for new files."
+msgstr "新規ファイル用にデフォルトフォーマットにリセットする。"
+
+#: src/sweep_sample.c:567
+msgid ""
+"Indicates the amount of data memory which will be allocated for the selected "
+"duration and format. All audio data is processed internally in 32 bit "
+"floating point format."
+msgstr ""
+"選択された演奏時間とフォーマットに割り当てられるデータメモリの量を示します。"
+"すべてのオーディオデータは、32ビットの浮動小数点フォーマットで内部的に処理さ"
+"れます。"
+
+#: src/sweep_sample.c:582
+msgid "Data memory:"
+msgstr "データメモリ："
+
+#: src/sweep_sample.c:594
+msgid "Create"
+msgstr "作成"
+
+#: src/sweep_sample.c:606
+msgid "Don't create"
+msgstr "作成しない"
+
+#: src/sweep_sample.c:774
+msgid "Excellent!!!"
+msgstr "すばらしい！！！"
+
+#: src/sweep_sample.c:796
+msgid "Files unsaved"
+msgstr "未保存ファイル"
+
+#: src/sweep_sample.c:797
+msgid ""
+"Some files are unsaved. If you quit, all changes will be lost.\n"
+"\n"
+"Are you sure you want to quit?"
+msgstr ""
+"いくつかのファイルは保存されていません。終了すると、すべての変更は失われま"
+"す。\n"
+"\n"
+"本当に終了しますか？"
+
+#: src/sweep_sample.c:800 src/sweep_sample.c:808
+msgid "Don't quit"
+msgstr "終了しない"
+
+#: src/sweep_sample.c:804
+msgid "Files playing"
+msgstr "再生ファイル"
+
+#: src/sweep_sample.c:805
+msgid ""
+"No files are unsaved, but some files are currently playing.\n"
+"\n"
+"Are you sure you want to quit?"
+msgstr ""
+"未保存のファイルはありません。しかし、いくつかのファイルは現在再生中です。\n"
+"\n"
+"本当に終了しますか？"
+
+#: src/sweep_sample.c:1465 src/view.c:1206
+msgid "Invert selection"
+msgstr "セレクションの反転"
+
+#: src/sweep_sample.c:1485 src/view.c:1214 src/view.c:1308
+msgid "Select all"
+msgstr "全選択"
+
+#: src/sweep_sample.c:1505 src/view.c:1222
+msgid "Select none"
+msgstr "選択しない"
+
+#: src/sweep_sample.c:1525
+msgid "Halve selection"
+msgstr "セレクションを半分に切る"
+
+#: src/sweep_sample.c:1545
+msgid "Double selection"
+msgstr "セレクションを2倍にする"
+
+#: src/sweep_sample.c:1568
+msgid "Selection left"
+msgstr "セレクションを左へ"
+
+#: src/sweep_sample.c:1590
+msgid "Selection right"
+msgstr "セレクションを右へ"
+
+#: src/sweep_sample.c:1678
+#, c-format
+msgid "Insert selection ["
+msgstr "セレクションを挿入 ["
+
+#: src/sweep_sample.c:1731
+#, c-format
+msgid "Subtract selection ["
+msgstr "セレクションを取り去る ["
+
+#: src/sweep_sample.c:1776
+#, c-format
+msgid "Set selection ["
+msgstr "セレクションを設定 ["
+
+#: src/sweep_sample.c:1875
+msgid "Sweep: File properties"
+msgstr "Sweep: ファイルプロパティ"
+
+#: src/sweep_sample.c:1899
+msgid "Filename: "
+msgstr "ファイル名："
+
+#: src/sweep_sample.c:1901
+msgid "Sampling rate: "
+msgstr "サンプリングレート："
+
+#: src/sweep_sample.c:1903
+msgid "Channels: "
+msgstr "チャンネル："
+
+#: src/sweep_sample.c:1905
+msgid "Data memory: "
+msgstr "データメモリ："
+
+#: src/sweep_sample.c:1907
+msgid "Duration: "
+msgstr "演奏時間："
+
+#: src/sweep_undo.c:327
+#, c-format
+msgid ""
+"%s\n"
+" has changed on disk.\n"
+"\n"
+"Do you want to continue editing this buffer?"
+msgstr ""
+"%s\n"
+"はディスク上で変更されました。\n"
+"\n"
+"このバッファの編集を続けますか？"
+
+#: src/sweep_undo.c:332
+msgid "Continue editing"
+msgstr "編集を続ける"
+
+#: src/sweep_undo.c:332
+msgid "Reread from disk"
+msgstr "ディスクから再読み込み"
+
+#: src/sweep_undo.c:430 src/sweep_undo.c:488
+msgid "Nothing to undo"
+msgstr "元に戻すものはありません"
+
+#: src/sweep_undo.c:511 src/sweep_undo.c:567
+msgid "Nothing to redo"
+msgstr "リドゥするものはありません"
+
+#: src/undo_dialog.c:159
+msgid "Original data"
+msgstr "オリジナルデータ"
+
+#: src/undo_dialog.c:344
+msgid "Action"
+msgstr "アクション"
+
+#: src/undo_dialog.c:351
+msgid "Sweep: History"
+msgstr "Sweep: 履歴"
+
+#: src/undo_dialog.c:393 src/view.c:548 src/view.c:1887
+msgid "Undo"
+msgstr "元に戻す"
+
+#: src/undo_dialog.c:401 src/view.c:552 src/view.c:1896
+msgid "Redo"
+msgstr "リドゥ"
+
+#: src/undo_dialog.c:426
+msgid "Revert to selected state"
+msgstr "選択状態に戻す"
+
+#: src/undo_dialog.c:452 src/view.c:525 src/view.c:3402
+msgid "Close"
+msgstr "閉じる"
+
+#: src/view.c:311
+msgid "Duplicate to stereo"
+msgstr "ステレオに複製"
+
+#: src/view.c:319
+msgid "Duplicate to multichannel"
+msgstr "マルチチャンネルに複製"
+
+#: src/view.c:331
+msgid "Swap left and right"
+msgstr "左右を入れ換える"
+
+#: src/view.c:371
+msgid "Add/Remove channels"
+msgstr "チャンネルを追加/削除"
+
+#: src/view.c:454 src/view.c:1768
+msgid "New ..."
+msgstr "新規..."
+
+#: src/view.c:458 src/view.c:1775
+msgid "Open ..."
+msgstr "開く..."
+
+#: src/view.c:488
+msgid "Open Recent"
+msgstr ""
+
+#: src/view.c:505
+msgid "Save As ..."
+msgstr "名前を付けて保存..."
+
+#: src/view.c:517
+msgid "Properties ..."
+msgstr "プロパティ..."
+
+#: src/view.c:535 src/view.c:1136
+msgid "Edit"
+msgstr "編集"
+
+#: src/view.c:556
+msgid "Show history ..."
+msgstr "履歴を表示"
+
+#: src/view.c:588 src/view.c:1172
+msgid "Paste: Insert"
+msgstr "貼り付け： 挿入"
+
+#: src/view.c:592 src/view.c:1178
+msgid "Paste: Mix"
+msgstr "貼り付け： ミックス"
+
+#: src/view.c:596 src/view.c:1184
+msgid "Paste: Crossfade"
+msgstr "貼り付け： クロスフェード"
+
+#: src/view.c:600
+msgid "Paste as New"
+msgstr "新規で貼り付け"
+
+#: src/view.c:608
+msgid "Preview Cut/Cursor"
+msgstr "切取り/カーソルをプレビュー"
+
+#: src/view.c:612
+msgid "Pre-roll to Cursor"
+msgstr "カーソルにプリロール"
+
+#: src/view.c:626
+msgid "Invert"
+msgstr "反転"
+
+#: src/view.c:630
+msgid "All"
+msgstr "すべて"
+
+#: src/view.c:634
+msgid "None"
+msgstr "なし"
+
+#: src/view.c:642
+msgid "Halve"
+msgstr "半分"
+
+#: src/view.c:646
+msgid "Double"
+msgstr "２倍"
+
+#: src/view.c:650
+msgid "Shift left"
+msgstr "左にシフト"
+
+#: src/view.c:654
+msgid "Shift right"
+msgstr "右にシフト"
+
+#: src/view.c:659
+msgid "View"
+msgstr "表示"
+
+#: src/view.c:666 src/view.c:2061
+msgid "Autoscroll: follow playback cursor"
+msgstr "自動スクロール： 再生カーソルに追従"
+
+#: src/view.c:684
+msgid "Center"
+msgstr "中央"
+
+#: src/view.c:692 src/view.c:1996
+msgid "Zoom in"
+msgstr "ズームイン"
+
+#: src/view.c:696 src/view.c:2005
+msgid "Zoom out"
+msgstr "ズームアウト"
+
+#: src/view.c:700 src/view.c:1111
+msgid "Zoom to selection"
+msgstr "セレクションにズーム"
+
+#: src/view.c:706
+msgid "Left"
+msgstr "左"
+
+#: src/view.c:710
+msgid "Right"
+msgstr "右"
+
+#: src/view.c:715 src/view.c:1117 src/view.c:1276
+msgid "Zoom normal"
+msgstr "標準ズーム"
+
+#: src/view.c:719 src/view.c:1123 src/view.c:1282 src/view.c:1987
+msgid "Zoom all"
+msgstr "すべてズーム"
+
+#: src/view.c:723
+msgid "1:1"
+msgstr "1:1"
+
+#: src/view.c:733
+msgid "Remember as"
+msgstr "名前を付けて記憶"
+
+#: src/view.c:752 src/view.c:783
+msgid "Area 1"
+msgstr "領域 1"
+
+#: src/view.c:753 src/view.c:784
+msgid "Area 2"
+msgstr "領域 ２"
+
+#: src/view.c:754 src/view.c:785
+msgid "Area 3"
+msgstr "領域 ３"
+
+#: src/view.c:755 src/view.c:786
+msgid "Area 4"
+msgstr "領域 ４"
+
+#: src/view.c:756 src/view.c:787
+msgid "Area 5"
+msgstr "領域 ５"
+
+#: src/view.c:757 src/view.c:788
+msgid "Area 6"
+msgstr "領域 ６"
+
+#: src/view.c:758 src/view.c:789
+msgid "Area 7"
+msgstr "領域 ７"
+
+#: src/view.c:759 src/view.c:790
+msgid "Area 8"
+msgstr "領域 ８"
+
+#: src/view.c:760 src/view.c:791
+msgid "Area 9"
+msgstr "領域 ９"
+
+#: src/view.c:761 src/view.c:792
+msgid "Area 10"
+msgstr "領域 １０"
+
+#: src/view.c:765
+msgid "Zoom to"
+msgstr "ズーム"
+
+#: src/view.c:798
+msgid "Color scheme"
+msgstr "カラースキーム"
+
+#: src/view.c:804
+msgid "Decoder Red"
+msgstr "デコーダレッド"
+
+#: src/view.c:812
+msgid "Orangeboom"
+msgstr "オレンジブーム"
+
+#: src/view.c:820
+msgid "Lame Yellow"
+msgstr "ライムイエロー"
+
+#: src/view.c:828
+msgid "Coogee Bay Blue"
+msgstr "クージーベイブルー"
+
+#: src/view.c:836
+msgid "Blackwattle"
+msgstr "ブラックワトル"
+
+#: src/view.c:844
+msgid "Frigid"
+msgstr "フリジッド"
+
+#: src/view.c:852
+msgid "Radar"
+msgstr "ラダー"
+
+#: src/view.c:860
+msgid "Bluescreen"
+msgstr "ブルースクリーン"
+
+#: src/view.c:872 src/view.c:1236 src/view.c:1322
+msgid "New View"
+msgstr "新規表示"
+
+#: src/view.c:877
+msgid "Sample"
+msgstr "サンプル"
+
+#: src/view.c:894
+msgid "Resample ..."
+msgstr "リサンプル..."
+
+#: src/view.c:903
+msgid "Duplicate"
+msgstr "複製"
+
+#: src/view.c:908 src/view.c:1192
+msgid "Process"
+msgstr "処理"
+
+#: src/view.c:917
+msgid "Playback"
+msgstr "再生"
+
+#: src/view.c:924
+msgid "Configure audio device ..."
+msgstr "オーディオデバイスの設定..."
+
+#: src/view.c:934
+msgid "Transport"
+msgstr "移送"
+
+#: src/view.c:943
+msgid "Go to start of file"
+msgstr "ファイルの始めに行く"
+
+#: src/view.c:949
+msgid "Go to start of window"
+msgstr "ウィンドウの始めに行く"
+
+#: src/view.c:954
+msgid "Skip back"
+msgstr "後ろにスキップ"
+
+#: src/view.c:959
+msgid "Skip forward"
+msgstr "前にスキップ"
+
+#: src/view.c:964
+msgid "Go to end of window"
+msgstr "ウィンドウの終わりに行く"
+
+#: src/view.c:969
+msgid "Go to end of file"
+msgstr "ファイルの終わりに行く"
+
+#: src/view.c:978
+msgid "Play selection"
+msgstr "セレクションを再生"
+
+#: src/view.c:984
+msgid "Play sample"
+msgstr "サンプルを再生"
+
+#: src/view.c:990
+msgid "Play note"
+msgstr "音符を再生"
+
+#: src/view.c:1009
+msgid "Toggle monitoring"
+msgstr "モニタリングの切り替え"
+
+#: src/view.c:1022
+msgid "Toggle looping"
+msgstr "ループを切り替え"
+
+#: src/view.c:1034
+msgid "Toggle muting"
+msgstr "ミュートを切り替え"
+
+#: src/view.c:1045
+msgid "Toggle reverse playback"
+msgstr "反転再生を切り替え"
+
+#: src/view.c:1063
+msgid "Pause"
+msgstr "一時停止"
+
+#: src/view.c:1079
+msgid "About MP3 export..."
+msgstr "MP3のエクスポートについて..."
+
+#: src/view.c:1085
+msgid "About Sweep ..."
+msgstr "Sweepについて"
+
+#: src/view.c:1249 src/view.c:1335
+msgid "File properties ..."
+msgstr "ファイルプロパティ..."
+
+#: src/view.c:1294
+msgid "Paste"
+msgstr "貼り付け"
+
+#: src/view.c:1791
+msgid "Save as ..."
+msgstr "名前を付けて保存..."
+
+#: src/view.c:1811
+msgid "Cut selection to clipboard"
+msgstr "セレクションを切り取ってクリップボードへ"
+
+#: src/view.c:1821
+msgid "Copy selection to clipboard"
+msgstr "セレクションをコピーしてクリップボードへ"
+
+#: src/view.c:1832
+msgid "Paste: insert clipboard at cursor position"
+msgstr "貼り付け： カーソル位置にクリップボードを挿入"
+
+#: src/view.c:1843
+msgid "Paste: mix clipboard in from cursor position"
+msgstr "貼り付け： カーソル位置からクリップボードをミックス"
+
+#: src/view.c:1854
+msgid "Paste: fade clipboard in from cursor position"
+msgstr "貼り付け： カーソル位置からクリップボードをフェードイン"
+
+#: src/view.c:1924
+#, fuzzy
+msgid "Hand tool"
+msgstr "ハンドツール"
+
+#: src/view.c:1932
+msgid "Selector tool"
+msgstr "セレクタツール"
+
+#: src/view.c:1944
+msgid "\"Scrubby\" the scrub tool"
+msgstr "「Scrubby」スクラブツール"
+
+#: src/view.c:1954
+msgid "Pencil tool"
+msgstr "鉛筆ツール"
+
+#: src/view.c:1962
+msgid "Noise tool"
+msgstr "ノイズツール"
+
+#: src/view.c:2052
+msgid "Visible length"
+msgstr "可視長"
+
+#: src/view.c:2171
+msgid "Vertical zoom [Shift + Arrow Up/Down]"
+msgstr "垂直ズーム [Shift + 上下矢印キー]"
+
+#: src/view.c:2301
+msgid "Record ..."
+msgstr "録音..."
+
+#: src/view.c:2377
+msgid "Reverse mode playback (toggle)"
+msgstr "リバースモード再生（切り替え）"
+
+#: src/view.c:2395
+msgid "Loop mode playback (toggle)"
+msgstr "ループモード再生（切り替え）"
+
+#: src/view.c:2419
+#, fuzzy
+msgid "Play all / Pause"
+msgstr "すべて再生 / 一時停止"
+
+#: src/view.c:2436
+#, fuzzy
+msgid "Play selection / Pause"
+msgstr "セレクションを再生 / 一時停止"
+
+#: src/view.c:2452
+#, fuzzy
+msgid "Stop playback"
+msgstr "再生を停止"
+
+#: src/view.c:2519
+msgid "Muted playback (toggle)"
+msgstr "ミュート再生（切り替え）"
+
+#: src/view.c:2539 src/view.c:2557
+msgid "Playback gain slider (volume)"
+msgstr "再生ゲインスライダ（音量）"
+
+#: src/view.c:2569
+msgid "Monitor (toggle)"
+msgstr "モニタ（切り替え）"
+
+#: src/view.c:2587
+msgid "SYNC"
+msgstr "SYNC"
+
+#: src/view.c:3144
+#, c-format
+msgid "Remembered as area %d"
+msgstr "領域 %d として記憶"
+
+#: src/view.c:3162
+#, c-format
+msgid "No area remembered as %d"
+msgstr "%d として領域は何も記憶されていません"
+
+#: src/view.c:3165
+#, c-format
+msgid "Zoomed to area %d"
+msgstr "領域 %d にズーム"
+
+#: src/view.c:3347 src/view.c:3351
+msgid "Scrub!"
+msgstr "スクラブ！"
+
+#: src/view.c:3347 src/view.c:3353
+msgid "Ready"
+msgstr "準備完了"
+
+#: src/view.c:3399
+#, c-format
+msgid "%s has been modified. Close anyway?"
+msgstr "%s は修正されました。終了しますか？"
+
+#: src/view.c:3402
+msgid "Don't close"
+msgstr "終了しない"
+
+#: src/view.c:3449 src/view.c:3462
+msgid "*"
+msgstr "*"
+
+#: src/view.c:3465
+msgid "Empty"
+msgstr "空"
+
+#: plugins/byenergy/byenergy.c:58
+msgid "Select regions above threshold"
+msgstr "しきい値より上に領域を選択"
+
+#: plugins/byenergy/byenergy.c:59
+msgid ""
+"Whether to select those regions lying above a given threshold or below it."
+msgstr "その領域を所定のしきい値以上か、それ以下に関係なく選択するかどうか。"
+
+#: plugins/byenergy/byenergy.c:66
+msgid "Resolution"
+msgstr "レゾリューション"
+
+#: plugins/byenergy/byenergy.c:67
+msgid "Width of energy detection window (s)"
+msgstr "エネルギー検出ウィンドの幅 (s)"
+
+#: plugins/byenergy/byenergy.c:73
+msgid "Threshold"
+msgstr "しきい値"
+
+#: plugins/byenergy/byenergy.c:74
+msgid "Energy level to detect [0.0 - 1.0]"
+msgstr "検出するエネルギーレベル [0.0 - 1.0]"
+
+#: plugins/byenergy/byenergy.c:80
+msgid "Minimum duration"
+msgstr "最小演奏時間"
+
+#: plugins/byenergy/byenergy.c:81
+msgid "Shortest region of selection to detect (s)"
+msgstr "セレクションの一番短い領域を見つける (s)"
+
+#: plugins/byenergy/byenergy.c:87
+msgid "Maximum interruption"
+msgstr "最大割り込み"
+
+#: plugins/byenergy/byenergy.c:88
+msgid "Longest length of sound above threshold to allow (s)"
+msgstr "上のしきい値で許される音の最長の長さ (s)"
+
+#: plugins/byenergy/byenergy.c:227 plugins/byenergy/byenergy.c:232
+msgid "Select by energy"
+msgstr "エネルギーで選択"
+
+#: plugins/byenergy/byenergy.c:233
+msgid "Select loud or quiet regions"
+msgstr "大きな音か静かな領域を選択"
+
+#: plugins/echo/echo.c:53
+msgid "Delay"
+msgstr "遅延"
+
+#: plugins/echo/echo.c:54
+msgid "Time to delay by"
+msgstr "遅延時間"
+
+#: plugins/echo/echo.c:62
+msgid "Gain with which to mix in delayed signal"
+msgstr "遅延信号にミックスするゲイン"
+
+#: plugins/echo/echo.c:107 plugins/echo/echo.c:113
+msgid "Echo"
+msgstr "エコー"
+
+#: plugins/echo/echo.c:114
+msgid "Apply an echo to selected regions of a sample"
+msgstr "エコーをサンプルの選択領域に適用。"
+
+#: plugins/normalise/normalise.c:128 plugins/normalise/normalise.c:133
+msgid "Normalise"
+msgstr "標準化"
+
+#: plugins/normalise/normalise.c:134
+msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
+msgstr "サンプルの振幅を1.0と-1.0の間に変更する"
+
+#: plugins/reverse/reverse.c:129 plugins/reverse/reverse.c:134
+#: plugins/reverse/reverse.c:140
+msgid "Reverse"
+msgstr "反転"
+
+#: plugins/reverse/reverse.c:141
+msgid "Reverse selected regions of a sample"
+msgstr "サンプルの選択領域を反転"
+
+#: plugins/example/example.c:37 plugins/example/example.c:86
+msgid "With a fork"
+msgstr "フォークで"
+
+#: plugins/example/example.c:38
+msgid "With a spoon"
+msgstr "スプーンで"
+
+#: plugins/example/example.c:39
+msgid "With false teeth"
+msgstr "入れ歯で"
+
+#: plugins/example/example.c:40
+msgid "With Nigel's bum"
+msgstr "ナイジェルの放浪者で"
+
+#: plugins/example/example.c:56
+msgid "Flim"
+msgstr "5ポンド札"
+
+#: plugins/example/example.c:57
+msgid "Should you manage your flim?"
+msgstr "5ポンド札を管理しますか？"
+
+#: plugins/example/example.c:64
+msgid "Beans"
+msgstr "豆"
+
+#: plugins/example/example.c:65
+msgid "Method of eating beans"
+msgstr "豆を食べる方法"
+
+#: plugins/example/example.c:72
+msgid "Pants methodology"
+msgstr "パンツ方法論"
+
+#: plugins/example/example.c:73
+msgid "How many pants should you wear per day?"
+msgstr "１日に何枚のパンツをはきますか？"
+
+#: plugins/example/example.c:122 plugins/example/example.c:129
+msgid "Example Filter Region"
+msgstr "フィルタ領域の例"
+
+#: plugins/example/example.c:130
+msgid "An example filter region plugin"
+msgstr "フィルタ領域プラグイン"
+
+#: plugins/fade/fade.c:149 plugins/fade/fade.c:162
+msgid "Fade in"
+msgstr "フェードイン"
+
+#: plugins/fade/fade.c:157 plugins/fade/fade.c:178
+msgid "Fade out"
+msgstr "フェードアウト"
+
+#: plugins/fade/fade.c:163
+msgid "Apply a linear fade to the selection, fading in from silence"
+msgstr "線形フェードをセレクションに適用する。無音からフェードイン。"
+
+#: plugins/fade/fade.c:179
+msgid "Apply a linear fade to the selection, fading out to silence"
+msgstr "線形フェードをセレクションに適用する。無音へフェードアウト。"
+
+#~ msgid "Sweep: Load file"
+#~ msgstr "Sweep: ファイルをロード"
+
+#~ msgid "Sweep: Save file"
+#~ msgstr "Sweep: ファイルを保存"
+
+#~ msgid "Go to beginning    [Ctrl+Home]"
+#~ msgstr "最初に行く    [Ctrl+Home]"
+
+#~ msgid "Go to the end    [Ctrl+End]"
+#~ msgstr "最後に行く    [Ctrl+End]"
+
+#~ msgid "About Sweep"
+#~ msgstr "Sweepについて"
+
+#~ msgid "Channels:"
+#~ msgstr "チャンネル："
+
+#~ msgid "Mono (mixdown)"
+#~ msgstr "モノラル（ミックスダウン）"
+
+#~ msgid "Stereo (duplicate)"
+#~ msgstr "ステレオ（複製）"
+
+#~ msgid "Bitwidth:"
+#~ msgstr "ビット幅："
+
+#~ msgid "8 bit"
+#~ msgstr "8 ビット"
+
+#~ msgid "16 bit"
+#~ msgstr "16 ビット"
+
+#~ msgid "24 bit"
+#~ msgstr "24 ビット"
+
+#~ msgid "32 bit"
+#~ msgstr "32 ビット"

@@ -20,7 +20,7 @@ AC_C_BIGENDIAN
 AC_CHECK_FUNCS(strchr)
 AC_CHECK_FUNCS(madvise)
 
-ALL_LINGUAS="de el es_ES fr hu it pl ru en_AU"
+ALL_LINGUAS="de el es_ES fr hu it ja pl ru en_AU"
 AM_GNU_GETTEXT
 
 dnl Overall configuration success flag
