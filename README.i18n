@@ -1,7 +1,7 @@
 How to do translations for sweep - a quick overview
 ===================================================
 
-includes information from Mathieu Roy and Silvia Pfeiffer
+(Includes information from Mathieu Roy and Silvia Pfeiffer)
 
 For more detailed information refer to:
 http://www.gnu.org/manual/gettext/index.html
@@ -14,11 +14,11 @@ naming the file after a language code as defined by ISO 639:
 ll.po (e.g. fr.po), with a possible country-specific adaptation 
 as in ll_CC.po.
 [For the codes, refer to
-http://www.gnu.org/manual/gettext/html_mono/gettext.html#SEC221]
+http://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes]
 
 Translate the strings in that file and save it in the /po folder.
 
-Edit the "configure.in" file (in sweep-x.x.x folder), adding the
+Edit the "configure.ac" file (in sweep-x.x.x folder), adding the
 new language to the "ALL_LINGUAS directive.
 
 Should look like this :
