@@ -37,11 +37,15 @@ Zenaan Harkness <zen@getsystems.com>
 Charles Turner <vze26m98@optonline.net>
 	updated the alsa driver to work with recent alsa versions
 
-Peter Shorthose
- gtk2 port and various tweaks/bug fixes
+Peter Shorthose <kickback@users.sourceforge.net>
+	gtk2 port and various tweaks/bug fixes
  
 Daniel Dreschers
-   ALSA 1.0 updates
+	ALSA 1.0 updates
+
+Frank Neumann <beachnase@web.de> 
+	improved fade plugin implementation to work with short run 
+	lengths and generate smoother fades.
 
 Borrowed Code
 =============
