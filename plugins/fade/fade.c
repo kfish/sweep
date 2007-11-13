@@ -119,8 +119,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
 
 	remaining -= n;
 	offset += n;
-
-	sample_set_progress_percent (sample, run_total * frames_total);
+        sample_set_progress_percent (sample, run_total / op_total);
       }
 
       g_mutex_unlock (sample->ops_mutex);
