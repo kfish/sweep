@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep 0.0.9\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-13 14:58+0900\n"
+"POT-Creation-Date: 2007-11-16 19:13+0000\n"
 "PO-Revision-Date: 2000-05-15 22:MI+0200\n"
 "Last-Translator: Gergely Nagy <algernon@madhouse.lonyay.edu.hu>\n"
 "Language-Team: Hungarian <LL@li.org>\n"
@@ -359,7 +359,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/file_dialogs.c:356
+#: src/file_dialogs.c:289
+#, fuzzy
+msgid "Sweep: Open Files"
+msgstr "Beillesztés"
+
+#: src/file_dialogs.c:370
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -368,65 +373,70 @@ msgid ""
 "All changes and undo information will be lost."
 msgstr ""
 
-#: src/file_dialogs.c:360
+#: src/file_dialogs.c:374
 #, fuzzy
 msgid "Revert file"
 msgstr "Visszaállítás"
 
-#: src/file_dialogs.c:361 src/view.c:509
+#: src/file_dialogs.c:375 src/view.c:509
 msgid "Revert"
 msgstr "Visszaállítás"
 
-#: src/file_dialogs.c:361
+#: src/file_dialogs.c:375
 msgid "Don't revert"
 msgstr ""
 
-#: src/file_dialogs.c:531 src/file_dialogs.c:810
+#: src/file_dialogs.c:545 src/file_dialogs.c:824
 #, c-format
 msgid "Save as %s cancelled"
 msgstr ""
 
-#: src/file_dialogs.c:568
+#: src/file_dialogs.c:582
 msgid "By extension"
 msgstr ""
 
-#: src/file_dialogs.c:626
+#: src/file_dialogs.c:640
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr ""
 
 #: src/file_dialogs.c:707
+#, fuzzy
+msgid "Sweep: Save file"
+msgstr "Beillesztés"
+
+#: src/file_dialogs.c:721
 msgid "Save Options"
 msgstr ""
 
-#: src/file_dialogs.c:716
+#: src/file_dialogs.c:730
 msgid "Determine File Type:"
 msgstr ""
 
-#: src/file_dialogs.c:796
+#: src/file_dialogs.c:810
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
 "%s"
 msgstr ""
 
-#: src/file_dialogs.c:798
+#: src/file_dialogs.c:812
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr ""
 
-#: src/file_dialogs.c:800
+#: src/file_dialogs.c:814
 msgid "File exists"
 msgstr ""
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Overwrite"
 msgstr ""
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Don't overwrite"
 msgstr ""
 
-#: src/file_dialogs.c:873
+#: src/file_dialogs.c:887
 #, c-format
 msgid ""
 "%s\n"
@@ -435,16 +445,16 @@ msgid ""
 "Are you sure you want to save?"
 msgstr ""
 
-#: src/file_dialogs.c:877 src/sweep_undo.c:331 src/view.c:3401
+#: src/file_dialogs.c:891 src/sweep_undo.c:331 src/view.c:3401
 msgid "File modified"
 msgstr ""
 
-#: src/file_dialogs.c:878 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/file_dialogs.c:892 src/file_speex.c:2127 src/file_vorbis.c:1611
 #: src/view.c:501 src/view.c:1782
 msgid "Save"
 msgstr "Mentés"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2138 src/file_vorbis.c:1622
+#: src/file_dialogs.c:892 src/file_speex.c:2138 src/file_vorbis.c:1622
 msgid "Don't save"
 msgstr ""
 
@@ -2437,28 +2447,24 @@ msgstr ""
 msgid "An example filter region plugin"
 msgstr ""
 
-#: plugins/fade/fade.c:149 plugins/fade/fade.c:162
+#: plugins/fade/fade.c:148 plugins/fade/fade.c:161
 msgid "Fade in"
 msgstr ""
 
-#: plugins/fade/fade.c:157 plugins/fade/fade.c:178
+#: plugins/fade/fade.c:156 plugins/fade/fade.c:177
 msgid "Fade out"
 msgstr ""
 
-#: plugins/fade/fade.c:163
+#: plugins/fade/fade.c:162
 msgid "Apply a linear fade to the selection, fading in from silence"
 msgstr ""
 
-#: plugins/fade/fade.c:179
+#: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
 
 #, fuzzy
 #~ msgid "Sweep: Load file"
-#~ msgstr "Beillesztés"
-
-#, fuzzy
-#~ msgid "Sweep: Save file"
 #~ msgstr "Beillesztés"
 
 #, fuzzy

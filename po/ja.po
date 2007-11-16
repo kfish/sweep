@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.2\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-13 14:58+0900\n"
+"POT-Creation-Date: 2007-11-16 19:13+0000\n"
 "PO-Revision-Date: 2004-04-26 12:31+0200\n"
 "Last-Translator: Norihiro YONEDA <aoba@avis.ne.jp>\n"
 "Language-Team: Puppy Linux Japanese\n"
@@ -365,7 +365,12 @@ msgstr ""
 "%s \n"
 "を読めません"
 
-#: src/file_dialogs.c:356
+#: src/file_dialogs.c:289
+#, fuzzy
+msgid "Sweep: Open Files"
+msgstr "Sweep: 新規ファイル"
+
+#: src/file_dialogs.c:370
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -378,40 +383,44 @@ msgstr ""
 "\n"
 "すべての変更とアンドゥ情報は失われます。"
 
-#: src/file_dialogs.c:360
+#: src/file_dialogs.c:374
 msgid "Revert file"
 msgstr "ファイルを戻す"
 
-#: src/file_dialogs.c:361 src/view.c:509
+#: src/file_dialogs.c:375 src/view.c:509
 msgid "Revert"
 msgstr "戻す"
 
-#: src/file_dialogs.c:361
+#: src/file_dialogs.c:375
 msgid "Don't revert"
 msgstr "戻さない"
 
-#: src/file_dialogs.c:531 src/file_dialogs.c:810
+#: src/file_dialogs.c:545 src/file_dialogs.c:824
 #, c-format
 msgid "Save as %s cancelled"
 msgstr "%s で保存はキャンセルされました"
 
-#: src/file_dialogs.c:568
+#: src/file_dialogs.c:582
 msgid "By extension"
 msgstr "拡張子付き"
 
-#: src/file_dialogs.c:626
+#: src/file_dialogs.c:640
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr "MP3（代わりにOgg Vorbisを使う）"
 
 #: src/file_dialogs.c:707
+msgid "Sweep: Save file"
+msgstr "Sweep: ファイルを保存"
+
+#: src/file_dialogs.c:721
 msgid "Save Options"
 msgstr "オプションを保存"
 
-#: src/file_dialogs.c:716
+#: src/file_dialogs.c:730
 msgid "Determine File Type:"
 msgstr "ファイルタイプを決定"
 
-#: src/file_dialogs.c:796
+#: src/file_dialogs.c:810
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
@@ -420,24 +429,24 @@ msgstr ""
 "%s への書き込みは\n"
 "許可されていません"
 
-#: src/file_dialogs.c:798
+#: src/file_dialogs.c:812
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr "%s は存在します。上書きしますか？"
 
-#: src/file_dialogs.c:800
+#: src/file_dialogs.c:814
 msgid "File exists"
 msgstr "ファイルは存在します"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Overwrite"
 msgstr "上書き"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Don't overwrite"
 msgstr "上書きしない"
 
-#: src/file_dialogs.c:873
+#: src/file_dialogs.c:887
 #, c-format
 msgid ""
 "%s\n"
@@ -450,16 +459,16 @@ msgstr ""
 "\n"
 "本当に保存しますか？"
 
-#: src/file_dialogs.c:877 src/sweep_undo.c:331 src/view.c:3401
+#: src/file_dialogs.c:891 src/sweep_undo.c:331 src/view.c:3401
 msgid "File modified"
 msgstr "ファイルは変更されました"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/file_dialogs.c:892 src/file_speex.c:2127 src/file_vorbis.c:1611
 #: src/view.c:501 src/view.c:1782
 msgid "Save"
 msgstr "保存"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2138 src/file_vorbis.c:1622
+#: src/file_dialogs.c:892 src/file_speex.c:2138 src/file_vorbis.c:1622
 msgid "Don't save"
 msgstr "保存しない"
 
@@ -2476,27 +2485,24 @@ msgstr "フィルタ領域の例"
 msgid "An example filter region plugin"
 msgstr "フィルタ領域プラグイン"
 
-#: plugins/fade/fade.c:149 plugins/fade/fade.c:162
+#: plugins/fade/fade.c:148 plugins/fade/fade.c:161
 msgid "Fade in"
 msgstr "フェードイン"
 
-#: plugins/fade/fade.c:157 plugins/fade/fade.c:178
+#: plugins/fade/fade.c:156 plugins/fade/fade.c:177
 msgid "Fade out"
 msgstr "フェードアウト"
 
-#: plugins/fade/fade.c:163
+#: plugins/fade/fade.c:162
 msgid "Apply a linear fade to the selection, fading in from silence"
 msgstr "線形フェードをセレクションに適用する。無音からフェードイン。"
 
-#: plugins/fade/fade.c:179
+#: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "線形フェードをセレクションに適用する。無音へフェードアウト。"
 
 #~ msgid "Sweep: Load file"
 #~ msgstr "Sweep: ファイルをロード"
-
-#~ msgid "Sweep: Save file"
-#~ msgstr "Sweep: ファイルを保存"
 
 #~ msgid "Go to beginning    [Ctrl+Home]"
 #~ msgstr "最初に行く    [Ctrl+Home]"

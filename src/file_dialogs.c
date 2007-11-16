@@ -279,11 +279,14 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   GtkWidget *dialog;
   gchar *load_current_file;
   gint win_width, win_height;
+  GSList *filenames, *list;
  
+  filenames = list = NULL;
+    
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
 
-  dialog = gtk_file_chooser_dialog_new ("Sweep: Open File",
+  dialog = gtk_file_chooser_dialog_new (_("Sweep: Open Files"),
 				      data,
 				      GTK_FILE_CHOOSER_ACTION_OPEN,
 				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -292,6 +295,7 @@ sample_load_cb(GtkWidget * widget, gpointer data)
     
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (dialog, win_width, win_height);
+  gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
   
   sweep_set_window_icon (GTK_WINDOW(dialog));
   attach_window_close_accel(GTK_WINDOW(dialog));
@@ -306,15 +310,25 @@ sample_load_cb(GtkWidget * widget, gpointer data)
     
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
       
-    char *filename;
+   filenames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(dialog));      
+   
+   for (list = filenames; list; list = list->next) {
 
-    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-    sample_load (filename);
-    g_free (filename);
+     if (list->data) {
+       sample_load ((gchar *)list->data);
+       g_free (list->data);
+     }   
   }
-
-  gtk_widget_destroy (dialog);  
+      
+  if (filenames)
+    g_slist_free(filenames);
+      
+  } else {
+    /* do nothing so exit */
+     sample_bank_remove(NULL);
+  }
     
+  gtk_widget_destroy (dialog);
 }
 
 gboolean
@@ -690,7 +704,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
     
   sample = view->sample;
 
-  dialog = gtk_file_chooser_dialog_new ("Sweep: Save file",
+  dialog = gtk_file_chooser_dialog_new (_("Sweep: Save file"),
 				      GTK_WINDOW(view->window),
 				      GTK_FILE_CHOOSER_ACTION_SAVE,
 				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.5.13\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-13 14:58+0900\n"
+"POT-Creation-Date: 2007-11-16 19:13+0000\n"
 "PO-Revision-Date: 2005-12-02 23:06-0600\n"
 "Last-Translator: Waldo Ramírez Montaño <waldo.ramirez@correo.unam.mx>\n"
 "Language-Team: Spanish <LL@li.org>\n"
@@ -363,7 +363,12 @@ msgstr ""
 "Imposible leer\n"
 "%s"
 
-#: src/file_dialogs.c:356
+#: src/file_dialogs.c:289
+#, fuzzy
+msgid "Sweep: Open Files"
+msgstr "Sweep: Nuevo archivo"
+
+#: src/file_dialogs.c:370
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -376,40 +381,44 @@ msgstr ""
 "\n"
 "Todos los cambios y la información parar deshacer serán perdidos."
 
-#: src/file_dialogs.c:360
+#: src/file_dialogs.c:374
 msgid "Revert file"
 msgstr "Revertir archivo"
 
-#: src/file_dialogs.c:361 src/view.c:509
+#: src/file_dialogs.c:375 src/view.c:509
 msgid "Revert"
 msgstr "Revertir"
 
-#: src/file_dialogs.c:361
+#: src/file_dialogs.c:375
 msgid "Don't revert"
 msgstr "No revertir"
 
-#: src/file_dialogs.c:531 src/file_dialogs.c:810
+#: src/file_dialogs.c:545 src/file_dialogs.c:824
 #, c-format
 msgid "Save as %s cancelled"
 msgstr "Guardar como %s cancelado"
 
-#: src/file_dialogs.c:568
+#: src/file_dialogs.c:582
 msgid "By extension"
 msgstr "Por extensión"
 
-#: src/file_dialogs.c:626
+#: src/file_dialogs.c:640
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr "MP3 (Reemplace por Ogg Vorbis)"
 
 #: src/file_dialogs.c:707
+msgid "Sweep: Save file"
+msgstr "Sweep: Guardar archivo"
+
+#: src/file_dialogs.c:721
 msgid "Save Options"
 msgstr "Opciones para guardar"
 
-#: src/file_dialogs.c:716
+#: src/file_dialogs.c:730
 msgid "Determine File Type:"
 msgstr "Determinar tipo de archivo:"
 
-#: src/file_dialogs.c:796
+#: src/file_dialogs.c:810
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
@@ -418,24 +427,24 @@ msgstr ""
 "No tiene permisos para guardar\n"
 "%s"
 
-#: src/file_dialogs.c:798
+#: src/file_dialogs.c:812
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr "%s ya existe. Sobreescribir?"
 
-#: src/file_dialogs.c:800
+#: src/file_dialogs.c:814
 msgid "File exists"
 msgstr "El archivo ya existe"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Overwrite"
 msgstr "Sobreescribir"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Don't overwrite"
 msgstr "No sobreescribir"
 
-#: src/file_dialogs.c:873
+#: src/file_dialogs.c:887
 #, c-format
 msgid ""
 "%s\n"
@@ -448,16 +457,16 @@ msgstr ""
 "\n"
 "¿Está seguro que desea guardarlo?"
 
-#: src/file_dialogs.c:877 src/sweep_undo.c:331 src/view.c:3401
+#: src/file_dialogs.c:891 src/sweep_undo.c:331 src/view.c:3401
 msgid "File modified"
 msgstr "Archivo modificado"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/file_dialogs.c:892 src/file_speex.c:2127 src/file_vorbis.c:1611
 #: src/view.c:501 src/view.c:1782
 msgid "Save"
 msgstr "Guardar"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2138 src/file_vorbis.c:1622
+#: src/file_dialogs.c:892 src/file_speex.c:2138 src/file_vorbis.c:1622
 msgid "Don't save"
 msgstr "No guardar"
 
@@ -2510,20 +2519,20 @@ msgstr "Ejemplo de filtrado de región"
 msgid "An example filter region plugin"
 msgstr "Un plugin de ejemplo de filtrado de regiones"
 
-#: plugins/fade/fade.c:149 plugins/fade/fade.c:162
+#: plugins/fade/fade.c:148 plugins/fade/fade.c:161
 msgid "Fade in"
 msgstr "Desvanecido (aparecer)"
 
-#: plugins/fade/fade.c:157 plugins/fade/fade.c:178
+#: plugins/fade/fade.c:156 plugins/fade/fade.c:177
 msgid "Fade out"
 msgstr "Desvanecido (desaparecer)"
 
-#: plugins/fade/fade.c:163
+#: plugins/fade/fade.c:162
 msgid "Apply a linear fade to the selection, fading in from silence"
 msgstr ""
 "Aplicar un desvanecido lineal a la selección, apareciendo desde el silencio"
 
-#: plugins/fade/fade.c:179
+#: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
 "Aplicar un desvanecido lineal a la selección, desapareciendo hasta el "
@@ -2531,9 +2540,6 @@ msgstr ""
 
 #~ msgid "Sweep: Load file"
 #~ msgstr "Sweep: Cargar archivo"
-
-#~ msgid "Sweep: Save file"
-#~ msgstr "Sweep: Guardar archivo"
 
 #~ msgid "Go to beginning    [Ctrl+Home]"
 #~ msgstr "Ir al inicio    [Ctrl+Inicio]"

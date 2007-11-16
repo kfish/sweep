@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.3\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-13 14:58+0900\n"
+"POT-Creation-Date: 2007-11-16 19:13+0000\n"
 "PO-Revision-Date: 2001-04-08 22:23+0200\n"
 "Last-Translator: Radoslaw Korzeniewski <radoslaw@korzeniewski.net>\n"
 "Language-Team: Poland <LL@li.org>\n"
@@ -364,7 +364,12 @@ msgstr ""
 "Nie można przeczytać\n"
 "%s"
 
-#: src/file_dialogs.c:356
+#: src/file_dialogs.c:289
+#, fuzzy
+msgid "Sweep: Open Files"
+msgstr "Sweep: Nowy plik"
+
+#: src/file_dialogs.c:370
 #, c-format
 msgid ""
 "Are you sure you want to revert %s to\n"
@@ -377,40 +382,44 @@ msgstr ""
 "\n"
 "Wszystkie zmiany i informacje undo będą stracone."
 
-#: src/file_dialogs.c:360
+#: src/file_dialogs.c:374
 msgid "Revert file"
 msgstr "Odwróć plik"
 
-#: src/file_dialogs.c:361 src/view.c:509
+#: src/file_dialogs.c:375 src/view.c:509
 msgid "Revert"
 msgstr "Odwróc"
 
-#: src/file_dialogs.c:361
+#: src/file_dialogs.c:375
 msgid "Don't revert"
 msgstr "Nie odwracaj"
 
-#: src/file_dialogs.c:531 src/file_dialogs.c:810
+#: src/file_dialogs.c:545 src/file_dialogs.c:824
 #, c-format
 msgid "Save as %s cancelled"
 msgstr "Zapisz jako %s anulowano"
 
-#: src/file_dialogs.c:568
+#: src/file_dialogs.c:582
 msgid "By extension"
 msgstr "Po rozszerzeniu"
 
-#: src/file_dialogs.c:626
+#: src/file_dialogs.c:640
 msgid "MP3 (Use Ogg Vorbis instead)"
 msgstr "MP3 (zamiast tego użyj Ogg Vorbis)"
 
 #: src/file_dialogs.c:707
+msgid "Sweep: Save file"
+msgstr "Sweep: Zapisz plik"
+
+#: src/file_dialogs.c:721
 msgid "Save Options"
 msgstr "Zapisz Opcje"
 
-#: src/file_dialogs.c:716
+#: src/file_dialogs.c:730
 msgid "Determine File Type:"
 msgstr "Ustal Typ Pliku:"
 
-#: src/file_dialogs.c:796
+#: src/file_dialogs.c:810
 #, c-format
 msgid ""
 "You are not allowed to write to\n"
@@ -419,24 +428,24 @@ msgstr ""
 "Nie masz prawa pisać do\n"
 "%s"
 
-#: src/file_dialogs.c:798
+#: src/file_dialogs.c:812
 #, c-format
 msgid "%s exists. Overwrite?"
 msgstr "%s istnieje. Nadpisać?"
 
-#: src/file_dialogs.c:800
+#: src/file_dialogs.c:814
 msgid "File exists"
 msgstr "Plik istnieje"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Overwrite"
 msgstr "Nadpisać"
 
-#: src/file_dialogs.c:801
+#: src/file_dialogs.c:815
 msgid "Don't overwrite"
 msgstr "Nie nadpisywać"
 
-#: src/file_dialogs.c:873
+#: src/file_dialogs.c:887
 #, c-format
 msgid ""
 "%s\n"
@@ -449,16 +458,16 @@ msgstr ""
 "\n"
 "Czy jesteś pewny że chcesz zapisać?"
 
-#: src/file_dialogs.c:877 src/sweep_undo.c:331 src/view.c:3401
+#: src/file_dialogs.c:891 src/sweep_undo.c:331 src/view.c:3401
 msgid "File modified"
 msgstr "Plik zmodyfikowany"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/file_dialogs.c:892 src/file_speex.c:2127 src/file_vorbis.c:1611
 #: src/view.c:501 src/view.c:1782
 msgid "Save"
 msgstr "Zapisz"
 
-#: src/file_dialogs.c:878 src/file_speex.c:2138 src/file_vorbis.c:1622
+#: src/file_dialogs.c:892 src/file_speex.c:2138 src/file_vorbis.c:1622
 msgid "Don't save"
 msgstr "Nie zapisuj"
 
@@ -2496,27 +2505,24 @@ msgstr "Przykładowy Filtr Regionu"
 msgid "An example filter region plugin"
 msgstr "Przykładowa wtyczka filtru regionu"
 
-#: plugins/fade/fade.c:149 plugins/fade/fade.c:162
+#: plugins/fade/fade.c:148 plugins/fade/fade.c:161
 msgid "Fade in"
 msgstr "Zgłaśnianie"
 
-#: plugins/fade/fade.c:157 plugins/fade/fade.c:178
+#: plugins/fade/fade.c:156 plugins/fade/fade.c:177
 msgid "Fade out"
 msgstr "Wyciszanie"
 
-#: plugins/fade/fade.c:163
+#: plugins/fade/fade.c:162
 msgid "Apply a linear fade to the selection, fading in from silence"
 msgstr "Zastosuj liniowe zgłaśnianie do zaznaczenia, zgłaśniając od ciszy"
 
-#: plugins/fade/fade.c:179
+#: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "Zastosuj liniowe wyciszenie do zaznaczenia, wyciszając do ciszy"
 
 #~ msgid "Sweep: Load file"
 #~ msgstr "Sweep: Załaduj plik"
-
-#~ msgid "Sweep: Save file"
-#~ msgstr "Sweep: Zapisz plik"
 
 #~ msgid "Go to beginning    [Ctrl+Home]"
 #~ msgstr "Idź do początku    [Ctrl+Home]"
