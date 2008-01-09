@@ -1,15 +1,15 @@
 # Sweep Italian Translation.
-# Copyright @ 2004 Free Software Foundation, Inc.
-# Current translator: Yuri Bongiorno http://yuri.webhop.org, 2004.
+# Copyright @ 2007 Free Software Foundation, Inc.
+# Current translator: Yuri Bongiorno http://yuri.webhop.org, 2007.
 # Traduttori Italiani GNU:   http://www.linux.it/tp
-#
+# 
 #: src/sample-display.c:222
 msgid ""
 msgstr ""
-"Project-Id-Version: sweep-0.8.2\n"
+"Project-Id-Version: sweep-0.9.2\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-16 19:13+0000\n"
-"PO-Revision-Date: 2004-04-26 12:31+0200\n"
+"POT-Creation-Date: 2007-12-24 19:13+0000\n"
+"PO-Revision-Date: 2007-12-24 19:13+0200\n"
 "Last-Translator: Yuri Bongiorno http://yuri.webhop.org\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -78,6 +78,10 @@ msgid ""
 "                           the users home directory is on an NFS\n"
 "                           file system. (possibly unsafe) \n"
 msgstr ""
+"  --ignore-failed-lock     continua quando il tentativo di fare il\n"
+"                           lock al file delle preferenze fallisce.\n"
+"                           Questa opzione è sconsigliata se le home\n"
+"                           degli utenti sono su un file system NFS.\n"
 
 #: src/main.c:206
 msgid "  --no-toolbox             Do not show the toolbox window.\n"
@@ -168,7 +172,7 @@ msgstr "Sweep: configurazione del device audio"
 #: src/driver.c:404
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
-"I cambiamenti alle impostazioni del device hanno effetto dalla prossima "
+"Le modifiche alle impostazioni del device avranno effetto alla prossima "
 "riproduzione."
 
 #: src/driver.c:418
@@ -365,9 +369,8 @@ msgstr ""
 "%s"
 
 #: src/file_dialogs.c:289
-#, fuzzy
 msgid "Sweep: Open Files"
-msgstr "Sweep: nuovo file"
+msgstr "Sweep: apri file"
 
 #: src/file_dialogs.c:370
 #, c-format
@@ -380,7 +383,7 @@ msgstr ""
 "Ripristinare %s in\n"
 "%s?\n"
 "\n"
-"Si perdono tutti i cambiamenti e le informazioni di annullamento."
+"Si perdono tutte le modifiche e le informazioni di annullamento."
 
 #: src/file_dialogs.c:374
 msgid "Revert file"
@@ -1155,16 +1158,16 @@ msgstr ""
 
 #: src/interface.c:433
 msgid "Move"
-msgstr "Muove"
+msgstr "Sposta"
 
 #: src/interface.c:434
 msgid "Move regions in a sample"
-msgstr "Muove le regioni in un campione"
+msgstr "Sposta le regioni in un campione"
 
 #: src/interface.c:435
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
-"Con questo strumento si possono muovere le regioni selezionate di un "
+"Con questo strumento si possono spostare le regioni selezionate di un "
 "campione."
 
 #: src/interface.c:447
@@ -1864,7 +1867,7 @@ msgstr ""
 
 #: src/sweep_undo.c:332
 msgid "Continue editing"
-msgstr "Continua"
+msgstr "Continua a modificare"
 
 #: src/sweep_undo.c:332
 msgid "Reread from disk"
@@ -1932,7 +1935,7 @@ msgstr "Apri"
 
 #: src/view.c:488
 msgid "Open Recent"
-msgstr ""
+msgstr "Apri recenti"
 
 #: src/view.c:505
 msgid "Save As ..."
@@ -2259,9 +2262,8 @@ msgid "Paste: fade clipboard in from cursor position"
 msgstr "Incolla: dissolve gli appunti dalla posizione del cursore"
 
 #: src/view.c:1924
-#, fuzzy
 msgid "Hand tool"
-msgstr "Matita"
+msgstr "A mano"
 
 #: src/view.c:1932
 msgid "Selector tool"
@@ -2300,19 +2302,16 @@ msgid "Loop mode playback (toggle)"
 msgstr "Modalità di riproduzione ciclica (attiva/disattiva)"
 
 #: src/view.c:2419
-#, fuzzy
 msgid "Play all / Pause"
-msgstr "Suona tutto / Pausa    [ctrl+spazio]"
+msgstr "Suona tutto / Pausa"
 
 #: src/view.c:2436
-#, fuzzy
 msgid "Play selection / Pause"
-msgstr "Suona la selezione / Pausa    [spazio]"
+msgstr "Suona la selezione / Pausa"
 
 #: src/view.c:2452
-#, fuzzy
 msgid "Stop playback"
-msgstr "Ferma la riproduzione    [invio]"
+msgstr "Ferma la riproduzione"
 
 #: src/view.c:2519
 msgid "Muted playback (toggle)"
@@ -2520,38 +2519,3 @@ msgstr "Applica una dissolvenza lineare alla selezione, iniziando dal silenzio"
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "Applica una dissolvenza lineare alla selezione, finendo in silenzio"
 
-#~ msgid "Sweep: Load file"
-#~ msgstr "Sweep: carica file"
-
-#~ msgid "Go to beginning    [Ctrl+Home]"
-#~ msgstr "Va all'inizio    [ctrl+inizio]"
-
-#~ msgid "Go to the end    [Ctrl+End]"
-#~ msgstr "Va alla fine    [ctrl+fine]"
-
-#~ msgid "About Sweep"
-#~ msgstr "Informazioni su Sweep"
-
-#~ msgid "Channels:"
-#~ msgstr "Canali:"
-
-#~ msgid "Mono (mixdown)"
-#~ msgstr "Mono (mescola i canali)"
-
-#~ msgid "Stereo (duplicate)"
-#~ msgstr "Stereo (duplicato)"
-
-#~ msgid "Bitwidth:"
-#~ msgstr "Ampiezza di bit:"
-
-#~ msgid "8 bit"
-#~ msgstr "8 bit"
-
-#~ msgid "16 bit"
-#~ msgstr "16 bit"
-
-#~ msgid "24 bit"
-#~ msgstr "24 bit"
-
-#~ msgid "32 bit"
-#~ msgstr "32 bit"
