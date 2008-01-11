@@ -60,6 +60,7 @@
 #include "cursors.h"
 #include "head.h"
 #include "view_pixmaps.h"
+#include "scroll-pane.h"
 
 /*#define DEBUG*/
 
@@ -2249,7 +2250,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   g_signal_connect (G_OBJECT(button), "clicked",
 		      G_CALLBACK(view_rate_zeroed_cb), view);
 
-  /* scrollbar */
+  /* scroll pane */
   step = ((gfloat)(end - start)) / 10.0;
   if (step < 1.0) step = 1.0;
 
@@ -2266,14 +2267,22 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 		      G_CALLBACK(adj_value_changed_cb), view);
   g_signal_connect (G_OBJECT(view->adj), "changed",
 		      G_CALLBACK(adj_changed_cb), view);
+  GtkWidget *scroll_frame;
+    
+  scroll_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (scroll_frame), GTK_SHADOW_IN);
+  gtk_table_attach (GTK_TABLE(table), scroll_frame,
+		                1, 2, 2, 3,
+		                GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
+		                0, 0);
+  gtk_widget_show (scroll_frame);
+  scrollbar = scroll_pane_new(GTK_ADJUSTMENT(view->adj));
+  view->scrollbar = scrollbar;
+  
+  gtk_container_add (GTK_CONTAINER (scroll_frame), scrollbar);
 
-  scrollbar = gtk_hscrollbar_new(GTK_ADJUSTMENT(view->adj));
-  gtk_table_attach (GTK_TABLE(table), scrollbar,
-		    1, 2, 2, 3,
-		    GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
-		    0, 0);
+  scroll_pane_set_view(SCROLL_PANE(scrollbar), view);
   gtk_widget_show(scrollbar);
-
 
   /* playback toolbar */
 
@@ -2338,11 +2347,28 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   pixmap = create_widget_from_xpm (window, lowleft_xpm);
   gtk_widget_show (pixmap);
   gtk_box_pack_end (GTK_BOX(imagebox), pixmap, FALSE, FALSE, 0);
-  
-  label = gtk_label_new ("00:00:00.000");
-  gtk_box_pack_start (GTK_BOX(tool_hbox), label, TRUE, TRUE, 0);
+
+  imagebox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX(tool_hbox), imagebox, TRUE, FALSE, 0);
+  gtk_widget_show (imagebox);
+ 
+  label = gtk_label_new ("TIME:");
+  gtk_box_pack_start (GTK_BOX(imagebox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
-  view->play_pos = label;
+
+  label = gtk_label_new ("00:00:00.000");
+  gtk_box_pack_start (GTK_BOX(imagebox), label, TRUE, TRUE, 12);
+  gtk_widget_show (label);
+  view->play_pos_time = label;
+  
+  label = gtk_label_new ("FRAME:");
+  gtk_box_pack_start (GTK_BOX(imagebox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  label = gtk_label_new ("00000000");
+  gtk_box_pack_start (GTK_BOX(imagebox), label, TRUE, TRUE, 12);
+  gtk_widget_show (label);
+  view->play_pos_frame = label;
 
   imagebox = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX(tool_hbox), imagebox, FALSE, FALSE, 0);
@@ -2363,7 +2389,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_widget_set_style (entry, style_LCD);
   gtk_box_pack_start (GTK_BOX(hbox), entry, TRUE, TRUE, 0);
   gtk_widget_show (entry);
-  view->play_pos = entry;
+  view->play_pos_time = entry;
 #endif
 
 
@@ -3262,6 +3288,7 @@ void
 view_refresh_offset_indicators (sw_view * view)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(view->display);
+  ScrollPane * sc = SCROLL_PANE(view->scrollbar);
   sw_sample * sample = view->sample;
   sw_framecount_t offset;
   static int rate_limit = 0;
@@ -3276,13 +3303,18 @@ view_refresh_offset_indicators (sw_view * view)
 
   snprint_time (buf, BUF_LEN,
 		frames_to_time (sample->sounddata->format, offset));
+    
+/* FIXME: this is bad */    
 /* cheesy rate limiter. ugly in operation. limits pango damage */
 if (rate_limit >= 3) {
 	rate_limit=0;
 #ifdef PLAYPOS_LABEL
-  gtk_label_set_text (GTK_LABEL(view->play_pos), buf);
+  gtk_label_set_text (GTK_LABEL(view->play_pos_time), buf);
+
+  snprintf (buf, BUF_LEN, "%08d", offset );
+  gtk_label_set_text (GTK_LABEL(view->play_pos_frame), buf);
 #else
-  gtk_entry_set_text (GTK_ENTRY(view->play_pos), buf);
+  gtk_entry_set_text (GTK_ENTRY(view->play_pos_time), buf);
 #endif
 
 }
@@ -3291,6 +3323,7 @@ if (rate_limit >= 3) {
 
   sample_display_refresh_play_marker (sd);
   sample_display_refresh_user_marker (sd);
+//  scroll_pane_refresh(sc);
 
   if (view->following) {
     view_zoom_to_offset (view, offset);
@@ -3550,8 +3583,10 @@ void
 view_refresh_display (sw_view * v)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
+  ScrollPane * sc = SCROLL_PANE(v->scrollbar);
 
   sample_display_refresh(sd);
+  scroll_pane_refresh(sc);
 }
 
 void

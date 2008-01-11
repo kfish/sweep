@@ -101,7 +101,8 @@ struct _sw_view {
   GtkWidget * progress;
 
   GtkWidget * follow_toggle;
-  GtkWidget * play_pos;
+  GtkWidget * play_pos_time;
+  GtkWidget * play_pos_frame;
   GtkWidget * loop_toggle;
   GtkWidget * playrev_toggle;
   GtkWidget * play_toggle;
