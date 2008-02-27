@@ -24,6 +24,7 @@ Steve Harris <steve@totl.net>
 
 Radoslaw Korzeniewski <Radoslaw.Korzeniewski@centertel.pl>
 	various bug fixes in file loading
+        the scroll pane widget
 
 <ben@slumber.dhs.org>
 	bug fix in save as dialog
