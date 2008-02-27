@@ -51,6 +51,8 @@
 #include "record.h"
 #include "question_dialogs.h"
 #include "sw_chooser.h"
+#include "schemes.h"
+
 
 #include "../pixmaps/new.xpm"
 
@@ -90,27 +92,6 @@ sample_remove_view (sw_sample * s, sw_view * v)
  if(!s->views) {
    sample_bank_remove(s);
  }
-}
-
-/*
- * filename_color_hash
- *
- * Choose colour for this file based on the filename, such that
- * a file is loaded with the same colour each time it is edited.
- *
- * Idea due to Erik de Castro Lopo
- */
-static int
-filename_color_hash (char * filename)
-{
-  char *p;
-  int i = 0;
-
-  if (filename == NULL) return 0;
-
-  for (p = filename; *p; p++) i += (int)*p;
-
-  return (i % VIEW_COLOR_DEFAULT_MAX);
 }
 
 static gchar *
@@ -178,11 +159,7 @@ sample_new_empty(gchar * pathname,
 
   s->rate = 1.0;
 
-#if 0
-  s->color = ((int)random()) % VIEW_COLOR_MAX;
-#else
-  s->color = filename_color_hash ((gchar *)g_basename (s->pathname));
-#endif
+  s->scheme = schemes_get_prefered_scheme (pathname);
 
   s->info_clist = NULL;
 
@@ -211,7 +188,7 @@ sample_new_copy(sw_sample * s)
     fprintf(stderr, "Unable to allocate new sample.\n");
     return NULL;
   }
-
+    
   memcpy(sn->sounddata->data, s->sounddata->data,
 	 frames_to_bytes(s->sounddata->format, s->sounddata->nr_frames));
 
@@ -396,6 +373,9 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   GtkWidget * button;
   GtkWidget * checkbutton;
   GtkWidget * ok_button;
+  GtkWidget * image;
+  GtkWidget * button_label;
+  GtkWidget * button_hbox;
   GtkTooltips * tooltips;
 
 #define BUF_LEN 16
@@ -591,23 +571,42 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
 
   /* OK */
 
-  ok_button = gtk_button_new_with_label (_("Create"));
+  ok_button = gtk_button_new ();
+  button_label = gtk_label_new (_("Create"));
+  image = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_BUTTON);
+  button_hbox  = gtk_hbox_new (FALSE, 0);
+  
+  gtk_container_add (GTK_CONTAINER (ok_button), button_hbox);
+  gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2);
+  gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
+  
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET(ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 		      TRUE, TRUE, 0);
-  gtk_widget_show (ok_button);
+  gtk_widget_show_all (ok_button);
   g_signal_connect (G_OBJECT(ok_button), "clicked",
 		      G_CALLBACK (sample_new_dialog_ok_cb), NULL);
 
   g_object_set_data (G_OBJECT (dialog), "ok_button", ok_button);
 
   /* Cancel */
+  button = gtk_button_new ();
+  button_label = gtk_label_new (_("Don't create"));
+  image = gtk_image_new_from_stock ("gtk-cancel", GTK_ICON_SIZE_BUTTON);
+  button_hbox  = gtk_hbox_new (FALSE, 0);
+  
+  gtk_container_add (GTK_CONTAINER (button), button_hbox);
+  gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2);
+  gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
 
-  button = gtk_button_new_with_label (_("Don't create"));
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET(button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 		      TRUE, TRUE, 0);
-  gtk_widget_show (button);
+  gtk_widget_show_all (button);
   g_signal_connect (G_OBJECT(button), "clicked",
 		      G_CALLBACK (sample_new_dialog_cancel_cb), NULL);
 
@@ -798,6 +797,7 @@ sweep_quit (void)
 			   "changes will be lost.\n\n"
 			   "Are you sure you want to quit?"),
 			 _("Quit"), _("Don't quit"),
+       "gtk-quit", "gtk-cancel",
 			 G_CALLBACK (sweep_quit_ok_cb), NULL, G_CALLBACK (sweep_quit_cancel_cb), NULL,
 			 SWEEP_EDIT_MODE_READY);
   } else if (any_playing()) {
@@ -806,6 +806,7 @@ sweep_quit (void)
 			   "currently playing.\n\n"
 			   "Are you sure you want to quit?"),
 			 _("Quit"), _("Don't quit"),
+      "gtk-quit", "gtk-cancel",
 			 G_CALLBACK (sweep_quit_ok_cb), NULL, G_CALLBACK (sweep_quit_cancel_cb), NULL,
 			 SWEEP_EDIT_MODE_READY);
   } else {

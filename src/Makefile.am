@@ -55,6 +55,8 @@ sweep_SOURCES = \
 	record.c record.h \
 	sample-display.c sample-display.h \
 	samplerate.c \
+  schemes.c schemes.h \
+  sweep-scheme.c sweep-scheme.h \
 	scroll-pane.c scroll-pane.h \
 	sw_chooser.c sw_chooser.h \
 	sweep_filter.c \

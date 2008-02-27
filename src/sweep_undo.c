@@ -330,6 +330,7 @@ schedule_operation (sw_sample * sample, char * description,
     
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Continue editing"), _("Reread from disk"),
+       "gtk-ok", "gtk-revert-to-saved",
 			 G_CALLBACK (schedule_operation_ok_cb), inst,
 			 G_CALLBACK (sample_revert_ok_cb), sample,
 			 SWEEP_EDIT_MODE_ALLOC);

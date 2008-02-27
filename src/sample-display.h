@@ -26,6 +26,7 @@
 
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_sample.h>
+#include "sweep-scheme.h"
 #include "view.h"
 
 #define SAMPLE_DISPLAY(obj)          GTK_CHECK_CAST (obj, sample_display_get_type (), SampleDisplay)
@@ -54,13 +55,9 @@ enum {
 struct _SampleDisplay
 {
   GtkWidget widget;
-
-  GdkGC *bg_gc, *fg_gc, *play_gc, *user_gc, *rec_gc, *sel_gc, *tmp_sel_gc,
-    *crossing_gc;
-  GdkGC *minmax_gc, *zeroline_gc, *highlight_gc, *lowlight_gc;
-
-  GdkGC * bg_gcs[VIEW_COLOR_MAX];
-  GdkGC * fg_gcs[VIEW_COLOR_MAX];
+    
+  GdkGC          *gcs[SCHEME_ELEMENT_LAST];
+  GdkColor *gc_colors[SCHEME_ELEMENT_LAST];
 
   GdkPixmap * backing_pixmap;
 
@@ -102,15 +99,18 @@ struct _SampleDisplay
 
   /* Meta key down? */
   gboolean meta_down;
+    
+  SweepScheme *scheme;
+    
 };
 
 struct _SampleDisplayClass
 {
   GtkWidgetClass parent_class;
 
-  GdkColor colors[SAMPLE_DISPLAYCOL_LAST];
-  GdkColor bg_colors[VIEW_COLOR_MAX];
-  GdkColor fg_colors[VIEW_COLOR_MAX];
+  //GdkColor colors[SAMPLE_DISPLAYCOL_LAST];
+  //GdkColor bg_colors[VIEW_COLOR_MAX];
+  //GdkColor fg_colors[VIEW_COLOR_MAX];
 
   void (*selection_changed)(SampleDisplay *s, int start, int end);
   void (*window_changed)(SampleDisplay *s, int start, int end);
@@ -159,5 +159,11 @@ sample_display_start_marching_ants (SampleDisplay * s);
 
 void
 sample_display_stop_marching_ants (SampleDisplay * s);
+
+void
+sample_display_refresh_scheme_data (SampleDisplay *s, gboolean redraw);
+
+void
+sample_display_set_scheme (SampleDisplay *s, SweepScheme *scheme);
 
 #endif /* _SAMPLE_DISPLAY_H */

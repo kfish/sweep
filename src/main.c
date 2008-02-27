@@ -43,6 +43,7 @@
 #include "callbacks.h"
 #include "question_dialogs.h"
 #include "play.h"
+#include "schemes.h"
 
 extern void sweep_timeouts_init (void);
 extern gboolean ignore_failed_tdb_lock;
@@ -92,6 +93,7 @@ initial_sample_ask (gpointer data)
 		         "Would you like to create a new file or "
 		         "load an existing file?"),
 		       _("Create new file"), _("Load existing file"),
+          "gtk-new", "gtk-open",
 		       G_CALLBACK (sample_new_empty_cb), NULL, G_CALLBACK (sample_load_cb), NULL, 0);
 
   return FALSE;
@@ -229,6 +231,8 @@ main (int argc, char *argv[])
 
   /* initialise interface components */
   init_ui ();
+    
+  init_schemes ();
 
   /* initialise devices */
   init_devices ();
@@ -246,8 +250,10 @@ main (int argc, char *argv[])
 
   
   gtk_main ();
-
-
+    
+  /* save schemes if modified */
+  save_schemes ();
+  
   /* close preferences database */
   prefs_close ();
   

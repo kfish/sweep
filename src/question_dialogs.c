@@ -83,6 +83,7 @@ question_dialog_answer_cb (GtkWidget * widget, gpointer data)
 static void
 query_dialog_new (sw_sample * sample, char * title, char * question,
 		  gboolean show_cancel, char * ok_answer, char * no_answer,
+      char * ok_stock_id, char * no_stock_id, 
 		  GCallback ok_callback, gpointer ok_callback_data,
 		  GCallback no_callback, gpointer no_callback_data,
 		  gpointer xpm_data, gboolean quit_if_no_files)
@@ -95,6 +96,9 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GtkWidget * hbox;
   GtkWidget * label;
   GtkWidget * pixmap;
+  GtkWidget * button_label;
+  GtkWidget * image;
+  GtkWidget * button_hbox;
 
   window = gtk_dialog_new ();
   sweep_set_window_icon (GTK_WINDOW(window));
@@ -142,12 +146,27 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   /* OK */
 
   if (ok_answer == NULL) ok_answer = _("OK");
-  ok_button = gtk_button_new_with_label (ok_answer);
+    
+  if (ok_stock_id == NULL)
+    ok_button = gtk_button_new_with_label (ok_answer);
+  else
+  {
+    ok_button = gtk_button_new ();
+    button_label = gtk_label_new (ok_answer);
+    image = gtk_image_new_from_stock (ok_stock_id, GTK_ICON_SIZE_BUTTON);
+    button_hbox  = gtk_hbox_new (FALSE, 0);
+  
+    gtk_container_add (GTK_CONTAINER (ok_button), button_hbox);
+    gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
+    gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2); 
+    gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+    gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
+  }
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
-		      ok_button, TRUE, TRUE, 0);
+		      ok_button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT(ok_button), "default", ok_callback);
-  gtk_widget_show (ok_button);
+  gtk_widget_show_all (ok_button);
   g_signal_connect (G_OBJECT(ok_button), "clicked",
 		      G_CALLBACK (question_dialog_answer_cb),
 		      ok_callback_data);
@@ -156,12 +175,28 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   
   if (show_cancel) {
     if (no_answer == NULL) no_answer = _("Cancel");
-    button = gtk_button_new_with_label (no_answer);
+      
+    if (no_stock_id == NULL)
+      button = gtk_button_new_with_label (no_answer);
+    else
+    {
+      button = gtk_button_new ();
+      button_label = gtk_label_new (no_answer);
+      image = gtk_image_new_from_stock (no_stock_id, GTK_ICON_SIZE_BUTTON);
+      button_hbox  = gtk_hbox_new (FALSE, 0);
+  
+      gtk_container_add (GTK_CONTAINER (button), button_hbox);
+      gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
+      gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2);
+      gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+      gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
+    }
+
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
-			button, TRUE, TRUE, 0);
+			button, FALSE, FALSE, 0);
     g_object_set_data (G_OBJECT(button), "default", no_callback);
-    gtk_widget_show (button);
+    gtk_widget_show_all (button);
     g_signal_connect (G_OBJECT(button), "clicked",
 			G_CALLBACK (question_dialog_answer_cb),
 			no_callback_data);
@@ -175,6 +210,7 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
 void
 question_dialog_new (sw_sample * sample, char * title, char * question,
 		     char * yes_answer, char * no_answer,
+        char * yes_stock_id, char * no_stock_id,
 		     GCallback yes_callback, gpointer yes_callback_data,
 		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode)
@@ -183,6 +219,7 @@ question_dialog_new (sw_sample * sample, char * title, char * question,
     sample_set_edit_mode (sample, edit_mode);
 
   query_dialog_new (sample, title, question, TRUE, yes_answer, no_answer,
+        yes_stock_id, no_stock_id,
 		    yes_callback, yes_callback_data,
 		    no_callback, no_callback_data, NULL, FALSE);
 }
@@ -200,9 +237,12 @@ do_info_dialog (gpointer data)
 {
   info_dialog_data * id = (info_dialog_data *)data;
 
-  query_dialog_new (NULL, id->title, id->message, FALSE,
-		    _("OK"), NULL, NULL, NULL,
-		    NULL, NULL, id->xpm_data, TRUE);
+  query_dialog_new ( NULL, id->title, id->message, 
+                    FALSE, _("OK"), NULL,
+                    "gtk-ok", NULL,
+                    NULL, NULL,
+		                NULL, NULL, 
+                    id->xpm_data, TRUE);
 
   g_free (id->title);
   g_free (id->message);
@@ -250,7 +290,7 @@ syserror_dialog_new (gpointer data)
     new_message = g_strdup_printf ("%s:\n\n%s", pd->message, sys_errstr);
     
     query_dialog_new (NULL, sys_errstr, new_message, FALSE,
-		      _("OK"), NULL, NULL, NULL,
+		      _("OK"), NULL, "gtk-ok", NULL, NULL, NULL,
 		      NULL, NULL, scrubby_system_xpm, TRUE);
   }
 

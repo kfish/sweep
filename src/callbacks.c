@@ -48,6 +48,8 @@
 #include "print.h"
 #include "record.h"
 #include "file_dialogs.h"
+#include "schemes.h"
+#include "preferences.h"
 
 /*
  * Default zooming parameters.
@@ -371,10 +373,10 @@ void
 sample_set_color_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *) data;
-  gint color;
+  SweepScheme *scheme;
 
-  color = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
-  sample_set_color (view->sample, color);
+  scheme = SWEEP_SCHEME (g_object_get_data (G_OBJECT(widget), "scheme"));
+  sample_display_set_scheme (SAMPLE_DISPLAY (view->display), scheme);
 }
 
 /* Playback */
@@ -1047,3 +1049,125 @@ recent_chooser_menu_activated_cb(GtkRecentChooser *chooser,
 }
 
 #endif
+
+void
+scheme_ed_new_clicked_cb (GtkButton *button, gpointer user_data)
+{
+  SweepScheme *scheme;
+    
+  scheme = schemes_get_scheme_system_default ();
+  schemes_copy_scheme (scheme, _("New Scheme"));
+  
+}
+
+void
+scheme_ed_copy_clicked_cb (GtkButton *button, gpointer user_data)
+{
+    
+  gint index;
+  SweepScheme *scheme;
+    
+  if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data))) != -1)
+  {
+      scheme = schemes_get_nth (index);
+      if (scheme != NULL)
+        schemes_copy_scheme (scheme, NULL);
+  }
+    
+}
+
+
+void
+scheme_ed_delete_clicked_cb (GtkButton *button, gpointer user_data)
+{
+    
+  gint index;
+  SweepScheme *scheme;
+    
+  if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data))) != -1)
+  {
+      scheme = schemes_get_nth (index);
+      if (scheme != NULL)
+        schemes_remove_scheme (scheme);
+  }
+    
+}
+
+
+void
+scheme_ed_ok_clicked_cb (GtkButton *button, gpointer user_data)
+{
+  GtkWidget *widget = GTK_WIDGET (user_data);
+  GtkWidget *parent = gtk_widget_get_parent (widget);
+ 
+  gtk_widget_destroy (parent);
+}
+
+void
+scheme_ed_combo_changed_cb (GtkComboBox *widget, gpointer user_data)
+{
+    
+    gint index;
+    
+    if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) != -1)
+        schemes_refresh_list_store (index);
+}
+
+void
+schemes_ed_treeview_selection_changed_cb (GtkTreeSelection *selection,
+                                         gpointer user_data)
+{
+  GtkTreeIter iter;
+  GtkTreeModel *model;
+  gint element;
+  SweepScheme *scheme;
+    
+  if (gtk_tree_selection_get_selected (selection,
+                                        &model,
+                                        &iter)) {
+    gtk_tree_model_get (model,
+                        &iter,
+                        SCHEME_OBJECT_COLUMN, &scheme,
+                        ELEMENT_NUMBER_COLUMN, &element,
+                        -1);
+        
+    schemes_picker_set_edited_color (scheme, element);
+  }
+}
+
+void
+schemes_ed_destroy_cb                (GtkWidget       *widget,
+                                      GdkEvent        *event,
+                                      gpointer         user_data)
+{
+
+    gtk_widget_destroy (widget);
+
+}
+
+
+
+gboolean 
+schemes_ed_delete_event_cb         ( GtkWidget *widget,
+                                     GdkEvent  *event,
+                                     gpointer   data ) {
+
+    return FALSE;
+
+}
+
+void
+schemes_ed_radio_toggled_cb (GtkToggleButton *togglebutton, gpointer user_data)
+{
+    if (gtk_toggle_button_get_active (togglebutton))
+      prefs_set_int ("scheme-selection-method", GPOINTER_TO_INT (user_data));
+}
+
+void
+schemes_ed_color_changed_cb (GtkColorSelection *colorselection,
+                          gpointer user_data)
+{
+    schemes_set_active_element_color (colorselection);
+}
+
+
