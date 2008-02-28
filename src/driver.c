@@ -360,6 +360,11 @@ device_config (void)
   if (dialog == NULL) {
 
     dialog = gtk_dialog_new ();
+
+    g_signal_connect ((gpointer) dialog, "destroy",
+                     G_CALLBACK(gtk_widget_destroyed),
+                     &dialog);
+
     gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: audio device configuration"));
     gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
 
