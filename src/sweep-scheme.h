@@ -87,6 +87,7 @@ struct _SweepScheme {
   gint      element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if >0 */
   gchar    *name;
   gboolean  modified;
+  GdkPixbuf *preview_icon;
 
   
 };

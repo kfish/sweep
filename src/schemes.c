@@ -768,8 +768,8 @@ schemes_show_editor_window_cb (GtkMenuItem *menuitem,
   
     //attach_window_close_accel(window);
     
-    gtk_window_set_title (GTK_WINDOW (window), _("Sweep: Color Scheme Editor"));
-    gtk_widget_set_size_request (window, 640, 510);
+    gtk_window_set_title (GTK_WINDOW (window), _("Sweep: Color Scheme Options"));
+    gtk_widget_set_size_request (window, 620, -1);
   
     
     g_signal_connect ((gpointer) window, "destroy",
@@ -953,167 +953,264 @@ schemes_set_active_element_color (GtkColorSelection *colorselection)
 GtkWidget *
 schemes_create_editor (gint index) 
 {
-    GtkWidget *frame1;
-    GtkWidget *vbox2;
-    GtkWidget *hbox1;
-    GtkWidget *button1;
-    GtkWidget *image1;
-    GtkWidget *button2;
-    GtkWidget *image2;
-    GtkWidget *button3;
-    GtkWidget *image3;
-    GtkWidget *frame2;
-    GtkWidget *hbuttonbox1;
-    GtkWidget *button6;
-    GtkWidget *button7;
-    GtkWidget *radiobuttons[SCHEME_SELECT_LAST];
-    GtkWidget *label;
-    GtkTreeSelection *selection;
-    GtkTooltips *tooltips;
+  GtkWidget * editor_vbox;
+  GtkWidget * general_vbox;
+  GtkWidget * checkbutton;
+  GtkWidget * color_picker;
+  GtkWidget * treeview;
+  GtkWidget * button;
+  GtkWidget * frame;
+  GtkWidget * hbuttonbox;
+  GtkWidget * label;
+  GtkWidget * notebook;
+  GtkWidget * image;
+  GtkWidget * hbox;
+  GtkWidget * radiobuttons[SCHEME_SELECT_LAST];
+  GtkTooltips * tooltips;
+  GtkTreeSelection * selection;
+  gint method;
+
+  tooltips = gtk_tooltips_new ();
     
-    scheme_editor = gtk_vbox_new (FALSE, 0);
-  
-    tooltips = gtk_tooltips_new ();
+  scheme_editor = gtk_vbox_new (FALSE, 0);
+  notebook      = gtk_notebook_new ();
     
-    frame1 = gtk_frame_new (NULL);
-    gtk_box_pack_start (GTK_BOX (scheme_editor), frame1, TRUE, TRUE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (frame1), 3);
-    gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_OUT);
+  editor_vbox   = gtk_vbox_new (FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (editor_vbox), 2);
     
-    vbox2 = gtk_vbox_new (FALSE, 0);
-    gtk_container_add (GTK_CONTAINER (frame1), vbox2);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox2), 2);
+  general_vbox  = gtk_vbox_new (FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (general_vbox), 2);
     
-    hbox1 = gtk_hbox_new (FALSE, 0);
-    gtk_widget_show (hbox1);
-    gtk_box_pack_start (GTK_BOX (vbox2), hbox1, FALSE, FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox1), 1);
+  gtk_box_pack_start_defaults (GTK_BOX (scheme_editor), notebook);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook), 4);
+ 
+  /* scheme editor notebook tab widgets */
     
-    label = gtk_label_new (_("<b> Selected scheme </b>"));
-    gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (hbox1), GTK_WIDGET (label), FALSE, FALSE, 0);
+  hbox = gtk_hbox_new (FALSE, 0);
+  image = gtk_image_new_from_stock ("gtk-select-color", GTK_ICON_SIZE_BUTTON);
+  gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
+  gtk_misc_set_padding (GTK_MISC (image), 2, 0);
+    
+  label = gtk_label_new (_("Color scheme editor"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 0);
+  gtk_widget_show_all (hbox);
+        
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), editor_vbox, hbox);
+
+    
+  /* general notebook tab widgets */
+    
+  hbox = gtk_hbox_new (FALSE, 0);
+  image = gtk_image_new_from_stock ("gtk-preferences", GTK_ICON_SIZE_BUTTON);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_misc_set_padding (GTK_MISC (image), 2, 0);
+
+  label = gtk_label_new (_("General scheme options"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 0);
+  gtk_widget_show_all (hbox);
+    
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), general_vbox, hbox);
+    
+  /** scheme selection and operations **/  
+    
+  /* schemes combo and label */
+    
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox);
+  gtk_box_pack_start (GTK_BOX (editor_vbox), hbox, FALSE, FALSE, 2);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 3);
+    
+  label = gtk_label_new (_("<b>Selected scheme</b>"));
+  gtk_misc_set_padding (GTK_MISC (label), 4, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
     
     
-    schemes_combo = GTK_COMBO_BOX (gtk_combo_box_new_text ());
-    gtk_box_pack_start (GTK_BOX (hbox1), GTK_WIDGET (schemes_combo), TRUE, TRUE, 0);
+  schemes_combo = GTK_COMBO_BOX (gtk_combo_box_new_text ());
+  g_signal_connect ((gpointer) schemes_combo, "changed",
+                    G_CALLBACK (scheme_ed_combo_changed_cb),
+                    NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (schemes_combo), TRUE, TRUE, 2);
     
-    button1 = gtk_button_new ();
-    gtk_box_pack_start (GTK_BOX (hbox1), button1, FALSE, FALSE, 0);
+  /* new scheme button */
     
-    image1 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
-    gtk_container_add (GTK_CONTAINER (button1), image1);
-    
-    gtk_tooltips_set_tip (tooltips, button1, 
+  button = gtk_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  image = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_tooltips_set_tip (tooltips, button, 
                           _("Create a new scheme"),
                           _("Create a new scheme"));
-    
-    button2 = gtk_button_new ();
-    gtk_box_pack_start (GTK_BOX (hbox1), button2, FALSE, FALSE, 0);
-    
-    gtk_tooltips_set_tip (tooltips, button2, 
-                          _("Create a copy of the selected scheme"),
-                          _("Create a copy of the selected scheme"));
-    
-    image2 = gtk_image_new_from_stock ("gtk-copy", GTK_ICON_SIZE_MENU);
-    gtk_container_add (GTK_CONTAINER (button2), image2);
-    
-    button3 = gtk_button_new ();
-    gtk_box_pack_start (GTK_BOX (hbox1), button3, FALSE, FALSE, 0);
-    gtk_tooltips_set_tip (tooltips, button3, 
-                          _("Delete the selected scheme"),
-                          _("Delete the selected scheme"));
-    
-    image3 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
-    gtk_container_add (GTK_CONTAINER (button3), image3);
-    
-    GtkWidget *hbox2 = gtk_hbox_new (FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (vbox2), hbox2, TRUE, TRUE, 0);
-
-    
-    frame2 = gtk_frame_new (NULL);
-    gtk_container_set_border_width (GTK_CONTAINER (frame2), 2);
-    gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
-    gtk_box_pack_start (GTK_BOX (hbox2), frame2, FALSE, TRUE, 0);
-    
-    GtkWidget *treeview = schemes_create_tree_view ();
-    gtk_container_add (GTK_CONTAINER (frame2), treeview);
-    gtk_tooltips_set_tip (tooltips, treeview, 
-                          _("Select an element to edit it"),
-                          _("Select an element to edit it"));
-    
-    GtkWidget *frame3 = gtk_frame_new (NULL);
-    gtk_container_set_border_width (GTK_CONTAINER (frame3), 0);
-    gtk_frame_set_shadow_type (GTK_FRAME (frame3), GTK_SHADOW_NONE);
-    gtk_box_pack_start (GTK_BOX (hbox2), frame3, TRUE, TRUE, 0);
-    GtkWidget *color_picker = schemes_create_color_picker ();
-    gtk_container_add (GTK_CONTAINER (frame3), color_picker);
-    
-    GtkWidget *frame_sel_options = gtk_frame_new (_("Automatic scheme selection"));
-    gtk_container_set_border_width (GTK_CONTAINER (frame_sel_options), 8);
-    gtk_box_pack_start (GTK_BOX (scheme_editor), frame_sel_options, FALSE, FALSE, 0);
-    
-    GtkWidget *vbox_sel_options = gtk_vbox_new (TRUE, 2);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox_sel_options), 5);
-    gtk_container_add (GTK_CONTAINER (frame_sel_options), vbox_sel_options);
-    
-    radiobuttons[SCHEME_SELECT_DEFAULT] = gtk_radio_button_new_with_label (NULL, 
-                                      _("Always use the default scheme"));
-    gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
-                                 radiobuttons[SCHEME_SELECT_DEFAULT]);
-    
-    radiobuttons[SCHEME_SELECT_FILENAME] = 
-        gtk_radio_button_new_with_label_from_widget (
-                      GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
-                      _("Select scheme by filename"));
-    
-    gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
-                                 radiobuttons[SCHEME_SELECT_FILENAME]);
-
-    radiobuttons[SCHEME_SELECT_RANDOM] = 
-        gtk_radio_button_new_with_label_from_widget (
-                      GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
-                      _("Select random scheme"));
-    
-    gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options), 
-                                 radiobuttons[SCHEME_SELECT_RANDOM]);
-    
-    gint method = schemes_get_selection_method ();
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobuttons[method]), TRUE);
-
-    
-    hbuttonbox1 = gtk_hbutton_box_new ();
-    gtk_box_pack_start (GTK_BOX (scheme_editor), hbuttonbox1, FALSE, FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox1), 3);
-    gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox1), GTK_BUTTONBOX_END);
-    
-    button6 = gtk_button_new_from_stock ("gtk-apply");
-    gtk_container_add (GTK_CONTAINER (hbuttonbox1), button6);
-    gtk_container_set_border_width (GTK_CONTAINER (button6), 2);
-    GTK_WIDGET_SET_FLAGS (button6, GTK_CAN_DEFAULT);
-    gtk_widget_set_sensitive (button6, FALSE);
-    
-    button7 = gtk_button_new_from_stock ("gtk-ok");
-    gtk_container_add (GTK_CONTAINER (hbuttonbox1), button7);
-    gtk_container_set_border_width (GTK_CONTAINER (button7), 2);
-    
-    GTK_WIDGET_SET_FLAGS (button7, GTK_CAN_DEFAULT);
-    
-    g_signal_connect ((gpointer) button1, "clicked",
+  g_signal_connect ((gpointer) button, "clicked",
                       G_CALLBACK (scheme_ed_new_clicked_cb),
                       NULL);
-    g_signal_connect ((gpointer) button2, "clicked",
+    
+  /* copy scheme button */
+    
+  button = gtk_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, button, 
+                          _("Create a copy of the selected scheme"),
+                          _("Create a copy of the selected scheme"));
+  image = gtk_image_new_from_stock ("gtk-copy", GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  g_signal_connect ((gpointer) button, "clicked",
                       G_CALLBACK (scheme_ed_copy_clicked_cb),
                       schemes_combo);
-    g_signal_connect ((gpointer) button3, "clicked",
-                      G_CALLBACK (scheme_ed_delete_clicked_cb),
-                      schemes_combo);
-    g_signal_connect ((gpointer) button7, "clicked",
-                      G_CALLBACK (scheme_ed_ok_clicked_cb),
-                      scheme_editor);
     
-    g_signal_connect ((gpointer) schemes_combo, "changed",
-                      G_CALLBACK (scheme_ed_combo_changed_cb),
-                      NULL);
+  /* delete scheme button */
+    
+  button = gtk_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, button, 
+                          _("Delete the selected scheme"),
+                          _("Delete the selected scheme"));
+  image = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  g_signal_connect ((gpointer) button, "clicked",
+                     G_CALLBACK (scheme_ed_delete_clicked_cb),
+                      schemes_combo);
+    
+  /* is default toggle button */
+    
+  checkbutton = gtk_check_button_new_with_label (_("Default"));
+  gtk_box_pack_start (GTK_BOX (hbox), checkbutton, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, checkbutton, 
+                          _("Toggle whether the selected scheme is the default"),
+                          _("Toggle whether the selected scheme is the default"));
+    
+  
+  /** color swatches and color selection **/
+    
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (editor_vbox), hbox, TRUE, TRUE, 0);
+    
+  /* color swatches treeview */
+
+  frame = gtk_frame_new (NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, TRUE, 2);
+    
+  treeview = schemes_create_tree_view ();
+  gtk_container_add (GTK_CONTAINER (frame), treeview);
+  gtk_tooltips_set_tip (tooltips, treeview, 
+                          _("Select an element to edit it"),
+                          _("Select an element to edit it"));
+  
+  /* color selection */  
+    
+  color_picker = schemes_create_color_picker ();
+  gtk_box_pack_start (GTK_BOX (hbox), color_picker, TRUE, TRUE, 2);
+    
+  /** global dialog close button box **/
+    
+  hbuttonbox = gtk_hbutton_box_new ();
+  gtk_box_pack_start (GTK_BOX (scheme_editor), hbuttonbox, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox), 3);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox), GTK_BUTTONBOX_END);
+    
+  /* close button */
+
+  button = gtk_button_new_from_stock ("gtk-close");
+  gtk_container_add (GTK_CONTAINER (hbuttonbox), button);
+  gtk_container_set_border_width (GTK_CONTAINER (button), 1);
+  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+    
+  /** scheme save / revert buttons **/
+    
+  hbuttonbox = gtk_hbutton_box_new ();
+  gtk_box_pack_start (GTK_BOX (editor_vbox), hbuttonbox, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox), 4);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox), GTK_BUTTONBOX_END);
+    
+  /* revert scheme button */
+
+  button = gtk_button_new ();
+  label  = gtk_label_new (_("Revert"));
+  image  = gtk_image_new_from_stock ("gtk-revert-to-saved", GTK_ICON_SIZE_MENU);
+  hbox   = gtk_hbox_new (FALSE, 0);
+  
+  gtk_container_add (GTK_CONTAINER (button), hbox);
+  gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2); 
+  gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  g_signal_connect ((gpointer) button, "clicked",
+                    G_CALLBACK (scheme_ed_revert_clicked_cb),
+                    scheme_editor);
+  gtk_container_add (GTK_CONTAINER (hbuttonbox), button);
+  gtk_container_set_border_width (GTK_CONTAINER (button), 1);
+  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+  // gtk_widget_set_sensitive (button, FALSE);
+  
+  /** general tab option widgets **/
+    
+  /* scheme selection radios */
+    
+  frame = gtk_frame_new (NULL);
+  gtk_box_pack_start (GTK_BOX (general_vbox), frame, FALSE, TRUE, 0);
+  label = gtk_label_new (_("<b>Automatic scheme selection</b>"));
+  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 8);
+
+    
+  GtkWidget *vbox_sel_options = gtk_vbox_new (TRUE, 2);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox_sel_options), 5);
+  gtk_container_add (GTK_CONTAINER (frame), vbox_sel_options);
+    
+  radiobuttons[SCHEME_SELECT_DEFAULT] = gtk_radio_button_new_with_label (NULL, 
+                                    _("Always use the default scheme"));
+  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
+                               radiobuttons[SCHEME_SELECT_DEFAULT]);
+    
+  radiobuttons[SCHEME_SELECT_FILENAME] = 
+      gtk_radio_button_new_with_label_from_widget (
+                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
+                    _("Select scheme by filename"));
+    
+  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
+                               radiobuttons[SCHEME_SELECT_FILENAME]);
+
+  radiobuttons[SCHEME_SELECT_RANDOM] = 
+      gtk_radio_button_new_with_label_from_widget (
+                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
+                    _("Select random scheme"));
+    
+  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options), 
+                               radiobuttons[SCHEME_SELECT_RANDOM]);
+    
+  method = schemes_get_selection_method ();
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobuttons[method]), TRUE);
+    
+  /* save scheme button */
+    
+  button = gtk_button_new ();
+  label  = gtk_label_new (_("Save"));
+  image  = gtk_image_new_from_stock ("gtk-save", GTK_ICON_SIZE_MENU);
+  hbox   = gtk_hbox_new (FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (button), hbox);
+  gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2); 
+  gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  g_signal_connect ((gpointer) button, "clicked",
+                    G_CALLBACK (scheme_ed_save_clicked_cb),
+                    scheme_editor);
+  gtk_container_add (GTK_CONTAINER (hbuttonbox), button);
+  gtk_container_set_border_width (GTK_CONTAINER (button), 1);
+  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+    
+
+
+
+
+    
+
     
     g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[0]), "toggled",
                       G_CALLBACK (schemes_ed_radio_toggled_cb),
@@ -1160,136 +1257,124 @@ schemes_create_color_picker (void)
   GtkWidget *label8;
   GtkWidget *empty_notebook_page;
   GtkWidget *scrollwindow;
+  GtkWidget *viewport;
 
   scrollwindow = gtk_scrolled_window_new (NULL, NULL);
   vbox1 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox1);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrollwindow), vbox1);
+    
+  viewport = gtk_viewport_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (viewport), vbox1);
+  gtk_container_add (GTK_CONTAINER (scrollwindow), viewport);
+  //gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrollwindow), vbox1);
+  //gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollwindow), 
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
 
   hbox1 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox1);
   gtk_box_pack_start (GTK_BOX (vbox1), hbox1, FALSE, FALSE, 2);
 
   label1 = gtk_label_new (_("Color source:"));
-  gtk_widget_show (label1);
   gtk_box_pack_start (GTK_BOX (hbox1), label1, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label1), 6, 0);
 
   combobox1 = gtk_combo_box_new_text ();
-  gtk_widget_show (combobox1);
   gtk_box_pack_start (GTK_BOX (hbox1), combobox1, FALSE, FALSE, 2);
   gtk_combo_box_append_text (GTK_COMBO_BOX (combobox1), _("Custom color"));
   gtk_combo_box_append_text (GTK_COMBO_BOX (combobox1), _("GtkStyle color"));
   gtk_combo_box_append_text (GTK_COMBO_BOX (combobox1), _("Disable this element"));
   gtk_combo_box_set_active (GTK_COMBO_BOX (combobox1), 0);
   gtk_widget_set_sensitive (combobox1, FALSE);
+  gtk_widget_set_size_request (combobox1, 280, -1);
 
   notebook1 = gtk_notebook_new ();
-  gtk_widget_show (notebook1);
   gtk_box_pack_start (GTK_BOX (vbox1), notebook1, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (notebook1), 5);
   GTK_WIDGET_UNSET_FLAGS (notebook1, GTK_CAN_FOCUS);
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (notebook1), FALSE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (notebook1), FALSE);
 
   colorselection = gtk_color_selection_new ();
   gtk_color_selection_set_update_policy (GTK_COLOR_SELECTION (colorselection),
                                          GTK_UPDATE_DELAYED);
   gtk_color_selection_set_has_opacity_control (GTK_COLOR_SELECTION (colorselection), FALSE);
-  gtk_widget_show (colorselection);
   gtk_container_add (GTK_CONTAINER (notebook1), colorselection);
   gtk_container_set_border_width (GTK_CONTAINER (colorselection), 2);
   g_object_set_data (G_OBJECT (scheme_editor), "color-selection", (gpointer) colorselection);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox2);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox2);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2), 4);
   gtk_widget_set_sensitive (vbox2, FALSE);
 
   radiobutton1 = gtk_radio_button_new_with_mnemonic (NULL, _("Foreground"));
-  gtk_widget_show (radiobutton1);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton1, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton1), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton1));
 
   radiobutton2 = gtk_radio_button_new_with_mnemonic (NULL, _("Background"));
-  gtk_widget_show (radiobutton2);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton2, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton2), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton2));
 
   radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("Light"));
-  gtk_widget_show (radiobutton3);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton3, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
 
   radiobutton4 = gtk_radio_button_new_with_mnemonic (NULL, _("Mid"));
-  gtk_widget_show (radiobutton4);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton4, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton4), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton4));
 
   radiobutton6 = gtk_radio_button_new_with_mnemonic (NULL, _("Dark"));
-  gtk_widget_show (radiobutton6);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton6, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton6), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton6));
 
   radiobutton5 = gtk_radio_button_new_with_mnemonic (NULL, _("Base"));
-  gtk_widget_show (radiobutton5);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton5, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton5), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton5));
 
   radiobutton7 = gtk_radio_button_new_with_mnemonic (NULL, _("Text"));
-  gtk_widget_show (radiobutton7);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton7, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton7), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton7));
 
   radiobutton8 = gtk_radio_button_new_with_mnemonic (NULL, _("Text AA"));
-  gtk_widget_show (radiobutton8);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton8, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton8), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton8));
 
   radiobutton9 = gtk_radio_button_new_with_mnemonic (NULL, _("Black"));
-  gtk_widget_show (radiobutton9);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton9, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton9), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton9));
 
   radiobutton10 = gtk_radio_button_new_with_mnemonic (NULL, _("White"));
-  gtk_widget_show (radiobutton10);
   gtk_box_pack_start (GTK_BOX (vbox2), radiobutton10, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton10), radiobutton1_group);
   radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton10));
 
   label8 = gtk_label_new (_("DISABLED"));
-  gtk_widget_show (label8);
   gtk_container_add (GTK_CONTAINER (notebook1), label8);
   gtk_widget_set_sensitive (label8, FALSE);
   gtk_label_set_use_markup (GTK_LABEL (label8), TRUE);
 
   empty_notebook_page = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (notebook1), empty_notebook_page);
 
   empty_notebook_page = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (notebook1), empty_notebook_page);
 
   empty_notebook_page = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (notebook1), empty_notebook_page);
     
   g_signal_connect ((gpointer) colorselection, "color-changed",
                       G_CALLBACK (schemes_ed_color_changed_cb),
                       NULL);
 
+  gtk_widget_show_all (scrollwindow);
   return scrollwindow;
 }

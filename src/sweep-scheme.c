@@ -49,7 +49,7 @@ gchar * element_names[SCHEME_ELEMENT_LAST] = {
   _("Selection outline"),
   _("Selection"),
   _("Min/Max"),
-  _("Zero Crossing"),
+  _("Zero crossing"),
   _("Wave highlight"),
   _("Wave lowlight"),
 }; 
@@ -98,6 +98,7 @@ sweep_scheme_init (SweepScheme *scheme)
   gint element;
 
   scheme->modified = FALSE;
+  scheme->preview_icon = NULL;
 
   for (element = 0; element < SCHEME_ELEMENT_LAST; element++)
   {
