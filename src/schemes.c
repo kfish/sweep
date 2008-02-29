@@ -66,26 +66,26 @@ gchar *style_types[SCHEME_GTK_STYLE_LAST] = {
   "GTK_STYLE_WHITE"
 };
 
-GtkWidget    *scheme_editor  = NULL;
-GtkListStore *elements_store = NULL;
-GtkComboBox  *schemes_combo  = NULL;
-GtkWidget    *window         = NULL;
-GtkWidget    *colorselection = NULL;
-GtkWidget    *treeview       = NULL;
-/* Part of a hack to dynamically refresh menus*/
-GtkMenuItem  *menu_item_proxy  = NULL; 
+GtkWidget    * scheme_editor  = NULL;
+GtkListStore * elements_store = NULL;
+GtkComboBox  * schemes_combo  = NULL;
+GtkWidget    * window         = NULL;
+GtkWidget    * colorselection = NULL;
+GtkWidget    * treeview       = NULL;
+/* Part of a hack to dynamically refresh menus */
+GtkMenuItem  * menu_item_proxy  = NULL; 
 
-GdkPixbuf    *color_swatches[SCHEME_ELEMENT_LAST];
-extern gchar *element_names[];
-extern gchar *element_keys[];
-SweepScheme  *default_scheme = NULL;
+GdkPixbuf    * color_swatches[SCHEME_ELEMENT_LAST];
+extern gchar * element_names[];
+extern gchar * element_keys[];
+SweepScheme  * default_scheme = NULL;
 gboolean schemes_modified = FALSE; 
 #define FOR_EACH_ELEMENT for (element = 0; element < SCHEME_ELEMENT_LAST; element++)
 
 GdkColor *
-copy_gdk_colour (GdkColor *color_src) 
+copy_gdk_colour (GdkColor * color_src) 
 {
-  GdkColor *color_dest = g_new (GdkColor, 1);
+  GdkColor * color_dest = g_new (GdkColor, 1);
     
   color_dest->red   = color_src->red;
   color_dest->green = color_src->green;
@@ -98,7 +98,7 @@ copy_gdk_colour (GdkColor *color_src)
 GdkColor *
 color_new_from_rgb (gint r, gint g, gint b) 
 {
-  GdkColor *color = g_new (GdkColor, 1);
+  GdkColor * color = g_new (GdkColor, 1);
     
   color->red   = r * 65535 / 255;
   color->green = g * 65535 / 255;
@@ -118,7 +118,7 @@ color_new_from_rgb (gint r, gint g, gint b)
 static int
 filename_color_hash (char * filename)
 {
-  char *p;
+  char * p;
   int i = 0;
   int length;
 
@@ -141,14 +141,14 @@ filename_color_hash (char * filename)
  * colour, making it useless :/
  */
 static void
-fill_pixmap_from_scheme_color (GdkColor *scheme_color, GdkPixbuf **pixbuf)
+fill_pixmap_from_scheme_color (GdkColor * scheme_color, GdkPixbuf ** pixbuf)
 {
-  gint i, j, rowstride;
-  gint r, g ,b;
-  guchar *pixels;
-  gint color[3];
-  gint height = 18;
-  gint width = 35;
+  gint     i, j, rowstride;
+  gint     r, g ,b;
+  guchar * pixels;
+  gint     color[3];
+  gint     height = 18;
+  gint     width = 35;
     
   if (*pixbuf != NULL)
     g_object_unref (*pixbuf);
@@ -211,8 +211,9 @@ schemes_get_scheme_system_default (void)
 SweepScheme *
 schemes_get_scheme_user_default (void) 
 {
-  gchar *scheme_name;
-  SweepScheme *scheme;
+  gchar       * scheme_name;
+  SweepScheme * scheme;
+    
   scheme_name = prefs_get_string ("user-default-scheme");
     
   if (scheme_name != NULL) {
@@ -231,10 +232,10 @@ schemes_get_scheme_user_default (void)
 }
 
 SweepScheme *
-schemes_get_scheme_from_filename (gchar *filename)
+schemes_get_scheme_from_filename (gchar * filename)
 {
-  SweepScheme *scheme = NULL;
-  gint index;
+  SweepScheme * scheme = NULL;
+  gint          index;
     
   index = filename_color_hash (filename);
   if (index > -1)
@@ -246,8 +247,8 @@ schemes_get_scheme_from_filename (gchar *filename)
 SweepScheme *
 schemes_get_scheme_random (void)
 {
-  SweepScheme *scheme = NULL;
-  gint max, index;
+  SweepScheme * scheme = NULL;
+  gint          max, index;
     
   max = (gint) g_list_length (schemes_list);
   if (max > 0) { 
@@ -260,7 +261,7 @@ schemes_get_scheme_random (void)
 }
 
 SweepScheme *
-schemes_get_prefered_scheme (gchar *filename)
+schemes_get_prefered_scheme (gchar * filename)
 {
   switch (schemes_get_selection_method ())
   {
@@ -281,8 +282,8 @@ schemes_get_prefered_scheme (gchar *filename)
 void
 schemes_refresh_combo (gint index) 
 {
-  GList *list;
-  GtkListStore *list_store;
+  GList        * list;
+  GtkListStore * list_store;
   
   if (schemes_combo != NULL) {
       
@@ -306,7 +307,7 @@ schemes_refresh_combo (gint index)
 }
 
 gboolean
-schemes_refresh_color_scheme_menu_cb (GtkMenuItem *menuitem, gpointer user_data)
+schemes_refresh_color_scheme_menu_cb (GtkMenuItem * menuitem, gpointer user_data)
 {
   if ((menuitem == NULL) ||
      (!GTK_IS_MENU_ITEM (menuitem)))
@@ -320,7 +321,7 @@ schemes_refresh_color_scheme_menu_cb (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static gint
-element_get_style_type (gchar *type)
+element_get_style_type (gchar * type)
 {
 
         if (g_ascii_strcasecmp (type, "GTK_STYLE_NONE") == 0)
@@ -349,16 +350,16 @@ element_get_style_type (gchar *type)
 }
 
 static SweepScheme *
-parse_scheme (GKeyFile *key_file,
-              gchar *group,
-              gchar **keys,
-              gint length)
+parse_scheme (GKeyFile * key_file,
+              gchar    * group,
+              gchar   ** keys,
+              gint       length)
 {
-  gint element;
-  SweepScheme *scheme;
-  gchar **string_list;
-  gsize num_strings;
-  GError *error = NULL;
+  SweepScheme * scheme;
+  gchar      ** string_list;
+  GError      * error = NULL;
+  gsize         num_strings; 
+  gint          element;
     
   if (length != SCHEME_ELEMENT_LAST)
     return NULL;
@@ -393,7 +394,7 @@ parse_scheme (GKeyFile *key_file,
   return scheme;
 }
 void 
-schemes_add_scheme (SweepScheme *scheme, gboolean prepend) 
+schemes_add_scheme (SweepScheme * scheme, gboolean prepend) 
 {
   gboolean ret;
     
@@ -414,7 +415,7 @@ schemes_add_scheme (SweepScheme *scheme, gboolean prepend)
 }
 
 void
-schemes_remove_scheme (SweepScheme *scheme) 
+schemes_remove_scheme (SweepScheme * scheme) 
 {
   gboolean ret;
     
@@ -430,15 +431,15 @@ schemes_remove_scheme (SweepScheme *scheme)
 
 void schemes_copy_scheme (SweepScheme *scheme, gchar *newname)
 {
-  GtkWidget *image;
-  GtkWidget *hbox;
-  GtkWidget *label;
-  GtkWidget *dialog;
-  GtkWidget *entry;
-  gchar     *tmpstring;
-  SweepScheme *scheme_copy;
-  gint response;
-  gboolean finished = FALSE;
+  GtkWidget   * image;
+  GtkWidget   * hbox;
+  GtkWidget   * label;
+  GtkWidget   * dialog;
+  GtkWidget   * entry;
+  gchar       * tmpstring;
+  SweepScheme * scheme_copy;
+  gint          response;
+  gboolean      finished = FALSE;
     
   dialog =  gtk_dialog_new_with_buttons (_("Choose a name for this scheme"),
                                          GTK_WINDOW (window),
@@ -510,11 +511,11 @@ schemes_get_nth (gint n)
 }
 
 SweepScheme *
-schemes_find_by_name (gchar *name)
+schemes_find_by_name (gchar * name)
 {
-  GList *list;
-  gint ret;
-  SweepScheme *scheme = NULL;
+  GList       * list;
+  gint          ret;
+  SweepScheme * scheme = NULL;
     
   for (list = schemes_list; list; list = list->next)
   {
@@ -529,14 +530,14 @@ schemes_find_by_name (gchar *name)
 }
 
 static void
-get_key_file_data (GKeyFile* key_file) 
+get_key_file_data (GKeyFile * key_file) 
 {
-  gchar **groups;
-  gchar **keys;
-  gsize groups_length, keys_length;
-  GError *error = NULL;
-  gint i;
-  SweepScheme *scheme;
+  gchar ** groups;
+  gchar ** keys;
+  gsize    groups_length, keys_length;
+  GError * error = NULL;
+  gint     i;
+  SweepScheme * scheme;
     
     
   groups = g_key_file_get_groups (key_file, &groups_length);
@@ -570,7 +571,7 @@ get_key_file_data (GKeyFile* key_file)
 gboolean
 schemes_were_modified (void) 
 {
-  GList *list;
+  GList * list;
     
   for (list = schemes_list; list; list = list->next) {
         
@@ -585,7 +586,7 @@ schemes_were_modified (void)
 gint 
 schemes_get_selection_method (void) 
 {
-  gint *method_ptr = prefs_get_int ("scheme-selection-method");
+  gint * method_ptr = prefs_get_int ("scheme-selection-method");
   
   if (method_ptr == NULL)
     return SCHEME_SELECT_FILENAME; 
@@ -597,11 +598,11 @@ schemes_get_selection_method (void)
 static void
 schemes_load (void) 
 {
-  GKeyFile *key_file = NULL;
-  GError *error = NULL;
-  gchar *schemes_path = NULL;
-  gchar *schemes_path_system = NULL;
-  gboolean key_file_loaded;
+  GKeyFile * key_file = NULL;
+  GError   * error    = NULL;
+  gchar    * schemes_path = NULL;
+  gchar    * schemes_path_system = NULL;
+  gboolean  key_file_loaded;
 
   schemes_path = g_strconcat (g_get_home_dir (),
                               "/.sweep/sweep-schemes.ini", NULL);
@@ -642,14 +643,14 @@ schemes_load (void)
 void
 save_schemes (void) 
 {
-  GKeyFile    *key_file;
-  GError      *error = NULL;
-  GList       *list;
-  gint         element;
-  gchar       *string_list[3], *key_data;
-  SweepScheme *scheme;
-  gsize        length;
-  gchar       *schemes_path;
+  GKeyFile    * key_file;
+  GError      * error = NULL;
+  GList       * list;
+  gint          element;
+  gchar       * string_list[3], *key_data;
+  SweepScheme * scheme;
+  gsize         length;
+  gchar       * schemes_path;
     
   if (schemes_were_modified () == FALSE)
       return;
@@ -684,7 +685,7 @@ save_schemes (void)
   schemes_path = g_strconcat (g_get_home_dir (),
                               "/.sweep/sweep-schemes.ini", NULL);
     
-  FILE *fp = fopen (schemes_path, "w");
+  FILE * fp = fopen (schemes_path, "w");
     
   if (fp != NULL) {
         fprintf (fp, "%s", key_data);
@@ -707,13 +708,13 @@ init_schemes (void)
 }
 
 void
-schemes_create_menu (GtkWidget *parent_menuitem,
+schemes_create_menu (GtkWidget * parent_menuitem,
                      gboolean connect_signals) 
 {
-  GtkWidget *menuitem;
-  GtkWidget *submenu;
-  GList *list;
-  sw_view *view;
+  GtkWidget * menuitem;
+  GtkWidget * submenu;
+  GList     * list;
+  sw_view   * view;
 
     
   submenu = gtk_menu_new();
@@ -753,13 +754,13 @@ schemes_create_menu (GtkWidget *parent_menuitem,
 
 
 void
-schemes_show_editor_window_cb (GtkMenuItem *menuitem,
+schemes_show_editor_window_cb (GtkMenuItem * menuitem,
                             gpointer user_data) 
 {
-  GtkWidget *editor;
-  sw_view *view;
-  GList *element;
-  gint index;
+  GtkWidget * editor;
+  sw_view   * view;
+  GList     * element;
+  gint        index;
   
   if (window == NULL) {
       
@@ -801,12 +802,12 @@ schemes_show_editor_window_cb (GtkMenuItem *menuitem,
 }
 
 static void
-treeview_set_selected (GtkTreeView  *treeview, gint index, gint max)
+treeview_set_selected (GtkTreeView  * treeview, gint index, gint max)
 {
-  GtkTreeSelection *selection;
-  GtkTreePath *path;
-  GtkTreeModel *model;
-  GtkTreeIter iter;
+  GtkTreeSelection * selection;
+  GtkTreePath      * path;
+  GtkTreeModel     * model;
+  GtkTreeIter        iter;
   
   g_return_if_fail ((max < 0) || (GTK_IS_TREE_VIEW (treeview)));
 
@@ -826,8 +827,8 @@ treeview_set_selected (GtkTreeView  *treeview, gint index, gint max)
 void
 schemes_refresh_list_store (gint scheme_index) 
 {
-  GtkTreeIter iter;
-  gint element;
+  GtkTreeIter   iter;
+  gint          element;
   SweepScheme * scheme = NULL;
   
   scheme = g_list_nth_data (schemes_list, scheme_index);
@@ -856,7 +857,7 @@ schemes_refresh_list_store (gint scheme_index)
 }
 
 void
-schemes_picker_set_edited_color (SweepScheme *scheme, gint element)
+schemes_picker_set_edited_color (SweepScheme * scheme, gint element)
 {
   if ((colorselection == NULL) ||
       (scheme == NULL) ||
@@ -881,8 +882,8 @@ schemes_picker_set_edited_color (SweepScheme *scheme, gint element)
 static GtkWidget *
 schemes_create_tree_view (void) 
 {
-  GtkCellRenderer *renderer;
-  GtkTreeViewColumn *column;
+  GtkCellRenderer   * renderer;
+  GtkTreeViewColumn * column;
   
   
   elements_store = gtk_list_store_new (N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_OBJECT, G_TYPE_STRING, G_TYPE_INT);
@@ -911,14 +912,14 @@ schemes_create_tree_view (void)
 }
 
 void
-schemes_set_active_element_color (GtkColorSelection *colorselection) 
+schemes_set_active_element_color (GtkColorSelection * colorselection) 
 {
-  GtkTreeSelection *selection;
-  GtkTreeModel *model;
-  GtkTreeIter iter;
-  GdkColor *color;
-  gint element;
-  SweepScheme *scheme;
+  GtkTreeSelection * selection;
+  GtkTreeModel     * model;
+  GtkTreeIter        iter;
+  GdkColor         * color;
+  gint               element;
+  SweepScheme      * scheme;
     
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
     
@@ -955,6 +956,7 @@ schemes_create_editor (gint index)
 {
   GtkWidget * editor_vbox;
   GtkWidget * general_vbox;
+  GtkWidget * sel_options_vbox;
   GtkWidget * checkbutton;
   GtkWidget * color_picker;
   GtkWidget * treeview;
@@ -1144,47 +1146,7 @@ schemes_create_editor (gint index)
   gtk_container_add (GTK_CONTAINER (hbuttonbox), button);
   gtk_container_set_border_width (GTK_CONTAINER (button), 1);
   GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-  // gtk_widget_set_sensitive (button, FALSE);
-  
-  /** general tab option widgets **/
-    
-  /* scheme selection radios */
-    
-  frame = gtk_frame_new (NULL);
-  gtk_box_pack_start (GTK_BOX (general_vbox), frame, FALSE, TRUE, 0);
-  label = gtk_label_new (_("<b>Automatic scheme selection</b>"));
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 8);
-
-    
-  GtkWidget *vbox_sel_options = gtk_vbox_new (TRUE, 2);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox_sel_options), 5);
-  gtk_container_add (GTK_CONTAINER (frame), vbox_sel_options);
-    
-  radiobuttons[SCHEME_SELECT_DEFAULT] = gtk_radio_button_new_with_label (NULL, 
-                                    _("Always use the default scheme"));
-  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
-                               radiobuttons[SCHEME_SELECT_DEFAULT]);
-    
-  radiobuttons[SCHEME_SELECT_FILENAME] = 
-      gtk_radio_button_new_with_label_from_widget (
-                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
-                    _("Select scheme by filename"));
-    
-  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options),
-                               radiobuttons[SCHEME_SELECT_FILENAME]);
-
-  radiobuttons[SCHEME_SELECT_RANDOM] = 
-      gtk_radio_button_new_with_label_from_widget (
-                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
-                    _("Select random scheme"));
-    
-  gtk_box_pack_start_defaults (GTK_BOX (vbox_sel_options), 
-                               radiobuttons[SCHEME_SELECT_RANDOM]);
-    
-  method = schemes_get_selection_method ();
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobuttons[method]), TRUE);
+  //gtk_widget_set_sensitive (button, FALSE);
     
   /* save scheme button */
     
@@ -1204,60 +1166,90 @@ schemes_create_editor (gint index)
   gtk_container_add (GTK_CONTAINER (hbuttonbox), button);
   gtk_container_set_border_width (GTK_CONTAINER (button), 1);
   GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+  
+  /** general tab option widgets **/
     
-
-
-
+  /* scheme selection radios */
+    
+  frame = gtk_frame_new (NULL);
+  gtk_box_pack_start (GTK_BOX (general_vbox), frame, FALSE, TRUE, 0);
+  label = gtk_label_new (_("Automatic scheme selection"));
+  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 8);
 
     
-
+  sel_options_vbox = gtk_vbox_new (TRUE, 2);
+  gtk_container_set_border_width (GTK_CONTAINER (sel_options_vbox), 5);
+  gtk_container_add (GTK_CONTAINER (frame), sel_options_vbox);
     
-    g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[0]), "toggled",
+  radiobuttons[SCHEME_SELECT_DEFAULT] = gtk_radio_button_new_with_label (NULL, 
+                                    _("Always use the default scheme"));
+  gtk_box_pack_start_defaults (GTK_BOX (sel_options_vbox),
+                               radiobuttons[SCHEME_SELECT_DEFAULT]);
+    
+  radiobuttons[SCHEME_SELECT_FILENAME] = 
+      gtk_radio_button_new_with_label_from_widget (
+                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
+                    _("Select scheme by filename"));
+    
+  gtk_box_pack_start_defaults (GTK_BOX (sel_options_vbox),
+                               radiobuttons[SCHEME_SELECT_FILENAME]);
+
+  radiobuttons[SCHEME_SELECT_RANDOM] = 
+      gtk_radio_button_new_with_label_from_widget (
+                    GTK_RADIO_BUTTON (radiobuttons[SCHEME_SELECT_DEFAULT]),
+                    _("Select random scheme"));
+    
+  g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[0]), "toggled",
                       G_CALLBACK (schemes_ed_radio_toggled_cb),
                       GINT_TO_POINTER (SCHEME_SELECT_DEFAULT));
-    g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[1]), "toggled",
+  g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[1]), "toggled",
                       G_CALLBACK (schemes_ed_radio_toggled_cb),
                       GINT_TO_POINTER (SCHEME_SELECT_FILENAME));
-    g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[2]), "toggled",
+  g_signal_connect ((gpointer) GTK_TOGGLE_BUTTON (radiobuttons[2]), "toggled",
                       G_CALLBACK (schemes_ed_radio_toggled_cb),
                       GINT_TO_POINTER (SCHEME_SELECT_RANDOM));
-
-    //schemes_refresh_list_store (0);
     
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
-    g_signal_connect ((gpointer) selection, "changed",
-                      G_CALLBACK (schemes_ed_treeview_selection_changed_cb),
-                      treeview);
+  gtk_box_pack_start_defaults (GTK_BOX (sel_options_vbox), 
+                               radiobuttons[SCHEME_SELECT_RANDOM]);
     
-    schemes_refresh_combo (index);
+  method = schemes_get_selection_method ();
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobuttons[method]), TRUE);
 
-    return scheme_editor;
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+  g_signal_connect ((gpointer) selection, "changed",
+                    G_CALLBACK (schemes_ed_treeview_selection_changed_cb),
+                    treeview);
+    
+  schemes_refresh_combo (index);
+
+  return scheme_editor;
 }
 
-GtkWidget*
+GtkWidget *
 schemes_create_color_picker (void)
 {
-  GtkWidget *vbox1;
-  GtkWidget *hbox1;
-  GtkWidget *label1;
-  GtkWidget *combobox1;
-  GtkWidget *notebook1;
-  GtkWidget *vbox2;
-  GtkWidget *radiobutton1;
-  GSList *radiobutton1_group = NULL;
-  GtkWidget *radiobutton2;
-  GtkWidget *radiobutton3;
-  GtkWidget *radiobutton4;
-  GtkWidget *radiobutton6;
-  GtkWidget *radiobutton5;
-  GtkWidget *radiobutton7;
-  GtkWidget *radiobutton8;
-  GtkWidget *radiobutton9;
-  GtkWidget *radiobutton10;
-  GtkWidget *label8;
-  GtkWidget *empty_notebook_page;
-  GtkWidget *scrollwindow;
-  GtkWidget *viewport;
+  GtkWidget * vbox1;
+  GtkWidget * hbox1;
+  GtkWidget * label1;
+  GtkWidget * combobox1;
+  GtkWidget * notebook1;
+  GtkWidget * vbox2;
+  GtkWidget * radiobutton1;
+  GSList    * radiobutton1_group = NULL;
+  GtkWidget * radiobutton2;
+  GtkWidget * radiobutton3;
+  GtkWidget * radiobutton4;
+  GtkWidget * radiobutton6;
+  GtkWidget * radiobutton5;
+  GtkWidget * radiobutton7;
+  GtkWidget * radiobutton8;
+  GtkWidget * radiobutton9;
+  GtkWidget * radiobutton10;
+  GtkWidget * label8;
+  GtkWidget * empty_notebook_page;
+  GtkWidget * scrollwindow;
+  GtkWidget * viewport;
 
   scrollwindow = gtk_scrolled_window_new (NULL, NULL);
   vbox1 = gtk_vbox_new (FALSE, 0);
