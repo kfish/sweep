@@ -1084,7 +1084,7 @@ schemes_create_editor (gint index)
   /* is default toggle button */
     
   checkbutton = gtk_check_button_new_with_label (_("Default"));
-  gtk_box_pack_start (GTK_BOX (hbox), checkbutton, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), checkbutton, FALSE, FALSE, 4);
   gtk_tooltips_set_tip (tooltips, checkbutton, 
                           _("Toggle whether the selected scheme is the default"),
                           _("Toggle whether the selected scheme is the default"));

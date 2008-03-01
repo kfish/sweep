@@ -1198,6 +1198,8 @@ scheme_ed_update_default_button_cb (GtkComboBox *widget, gpointer user_data)
                                          widget);
                                          
         gtk_toggle_button_set_active (default_check_button, scheme->is_default);
+        gtk_widget_set_sensitive (GTK_WIDGET (default_check_button),
+                                  !scheme->is_default);
         
         g_signal_handlers_unblock_by_func (default_check_button,
                                          scheme_ed_default_button_toggled_cb,
@@ -1224,6 +1226,8 @@ scheme_ed_default_button_toggled_cb (GtkToggleButton *togglebutton,
           old_default_scheme->is_default = FALSE;
           scheme->is_default = toggled;
           prefs_set_string ("user-default-scheme", scheme->name);
+          gtk_widget_set_sensitive (GTK_WIDGET (togglebutton),
+                                    !scheme->is_default);
         }
     }
 }
