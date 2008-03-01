@@ -1916,7 +1916,7 @@ sample_show_info_dialog (sw_sample * sample)
 
     /* OK */
     
-    ok_button = gtk_button_new_with_label (_("OK"));
+    ok_button = gtk_button_new_from_stock ("gtk-ok");
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 			TRUE, TRUE, 0);

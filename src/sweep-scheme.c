@@ -76,11 +76,11 @@ G_DEFINE_TYPE (SweepScheme, sweep_scheme, G_TYPE_OBJECT)
 static guint object_signals[LAST_SIGNAL] = { 0 };
 
 static void
-sweep_scheme_finalize (GObject *object) 
+sweep_scheme_finalize (GObject * object) 
 {
     
   gint element;
-  SweepScheme *scheme = SWEEP_SCHEME (object);
+  SweepScheme * scheme = SWEEP_SCHEME (object);
     
   g_free (scheme->name);
   
@@ -92,12 +92,13 @@ sweep_scheme_finalize (GObject *object)
       
 }
 static void
-sweep_scheme_init (SweepScheme *scheme)
+sweep_scheme_init (SweepScheme * scheme)
 {
   
   gint element;
 
   scheme->modified = FALSE;
+  scheme->is_default = FALSE;
   scheme->preview_icon = NULL;
 
   for (element = 0; element < SCHEME_ELEMENT_LAST; element++)
@@ -108,7 +109,7 @@ sweep_scheme_init (SweepScheme *scheme)
 }
 
 static void
-sweep_scheme_class_init (SweepSchemeClass *klass) 
+sweep_scheme_class_init (SweepSchemeClass * klass) 
 {
 
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -153,15 +154,16 @@ sweep_scheme_copy (SweepScheme *scheme)
 {
   
   gint element;
-  SweepScheme *scheme_copy;
+  SweepScheme * scheme_copy;
     
   if (!SWEEP_IS_SCHEME (scheme))
     return NULL;
   else {
     scheme_copy = sweep_scheme_new ();
     
-    scheme_copy->name     = g_strdup (scheme->name);
-    scheme_copy->modified = scheme->modified;
+    scheme_copy->name       = g_strdup (scheme->name);
+    scheme_copy->modified   = FALSE; //scheme->modified; 
+    scheme_copy->is_default = FALSE;
       
     for (element = 0; element < SCHEME_ELEMENT_LAST; element++)
     {
@@ -177,11 +179,11 @@ sweep_scheme_copy (SweepScheme *scheme)
 }
 
 void
-sweep_scheme_set_element_color (SweepScheme *scheme,
+sweep_scheme_set_element_color (SweepScheme * scheme,
                                 gint element,
-                                GdkColor *color)
+                                GdkColor * color)
 {
-    GdkColor *old_color;
+    GdkColor * old_color;
     
     if ((scheme != NULL) ||
         (color != NULL)) {
@@ -200,7 +202,7 @@ sweep_scheme_set_element_color (SweepScheme *scheme,
 }
 
 void
-sweep_scheme_set_element_enabled (SweepScheme *scheme,
+sweep_scheme_set_element_enabled (SweepScheme * scheme,
                                   gint element,
                                   gboolean is_enabled)
 {
@@ -219,7 +221,7 @@ sweep_scheme_set_element_enabled (SweepScheme *scheme,
 }
 
 void
-sweep_scheme_set_element_style (SweepScheme *scheme,
+sweep_scheme_set_element_style (SweepScheme * scheme,
                                 gint element,
                                 gint style)
 {

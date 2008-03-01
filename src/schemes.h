@@ -73,6 +73,9 @@ schemes_get_prefered_scheme (gchar *filename);
 SweepScheme *
 schemes_get_scheme_system_default (void);
 
+SweepScheme *
+schemes_get_scheme_user_default (void);
+
 void
 schemes_remove_scheme (SweepScheme *scheme);
 

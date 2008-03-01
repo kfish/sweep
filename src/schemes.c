@@ -360,6 +360,7 @@ parse_scheme (GKeyFile * key_file,
   GError      * error = NULL;
   gsize         num_strings; 
   gint          element;
+  gchar       * default_name;
     
   if (length != SCHEME_ELEMENT_LAST)
     return NULL;
@@ -367,32 +368,37 @@ parse_scheme (GKeyFile * key_file,
   scheme = sweep_scheme_new ();
   scheme->name = g_strdup(group);
     
-    FOR_EACH_ELEMENT {
+  FOR_EACH_ELEMENT {
         
-      string_list = g_key_file_get_string_list (key_file,
-                                       group,
-                                       keys[element],
-                                       &num_strings,
-                                       &error);
-      if (string_list == NULL)
-        return NULL;
-        
-      if ((gint)num_strings != 3) { /* color, style-type and toggle */
-        g_strfreev (string_list);
-        return NULL;
-      }
-      
-      if (!gdk_color_parse (string_list[0], scheme->scheme_colors[element]))
-        return NULL;
-    
+    string_list = g_key_file_get_string_list (key_file,
+                                     group,
+                                     keys[element],
+                                     &num_strings,
+                                     &error);
+    if ((string_list != NULL)  && 
+      ((gint)num_strings == 3) &&  /* color, style-type and toggle */
+      (gdk_color_parse (string_list[0], scheme->scheme_colors[element]))) {
+   
       scheme->element_enabled[element] = 
-        (g_ascii_strncasecmp (string_list[2], "ENABLED", 7) == 0) ? TRUE : FALSE;
-       
+       (g_ascii_strncasecmp (string_list[2], "ENABLED", 7) == 0) ? TRUE : FALSE;
+    
       scheme->element_style[element]   = element_get_style_type (string_list[1]);
-
+      
+      default_name = prefs_get_string ("user-default-scheme");
+      
+      if (default_name != NULL) {
+        if (g_utf8_collate (default_name, scheme->name) == 0)
+          scheme->is_default = TRUE;
+      }
+      g_strfreev (string_list);
+    } else {
+      //unref scheme
+      return NULL;
+    }
   }
   return scheme;
 }
+
 void 
 schemes_add_scheme (SweepScheme * scheme, gboolean prepend) 
 {
@@ -1082,6 +1088,14 @@ schemes_create_editor (gint index)
   gtk_tooltips_set_tip (tooltips, checkbutton, 
                           _("Toggle whether the selected scheme is the default"),
                           _("Toggle whether the selected scheme is the default"));
+    
+  g_signal_connect ((gpointer) checkbutton, "toggled",
+                    G_CALLBACK (scheme_ed_default_button_toggled_cb),
+                    schemes_combo);
+  /* sync with selected scheme */
+  g_signal_connect ((gpointer) schemes_combo, "changed",
+                    G_CALLBACK (scheme_ed_update_default_button_cb),
+                    checkbutton);
     
   
   /** color swatches and color selection **/

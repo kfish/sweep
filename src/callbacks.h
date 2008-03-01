@@ -328,6 +328,12 @@ schemes_ed_color_changed_cb  (GtkColorSelection *colorselection,
 void
 schemes_ed_treeview_selection_changed_cb (GtkTreeSelection *treeselection,
                                          gpointer user_data);
+void
+scheme_ed_update_default_button_cb (GtkComboBox *widget, gpointer user_data);
+
+void
+scheme_ed_default_button_toggled_cb (GtkToggleButton *togglebutton,
+                                     gpointer user_data);
 
 
 #endif /* __CALLBACKS_H__ */

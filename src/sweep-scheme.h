@@ -81,13 +81,14 @@ typedef struct _SweepSchemeClass SweepSchemeClass;
 /* FIXME: create struct for per element options? */ 
 struct _SweepScheme {
   
-  GObject   parent;
-  GdkColor *scheme_colors[SCHEME_ELEMENT_LAST];
-  gboolean  element_enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
-  gint      element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if >0 */
-  gchar    *name;
-  gboolean  modified;
-  GdkPixbuf *preview_icon;
+  GObject    parent;
+  GdkColor * scheme_colors[SCHEME_ELEMENT_LAST];
+  gboolean   element_enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
+  gint       element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if >0 */
+  gchar    * name;
+  gboolean   modified;
+  gboolean   is_default;
+  GdkPixbuf * preview_icon;
 
   
 };
@@ -97,12 +98,12 @@ struct _SweepScheme {
 struct _SweepSchemeClass {
   GObjectClass parent_class;
     
-  void (*destroy) (SweepScheme *object);
-  void (*changed) (SweepScheme *object);
+  void (* destroy) (SweepScheme * object);
+  void (* changed) (SweepScheme * object);
 };
 
-SweepScheme 
-*sweep_scheme_new (void);
+SweepScheme *
+sweep_scheme_new (void);
 
 SweepScheme *
 sweep_scheme_copy (SweepScheme *scheme);
@@ -111,15 +112,15 @@ GType
 sweep_scheme_get_type (void);
 
 void
-sweep_scheme_set_element_color (SweepScheme *scheme,
+sweep_scheme_set_element_color (SweepScheme * scheme,
                                 gint element,
-                                GdkColor *color);
+                                GdkColor * color);
 void
-sweep_scheme_set_element_enabled (SweepScheme *scheme,
+sweep_scheme_set_element_enabled (SweepScheme * scheme,
                                   gint element,
                                   gboolean is_enabled);
 void
-sweep_scheme_set_element_style (SweepScheme *scheme,
+sweep_scheme_set_element_style (SweepScheme * scheme,
                                 gint element,
                                 gint style);
 

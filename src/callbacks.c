@@ -1181,4 +1181,49 @@ schemes_ed_color_changed_cb (GtkColorSelection *colorselection,
     schemes_set_active_element_color (colorselection);
 }
 
+void
+scheme_ed_update_default_button_cb (GtkComboBox *widget, gpointer user_data)
+{
+    GtkToggleButton * default_check_button;
+    gint index;
+    SweepScheme *scheme;
+    
+    default_check_button = GTK_TOGGLE_BUTTON (user_data);
+    
+    if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) != -1) {
+      scheme = schemes_get_nth (index);
+      if (scheme != NULL)
+        g_signal_handlers_block_by_func (default_check_button,
+                                         scheme_ed_default_button_toggled_cb,
+                                         widget);
+                                         
+        gtk_toggle_button_set_active (default_check_button, scheme->is_default);
+        
+        g_signal_handlers_unblock_by_func (default_check_button,
+                                         scheme_ed_default_button_toggled_cb,
+                                         widget);
+    }
+}
 
+void
+scheme_ed_default_button_toggled_cb (GtkToggleButton *togglebutton,
+                                     gpointer user_data)
+{
+    gint index;
+    gboolean toggled;
+    SweepScheme *scheme, *old_default_scheme;
+
+    toggled = gtk_toggle_button_get_active (togglebutton);
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
+    
+    if (index != -1) {
+      scheme = schemes_get_nth (index);
+    
+      if (scheme != NULL) {
+          old_default_scheme = schemes_get_scheme_user_default ();
+          old_default_scheme->is_default = FALSE;
+          scheme->is_default = toggled;
+          prefs_set_string ("user-default-scheme", scheme->name);
+        }
+    }
+}
