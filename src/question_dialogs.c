@@ -152,15 +152,9 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   else
   {
     ok_button = gtk_button_new ();
-    button_label = gtk_label_new (ok_answer);
-    image = gtk_image_new_from_stock (ok_stock_id, GTK_ICON_SIZE_BUTTON);
-    button_hbox  = gtk_hbox_new (FALSE, 0);
-  
+    button_hbox = create_widget_label (NULL, ok_stock_id, GTK_ICON_SIZE_BUTTON, 
+                                         ok_answer, FALSE);
     gtk_container_add (GTK_CONTAINER (ok_button), button_hbox);
-    gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
-    gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2); 
-    gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
-    gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
   }
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area),
@@ -181,15 +175,9 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
     else
     {
       button = gtk_button_new ();
-      button_label = gtk_label_new (no_answer);
-      image = gtk_image_new_from_stock (no_stock_id, GTK_ICON_SIZE_BUTTON);
-      button_hbox  = gtk_hbox_new (FALSE, 0);
-  
+      button_hbox = create_widget_label (NULL, no_stock_id, GTK_ICON_SIZE_BUTTON, 
+                                         no_answer, FALSE);
       gtk_container_add (GTK_CONTAINER (button), button_hbox);
-      gtk_box_pack_start (GTK_BOX (button_hbox), image, TRUE, TRUE, 2);
-      gtk_box_pack_start (GTK_BOX (button_hbox), button_label, TRUE, TRUE, 2);
-      gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
-      gtk_misc_set_alignment (GTK_MISC (button_label), 0, 0.5);
     }
 
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);

@@ -196,7 +196,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 {
   GtkWidget * dialog;
   GtkWidget * main_vbox, * vbox;
-  GtkWidget * hbox, * hbox2;
+  GtkWidget * hbox, * hbox2, * hbox3;
   GtkWidget * frame;
   GtkWidget * slider;
   GtkWidget * checkbutton;
@@ -224,6 +224,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   }
 
   dialog = gtk_dialog_new ();
+  sweep_set_window_icon (GTK_WINDOW (dialog));
   gtk_window_set_wmclass(GTK_WINDOW(dialog), "paste_dialog", "Sweep");
 
   if (xfade) {
@@ -372,7 +373,11 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   /* OK */
 
-  ok_button = gtk_button_new_with_label (xfade ? _("Crossfade") : _("Mix"));;
+  ok_button = gtk_button_new ();
+  hbox3  = create_widget_label (NULL, "gtk-apply", GTK_ICON_SIZE_BUTTON,
+                                xfade ? _("Crossfade") : _("Mix"),
+                                FALSE);
+  gtk_container_add (GTK_CONTAINER (ok_button), hbox3);
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area),
 		      ok_button, TRUE, TRUE, 0);
@@ -390,8 +395,11 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   /* Cancel */
 
-  button = gtk_button_new_with_label (xfade ?
-				      _("Don't crossfade") : _("Don't mix"));
+  button = gtk_button_new ();
+  hbox3  = create_widget_label (NULL, "gtk-cancel", GTK_ICON_SIZE_BUTTON,
+                                xfade ?  _("Don't crossfade") : _("Don't mix"),
+                                FALSE);
+  gtk_container_add (GTK_CONTAINER (button), hbox3);
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area),
 		      button, TRUE, TRUE , 0);

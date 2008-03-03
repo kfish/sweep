@@ -364,7 +364,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
 {
   GtkWidget * dialog;
   GtkWidget * main_vbox, * vbox;
-  GtkWidget * main_hbox, * hbox, * hbox2;
+  GtkWidget * main_hbox, * hbox, * hbox2, * hbox3;
   GtkWidget * pixmap;
   GtkWidget * frame;
   GtkWidget * ebox;
@@ -509,7 +509,10 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
   gtk_widget_show (hbox2);
 
-  button = gtk_button_new_with_label (_("Reset"));
+  button = gtk_button_new ();
+  hbox3   = create_widget_label (NULL, "gtk-undo", 
+                                 GTK_ICON_SIZE_MENU, _("Reset"), FALSE);
+  gtk_container_add (GTK_CONTAINER (button), hbox3);
   gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
   g_signal_connect (G_OBJECT(button), "clicked",
 		      G_CALLBACK(sample_new_dialog_reset_cb), NULL);

@@ -1106,7 +1106,7 @@ scheme_ed_save_clicked_cb (GtkButton *button, gpointer user_data)
 }
 
 void
-scheme_ed_ok_clicked_cb (GtkButton *button, gpointer user_data)
+scheme_ed_close_clicked_cb (GtkButton *button, gpointer user_data)
 {
   GtkWidget *widget = GTK_WIDGET (user_data);
   GtkWidget *parent = gtk_widget_get_parent (widget);
@@ -1142,7 +1142,7 @@ schemes_ed_treeview_selection_changed_cb (GtkTreeSelection *selection,
                         ELEMENT_NUMBER_COLUMN, &element,
                         -1);
         
-    schemes_picker_set_edited_color (scheme, element);
+    schemes_color_chooser_set_color (scheme, element);
   }
 }
 

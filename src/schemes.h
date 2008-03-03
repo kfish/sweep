@@ -68,7 +68,7 @@ gint
 schemes_get_selection_method (void);
 
 SweepScheme *
-schemes_get_prefered_scheme (gchar *filename);
+schemes_get_prefered_scheme (gchar * filename);
 
 SweepScheme *
 schemes_get_scheme_system_default (void);
@@ -77,22 +77,22 @@ SweepScheme *
 schemes_get_scheme_user_default (void);
 
 void
-schemes_remove_scheme (SweepScheme *scheme);
+schemes_remove_scheme (SweepScheme * scheme);
 
 void 
-schemes_copy_scheme (SweepScheme *scheme, gchar *newname);
+schemes_copy_scheme (SweepScheme * scheme, gchar * newname);
 
 gpointer
 schemes_get_nth (gint n);
 
 SweepScheme *
-schemes_find_by_name (gchar *name);
+schemes_find_by_name (gchar * name);
 
 void
-schemes_show_editor_window_cb (GtkMenuItem *item, gpointer user_data);
+schemes_show_editor_window_cb (GtkMenuItem * item, gpointer user_data);
 
 void
-schemes_create_menu (GtkWidget *parent_menuitem, gboolean connect_signals);
+schemes_create_menu (GtkWidget * parent_menuitem, gboolean connect_signals);
 
 GtkWidget *
 schemes_create_editor (gint index);
@@ -101,16 +101,16 @@ void
 schemes_refresh_list_store(gint scheme_index);
 
 GdkColor *
-copy_gdk_colour (GdkColor *color_src);
+copy_gdk_colour (GdkColor * color_src);
 
 GtkWidget*
-schemes_create_color_picker (void);
+schemes_create_color_chooser (void);
 
 void
-schemes_picker_set_edited_color (SweepScheme *scheme, gint element);
+schemes_color_chooser_set_color (SweepScheme * scheme, gint element);
 
 void
-schemes_set_active_element_color (GtkColorSelection *selection);
+schemes_set_active_element_color (GtkColorSelection * selection);
 
 
 #endif /* __SCHEMES_H__ */

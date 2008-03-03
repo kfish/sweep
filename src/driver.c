@@ -41,6 +41,7 @@
 #include <sweep/sweep_sample.h>
 
 #include "driver.h"
+#include "interface.h"
 
 extern sw_driver * driver_alsa;
 extern sw_driver * driver_oss;
@@ -347,7 +348,7 @@ device_config (void)
   GtkWidget * ebox;
   GtkWidget * notebook;
   GtkWidget * separator;
-  GtkWidget * hbox, * hbox2;
+  GtkWidget * hbox, * hbox2, *hbox3;
   GtkWidget * vbox;
   GtkWidget * label;
   GtkWidget * checkbutton;
@@ -366,11 +367,12 @@ device_config (void)
                      &dialog);
 
     gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: audio device configuration"));
+    sweep_set_window_icon (GTK_WINDOW (dialog));
     gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
 
     /* OK */
 
-    ok_button = gtk_button_new_with_label (_("OK"));
+    ok_button = gtk_button_new_from_stock ("gtk-ok");
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
 			TRUE, TRUE, 0);
@@ -383,7 +385,7 @@ device_config (void)
 
     /* Cancel */
 
-    button = gtk_button_new_with_label (_("Cancel"));
+    button = gtk_button_new_from_stock ("gtk-cancel");
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button,
 			TRUE, TRUE, 0);
@@ -517,7 +519,10 @@ device_config (void)
     gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
     gtk_widget_show (hbox2);
 
-    button = gtk_button_new_with_label (_("Reset"));
+    button = gtk_button_new ();
+    hbox3   = create_widget_label (NULL, "gtk-undo", 
+                                  GTK_ICON_SIZE_MENU, _("Reset"), FALSE);
+    gtk_container_add (GTK_CONTAINER (button), hbox3);
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
     g_signal_connect (G_OBJECT(button), "clicked",
 			G_CALLBACK(pcmio_devname_reset_cb), dialog);
@@ -618,7 +623,10 @@ device_config (void)
     gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);
     gtk_widget_show (hbox2);
 
-    button = gtk_button_new_with_label (_("Reset"));
+    button = gtk_button_new ();
+    hbox3   = create_widget_label (NULL, "gtk-undo", 
+                                  GTK_ICON_SIZE_MENU, _("Reset"), FALSE);
+    gtk_container_add (GTK_CONTAINER (button), hbox3);
     gtk_box_pack_start (GTK_BOX (hbox2), button, FALSE, TRUE, 4);
     g_signal_connect (G_OBJECT(button), "clicked",
 			G_CALLBACK(pcmio_buffering_reset_cb), dialog);

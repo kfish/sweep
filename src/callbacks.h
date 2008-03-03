@@ -311,7 +311,7 @@ scheme_ed_save_clicked_cb (GtkButton *button, gpointer user_data);
 void
 scheme_ed_delete_clicked_cb (GtkButton *button, gpointer user_data);
 void
-scheme_ed_ok_clicked_cb (GtkButton *button, gpointer user_data);
+scheme_ed_close_clicked_cb (GtkButton *button, gpointer user_data);
 void
 scheme_ed_combo_changed_cb (GtkComboBox *widget, gpointer user_data);
 gboolean 

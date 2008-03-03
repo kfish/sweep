@@ -49,6 +49,10 @@ create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
 		      GCallback pressed, GCallback released,
 		      gpointer data);
 
+GtkWidget *
+create_widget_label (GtkWidget * icon, gchar * icon_stock_name, gint icon_size, 
+                     gchar * label_text, gboolean use_markup);
+
 
 GtkWidget* create_toolbox (void);
 
