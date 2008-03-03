@@ -1876,6 +1876,7 @@ sample_show_info_dialog (sw_sample * sample)
   if (sample->info_clist == NULL) {
     dialog = gtk_dialog_new ();
     gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+    sweep_set_window_icon (GTK_WINDOW (dialog));
     gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: File properties"));
     gtk_container_set_border_width (GTK_CONTAINER(dialog), 8);
 
