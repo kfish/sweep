@@ -96,8 +96,6 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
   GtkWidget * hbox;
   GtkWidget * label;
   GtkWidget * pixmap;
-  GtkWidget * button_label;
-  GtkWidget * image;
   GtkWidget * button_hbox;
 
   window = gtk_dialog_new ();

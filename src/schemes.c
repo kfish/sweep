@@ -310,9 +310,8 @@ schemes_refresh_combo (gint index)
 gboolean
 schemes_refresh_color_scheme_menu_cb (GtkMenuItem * menuitem, gpointer user_data)
 {
-  if ((menuitem == NULL) ||
-     (!GTK_IS_MENU_ITEM (menuitem)))
-    return FALSE;
+  g_return_val_if_fail (menuitem != NULL, FALSE);
+  g_return_val_if_fail (GTK_IS_MENU_ITEM (menuitem), FALSE);
                                         
   gtk_menu_item_set_submenu (menuitem, NULL);
   schemes_create_menu (GTK_WIDGET (menuitem), FALSE);
@@ -362,12 +361,15 @@ parse_scheme (GKeyFile * key_file,
   gsize         num_strings; 
   gint          element;
   gchar       * default_name;
+  GdkColor    *color;
     
   if (length != SCHEME_ELEMENT_LAST)
     return NULL;
     
   scheme = sweep_scheme_new ();
   scheme->name = g_strdup(group);
+  
+  color = g_new0 (GdkColor, 1);
     
   FOR_EACH_ELEMENT {
         
@@ -378,7 +380,9 @@ parse_scheme (GKeyFile * key_file,
                                      &error);
     if ((string_list != NULL)  && 
       ((gint)num_strings == 3) &&  /* color, style-type and toggle */
-      (gdk_color_parse (string_list[0], scheme->scheme_colors[element]))) {
+      (gdk_color_parse (string_list[0], color))) {
+          
+      sweep_scheme_set_element_color (scheme, element, color);
    
       scheme->element_enabled[element] = 
        (g_ascii_strncasecmp (string_list[2], "ENABLED", 7) == 0) ? TRUE : FALSE;
@@ -393,10 +397,13 @@ parse_scheme (GKeyFile * key_file,
       }
       g_strfreev (string_list);
     } else {
-      //unref scheme
+      g_object_unref ((gpointer)scheme);
       return NULL;
     }
   }
+    
+  g_free (color);
+    
   return scheme;
 }
 
@@ -404,8 +411,8 @@ void
 schemes_add_scheme (SweepScheme * scheme, gboolean prepend) 
 {
   gboolean ret;
-    
-  if (scheme != NULL) {
+   
+  g_return_if_fail (scheme != NULL);
       
     if (prepend)
       schemes_list = g_list_prepend (schemes_list, scheme);
@@ -418,7 +425,6 @@ schemes_add_scheme (SweepScheme * scheme, gboolean prepend)
       /* trigger color schemes menu refresh */
       g_signal_emit_by_name ((gpointer)menu_item_proxy, "event", NULL, &ret, NULL);
     }
-  }
 }
 
 void
@@ -426,9 +432,11 @@ schemes_remove_scheme (SweepScheme * scheme)
 {
   gboolean ret;
     
+  g_return_if_fail (scheme != NULL);
+    
   // unref scheme triggering signals etc
   schemes_list = g_list_remove (schemes_list, scheme);
-  //g_object_unref ((gpointer) scheme);
+  g_object_unref ((gpointer) scheme);
   schemes_modified = TRUE;
   schemes_refresh_combo (0);
 
@@ -524,6 +532,8 @@ schemes_find_by_name (gchar * name)
   gint          ret;
   SweepScheme * scheme = NULL;
     
+  g_return_val_if_fail ((name != NULL), NULL);
+    
   for (list = schemes_list; list; list = list->next)
   {
     scheme = SWEEP_SCHEME (list->data);
@@ -545,7 +555,6 @@ get_key_file_data (GKeyFile * key_file)
   GError * error = NULL;
   gint     i;
   SweepScheme * scheme;
-    
     
   groups = g_key_file_get_groups (key_file, &groups_length);
     
@@ -719,6 +728,9 @@ schemes_create_menu (GtkWidget * parent_menuitem,
                      gboolean connect_signals) 
 {
   GtkWidget * menuitem;
+  GtkWidget * hbox;
+  GtkWidget * label;
+  GtkWidget * image;
   GtkWidget * submenu;
   GList     * list;
   sw_view   * view;
@@ -727,7 +739,7 @@ schemes_create_menu (GtkWidget * parent_menuitem,
   submenu = gtk_menu_new();
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(parent_menuitem), submenu);
 
-  menuitem = gtk_menu_item_new_with_label (_("Show color scheme editor ..."));
+  menuitem = gtk_menu_item_new_with_label (_("Color scheme editor ..."));
   gtk_menu_append (GTK_MENU(submenu), menuitem);
   
   view = (sw_view *) g_object_get_data (G_OBJECT (parent_menuitem), "view");
@@ -747,7 +759,19 @@ schemes_create_menu (GtkWidget * parent_menuitem,
     
   for (list = schemes_list; list; list = list->next) {
         
-    menuitem = gtk_menu_item_new_with_label (SWEEP_SCHEME (list->data)->name);
+    hbox  = gtk_hbox_new (FALSE, 0); 
+    image = gtk_image_new_from_pixmap (SWEEP_SCHEME (list->data)->preview_icon,
+                                       NULL);
+    gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
+    label = gtk_label_new (SWEEP_SCHEME (list->data)->name);
+    
+    
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 2);
+    gtk_widget_show_all (hbox);
+      
+    menuitem = gtk_menu_item_new ();
+    gtk_container_add (GTK_CONTAINER (menuitem), hbox); 
     
     g_object_set_data (G_OBJECT(menuitem), "scheme", 
 			                  list->data); /* scheme */
@@ -775,7 +799,7 @@ schemes_show_editor_window_cb (GtkMenuItem * menuitem,
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     sweep_set_window_icon (GTK_WINDOW (window));
   
-    //attach_window_close_accel(window);
+    attach_window_close_accel (GTK_WINDOW (window));
     
     gtk_window_set_title (GTK_WINDOW (window), _("Sweep: Color Scheme Options"));
     gtk_widget_set_size_request (window, 620, -1);
@@ -1027,6 +1051,9 @@ schemes_create_editor (gint index)
                     G_CALLBACK (scheme_ed_combo_changed_cb),
                     NULL);
   gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (schemes_combo), TRUE, TRUE, 0);
+  gtk_tooltips_set_tip (tooltips, hbox, 
+                          _("Select a color scheme to edit"),
+                          _("Select a color scheme to edit"));
     
   /* new scheme button */
     
@@ -1278,8 +1305,7 @@ schemes_create_color_chooser (void)
   gtk_notebook_set_show_border (GTK_NOTEBOOK (notebook1), FALSE);
 
   colorselection = gtk_color_selection_new ();
-  gtk_color_selection_set_update_policy (GTK_COLOR_SELECTION (colorselection),
-                                         GTK_UPDATE_DELAYED);
+
   gtk_color_selection_set_has_opacity_control (GTK_COLOR_SELECTION (colorselection), FALSE);
   gtk_container_add (GTK_CONTAINER (notebook1), colorselection);
   gtk_container_set_border_width (GTK_CONTAINER (colorselection), 2);

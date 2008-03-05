@@ -81,6 +81,7 @@ sweep_scheme_finalize (GObject * object)
     
   gint element;
   SweepScheme * scheme = SWEEP_SCHEME (object);
+  g_object_unref ((gpointer) scheme->preview_icon);
     
   g_free (scheme->name);
   
@@ -89,6 +90,9 @@ sweep_scheme_finalize (GObject * object)
     g_free (scheme->scheme_colors[element]);
   }
   g_free (scheme);
+    
+  if (G_OBJECT_CLASS (sweep_scheme_parent_class)->finalize)
+    G_OBJECT_CLASS (sweep_scheme_parent_class)->finalize (object);
       
 }
 static void
@@ -96,10 +100,12 @@ sweep_scheme_init (SweepScheme * scheme)
 {
   
   gint element;
+  GdkVisual *visual;
 
+  visual = gdk_screen_get_system_visual (gdk_screen_get_default ());
   scheme->modified = FALSE;
   scheme->is_default = FALSE;
-  scheme->preview_icon = NULL;
+  scheme->preview_icon = gdk_pixmap_new (NULL, 16, 16, visual->depth);
 
   for (element = 0; element < SCHEME_ELEMENT_LAST; element++)
   {
@@ -136,8 +142,18 @@ sweep_scheme_class_init (SweepSchemeClass * klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /* this may not be necessary */
+  object_signals[CHANGED] =
+    g_signal_new ("preview-changed",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_CLEANUP | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+		  G_STRUCT_OFFSET (SweepSchemeClass, changed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
     
   klass->changed = NULL;
+  klass->preview_changed = NULL;
     
 }
 
@@ -147,6 +163,27 @@ sweep_scheme_new (void)
     
     return g_object_new (SWEEP_TYPE_SCHEME, NULL);
     
+}
+
+static void
+update_scheme_preview (SweepScheme * scheme)
+{
+  GdkDrawable * preview_icon = GDK_DRAWABLE (scheme->preview_icon);
+  GdkGC       * gc = gdk_gc_new (preview_icon);
+    
+  gdk_gc_set_rgb_fg_color (gc, scheme->scheme_colors[SCHEME_ELEMENT_BG]);
+  gdk_draw_rectangle (preview_icon, 
+                      gc,
+                      TRUE, 0, 0, 16, 16);
+    
+  gdk_gc_set_rgb_fg_color (gc, scheme->scheme_colors[SCHEME_ELEMENT_FG]);
+  gdk_draw_rectangle (preview_icon, 
+                      gc,
+                      TRUE, 4, 4, 8, 8);
+   
+  g_signal_emit_by_name ((gpointer) scheme, "preview-changed");
+    
+  g_object_unref ((gpointer) gc);
 }
 
 SweepScheme *
@@ -172,6 +209,7 @@ sweep_scheme_copy (SweepScheme *scheme)
         scheme_copy->scheme_colors[element]->blue  = scheme->scheme_colors[element]->blue;
         scheme_copy->element_enabled[element]      = scheme->element_enabled[element]; 
     }
+    update_scheme_preview (scheme_copy);
 
   }
   return scheme_copy;
@@ -183,21 +221,23 @@ sweep_scheme_set_element_color (SweepScheme * scheme,
                                 gint element,
                                 GdkColor * color)
 {
-    GdkColor * old_color;
+  GdkColor * old_color;
     
-    if ((scheme != NULL) ||
-        (color != NULL)) {
+  if ((scheme != NULL) ||
+      (color != NULL)) {
         
-        if ((element < 0) || (element >= SCHEME_ELEMENT_LAST))
-          return;
-        
-        old_color = scheme->scheme_colors[element];
-        scheme->scheme_colors[element] = copy_gdk_colour (color);
-        g_free (old_color);
-            
-        g_signal_emit_by_name ((gpointer) scheme, "changed");
-        
-    }
+    if ((element < 0) || (element >= SCHEME_ELEMENT_LAST))
+      return;
+      
+    old_color = scheme->scheme_colors[element];
+    scheme->scheme_colors[element] = copy_gdk_colour (color);
+    g_free (old_color);
+          
+    g_signal_emit_by_name ((gpointer) scheme, "changed");
+      
+  if ((element == SCHEME_ELEMENT_FG) || (element == SCHEME_ELEMENT_BG))
+    update_scheme_preview (scheme);
+  } 
     
 }
 
@@ -216,7 +256,6 @@ sweep_scheme_set_element_enabled (SweepScheme * scheme,
     scheme->element_enabled[element] = is_enabled;
             
     g_signal_emit_by_name ((gpointer) scheme, "changed");
-        
   } 
 }
 
@@ -237,7 +276,12 @@ sweep_scheme_set_element_style (SweepScheme * scheme,
     scheme->element_style[element] = style;
             
     g_signal_emit_by_name ((gpointer) scheme, "changed");
-        
+      
+    if ((element == SCHEME_ELEMENT_FG) || (element == SCHEME_ELEMENT_BG))
+      update_scheme_preview (scheme);
   } 
     
 }
+
+
+

@@ -81,16 +81,14 @@ typedef struct _SweepSchemeClass SweepSchemeClass;
 /* FIXME: create struct for per element options? */ 
 struct _SweepScheme {
   
-  GObject    parent;
-  GdkColor * scheme_colors[SCHEME_ELEMENT_LAST];
-  gboolean   element_enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
-  gint       element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if > 0 */
-  gchar    * name;
-  gboolean   modified;
-  gboolean   is_default;
-  GdkPixbuf * preview_icon;
-
-  
+  GObject     parent;
+  GdkColor  * scheme_colors[SCHEME_ELEMENT_LAST];
+  gboolean    element_enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
+  gint        element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if > 0 */
+  gchar     * name;
+  gboolean    modified;
+  gboolean    is_default;
+  GdkPixmap * preview_icon;
 };
 
 
@@ -100,6 +98,7 @@ struct _SweepSchemeClass {
     
   void (* destroy) (SweepScheme * object);
   void (* changed) (SweepScheme * object);
+  void (* preview_changed) (SweepScheme * object);
 };
 
 SweepScheme *
