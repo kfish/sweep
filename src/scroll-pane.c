@@ -272,9 +272,9 @@ scroll_pane_expose (GtkWidget      *widget,
                                          widget->allocation.y,
                                          widget->allocation.x + range->slider_start,
                                         (widget->allocation.height - 1) + widget->allocation.y);
-  cairo_pattern_add_color_stop_rgba (pattern, 0, 1.0, 1.0, 1.0, 0.5);
+  cairo_pattern_add_color_stop_rgba (pattern, 0, 1.0, 1.0, 1.0, 0.4);
   cairo_pattern_add_color_stop_rgba (pattern, .5, 1.0, 1.0, 1.0, 0);
-  cairo_pattern_add_color_stop_rgba (pattern, 1, 0.0, 0.0, 0.0, .2);
+  cairo_pattern_add_color_stop_rgba (pattern, 1, 0.0, 0.0, 0.0, .15);
 
   cairo_set_source (cr, pattern);
   cairo_rectangle (cr, widget->allocation.x + range->slider_start, 
