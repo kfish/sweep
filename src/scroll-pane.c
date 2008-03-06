@@ -257,12 +257,34 @@ scroll_pane_expose (GtkWidget      *widget,
   }
     
   gdk_draw_rectangle (widget->window, 
-                      sd->gcs[SCHEME_ELEMENT_MINMAX],
+                      widget->style->black_gc,
                       FALSE,
                       widget->allocation.x + range->slider_start,
                       widget->allocation.y,
                       range->slider_end - range->slider_start,
                       widget->allocation.height - 1 );
+    
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+	cr = gdk_cairo_create (widget->window);
+
+  pattern = cairo_pattern_create_linear (widget->allocation.x + range->slider_start,
+                                         widget->allocation.y,
+                                         widget->allocation.x + range->slider_start,
+                                        (widget->allocation.height - 1) + widget->allocation.y);
+  cairo_pattern_add_color_stop_rgba (pattern, 0, 1.0, 1.0, 1.0, 0.5);
+  cairo_pattern_add_color_stop_rgba (pattern, .5, 1.0, 1.0, 1.0, 0);
+  cairo_pattern_add_color_stop_rgba (pattern, 1, 0.0, 0.0, 0.0, .2);
+
+  cairo_set_source (cr, pattern);
+  cairo_rectangle (cr, widget->allocation.x + range->slider_start, 
+                   widget->allocation.y + 1,
+                   range->slider_end - range->slider_start + 1,
+                   widget->allocation.height - 1 );
+  cairo_fill (cr);
+  cairo_pattern_destroy (pattern);
+
+    
   return FALSE;
 }
 
