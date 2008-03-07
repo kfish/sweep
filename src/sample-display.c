@@ -1744,6 +1744,18 @@ sample_display_hand_scroll (SampleDisplay * s)
 {
   gint new_win_start, win_length;
   gfloat step;
+  gdouble elapsed;
+    
+  if (s->release_timer != NULL) {
+    elapsed = g_timer_elapsed (s->release_timer, NULL);
+    g_timer_destroy (s->release_timer);
+    s->release_timer = NULL;
+
+    if (elapsed > 0.13) {
+      s->hand_scroll_delta = 0;
+      return FALSE;
+    }
+  }
   
   win_length = s->view->end - s->view->start;
 
@@ -2044,6 +2056,11 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
   if (abs (delta) > abs (s->hand_scroll_delta))
 	  s->hand_scroll_delta = delta;
   
+  if (s->release_timer == NULL)
+    s->release_timer = g_timer_new ();
+  else
+    g_timer_start (s->release_timer);
+    
   if (s->view->hand_offset != x){
     move = s->view->hand_offset - x;
     move *= step;
@@ -3108,6 +3125,7 @@ sample_display_init (SampleDisplay *s)
   s->scroll_left_tag = 0;
   s->scroll_right_tag = 0;
   s->scheme = NULL;
+  s->release_timer = NULL;
 }
 
 GtkWidget*

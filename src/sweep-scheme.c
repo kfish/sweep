@@ -32,8 +32,6 @@ enum {
   LAST_SIGNAL
 };
 
-
-
 enum {
   PROP_0,
   PROP_ELEMENT_COLOR
@@ -68,8 +66,6 @@ gchar * element_keys[SCHEME_ELEMENT_LAST] = {
   "wave-highlight",
   "wave-shadow",
 }; 
-
-
 
 G_DEFINE_TYPE (SweepScheme, sweep_scheme, G_TYPE_OBJECT)
 

@@ -88,6 +88,7 @@ struct _SampleDisplay
 
   gint hand_scroll_tag;   /* gtk_timeout tag for natural hand scrolling */
   gint hand_scroll_delta; /* natural hand scrolling */
+  GTimer * release_timer;
 
   /* Window panning */
   int selecting_x0;  /* the coordinate where the mouse was clicked */
