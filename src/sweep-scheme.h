@@ -82,9 +82,9 @@ typedef struct _SweepSchemeClass SweepSchemeClass;
 struct _SweepScheme {
   
   GObject     parent;
-  GdkColor  * scheme_colors[SCHEME_ELEMENT_LAST];
-  gboolean    element_enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
-  gint        element_style[SCHEME_ELEMENT_LAST]; /* overrides custom colors if > 0 */
+  GdkColor  * colors[SCHEME_ELEMENT_LAST];
+  gboolean    enabled[SCHEME_ELEMENT_LAST]; /* always true for some elements */
+  gint        styles[SCHEME_ELEMENT_LAST]; /* overrides custom colors if > 0 */
   gchar     * name;
   gboolean    modified;
   gboolean    is_default;

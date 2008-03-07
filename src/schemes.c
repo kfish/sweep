@@ -193,12 +193,11 @@ schemes_get_scheme_system_default (void)
   if (default_scheme == NULL) {
       
     default_scheme = sweep_scheme_new ();
-    g_object_ref (default_scheme);  
       
-     FOR_EACH_ELEMENT {
+    FOR_EACH_ELEMENT {
       
-      gdk_color_parse (default_colors[element], default_scheme->scheme_colors[element]);
-      default_scheme->element_enabled[element] = TRUE;
+      gdk_color_parse (default_colors[element], default_scheme->colors[element]);
+      default_scheme->enabled[element] = TRUE;
         
     }
       
@@ -297,7 +296,7 @@ schemes_refresh_combo (gint index)
         
       gtk_combo_box_append_text (GTK_COMBO_BOX (schemes_combo), 
                                   SWEEP_SCHEME (list->data)->name);
-        
+
     }
     if ((gtk_combo_box_get_active (schemes_combo) == -1) && (index >= 0))
           gtk_combo_box_set_active (schemes_combo, index);
@@ -384,10 +383,10 @@ parse_scheme (GKeyFile * key_file,
           
       sweep_scheme_set_element_color (scheme, element, color);
    
-      scheme->element_enabled[element] = 
+      scheme->enabled[element] = 
        (g_ascii_strncasecmp (string_list[2], "ENABLED", 7) == 0) ? TRUE : FALSE;
     
-      scheme->element_style[element]   = element_get_style_type (string_list[1]);
+      scheme->styles[element]   = element_get_style_type (string_list[1]);
       
       default_name = prefs_get_string ("user-default-scheme");
       
@@ -413,14 +412,14 @@ schemes_add_scheme (SweepScheme * scheme, gboolean prepend)
   gboolean ret;
    
   g_return_if_fail (scheme != NULL);
-      
+    
     if (prepend)
       schemes_list = g_list_prepend (schemes_list, scheme);
     else
       schemes_list = g_list_append (schemes_list, scheme);
-      
+
     schemes_refresh_combo ((prepend ? 0 : (g_list_length (schemes_list) - 1)));
-      
+              
     if (gtk_main_level() > 0) {
       /* trigger color schemes menu refresh */
       g_signal_emit_by_name ((gpointer)menu_item_proxy, "event", NULL, &ret, NULL);
@@ -433,15 +432,12 @@ schemes_remove_scheme (SweepScheme * scheme)
   gboolean ret;
     
   g_return_if_fail (scheme != NULL);
-    
-  // unref scheme triggering signals etc
   schemes_list = g_list_remove (schemes_list, scheme);
-  g_object_unref ((gpointer) scheme);
-  schemes_modified = TRUE;
   schemes_refresh_combo (0);
-
+  schemes_modified = TRUE;
   g_signal_emit_by_name ((gpointer)menu_item_proxy, "event", NULL, &ret, NULL);
   gtk_combo_box_set_active (schemes_combo, 0);
+  g_object_unref ((gpointer) scheme);
 }
 
 void schemes_copy_scheme (SweepScheme *scheme, gchar *newname)
@@ -681,10 +677,10 @@ save_schemes (void)
       
     FOR_EACH_ELEMENT {
         
-      string_list[0] = gdk_color_to_string (scheme->scheme_colors[element]);
-      string_list[1] = style_types[scheme->element_style[element]];
+      string_list[0] = gdk_color_to_string (scheme->colors[element]);
+      string_list[1] = style_types[scheme->styles[element]];
       string_list[2] = 
-         scheme->element_enabled ? g_strdup ("ENABLED") : g_strdup ("DISABLED");
+         scheme->enabled ? g_strdup ("ENABLED") : g_strdup ("DISABLED");
       
       g_key_file_set_string_list (key_file, scheme->name,
                                   element_keys[element], 
@@ -869,10 +865,10 @@ schemes_refresh_list_store (gint scheme_index)
     
   if (scheme == NULL)
     return;
-  
+
   FOR_EACH_ELEMENT {
       
-    fill_pixmap_from_scheme_color (scheme->scheme_colors[element], 
+    fill_pixmap_from_scheme_color (scheme->colors[element], 
                                    &color_swatches[element]);
       
     gtk_list_store_append (elements_store, 
@@ -883,7 +879,7 @@ schemes_refresh_list_store (gint scheme_index)
                         COLOR_SWATCH_COLUMN,  color_swatches[element],
                         SCHEME_OBJECT_COLUMN, scheme,
                         ELEMENT_NUMBER_COLUMN, element,
-                        -1);      
+                        -1); 
   }
   treeview_set_selected (GTK_TREE_VIEW (treeview), 0, 0);
 }
@@ -902,9 +898,9 @@ schemes_color_chooser_set_color (SweepScheme * scheme, gint element)
                                        NULL);
 
   gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorselection),
-                                         scheme->scheme_colors[element]);
+                                         scheme->colors[element]);
   gtk_color_selection_set_previous_color (GTK_COLOR_SELECTION (colorselection),
-                                         scheme->scheme_colors[element]);
+                                         scheme->colors[element]);
     
   g_signal_handlers_unblock_by_func     (colorselection, 
                                          schemes_ed_color_changed_cb,
@@ -918,7 +914,7 @@ schemes_create_tree_view (void)
   GtkTreeViewColumn * column;
   
   
-  elements_store = gtk_list_store_new (N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_OBJECT, G_TYPE_STRING, G_TYPE_INT);
+  elements_store = gtk_list_store_new (N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_POINTER, G_TYPE_STRING, G_TYPE_INT);
   treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (elements_store));
   
   renderer = gtk_cell_renderer_pixbuf_new ();
@@ -968,7 +964,7 @@ schemes_set_active_element_color (GtkColorSelection * colorselection)
                                           color);  
     sweep_scheme_set_element_color (scheme, element, color);
                                             
-    fill_pixmap_from_scheme_color (scheme->scheme_colors[element], 
+    fill_pixmap_from_scheme_color (scheme->colors[element], 
                                    &color_swatches[element]);
                                              
     gtk_list_store_set (GTK_LIST_STORE (model), 

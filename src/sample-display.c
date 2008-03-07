@@ -272,7 +272,7 @@ sample_display_refresh_scheme_data (SampleDisplay *s, gboolean redraw)
     if (s->gc_colors[element] != NULL)
       old_color = s->gc_colors[element];
         
-    s->gc_colors[element] = copy_gdk_colour (scheme->scheme_colors[element]);
+    s->gc_colors[element] = copy_gdk_colour (scheme->colors[element]);
     s->gcs[element]       = gdk_gc_new (GTK_WIDGET (s)->window);
                                              
     gdk_gc_set_rgb_fg_color(s->gcs[element], s->gc_colors[element]);
