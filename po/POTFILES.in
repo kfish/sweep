@@ -66,6 +66,8 @@ src/sample-display.c
 src/sample-display.h
 src/sample.h
 src/samplerate.c
+src/schemes.c
+src/schemes.h
 src/sw_chooser.c
 src/sw_chooser.h
 src/sweep_app.h
@@ -75,6 +77,8 @@ src/sweep_sounddata.c
 src/sweep_selection.c
 src/sweep_typeconvert.c
 src/sweep_undo.c
+src/sweep-scheme.c
+src/sweep-scheme.h
 src/time_ruler.c
 src/time_ruler.h
 src/timeouts.c

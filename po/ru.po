@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2008-02-26 16:21+0000\n"
+"POT-Creation-Date: 2008-03-07 08:34+0000\n"
 "PO-Revision-Date: 2003-04-17 16:06+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -126,16 +126,14 @@ msgstr "Сейчас: %d каналов"
 msgid "Output channels"
 msgstr "Выходные каналы"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
-#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:148
-#: src/question_dialogs.c:241 src/question_dialogs.c:293
-#: src/sweep_sample.c:1919 src/undo_dialog.c:440
+#: src/channelops.c:231 src/channelops.c:714 src/file_sndfile1.c:285
+#: src/question_dialogs.c:146 src/question_dialogs.c:227
+#: src/question_dialogs.c:279 src/undo_dialog.c:422
 msgid "OK"
 msgstr "ОК"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
-#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:177
-#: src/view.c:545 src/view.c:2633
+#: src/channelops.c:242 src/channelops.c:725 src/file_sndfile1.c:295
+#: src/question_dialogs.c:169 src/view.c:545 src/view.c:2633
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -168,70 +166,70 @@ msgstr "Сконвертировать из %d в %d каналов"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: Добавить/удалить каналы"
 
-#: src/driver.c:363
+#: src/driver.c:369
 msgid "Sweep: audio device configuration"
 msgstr ""
 
-#: src/driver.c:404
+#: src/driver.c:411
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
 "Изменения в настройках устройства будут учтены при следующем воспроизведении."
 
-#: src/driver.c:418
+#: src/driver.c:425
 msgid "Device name"
 msgstr "Имя устройства"
 
-#: src/driver.c:424
+#: src/driver.c:431
 msgid "Set the main device for playback and recording"
 msgstr "Указать основное устройство для воспроизведения и записи"
 
-#: src/driver.c:434
+#: src/driver.c:441
 msgid "Main device:"
 msgstr "Основное устройство:"
 
-#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
+#: src/driver.c:455 src/driver.c:643 src/samplerate.c:570 src/schemes.c:1095
 msgid "Default"
 msgstr "По умолчанию"
 
-#: src/driver.c:461
+#: src/driver.c:468
 msgid "Use a different device for monitoring"
 msgstr "Использовать другое устройство для мониторинга"
 
-#: src/driver.c:473
+#: src/driver.c:480
 msgid "Monitor output:"
 msgstr "Устройство мониторинга"
 
-#: src/driver.c:498
+#: src/driver.c:505
 msgid "Swap"
 msgstr "Поменять местами"
 
-#: src/driver.c:506
+#: src/driver.c:513
 msgid "Swap main and monitor devices."
 msgstr "Поменять местами основное и мониторинговое устройства"
 
-#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
-#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:512
+#: src/driver.c:524 src/driver.c:628 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:514
 msgid "Reset"
 msgstr "Перезагрузить"
 
-#: src/driver.c:523
+#: src/driver.c:533
 msgid "Reset to the last remembered device names."
 msgstr "Установить последние запомненные имена устройств"
 
-#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
-#: src/param.c:747 src/sweep_sample.c:523
+#: src/driver.c:539 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:748 src/sweep_sample.c:526
 msgid "Defaults"
 msgstr "Стандартные установки"
 
-#: src/driver.c:537
+#: src/driver.c:547
 msgid "Set to default device names."
 msgstr "Указать стандартные имена устройств"
 
-#: src/driver.c:548
+#: src/driver.c:558
 msgid "Device buffering"
 msgstr "Буфферизация устройства"
 
-#: src/driver.c:558
+#: src/driver.c:568
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -239,7 +237,7 @@ msgstr ""
 "Низкая латентность /\n"
 "Больше отпусканий"
 
-#: src/driver.c:580
+#: src/driver.c:590
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -247,7 +245,7 @@ msgstr ""
 "Высока латентность /\n"
 "Меньше отпусканий"
 
-#: src/driver.c:584
+#: src/driver.c:594
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -256,15 +254,15 @@ msgid ""
 "loaded systems."
 msgstr ""
 
-#: src/driver.c:603
+#: src/driver.c:613
 msgid "Remember these options"
 msgstr "Запомнить эти параметры"
 
-#: src/driver.c:624
+#: src/driver.c:637
 msgid "Reset to the last remembered device buffering."
 msgstr ""
 
-#: src/driver.c:638
+#: src/driver.c:651
 msgid "Set to default device buffering."
 msgstr "Указать стандартную буфферизацию устройства"
 
@@ -381,7 +379,7 @@ msgstr ""
 msgid "Revert file"
 msgstr "Развернуть файл"
 
-#: src/file_dialogs.c:375 src/view.c:511
+#: src/file_dialogs.c:375 src/schemes.c:1161 src/view.c:511
 msgid "Revert"
 msgstr "Развернуть"
 
@@ -458,7 +456,7 @@ msgid "File modified"
 msgstr "Файл изменился"
 
 #: src/file_dialogs.c:894 src/file_speex.c:2127 src/file_vorbis.c:1611
-#: src/view.c:503 src/view.c:1722
+#: src/schemes.c:1176 src/view.c:503 src/view.c:1722
 msgid "Save"
 msgstr "Сохранить"
 
@@ -1091,44 +1089,44 @@ msgstr "Перемотать вперёд"
 msgid "Go to the end"
 msgstr "Перейти к концу"
 
-#: src/interface.c:327
+#: src/interface.c:358
 msgid "Sweep"
 msgstr "Sweep"
 
-#: src/interface.c:352 src/view.c:448
+#: src/interface.c:383 src/view.c:448
 msgid "File"
 msgstr "Файл"
 
-#: src/interface.c:357
+#: src/interface.c:388
 msgid "New"
 msgstr "Новый"
 
-#: src/interface.c:366
+#: src/interface.c:397
 msgid "Open"
 msgstr "Открыть"
 
-#: src/interface.c:375 src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/interface.c:406 src/sweep_sample.c:802 src/sweep_sample.c:811
 #: src/view.c:531
 msgid "Quit"
 msgstr "Выйти"
 
-#: src/interface.c:386 src/view.c:1012
+#: src/interface.c:417 src/view.c:1012
 msgid "Help"
 msgstr "Справка"
 
-#: src/interface.c:391
+#: src/interface.c:422
 msgid "About..."
 msgstr "О программе..."
 
-#: src/interface.c:414 src/view.c:620
+#: src/interface.c:445 src/view.c:620
 msgid "Select"
 msgstr "Выделить"
 
-#: src/interface.c:415
+#: src/interface.c:446
 msgid "Select regions of a sample"
 msgstr "Выделить фрагменты семпла"
 
-#: src/interface.c:416
+#: src/interface.c:447
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -1138,69 +1136,69 @@ msgstr ""
 "отредактировать эти фрагменты, применить к ним эффекты. Удерживайте нажатой "
 "клавишу Shift для расширения выделенного фрагмента."
 
-#: src/interface.c:433
+#: src/interface.c:464
 msgid "Move"
 msgstr "Переместить"
 
-#: src/interface.c:434
+#: src/interface.c:465
 msgid "Move regions in a sample"
 msgstr "Переместить фрагменты в семпле"
 
-#: src/interface.c:435
+#: src/interface.c:466
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 "При помощи этого инструмента вы можете перемещать выделенные фрагменты "
 "семпла."
 
-#: src/interface.c:447
+#: src/interface.c:478
 msgid "Scrub"
 msgstr ""
 
-#: src/interface.c:448
+#: src/interface.c:479
 msgid "Locate sounds directly"
 msgstr ""
 
-#: src/interface.c:449
+#: src/interface.c:480
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
 msgstr ""
 
-#: src/interface.c:466
+#: src/interface.c:497
 msgid "Zoom"
 msgstr "Масштаб"
 
-#: src/interface.c:467
+#: src/interface.c:498
 msgid "Zoom in & out"
 msgstr "Приблизить или отдалить"
 
-#: src/interface.c:468
+#: src/interface.c:499
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
 
-#: src/interface.c:484
+#: src/interface.c:515
 msgid "Pencil"
 msgstr "Карандаш"
 
-#: src/interface.c:485
+#: src/interface.c:516
 msgid "Edit PCM sample values"
 msgstr "Редактировать значения PCM-семпла"
 
-#: src/interface.c:486
+#: src/interface.c:517
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr ""
 
-#: src/interface.c:497
+#: src/interface.c:528
 msgid "Noise"
 msgstr "Шум"
 
-#: src/interface.c:498
+#: src/interface.c:529
 msgid "Add noise"
 msgstr "Добавить шум"
 
-#: src/interface.c:499
+#: src/interface.c:530
 msgid "Randomise PCM values"
 msgstr "Получить случайные значения для PCM"
 
@@ -1358,11 +1356,11 @@ msgstr ""
 msgid "FALSE"
 msgstr ""
 
-#: src/param.c:738
+#: src/param.c:739
 msgid "Parameters"
 msgstr ""
 
-#: src/param.c:769
+#: src/param.c:770
 msgid "Preview"
 msgstr ""
 
@@ -1375,35 +1373,35 @@ msgstr "Начальная громкость"
 msgid "Gain"
 msgstr "Громкость"
 
-#: src/paste_dialogs.c:230
+#: src/paste_dialogs.c:231
 msgid "Sweep: Paste crossfade"
 msgstr ""
 
-#: src/paste_dialogs.c:232
+#: src/paste_dialogs.c:233
 msgid "Sweep: Paste mix"
 msgstr "Sweep: Вставка смешиванием"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Source"
 msgstr "Источник"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: src/paste_dialogs.c:279 src/paste_dialogs.c:318
+#: src/paste_dialogs.c:280 src/paste_dialogs.c:319
 msgid "End gain"
 msgstr "Конечная громкость"
 
-#: src/paste_dialogs.c:287 src/paste_dialogs.c:326
+#: src/paste_dialogs.c:288 src/paste_dialogs.c:327
 msgid "Invert phase"
 msgstr "Фаза инвертации"
 
-#: src/paste_dialogs.c:295
+#: src/paste_dialogs.c:296
 msgid "Destination"
 msgstr "Место назначения"
 
-#: src/paste_dialogs.c:345
+#: src/paste_dialogs.c:346
 msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
@@ -1411,23 +1409,23 @@ msgstr ""
 "Показывает общую продолжительность буфера обмена, которая совпадает с "
 "максимальной продолжительностью вставки."
 
-#: src/paste_dialogs.c:362
+#: src/paste_dialogs.c:363
 msgid "Clipboard duration:"
 msgstr "Продолжительность буфера обмена:"
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Crossfade"
 msgstr ""
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Mix"
 msgstr "Смешать"
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't crossfade"
 msgstr ""
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't mix"
 msgstr "Не смешивать"
 
@@ -1468,7 +1466,7 @@ msgstr "Не записываемого выделения"
 msgid "Sweep: Record"
 msgstr "Sweep: Запись"
 
-#: src/record.c:459 src/undo_dialog.c:376
+#: src/record.c:459 src/undo_dialog.c:334
 msgid "File:"
 msgstr "Файл:"
 
@@ -1570,6 +1568,159 @@ msgstr "Преобразовать"
 #: src/samplerate.c:633
 msgid "Don't resample"
 msgstr "Не преобразовывать"
+
+#: src/schemes.c:455
+msgid "Choose a name for this scheme"
+msgstr ""
+
+#: src/schemes.c:471
+#, fuzzy
+msgid "Copy of "
+msgstr "Скопировать"
+
+#: src/schemes.c:483
+msgid ""
+"A scheme with that name already exists.\n"
+"Please choose another name and try again."
+msgstr ""
+
+#: src/schemes.c:672
+msgid " Generated by sweep. Do not edit"
+msgstr ""
+
+#: src/schemes.c:738
+#, fuzzy
+msgid "Color scheme editor ..."
+msgstr "Цветовая схема"
+
+#: src/schemes.c:800
+#, fuzzy
+msgid "Sweep: Color Scheme Options"
+msgstr "Sweep: параметры сохранения в Speex"
+
+#: src/schemes.c:1020
+#, fuzzy
+msgid "Color scheme editor"
+msgstr "Цветовая схема"
+
+#: src/schemes.c:1027
+#, fuzzy
+msgid "General scheme options"
+msgstr "Запомнить эти параметры"
+
+#: src/schemes.c:1039
+msgid "<b>Selected scheme</b>"
+msgstr ""
+
+#: src/schemes.c:1051 src/schemes.c:1052
+msgid "Select a color scheme to edit"
+msgstr ""
+
+#: src/schemes.c:1061 src/schemes.c:1062
+#, fuzzy
+msgid "Create a new scheme"
+msgstr "Создать новый файл"
+
+#: src/schemes.c:1072 src/schemes.c:1073
+msgid "Create a copy of the selected scheme"
+msgstr ""
+
+#: src/schemes.c:1085 src/schemes.c:1086
+#, fuzzy
+msgid "Delete the selected scheme"
+msgstr "Вернуться к отмеченному уровню"
+
+#: src/schemes.c:1098 src/schemes.c:1099
+msgid "Toggle whether the selected scheme is the default"
+msgstr ""
+
+#: src/schemes.c:1125 src/schemes.c:1126
+msgid "Select an element to edit it"
+msgstr ""
+
+#: src/schemes.c:1193
+#, fuzzy
+msgid "Automatic scheme selection"
+msgstr "Удвоить выделение"
+
+#: src/schemes.c:1203
+msgid "Always use the default scheme"
+msgstr ""
+
+#: src/schemes.c:1210
+msgid "Select scheme by filename"
+msgstr ""
+
+#: src/schemes.c:1218
+#, fuzzy
+msgid "Select random scheme"
+msgstr "Ничего не выделять"
+
+#: src/schemes.c:1283
+#, fuzzy
+msgid "Color source:"
+msgstr "Цветовая схема"
+
+#: src/schemes.c:1289
+#, fuzzy
+msgid "Custom color"
+msgstr "Своё значение: "
+
+#: src/schemes.c:1290
+msgid "GtkStyle color"
+msgstr ""
+
+#: src/schemes.c:1291
+msgid "Disable this element"
+msgstr ""
+
+#: src/schemes.c:1315
+msgid "Foreground"
+msgstr ""
+
+#: src/schemes.c:1320
+msgid "Background"
+msgstr ""
+
+#: src/schemes.c:1325
+#, fuzzy
+msgid "Light"
+msgstr "Правый"
+
+#: src/schemes.c:1330
+#, fuzzy
+msgid "Mid"
+msgstr "Смешать"
+
+#: src/schemes.c:1335
+msgid "Dark"
+msgstr ""
+
+#: src/schemes.c:1340
+#, fuzzy
+msgid "Base"
+msgstr "Приостановить"
+
+#: src/schemes.c:1345
+msgid "Text"
+msgstr ""
+
+#: src/schemes.c:1350
+msgid "Text AA"
+msgstr ""
+
+#: src/schemes.c:1355
+#, fuzzy
+msgid "Black"
+msgstr "Воспроизведение"
+
+#: src/schemes.c:1360
+msgid "White"
+msgstr ""
+
+#: src/schemes.c:1365
+msgid "DISABLED"
+msgstr ""
 
 #: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
@@ -1689,42 +1840,42 @@ msgstr ""
 "Запомниьт это значение  частоты дискретизации и конфигурацию каналов для "
 "создания новых файлов"
 
-#: src/sweep_sample.c:520
+#: src/sweep_sample.c:523
 msgid "Reset to the last remembered format for new files."
 msgstr "Вернуться к последнему запомненному формату новых файлов"
 
-#: src/sweep_sample.c:531
+#: src/sweep_sample.c:534
 msgid "Set to the default format for new files."
 msgstr "Установить стандартное значение формата новых файлов"
 
-#: src/sweep_sample.c:547
+#: src/sweep_sample.c:550
 msgid ""
 "Indicates the amount of data memory which will be allocated for the selected "
 "duration and format. All audio data is processed internally in 32 bit "
 "floating point format."
 msgstr ""
 
-#: src/sweep_sample.c:562
+#: src/sweep_sample.c:565
 msgid "Data memory:"
 msgstr "Объём данных:"
 
-#: src/sweep_sample.c:575
+#: src/sweep_sample.c:578
 msgid "Create"
 msgstr "Создать"
 
-#: src/sweep_sample.c:596
+#: src/sweep_sample.c:599
 msgid "Don't create"
 msgstr "Не создавать"
 
-#: src/sweep_sample.c:773
+#: src/sweep_sample.c:776
 msgid "Excellent!!!"
 msgstr "Великолепно!!!"
 
-#: src/sweep_sample.c:795
+#: src/sweep_sample.c:798
 msgid "Files unsaved"
 msgstr "Файлы не сохранены"
 
-#: src/sweep_sample.c:796
+#: src/sweep_sample.c:799
 msgid ""
 "Some files are unsaved. If you quit, all changes will be lost.\n"
 "\n"
@@ -1735,15 +1886,15 @@ msgstr ""
 "\n"
 "Вы уверены, что хотите выйти из программы?"
 
-#: src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/sweep_sample.c:802 src/sweep_sample.c:811
 msgid "Don't quit"
 msgstr "Не выходить"
 
-#: src/sweep_sample.c:804
+#: src/sweep_sample.c:807
 msgid "Files playing"
 msgstr "Воспроизводимые файлы"
 
-#: src/sweep_sample.c:805
+#: src/sweep_sample.c:808
 msgid ""
 "No files are unsaved, but some files are currently playing.\n"
 "\n"
@@ -1753,74 +1904,74 @@ msgstr ""
 "сейчас воспроизводятся.\n"
 "Вы действительно хотите выйти?"
 
-#: src/sweep_sample.c:1466 src/view.c:1145
+#: src/sweep_sample.c:1469 src/view.c:1145
 msgid "Invert selection"
 msgstr "Перевернуть выделение"
 
-#: src/sweep_sample.c:1486 src/view.c:1153 src/view.c:1247
+#: src/sweep_sample.c:1489 src/view.c:1153 src/view.c:1247
 msgid "Select all"
 msgstr "Выделить всё"
 
-#: src/sweep_sample.c:1506 src/view.c:1161
+#: src/sweep_sample.c:1509 src/view.c:1161
 msgid "Select none"
 msgstr "Ничего не выделять"
 
-#: src/sweep_sample.c:1526
+#: src/sweep_sample.c:1529
 msgid "Halve selection"
 msgstr "Уменьшить выделение"
 
-#: src/sweep_sample.c:1546
+#: src/sweep_sample.c:1549
 msgid "Double selection"
 msgstr "Удвоить выделение"
 
-#: src/sweep_sample.c:1569
+#: src/sweep_sample.c:1572
 msgid "Selection left"
 msgstr "Выделить влево"
 
-#: src/sweep_sample.c:1591
+#: src/sweep_sample.c:1594
 msgid "Selection right"
 msgstr "Выделить вправо"
 
-#: src/sweep_sample.c:1679
+#: src/sweep_sample.c:1682
 #, fuzzy, c-format
 msgid "Insert selection ["
 msgstr "Перевернуть выделение"
 
-#: src/sweep_sample.c:1732
+#: src/sweep_sample.c:1735
 #, fuzzy, c-format
 msgid "Subtract selection ["
 msgstr "Удвоить выделение"
 
-#: src/sweep_sample.c:1777
+#: src/sweep_sample.c:1780
 #, fuzzy, c-format
 msgid "Set selection ["
 msgstr "Новое выделение"
 
-#: src/sweep_sample.c:1876
+#: src/sweep_sample.c:1880
 msgid "Sweep: File properties"
 msgstr "Sweep: Свойства файла"
 
-#: src/sweep_sample.c:1900
+#: src/sweep_sample.c:1904
 #, fuzzy
 msgid "Filename: "
 msgstr "Имя файла:"
 
-#: src/sweep_sample.c:1902
+#: src/sweep_sample.c:1906
 #, fuzzy
 msgid "Sampling rate: "
 msgstr "Частота дискретизации:"
 
-#: src/sweep_sample.c:1904
+#: src/sweep_sample.c:1908
 #, fuzzy
 msgid "Channels: "
 msgstr "Каналы:"
 
-#: src/sweep_sample.c:1906
+#: src/sweep_sample.c:1910
 #, fuzzy
 msgid "Data memory: "
 msgstr "Объём данных:"
 
-#: src/sweep_sample.c:1908
+#: src/sweep_sample.c:1912
 #, fuzzy
 msgid "Duration: "
 msgstr "Продолжительность:"
@@ -1854,31 +2005,84 @@ msgstr "Нечего отменить"
 msgid "Nothing to redo"
 msgstr "Нечего повторить"
 
-#: src/undo_dialog.c:159
+#: src/sweep-scheme.c:41
+msgid "Wave foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:42
+msgid "Wave background"
+msgstr ""
+
+#: src/sweep-scheme.c:43
+msgid "Scroll trough foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:44
+msgid "Scroll trough background"
+msgstr ""
+
+#: src/sweep-scheme.c:45
+#, fuzzy
+msgid "Playback cursor"
+msgstr "Воспроизведение"
+
+#: src/sweep-scheme.c:46
+#, fuzzy
+msgid "Record cursor"
+msgstr "Записанный звук"
+
+#: src/sweep-scheme.c:47
+#, fuzzy
+msgid "Selection outline"
+msgstr "Выделить влево"
+
+#: src/sweep-scheme.c:48
+#, fuzzy
+msgid "Selection"
+msgstr "Выделить"
+
+#: src/sweep-scheme.c:49
+#, fuzzy
+msgid "Min/Max"
+msgstr "Смешать"
+
+#: src/sweep-scheme.c:50
+msgid "Zero crossing"
+msgstr ""
+
+#: src/sweep-scheme.c:51
+msgid "Wave highlight"
+msgstr ""
+
+#: src/sweep-scheme.c:52
+msgid "Wave lowlight"
+msgstr ""
+
+#: src/undo_dialog.c:157
 msgid "Original data"
 msgstr "Первоначальные данные"
 
-#: src/undo_dialog.c:344
+#: src/undo_dialog.c:299
 msgid "Action"
 msgstr "Действие"
 
-#: src/undo_dialog.c:351
+#: src/undo_dialog.c:307
 msgid "Sweep: History"
 msgstr "Sweep: История изменений"
 
-#: src/undo_dialog.c:393 src/view.c:550 src/view.c:1827
+#: src/undo_dialog.c:354 src/undo_dialog.c:356 src/view.c:550 src/view.c:1827
 msgid "Undo"
 msgstr "Отменить"
 
-#: src/undo_dialog.c:401 src/view.c:554 src/view.c:1836
+#: src/undo_dialog.c:370 src/undo_dialog.c:372 src/view.c:554 src/view.c:1836
 msgid "Redo"
 msgstr "Повторить"
 
-#: src/undo_dialog.c:426
+#: src/undo_dialog.c:406
 msgid "Revert to selected state"
 msgstr "Вернуться к отмеченному уровню"
 
-#: src/undo_dialog.c:452 src/view.c:527 src/view.c:3392
+#: src/undo_dialog.c:436 src/view.c:527 src/view.c:3392
 msgid "Close"
 msgstr "Закрыть"
 
@@ -2464,6 +2668,10 @@ msgstr ""
 #: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Show color scheme editor ..."
+#~ msgstr "Показать историю изменений..."
 
 #~ msgid "Sweep: Load file"
 #~ msgstr "Sweep: открыть файл"

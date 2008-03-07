@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.2\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2008-02-26 16:21+0000\n"
+"POT-Creation-Date: 2008-03-07 08:34+0000\n"
 "PO-Revision-Date: 2004-04-26 12:31+0200\n"
 "Last-Translator: Norihiro YONEDA <aoba@avis.ne.jp>\n"
 "Language-Team: Puppy Linux Japanese\n"
@@ -127,16 +127,14 @@ msgstr "現在: %d チャンネル"
 msgid "Output channels"
 msgstr "出力チャンネル"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
-#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:148
-#: src/question_dialogs.c:241 src/question_dialogs.c:293
-#: src/sweep_sample.c:1919 src/undo_dialog.c:440
+#: src/channelops.c:231 src/channelops.c:714 src/file_sndfile1.c:285
+#: src/question_dialogs.c:146 src/question_dialogs.c:227
+#: src/question_dialogs.c:279 src/undo_dialog.c:422
 msgid "OK"
 msgstr "OK"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
-#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:177
-#: src/view.c:545 src/view.c:2633
+#: src/channelops.c:242 src/channelops.c:725 src/file_sndfile1.c:295
+#: src/question_dialogs.c:169 src/view.c:545 src/view.c:2633
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -169,69 +167,69 @@ msgstr "%d から %d チャンネルに変換"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: チャンネルを追加/削除"
 
-#: src/driver.c:363
+#: src/driver.c:369
 msgid "Sweep: audio device configuration"
 msgstr "Sweep: オーディオデバイスの設定"
 
-#: src/driver.c:404
+#: src/driver.c:411
 msgid "Changes to device settings will take effect on next playback."
 msgstr "デバイス設定の変更は次の再生から有効になります。"
 
-#: src/driver.c:418
+#: src/driver.c:425
 msgid "Device name"
 msgstr "デバイス名"
 
-#: src/driver.c:424
+#: src/driver.c:431
 msgid "Set the main device for playback and recording"
 msgstr "再生録音用メインデバイスを設定"
 
-#: src/driver.c:434
+#: src/driver.c:441
 msgid "Main device:"
 msgstr "メインデバイス"
 
-#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
+#: src/driver.c:455 src/driver.c:643 src/samplerate.c:570 src/schemes.c:1095
 msgid "Default"
 msgstr "デフォルト"
 
-#: src/driver.c:461
+#: src/driver.c:468
 msgid "Use a different device for monitoring"
 msgstr "モニタ用に別のデバイスを使う"
 
-#: src/driver.c:473
+#: src/driver.c:480
 msgid "Monitor output:"
 msgstr "モニタ出力"
 
-#: src/driver.c:498
+#: src/driver.c:505
 msgid "Swap"
 msgstr "入れ換え"
 
-#: src/driver.c:506
+#: src/driver.c:513
 msgid "Swap main and monitor devices."
 msgstr "メインとモニタのデバイスを入れ換える"
 
-#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
-#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:512
+#: src/driver.c:524 src/driver.c:628 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:514
 msgid "Reset"
 msgstr "リセット"
 
-#: src/driver.c:523
+#: src/driver.c:533
 msgid "Reset to the last remembered device names."
 msgstr "最後に記憶されたデバイス名にリセット"
 
-#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
-#: src/param.c:747 src/sweep_sample.c:523
+#: src/driver.c:539 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:748 src/sweep_sample.c:526
 msgid "Defaults"
 msgstr "デフォルト"
 
-#: src/driver.c:537
+#: src/driver.c:547
 msgid "Set to default device names."
 msgstr "デフォルトデバイス名に設定"
 
-#: src/driver.c:548
+#: src/driver.c:558
 msgid "Device buffering"
 msgstr "デバイスバッファリング"
 
-#: src/driver.c:558
+#: src/driver.c:568
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -239,7 +237,7 @@ msgstr ""
 "低遅延 /\n"
 "高ドロップアウト"
 
-#: src/driver.c:580
+#: src/driver.c:590
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -247,7 +245,7 @@ msgstr ""
 "高遅延 /\n"
 "低ドロップアウト"
 
-#: src/driver.c:584
+#: src/driver.c:594
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -261,15 +259,15 @@ msgstr ""
 "低い値は反応を改善しますが、重い負荷のシステム上では音質を低下させるかも知れ"
 "ません。"
 
-#: src/driver.c:603
+#: src/driver.c:613
 msgid "Remember these options"
 msgstr "このオプションを記憶する"
 
-#: src/driver.c:624
+#: src/driver.c:637
 msgid "Reset to the last remembered device buffering."
 msgstr "最後に記憶されたデバイスバッファリングにリセット。"
 
-#: src/driver.c:638
+#: src/driver.c:651
 msgid "Set to default device buffering."
 msgstr "デフォルトのデバイスバッファリングに設定。"
 
@@ -391,7 +389,7 @@ msgstr ""
 msgid "Revert file"
 msgstr "ファイルを戻す"
 
-#: src/file_dialogs.c:375 src/view.c:511
+#: src/file_dialogs.c:375 src/schemes.c:1161 src/view.c:511
 msgid "Revert"
 msgstr "戻す"
 
@@ -468,7 +466,7 @@ msgid "File modified"
 msgstr "ファイルは変更されました"
 
 #: src/file_dialogs.c:894 src/file_speex.c:2127 src/file_vorbis.c:1611
-#: src/view.c:503 src/view.c:1722
+#: src/schemes.c:1176 src/view.c:503 src/view.c:1722
 msgid "Save"
 msgstr "保存"
 
@@ -1099,44 +1097,44 @@ msgstr "早送り"
 msgid "Go to the end"
 msgstr "最後に飛ぶ"
 
-#: src/interface.c:327
+#: src/interface.c:358
 msgid "Sweep"
 msgstr "Sweep"
 
-#: src/interface.c:352 src/view.c:448
+#: src/interface.c:383 src/view.c:448
 msgid "File"
 msgstr "ファイル"
 
-#: src/interface.c:357
+#: src/interface.c:388
 msgid "New"
 msgstr "新規"
 
-#: src/interface.c:366
+#: src/interface.c:397
 msgid "Open"
 msgstr "開く"
 
-#: src/interface.c:375 src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/interface.c:406 src/sweep_sample.c:802 src/sweep_sample.c:811
 #: src/view.c:531
 msgid "Quit"
 msgstr "終了"
 
-#: src/interface.c:386 src/view.c:1012
+#: src/interface.c:417 src/view.c:1012
 msgid "Help"
 msgstr "ヘルプ"
 
-#: src/interface.c:391
+#: src/interface.c:422
 msgid "About..."
 msgstr "バージョン情報..."
 
-#: src/interface.c:414 src/view.c:620
+#: src/interface.c:445 src/view.c:620
 msgid "Select"
 msgstr "選択"
 
-#: src/interface.c:415
+#: src/interface.c:446
 msgid "Select regions of a sample"
 msgstr "サンプリング音の領域選択"
 
-#: src/interface.c:416
+#: src/interface.c:447
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -1146,27 +1144,27 @@ msgstr ""
 "して効果を適用できます。不連続な領域をセレクションに追加するには選択する間、"
 "シフトキーを押さえていて下さい。"
 
-#: src/interface.c:433
+#: src/interface.c:464
 msgid "Move"
 msgstr "移動"
 
-#: src/interface.c:434
+#: src/interface.c:465
 msgid "Move regions in a sample"
 msgstr "サンプリング音に領域を移動"
 
-#: src/interface.c:435
+#: src/interface.c:466
 msgid "With this tool you can move selected regions of a sample."
 msgstr "このツールでサンプリング音の選択領域を移動できます。"
 
-#: src/interface.c:447
+#: src/interface.c:478
 msgid "Scrub"
 msgstr "スクラブ"
 
-#: src/interface.c:448
+#: src/interface.c:479
 msgid "Locate sounds directly"
 msgstr "音源を直接示す"
 
-#: src/interface.c:449
+#: src/interface.c:480
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
@@ -1174,15 +1172,15 @@ msgstr ""
 "再生マーカをサンプリング音に置いて表示の好きなところでクリックすると、再生位"
 "置は簡単にサンプリング音のその部分に移動します。"
 
-#: src/interface.c:466
+#: src/interface.c:497
 msgid "Zoom"
 msgstr "ズーム"
 
-#: src/interface.c:467
+#: src/interface.c:498
 msgid "Zoom in & out"
 msgstr "ズームインとズームアウト"
 
-#: src/interface.c:468
+#: src/interface.c:499
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
@@ -1190,27 +1188,27 @@ msgstr ""
 "表示のズームイン、アウト。サンプリング音の一部分を拡大するには、表示のどこか"
 "をクリックして下さい。シフトキーを押してクリックすると縮小します。"
 
-#: src/interface.c:484
+#: src/interface.c:515
 msgid "Pencil"
 msgstr "鉛筆"
 
-#: src/interface.c:485
+#: src/interface.c:516
 msgid "Edit PCM sample values"
 msgstr "PCMサンプル値を編集"
 
-#: src/interface.c:486
+#: src/interface.c:517
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr "個々のサンプルにズームした時、編集するにはクリックして下さい。"
 
-#: src/interface.c:497
+#: src/interface.c:528
 msgid "Noise"
 msgstr "ノイズ"
 
-#: src/interface.c:498
+#: src/interface.c:529
 msgid "Add noise"
 msgstr "ノイズを加える"
 
-#: src/interface.c:499
+#: src/interface.c:530
 msgid "Randomise PCM values"
 msgstr "PCM値をランダム化する"
 
@@ -1368,11 +1366,11 @@ msgstr "真"
 msgid "FALSE"
 msgstr "偽"
 
-#: src/param.c:738
+#: src/param.c:739
 msgid "Parameters"
 msgstr "パラメータ"
 
-#: src/param.c:769
+#: src/param.c:770
 msgid "Preview"
 msgstr "プレビュー"
 
@@ -1385,57 +1383,57 @@ msgstr "ゲイン開始"
 msgid "Gain"
 msgstr "ゲイン"
 
-#: src/paste_dialogs.c:230
+#: src/paste_dialogs.c:231
 msgid "Sweep: Paste crossfade"
 msgstr "Sweep: クロスフェード貼り付け"
 
-#: src/paste_dialogs.c:232
+#: src/paste_dialogs.c:233
 msgid "Sweep: Paste mix"
 msgstr "Sweep: ミックス貼り付け"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Source"
 msgstr "ソース"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Clipboard"
 msgstr "クリップボード"
 
-#: src/paste_dialogs.c:279 src/paste_dialogs.c:318
+#: src/paste_dialogs.c:280 src/paste_dialogs.c:319
 msgid "End gain"
 msgstr "ゲイン終了"
 
-#: src/paste_dialogs.c:287 src/paste_dialogs.c:326
+#: src/paste_dialogs.c:288 src/paste_dialogs.c:327
 msgid "Invert phase"
 msgstr "位相反転"
 
-#: src/paste_dialogs.c:295
+#: src/paste_dialogs.c:296
 msgid "Destination"
 msgstr "行き先"
 
-#: src/paste_dialogs.c:345
+#: src/paste_dialogs.c:346
 msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
 msgstr "貼り付ける事ができる最大長クリップボードの全体の演奏時間を示します。"
 
-#: src/paste_dialogs.c:362
+#: src/paste_dialogs.c:363
 msgid "Clipboard duration:"
 msgstr "演奏時時間をクリップボードへ："
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Crossfade"
 msgstr "クロスフェード"
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Mix"
 msgstr "ミックス"
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't crossfade"
 msgstr "クロスフェードしない"
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't mix"
 msgstr "ミックスしない"
 
@@ -1476,7 +1474,7 @@ msgstr "録音するセレクションがありません"
 msgid "Sweep: Record"
 msgstr "Sweep: 録音"
 
-#: src/record.c:459 src/undo_dialog.c:376
+#: src/record.c:459 src/undo_dialog.c:334
 msgid "File:"
 msgstr "ファイル："
 
@@ -1583,6 +1581,160 @@ msgstr "リサンプル"
 #: src/samplerate.c:633
 msgid "Don't resample"
 msgstr "リサンプルしない"
+
+#: src/schemes.c:455
+msgid "Choose a name for this scheme"
+msgstr ""
+
+#: src/schemes.c:471
+#, fuzzy
+msgid "Copy of "
+msgstr "コピー"
+
+#: src/schemes.c:483
+msgid ""
+"A scheme with that name already exists.\n"
+"Please choose another name and try again."
+msgstr ""
+
+#: src/schemes.c:672
+msgid " Generated by sweep. Do not edit"
+msgstr ""
+
+#: src/schemes.c:738
+#, fuzzy
+msgid "Color scheme editor ..."
+msgstr "カラースキーム"
+
+#: src/schemes.c:800
+#, fuzzy
+msgid "Sweep: Color Scheme Options"
+msgstr "Sweep: Speex保存オプション"
+
+#: src/schemes.c:1020
+#, fuzzy
+msgid "Color scheme editor"
+msgstr "カラースキーム"
+
+#: src/schemes.c:1027
+#, fuzzy
+msgid "General scheme options"
+msgstr "このオプションを記憶する"
+
+#: src/schemes.c:1039
+msgid "<b>Selected scheme</b>"
+msgstr ""
+
+#: src/schemes.c:1051 src/schemes.c:1052
+msgid "Select a color scheme to edit"
+msgstr ""
+
+#: src/schemes.c:1061 src/schemes.c:1062
+#, fuzzy
+msgid "Create a new scheme"
+msgstr "新しいファイルの作成"
+
+#: src/schemes.c:1072 src/schemes.c:1073
+msgid "Create a copy of the selected scheme"
+msgstr ""
+
+#: src/schemes.c:1085 src/schemes.c:1086
+#, fuzzy
+msgid "Delete the selected scheme"
+msgstr "選択状態に戻す"
+
+#: src/schemes.c:1098 src/schemes.c:1099
+msgid "Toggle whether the selected scheme is the default"
+msgstr ""
+
+#: src/schemes.c:1125 src/schemes.c:1126
+msgid "Select an element to edit it"
+msgstr ""
+
+#: src/schemes.c:1193
+#, fuzzy
+msgid "Automatic scheme selection"
+msgstr "セレクションを取り去る ["
+
+#: src/schemes.c:1203
+msgid "Always use the default scheme"
+msgstr ""
+
+#: src/schemes.c:1210
+#, fuzzy
+msgid "Select scheme by filename"
+msgstr "エネルギーで選択"
+
+#: src/schemes.c:1218
+#, fuzzy
+msgid "Select random scheme"
+msgstr "選択しない"
+
+#: src/schemes.c:1283
+#, fuzzy
+msgid "Color source:"
+msgstr "カラースキーム"
+
+#: src/schemes.c:1289
+#, fuzzy
+msgid "Custom color"
+msgstr "カスタム："
+
+#: src/schemes.c:1290
+msgid "GtkStyle color"
+msgstr ""
+
+#: src/schemes.c:1291
+msgid "Disable this element"
+msgstr ""
+
+#: src/schemes.c:1315
+msgid "Foreground"
+msgstr ""
+
+#: src/schemes.c:1320
+msgid "Background"
+msgstr ""
+
+#: src/schemes.c:1325
+#, fuzzy
+msgid "Light"
+msgstr "右"
+
+#: src/schemes.c:1330
+#, fuzzy
+msgid "Mid"
+msgstr "ミックス"
+
+#: src/schemes.c:1335
+msgid "Dark"
+msgstr ""
+
+#: src/schemes.c:1340
+#, fuzzy
+msgid "Base"
+msgstr "一時停止"
+
+#: src/schemes.c:1345
+msgid "Text"
+msgstr ""
+
+#: src/schemes.c:1350
+msgid "Text AA"
+msgstr ""
+
+#: src/schemes.c:1355
+#, fuzzy
+msgid "Black"
+msgstr "ブラックワトル"
+
+#: src/schemes.c:1360
+msgid "White"
+msgstr ""
+
+#: src/schemes.c:1365
+msgid "DISABLED"
+msgstr ""
 
 #: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
@@ -1700,15 +1852,15 @@ msgid ""
 "Remember this sampling rate and channel configuration for creating new files."
 msgstr "新規ファイル作成用にこのサンプリングレートとチャンネル設定を記憶する。"
 
-#: src/sweep_sample.c:520
+#: src/sweep_sample.c:523
 msgid "Reset to the last remembered format for new files."
 msgstr "新規ファイル用に最後に記憶したフォーマットにリセットする。"
 
-#: src/sweep_sample.c:531
+#: src/sweep_sample.c:534
 msgid "Set to the default format for new files."
 msgstr "新規ファイル用にデフォルトフォーマットにリセットする。"
 
-#: src/sweep_sample.c:547
+#: src/sweep_sample.c:550
 msgid ""
 "Indicates the amount of data memory which will be allocated for the selected "
 "duration and format. All audio data is processed internally in 32 bit "
@@ -1718,27 +1870,27 @@ msgstr ""
 "すべてのオーディオデータは、32ビットの浮動小数点フォーマットで内部的に処理さ"
 "れます。"
 
-#: src/sweep_sample.c:562
+#: src/sweep_sample.c:565
 msgid "Data memory:"
 msgstr "データメモリ："
 
-#: src/sweep_sample.c:575
+#: src/sweep_sample.c:578
 msgid "Create"
 msgstr "作成"
 
-#: src/sweep_sample.c:596
+#: src/sweep_sample.c:599
 msgid "Don't create"
 msgstr "作成しない"
 
-#: src/sweep_sample.c:773
+#: src/sweep_sample.c:776
 msgid "Excellent!!!"
 msgstr "すばらしい！！！"
 
-#: src/sweep_sample.c:795
+#: src/sweep_sample.c:798
 msgid "Files unsaved"
 msgstr "未保存ファイル"
 
-#: src/sweep_sample.c:796
+#: src/sweep_sample.c:799
 msgid ""
 "Some files are unsaved. If you quit, all changes will be lost.\n"
 "\n"
@@ -1749,15 +1901,15 @@ msgstr ""
 "\n"
 "本当に終了しますか？"
 
-#: src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/sweep_sample.c:802 src/sweep_sample.c:811
 msgid "Don't quit"
 msgstr "終了しない"
 
-#: src/sweep_sample.c:804
+#: src/sweep_sample.c:807
 msgid "Files playing"
 msgstr "再生ファイル"
 
-#: src/sweep_sample.c:805
+#: src/sweep_sample.c:808
 msgid ""
 "No files are unsaved, but some files are currently playing.\n"
 "\n"
@@ -1767,70 +1919,70 @@ msgstr ""
 "\n"
 "本当に終了しますか？"
 
-#: src/sweep_sample.c:1466 src/view.c:1145
+#: src/sweep_sample.c:1469 src/view.c:1145
 msgid "Invert selection"
 msgstr "セレクションの反転"
 
-#: src/sweep_sample.c:1486 src/view.c:1153 src/view.c:1247
+#: src/sweep_sample.c:1489 src/view.c:1153 src/view.c:1247
 msgid "Select all"
 msgstr "全選択"
 
-#: src/sweep_sample.c:1506 src/view.c:1161
+#: src/sweep_sample.c:1509 src/view.c:1161
 msgid "Select none"
 msgstr "選択しない"
 
-#: src/sweep_sample.c:1526
+#: src/sweep_sample.c:1529
 msgid "Halve selection"
 msgstr "セレクションを半分に切る"
 
-#: src/sweep_sample.c:1546
+#: src/sweep_sample.c:1549
 msgid "Double selection"
 msgstr "セレクションを2倍にする"
 
-#: src/sweep_sample.c:1569
+#: src/sweep_sample.c:1572
 msgid "Selection left"
 msgstr "セレクションを左へ"
 
-#: src/sweep_sample.c:1591
+#: src/sweep_sample.c:1594
 msgid "Selection right"
 msgstr "セレクションを右へ"
 
-#: src/sweep_sample.c:1679
+#: src/sweep_sample.c:1682
 #, c-format
 msgid "Insert selection ["
 msgstr "セレクションを挿入 ["
 
-#: src/sweep_sample.c:1732
+#: src/sweep_sample.c:1735
 #, c-format
 msgid "Subtract selection ["
 msgstr "セレクションを取り去る ["
 
-#: src/sweep_sample.c:1777
+#: src/sweep_sample.c:1780
 #, c-format
 msgid "Set selection ["
 msgstr "セレクションを設定 ["
 
-#: src/sweep_sample.c:1876
+#: src/sweep_sample.c:1880
 msgid "Sweep: File properties"
 msgstr "Sweep: ファイルプロパティ"
 
-#: src/sweep_sample.c:1900
+#: src/sweep_sample.c:1904
 msgid "Filename: "
 msgstr "ファイル名："
 
-#: src/sweep_sample.c:1902
+#: src/sweep_sample.c:1906
 msgid "Sampling rate: "
 msgstr "サンプリングレート："
 
-#: src/sweep_sample.c:1904
+#: src/sweep_sample.c:1908
 msgid "Channels: "
 msgstr "チャンネル："
 
-#: src/sweep_sample.c:1906
+#: src/sweep_sample.c:1910
 msgid "Data memory: "
 msgstr "データメモリ："
 
-#: src/sweep_sample.c:1908
+#: src/sweep_sample.c:1912
 msgid "Duration: "
 msgstr "演奏時間："
 
@@ -1863,31 +2015,84 @@ msgstr "元に戻すものはありません"
 msgid "Nothing to redo"
 msgstr "リドゥするものはありません"
 
-#: src/undo_dialog.c:159
+#: src/sweep-scheme.c:41
+msgid "Wave foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:42
+msgid "Wave background"
+msgstr ""
+
+#: src/sweep-scheme.c:43
+msgid "Scroll trough foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:44
+msgid "Scroll trough background"
+msgstr ""
+
+#: src/sweep-scheme.c:45
+#, fuzzy
+msgid "Playback cursor"
+msgstr "再生"
+
+#: src/sweep-scheme.c:46
+#, fuzzy
+msgid "Record cursor"
+msgstr "録音された音"
+
+#: src/sweep-scheme.c:47
+#, fuzzy
+msgid "Selection outline"
+msgstr "セレクションを左へ"
+
+#: src/sweep-scheme.c:48
+#, fuzzy
+msgid "Selection"
+msgstr "選択"
+
+#: src/sweep-scheme.c:49
+#, fuzzy
+msgid "Min/Max"
+msgstr "ミックス"
+
+#: src/sweep-scheme.c:50
+msgid "Zero crossing"
+msgstr ""
+
+#: src/sweep-scheme.c:51
+msgid "Wave highlight"
+msgstr ""
+
+#: src/sweep-scheme.c:52
+msgid "Wave lowlight"
+msgstr ""
+
+#: src/undo_dialog.c:157
 msgid "Original data"
 msgstr "オリジナルデータ"
 
-#: src/undo_dialog.c:344
+#: src/undo_dialog.c:299
 msgid "Action"
 msgstr "アクション"
 
-#: src/undo_dialog.c:351
+#: src/undo_dialog.c:307
 msgid "Sweep: History"
 msgstr "Sweep: 履歴"
 
-#: src/undo_dialog.c:393 src/view.c:550 src/view.c:1827
+#: src/undo_dialog.c:354 src/undo_dialog.c:356 src/view.c:550 src/view.c:1827
 msgid "Undo"
 msgstr "元に戻す"
 
-#: src/undo_dialog.c:401 src/view.c:554 src/view.c:1836
+#: src/undo_dialog.c:370 src/undo_dialog.c:372 src/view.c:554 src/view.c:1836
 msgid "Redo"
 msgstr "リドゥ"
 
-#: src/undo_dialog.c:426
+#: src/undo_dialog.c:406
 msgid "Revert to selected state"
 msgstr "選択状態に戻す"
 
-#: src/undo_dialog.c:452 src/view.c:527 src/view.c:3392
+#: src/undo_dialog.c:436 src/view.c:527 src/view.c:3392
 msgid "Close"
 msgstr "閉じる"
 
@@ -2474,6 +2679,10 @@ msgstr "線形フェードをセレクションに適用する。無音からフ
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "線形フェードをセレクションに適用する。無音へフェードアウト。"
 
+#, fuzzy
+#~ msgid "Show color scheme editor ..."
+#~ msgstr "履歴を表示"
+
 #~ msgid "Decoder Red"
 #~ msgstr "デコーダレッド"
 
@@ -2485,9 +2694,6 @@ msgstr "線形フェードをセレクションに適用する。無音へフェ
 
 #~ msgid "Coogee Bay Blue"
 #~ msgstr "クージーベイブルー"
-
-#~ msgid "Blackwattle"
-#~ msgstr "ブラックワトル"
 
 #~ msgid "Frigid"
 #~ msgstr "フリジッド"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.9.2\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2008-02-26 16:21+0000\n"
+"POT-Creation-Date: 2008-03-07 08:34+0000\n"
 "PO-Revision-Date: 2007-12-24 19:13+0200\n"
 "Last-Translator: Yuri Bongiorno http://yuri.webhop.org\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -127,16 +127,14 @@ msgstr "Attualmente: %d canali"
 msgid "Output channels"
 msgstr "Output canali"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
-#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:148
-#: src/question_dialogs.c:241 src/question_dialogs.c:293
-#: src/sweep_sample.c:1919 src/undo_dialog.c:440
+#: src/channelops.c:231 src/channelops.c:714 src/file_sndfile1.c:285
+#: src/question_dialogs.c:146 src/question_dialogs.c:227
+#: src/question_dialogs.c:279 src/undo_dialog.c:422
 msgid "OK"
 msgstr "Ok"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
-#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:177
-#: src/view.c:545 src/view.c:2633
+#: src/channelops.c:242 src/channelops.c:725 src/file_sndfile1.c:295
+#: src/question_dialogs.c:169 src/view.c:545 src/view.c:2633
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -169,71 +167,71 @@ msgstr "Converte da %d a %d canali"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: aggiunge/rimuove canali"
 
-#: src/driver.c:363
+#: src/driver.c:369
 msgid "Sweep: audio device configuration"
 msgstr "Sweep: configurazione del device audio"
 
-#: src/driver.c:404
+#: src/driver.c:411
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
 "Le modifiche alle impostazioni del device avranno effetto alla prossima "
 "riproduzione."
 
-#: src/driver.c:418
+#: src/driver.c:425
 msgid "Device name"
 msgstr "Nome device:"
 
-#: src/driver.c:424
+#: src/driver.c:431
 msgid "Set the main device for playback and recording"
 msgstr "Imposta il device principale di riproduzione e di registrazione"
 
-#: src/driver.c:434
+#: src/driver.c:441
 msgid "Main device:"
 msgstr "Device principale:"
 
-#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
+#: src/driver.c:455 src/driver.c:643 src/samplerate.c:570 src/schemes.c:1095
 msgid "Default"
 msgstr "Predefinito"
 
-#: src/driver.c:461
+#: src/driver.c:468
 msgid "Use a different device for monitoring"
 msgstr "Usa un diverso device per il preascolto"
 
-#: src/driver.c:473
+#: src/driver.c:480
 msgid "Monitor output:"
 msgstr "Output di preascolto:"
 
-#: src/driver.c:498
+#: src/driver.c:505
 msgid "Swap"
 msgstr "Scambia"
 
-#: src/driver.c:506
+#: src/driver.c:513
 msgid "Swap main and monitor devices."
 msgstr "Scambia il device principale con quello di preascolto."
 
-#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
-#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:512
+#: src/driver.c:524 src/driver.c:628 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:514
 msgid "Reset"
 msgstr "Reimposta"
 
-#: src/driver.c:523
+#: src/driver.c:533
 msgid "Reset to the last remembered device names."
 msgstr "Ritorna agli ultimi nomi di device memorizzati."
 
-#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
-#: src/param.c:747 src/sweep_sample.c:523
+#: src/driver.c:539 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:748 src/sweep_sample.c:526
 msgid "Defaults"
 msgstr "Predefiniti"
 
-#: src/driver.c:537
+#: src/driver.c:547
 msgid "Set to default device names."
 msgstr "Imposta i nomi di device predefiniti."
 
-#: src/driver.c:548
+#: src/driver.c:558
 msgid "Device buffering"
 msgstr "Device buffering"
 
-#: src/driver.c:558
+#: src/driver.c:568
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -241,7 +239,7 @@ msgstr ""
 "Bassa latenza /\n"
 "Più interruzioni"
 
-#: src/driver.c:580
+#: src/driver.c:590
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -249,7 +247,7 @@ msgstr ""
 "Alta latenza /\n"
 "Meno interruzioni"
 
-#: src/driver.c:584
+#: src/driver.c:594
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -264,15 +262,15 @@ msgstr ""
 "Bassi valori migliorano la risposta, ma possono degradare la "
 "qualità dell'audio su sistemi caricati pesantemente."
 
-#: src/driver.c:603
+#: src/driver.c:613
 msgid "Remember these options"
 msgstr "Memorizza queste opzioni"
 
-#: src/driver.c:624
+#: src/driver.c:637
 msgid "Reset to the last remembered device buffering."
 msgstr "Ritorna all'ultimo device buffering memorizzato."
 
-#: src/driver.c:638
+#: src/driver.c:651
 msgid "Set to default device buffering."
 msgstr "Imposta il device buffering predefinito."
 
@@ -393,7 +391,7 @@ msgstr ""
 msgid "Revert file"
 msgstr "ripristina il file"
 
-#: src/file_dialogs.c:375 src/view.c:511
+#: src/file_dialogs.c:375 src/schemes.c:1161 src/view.c:511
 msgid "Revert"
 msgstr "Ripristina"
 
@@ -470,7 +468,7 @@ msgid "File modified"
 msgstr "File modificato"
 
 #: src/file_dialogs.c:894 src/file_speex.c:2127 src/file_vorbis.c:1611
-#: src/view.c:503 src/view.c:1722
+#: src/schemes.c:1176 src/view.c:503 src/view.c:1722
 msgid "Save"
 msgstr "Salva"
 
@@ -1112,44 +1110,44 @@ msgstr "Avanzamento veloce"
 msgid "Go to the end"
 msgstr "Va alla fine"
 
-#: src/interface.c:327
+#: src/interface.c:358
 msgid "Sweep"
 msgstr "Sweep"
 
-#: src/interface.c:352 src/view.c:448
+#: src/interface.c:383 src/view.c:448
 msgid "File"
 msgstr "File"
 
-#: src/interface.c:357
+#: src/interface.c:388
 msgid "New"
 msgstr "Nuovo"
 
-#: src/interface.c:366
+#: src/interface.c:397
 msgid "Open"
 msgstr "Apri"
 
-#: src/interface.c:375 src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/interface.c:406 src/sweep_sample.c:802 src/sweep_sample.c:811
 #: src/view.c:531
 msgid "Quit"
 msgstr "Esci"
 
-#: src/interface.c:386 src/view.c:1012
+#: src/interface.c:417 src/view.c:1012
 msgid "Help"
 msgstr "Aiuto"
 
-#: src/interface.c:391
+#: src/interface.c:422
 msgid "About..."
 msgstr "Informazioni"
 
-#: src/interface.c:414 src/view.c:620
+#: src/interface.c:445 src/view.c:620
 msgid "Select"
 msgstr "Seleziona"
 
-#: src/interface.c:415
+#: src/interface.c:446
 msgid "Select regions of a sample"
 msgstr "Seleziona le regioni di un campione"
 
-#: src/interface.c:416
+#: src/interface.c:447
 msgid ""
 "This tool allows you to select regions of a sample. You can then apply edits "
 "and effects to the: selected regions. Hold down shift whilst selecting to "
@@ -1160,29 +1158,29 @@ msgstr ""
 "selezionate. Tenere premuto «shift» durante la selezione per aggiungere "
 "regioni discontinue alla selezione."
 
-#: src/interface.c:433
+#: src/interface.c:464
 msgid "Move"
 msgstr "Sposta"
 
-#: src/interface.c:434
+#: src/interface.c:465
 msgid "Move regions in a sample"
 msgstr "Sposta le regioni in un campione"
 
-#: src/interface.c:435
+#: src/interface.c:466
 msgid "With this tool you can move selected regions of a sample."
 msgstr ""
 "Con questo strumento si possono spostare le regioni selezionate di un "
 "campione."
 
-#: src/interface.c:447
+#: src/interface.c:478
 msgid "Scrub"
 msgstr "Audioscandaglio"
 
-#: src/interface.c:448
+#: src/interface.c:479
 msgid "Locate sounds directly"
 msgstr "Localizza i suoni direttamente"
 
-#: src/interface.c:449
+#: src/interface.c:480
 msgid ""
 "Place the play marker on a sample. Click anywhere in a view to instantly "
 "move the playback position to that part of the sample."
@@ -1191,15 +1189,15 @@ msgstr ""
 "vista per muovere istantaneamente la posizione di riproduzione in quella "
 "parte del campione."
 
-#: src/interface.c:466
+#: src/interface.c:497
 msgid "Zoom"
 msgstr "Ingrandimento"
 
-#: src/interface.c:467
+#: src/interface.c:498
 msgid "Zoom in & out"
 msgstr "Aumenta e riduci ingrandimento"
 
-#: src/interface.c:468
+#: src/interface.c:499
 msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
@@ -1208,27 +1206,27 @@ msgstr ""
 "per aumentare l'ingrandimento in quella parte del campione. Per ridurlo, "
 "tenere premuto «shift» e cliccare."
 
-#: src/interface.c:484
+#: src/interface.c:515
 msgid "Pencil"
 msgstr "Matita"
 
-#: src/interface.c:485
+#: src/interface.c:516
 msgid "Edit PCM sample values"
 msgstr "Modifica i valori del campione PCM"
 
-#: src/interface.c:486
+#: src/interface.c:517
 msgid "When zoomed down to individual  samples, click to edit"
 msgstr "Quando è rimpicciolito a campioni individuali, cliccare per modificare"
 
-#: src/interface.c:497
+#: src/interface.c:528
 msgid "Noise"
 msgstr "Rumore"
 
-#: src/interface.c:498
+#: src/interface.c:529
 msgid "Add noise"
 msgstr "Aggiungi rumore"
 
-#: src/interface.c:499
+#: src/interface.c:530
 msgid "Randomise PCM values"
 msgstr "Valori PCM casuali"
 
@@ -1386,11 +1384,11 @@ msgstr "VERO"
 msgid "FALSE"
 msgstr "FALSO"
 
-#: src/param.c:738
+#: src/param.c:739
 msgid "Parameters"
 msgstr "Parametri"
 
-#: src/param.c:769
+#: src/param.c:770
 msgid "Preview"
 msgstr "Anteprima"
 
@@ -1403,35 +1401,35 @@ msgstr "Guadagno iniziale"
 msgid "Gain"
 msgstr "Guadagno"
 
-#: src/paste_dialogs.c:230
+#: src/paste_dialogs.c:231
 msgid "Sweep: Paste crossfade"
 msgstr "Sweep: incolla dissolvenza incrociata"
 
-#: src/paste_dialogs.c:232
+#: src/paste_dialogs.c:233
 msgid "Sweep: Paste mix"
 msgstr "Sweep: incolla mescolando"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Source"
 msgstr "Sorgente"
 
-#: src/paste_dialogs.c:257
+#: src/paste_dialogs.c:258
 msgid "Clipboard"
 msgstr "Appunti"
 
-#: src/paste_dialogs.c:279 src/paste_dialogs.c:318
+#: src/paste_dialogs.c:280 src/paste_dialogs.c:319
 msgid "End gain"
 msgstr "Guadagno finale"
 
-#: src/paste_dialogs.c:287 src/paste_dialogs.c:326
+#: src/paste_dialogs.c:288 src/paste_dialogs.c:327
 msgid "Invert phase"
 msgstr "Inverte la fase"
 
-#: src/paste_dialogs.c:295
+#: src/paste_dialogs.c:296
 msgid "Destination"
 msgstr "Destinazione"
 
-#: src/paste_dialogs.c:345
+#: src/paste_dialogs.c:346
 msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
@@ -1439,23 +1437,23 @@ msgstr ""
 "Indica la durata totale degli appunti, che è la lunghezza massima che sarà "
 "incollata."
 
-#: src/paste_dialogs.c:362
+#: src/paste_dialogs.c:363
 msgid "Clipboard duration:"
 msgstr "Durata appunti:"
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Crossfade"
 msgstr "Dissolvenza incrociata"
 
-#: src/paste_dialogs.c:375
+#: src/paste_dialogs.c:378
 msgid "Mix"
 msgstr "Mescola"
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't crossfade"
 msgstr "Nessuna dissolvenza incrociata"
 
-#: src/paste_dialogs.c:394
+#: src/paste_dialogs.c:400
 msgid "Don't mix"
 msgstr "Non mescolare"
 
@@ -1496,7 +1494,7 @@ msgstr "Nessuna selezione da registrarci dentro"
 msgid "Sweep: Record"
 msgstr "Sweep: registra"
 
-#: src/record.c:459 src/undo_dialog.c:376
+#: src/record.c:459 src/undo_dialog.c:334
 msgid "File:"
 msgstr "File:"
 
@@ -1604,6 +1602,160 @@ msgstr "Ricampiona"
 #: src/samplerate.c:633
 msgid "Don't resample"
 msgstr "Non ricampionare"
+
+#: src/schemes.c:455
+msgid "Choose a name for this scheme"
+msgstr ""
+
+#: src/schemes.c:471
+#, fuzzy
+msgid "Copy of "
+msgstr "Copia"
+
+#: src/schemes.c:483
+msgid ""
+"A scheme with that name already exists.\n"
+"Please choose another name and try again."
+msgstr ""
+
+#: src/schemes.c:672
+msgid " Generated by sweep. Do not edit"
+msgstr ""
+
+#: src/schemes.c:738
+#, fuzzy
+msgid "Color scheme editor ..."
+msgstr "Schema di colore"
+
+#: src/schemes.c:800
+#, fuzzy
+msgid "Sweep: Color Scheme Options"
+msgstr "Sweep: opzioni di salvataggio di Speex"
+
+#: src/schemes.c:1020
+#, fuzzy
+msgid "Color scheme editor"
+msgstr "Schema di colore"
+
+#: src/schemes.c:1027
+#, fuzzy
+msgid "General scheme options"
+msgstr "Memorizza queste opzioni"
+
+#: src/schemes.c:1039
+msgid "<b>Selected scheme</b>"
+msgstr ""
+
+#: src/schemes.c:1051 src/schemes.c:1052
+msgid "Select a color scheme to edit"
+msgstr ""
+
+#: src/schemes.c:1061 src/schemes.c:1062
+#, fuzzy
+msgid "Create a new scheme"
+msgstr "Crea un nuovo file"
+
+#: src/schemes.c:1072 src/schemes.c:1073
+msgid "Create a copy of the selected scheme"
+msgstr ""
+
+#: src/schemes.c:1085 src/schemes.c:1086
+#, fuzzy
+msgid "Delete the selected scheme"
+msgstr "Inverte lo stato selezionato"
+
+#: src/schemes.c:1098 src/schemes.c:1099
+msgid "Toggle whether the selected scheme is the default"
+msgstr ""
+
+#: src/schemes.c:1125 src/schemes.c:1126
+msgid "Select an element to edit it"
+msgstr ""
+
+#: src/schemes.c:1193
+#, fuzzy
+msgid "Automatic scheme selection"
+msgstr "Togli selezione ["
+
+#: src/schemes.c:1203
+msgid "Always use the default scheme"
+msgstr ""
+
+#: src/schemes.c:1210
+#, fuzzy
+msgid "Select scheme by filename"
+msgstr "Seleziona per energia"
+
+#: src/schemes.c:1218
+#, fuzzy
+msgid "Select random scheme"
+msgstr "Seleziona niente"
+
+#: src/schemes.c:1283
+#, fuzzy
+msgid "Color source:"
+msgstr "Schema di colore"
+
+#: src/schemes.c:1289
+#, fuzzy
+msgid "Custom color"
+msgstr "Personalizzato: "
+
+#: src/schemes.c:1290
+msgid "GtkStyle color"
+msgstr ""
+
+#: src/schemes.c:1291
+msgid "Disable this element"
+msgstr ""
+
+#: src/schemes.c:1315
+msgid "Foreground"
+msgstr ""
+
+#: src/schemes.c:1320
+msgid "Background"
+msgstr ""
+
+#: src/schemes.c:1325
+#, fuzzy
+msgid "Light"
+msgstr "Destra"
+
+#: src/schemes.c:1330
+#, fuzzy
+msgid "Mid"
+msgstr "Mescola"
+
+#: src/schemes.c:1335
+msgid "Dark"
+msgstr ""
+
+#: src/schemes.c:1340
+#, fuzzy
+msgid "Base"
+msgstr "Pausa"
+
+#: src/schemes.c:1345
+msgid "Text"
+msgstr ""
+
+#: src/schemes.c:1350
+msgid "Text AA"
+msgstr ""
+
+#: src/schemes.c:1355
+#, fuzzy
+msgid "Black"
+msgstr "Maron glacé"
+
+#: src/schemes.c:1360
+msgid "White"
+msgstr ""
+
+#: src/schemes.c:1365
+msgid "DISABLED"
+msgstr ""
 
 #: src/sw_chooser.c:51 src/sw_chooser.c:66
 msgid "Custom"
@@ -1723,15 +1875,15 @@ msgstr ""
 "Memorizza questa frequenza di campionamento e questa configurazione dei "
 "canali per creare nuovi file."
 
-#: src/sweep_sample.c:520
+#: src/sweep_sample.c:523
 msgid "Reset to the last remembered format for new files."
 msgstr "Ritorna all'ultimo formato memorizzato per i nuovi file."
 
-#: src/sweep_sample.c:531
+#: src/sweep_sample.c:534
 msgid "Set to the default format for new files."
 msgstr "Imposta il formato predefinito per i nuovi file."
 
-#: src/sweep_sample.c:547
+#: src/sweep_sample.c:550
 msgid ""
 "Indicates the amount of data memory which will be allocated for the selected "
 "duration and format. All audio data is processed internally in 32 bit "
@@ -1741,27 +1893,27 @@ msgstr ""
 "selezionato. Tutti i dati audio sono elaborati internamente nel formato a 32 "
 "bit a virgola mobile."
 
-#: src/sweep_sample.c:562
+#: src/sweep_sample.c:565
 msgid "Data memory:"
 msgstr "Memoria dati:"
 
-#: src/sweep_sample.c:575
+#: src/sweep_sample.c:578
 msgid "Create"
 msgstr "Crea"
 
-#: src/sweep_sample.c:596
+#: src/sweep_sample.c:599
 msgid "Don't create"
 msgstr "Non creare"
 
-#: src/sweep_sample.c:773
+#: src/sweep_sample.c:776
 msgid "Excellent!!!"
 msgstr "Eccellente"
 
-#: src/sweep_sample.c:795
+#: src/sweep_sample.c:798
 msgid "Files unsaved"
 msgstr "File non salvati"
 
-#: src/sweep_sample.c:796
+#: src/sweep_sample.c:799
 msgid ""
 "Some files are unsaved. If you quit, all changes will be lost.\n"
 "\n"
@@ -1771,15 +1923,15 @@ msgstr ""
 "\n"
 "Uscire veramente?"
 
-#: src/sweep_sample.c:799 src/sweep_sample.c:808
+#: src/sweep_sample.c:802 src/sweep_sample.c:811
 msgid "Don't quit"
 msgstr "Non uscire"
 
-#: src/sweep_sample.c:804
+#: src/sweep_sample.c:807
 msgid "Files playing"
 msgstr "I file sono in riproduzione"
 
-#: src/sweep_sample.c:805
+#: src/sweep_sample.c:808
 msgid ""
 "No files are unsaved, but some files are currently playing.\n"
 "\n"
@@ -1789,70 +1941,70 @@ msgstr ""
 "\n"
 "Uscire veramente?"
 
-#: src/sweep_sample.c:1466 src/view.c:1145
+#: src/sweep_sample.c:1469 src/view.c:1145
 msgid "Invert selection"
 msgstr "Inverte la selezione"
 
-#: src/sweep_sample.c:1486 src/view.c:1153 src/view.c:1247
+#: src/sweep_sample.c:1489 src/view.c:1153 src/view.c:1247
 msgid "Select all"
 msgstr "Seleziona tutto"
 
-#: src/sweep_sample.c:1506 src/view.c:1161
+#: src/sweep_sample.c:1509 src/view.c:1161
 msgid "Select none"
 msgstr "Seleziona niente"
 
-#: src/sweep_sample.c:1526
+#: src/sweep_sample.c:1529
 msgid "Halve selection"
 msgstr "Dimezza la selezione"
 
-#: src/sweep_sample.c:1546
+#: src/sweep_sample.c:1549
 msgid "Double selection"
 msgstr "Raddoppia la selezione"
 
-#: src/sweep_sample.c:1569
+#: src/sweep_sample.c:1572
 msgid "Selection left"
 msgstr "Selezione sinistra"
 
-#: src/sweep_sample.c:1591
+#: src/sweep_sample.c:1594
 msgid "Selection right"
 msgstr "Selezione destra"
 
-#: src/sweep_sample.c:1679
+#: src/sweep_sample.c:1682
 #, c-format
 msgid "Insert selection ["
 msgstr "Inverti selezione ["
 
-#: src/sweep_sample.c:1732
+#: src/sweep_sample.c:1735
 #, c-format
 msgid "Subtract selection ["
 msgstr "Togli selezione ["
 
-#: src/sweep_sample.c:1777
+#: src/sweep_sample.c:1780
 #, c-format
 msgid "Set selection ["
 msgstr "Imposta selezione ["
 
-#: src/sweep_sample.c:1876
+#: src/sweep_sample.c:1880
 msgid "Sweep: File properties"
 msgstr "Sweep: proprietà del file"
 
-#: src/sweep_sample.c:1900
+#: src/sweep_sample.c:1904
 msgid "Filename: "
 msgstr "Nome file: "
 
-#: src/sweep_sample.c:1902
+#: src/sweep_sample.c:1906
 msgid "Sampling rate: "
 msgstr "Frequenza: "
 
-#: src/sweep_sample.c:1904
+#: src/sweep_sample.c:1908
 msgid "Channels: "
 msgstr "Canali: "
 
-#: src/sweep_sample.c:1906
+#: src/sweep_sample.c:1910
 msgid "Data memory: "
 msgstr "Memoria dati: "
 
-#: src/sweep_sample.c:1908
+#: src/sweep_sample.c:1912
 msgid "Duration: "
 msgstr "Durata: "
 
@@ -1885,31 +2037,84 @@ msgstr "Niente da annullare"
 msgid "Nothing to redo"
 msgstr "Niente da ripristinare"
 
-#: src/undo_dialog.c:159
+#: src/sweep-scheme.c:41
+msgid "Wave foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:42
+msgid "Wave background"
+msgstr ""
+
+#: src/sweep-scheme.c:43
+msgid "Scroll trough foreground"
+msgstr ""
+
+#: src/sweep-scheme.c:44
+msgid "Scroll trough background"
+msgstr ""
+
+#: src/sweep-scheme.c:45
+#, fuzzy
+msgid "Playback cursor"
+msgstr "Riproduci"
+
+#: src/sweep-scheme.c:46
+#, fuzzy
+msgid "Record cursor"
+msgstr "Suono registrato"
+
+#: src/sweep-scheme.c:47
+#, fuzzy
+msgid "Selection outline"
+msgstr "Selezione sinistra"
+
+#: src/sweep-scheme.c:48
+#, fuzzy
+msgid "Selection"
+msgstr "Seleziona"
+
+#: src/sweep-scheme.c:49
+#, fuzzy
+msgid "Min/Max"
+msgstr "Mescola"
+
+#: src/sweep-scheme.c:50
+msgid "Zero crossing"
+msgstr ""
+
+#: src/sweep-scheme.c:51
+msgid "Wave highlight"
+msgstr ""
+
+#: src/sweep-scheme.c:52
+msgid "Wave lowlight"
+msgstr ""
+
+#: src/undo_dialog.c:157
 msgid "Original data"
 msgstr "Dati originali"
 
-#: src/undo_dialog.c:344
+#: src/undo_dialog.c:299
 msgid "Action"
 msgstr "Azione"
 
-#: src/undo_dialog.c:351
+#: src/undo_dialog.c:307
 msgid "Sweep: History"
 msgstr "Sweep: cronologia"
 
-#: src/undo_dialog.c:393 src/view.c:550 src/view.c:1827
+#: src/undo_dialog.c:354 src/undo_dialog.c:356 src/view.c:550 src/view.c:1827
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/undo_dialog.c:401 src/view.c:554 src/view.c:1836
+#: src/undo_dialog.c:370 src/undo_dialog.c:372 src/view.c:554 src/view.c:1836
 msgid "Redo"
 msgstr "Ripeti"
 
-#: src/undo_dialog.c:426
+#: src/undo_dialog.c:406
 msgid "Revert to selected state"
 msgstr "Inverte lo stato selezionato"
 
-#: src/undo_dialog.c:452 src/view.c:527 src/view.c:3392
+#: src/undo_dialog.c:436 src/view.c:527 src/view.c:3392
 msgid "Close"
 msgstr "Chiudi"
 
@@ -2492,6 +2697,10 @@ msgstr "Applica una dissolvenza lineare alla selezione, iniziando dal silenzio"
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr "Applica una dissolvenza lineare alla selezione, finendo in silenzio"
 
+#, fuzzy
+#~ msgid "Show color scheme editor ..."
+#~ msgstr "Mostra cronologia"
+
 #~ msgid "Decoder Red"
 #~ msgstr "Profondo rosso"
 
@@ -2503,9 +2712,6 @@ msgstr "Applica una dissolvenza lineare alla selezione, finendo in silenzio"
 
 #~ msgid "Coogee Bay Blue"
 #~ msgstr "Azzurro sussurro"
-
-#~ msgid "Blackwattle"
-#~ msgstr "Maron glacé"
 
 #~ msgid "Frigid"
 #~ msgstr "Biancaneve"
