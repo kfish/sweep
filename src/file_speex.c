@@ -235,7 +235,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
     info_dialog_new ("Speex error", NULL, "Speex: cannot read header");
     return NULL;
   }
-  if (header->mode >= SPEEX_NB_MODES) {
+  if (header->mode >= SPEEX_NB_MODES || header->mode < 0) {
     info_dialog_new ("Speex error", NULL,
 		     "Mode number %d does not (any longer) exist in this version\n",
 		     header->mode);
