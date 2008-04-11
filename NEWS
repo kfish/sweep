@@ -1,3 +1,14 @@
+Fri April 11 2008 -- Version 0.9.3 
+----------------------------------------
+
+This is a maintenance release, containing the following changes:
+		
+	* Fixed bounds checking of mode in speex header. relates to:
+      http://www.ocert.org/advisories/ocert-2008-2.html
+	* Fixed bug preventing device dialog being reopened when
+      closed via the window manager.
+
+
 Tue Jan 30 2007 -- Version 0.9.2
 --------------------------------
 
