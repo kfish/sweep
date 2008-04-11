@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sweep-0.8.3\n"
 "Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
-"POT-Creation-Date: 2007-11-16 19:13+0000\n"
+"POT-Creation-Date: 2008-04-11 15:11+0100\n"
 "PO-Revision-Date: 2001-04-08 22:23+0200\n"
 "Last-Translator: Radoslaw Korzeniewski <radoslaw@korzeniewski.net>\n"
 "Language-Team: Poland <LL@li.org>\n"
@@ -118,14 +118,14 @@ msgstr "Aktualnie: %d kanałów"
 msgid "Output channels"
 msgstr "Kanały wyjściowe"
 
-#: src/channelops.c:231 src/channelops.c:714 src/driver.c:368
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:374
 #: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:144
 #: src/question_dialogs.c:204 src/question_dialogs.c:253
 #: src/sweep_sample.c:1918 src/undo_dialog.c:440
 msgid "OK"
 msgstr "OK"
 
-#: src/channelops.c:242 src/channelops.c:725 src/driver.c:381
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:387
 #: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:158
 #: src/view.c:543 src/view.c:2650
 msgid "Cancel"
@@ -160,71 +160,71 @@ msgstr "Konwertuj z %d do %d kanałów"
 msgid "Sweep: Add/Remove channels"
 msgstr "Sweep: Dodaj/Usuń kanały"
 
-#: src/driver.c:363
+#: src/driver.c:369
 msgid "Sweep: audio device configuration"
 msgstr "Sweep: konfiguracja urządzenia audio"
 
-#: src/driver.c:404
+#: src/driver.c:410
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
 "Zmiany w ustawieniach urządzenia audio będą aktualne przy następnym "
 "odtwarzaniu."
 
-#: src/driver.c:418
+#: src/driver.c:424
 msgid "Device name"
 msgstr "Nazwa urządzenia"
 
-#: src/driver.c:424
+#: src/driver.c:430
 msgid "Set the main device for playback and recording"
 msgstr "Ustaw główne urządzenie dla odtwarzania i zapisywania"
 
-#: src/driver.c:434
+#: src/driver.c:440
 msgid "Main device:"
 msgstr "Główne urządzenie:"
 
-#: src/driver.c:448 src/driver.c:630 src/samplerate.c:570
+#: src/driver.c:454 src/driver.c:636 src/samplerate.c:570
 msgid "Default"
 msgstr "Domyślnie"
 
-#: src/driver.c:461
+#: src/driver.c:467
 msgid "Use a different device for monitoring"
 msgstr "Użyj innego urządzenia dla monitorowania"
 
-#: src/driver.c:473
+#: src/driver.c:479
 msgid "Monitor output:"
 msgstr "Wyjście monitorowania:"
 
-#: src/driver.c:498
+#: src/driver.c:504
 msgid "Swap"
 msgstr "Zamień"
 
-#: src/driver.c:506
+#: src/driver.c:512
 msgid "Swap main and monitor devices."
 msgstr "Zamień urządzenie główne i monitorowane"
 
-#: src/driver.c:515 src/driver.c:616 src/file_speex.c:1957
+#: src/driver.c:521 src/driver.c:622 src/file_speex.c:1957
 #: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
 msgid "Reset"
 msgstr "Resetuj"
 
-#: src/driver.c:523
+#: src/driver.c:529
 msgid "Reset to the last remembered device names."
 msgstr "Przestaw do ostatnio zapamiętanych nazw urządzeń."
 
-#: src/driver.c:529 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/driver.c:535 src/file_speex.c:1971 src/file_vorbis.c:1362
 #: src/param.c:747 src/sweep_sample.c:543
 msgid "Defaults"
 msgstr "Domyślne"
 
-#: src/driver.c:537
+#: src/driver.c:543
 msgid "Set to default device names."
 msgstr "Ustaw domyślne nazwy urządzeń."
 
-#: src/driver.c:548
+#: src/driver.c:554
 msgid "Device buffering"
 msgstr "Buforowanie urządzenia"
 
-#: src/driver.c:558
+#: src/driver.c:564
 msgid ""
 "Low latency /\n"
 "More dropouts"
@@ -232,7 +232,7 @@ msgstr ""
 "Niskie opóźnienie /\n"
 "Więcej przeskoków dzwięku"
 
-#: src/driver.c:580
+#: src/driver.c:586
 msgid ""
 "High latency /\n"
 "Fewer dropouts"
@@ -240,7 +240,7 @@ msgstr ""
 "Wysokie opóźnienie /\n"
 "Mniej przeskoków dzwięku"
 
-#: src/driver.c:584
+#: src/driver.c:590
 msgid ""
 "Varying this slider controls the lag between cursor movements and playback. "
 "This is particularly noticeable when \"scrubbing\" during playback.\n"
@@ -255,15 +255,15 @@ msgstr ""
 "Zmniejszenie wartości zwiększa reakcję lecz może zmniejszyć jakość dzwięku "
 "na mocno obciążonych systemach."
 
-#: src/driver.c:603
+#: src/driver.c:609
 msgid "Remember these options"
 msgstr "Zapamiętaj te opcje"
 
-#: src/driver.c:624
+#: src/driver.c:630
 msgid "Reset to the last remembered device buffering."
 msgstr "Przestaw do ostatnio zapamiętanego buforowania urządzenia"
 
-#: src/driver.c:638
+#: src/driver.c:644
 msgid "Set to default device buffering."
 msgstr "Ustaw do domyślnego buforowania urządzenia."
 
