@@ -4,7 +4,7 @@ dnl Require minimum autoconf version
 AC_PREREQ(2.50)
 
 AC_INIT(configure.ac)
-AM_INIT_AUTOMAKE(sweep, 0.9.2)
+AM_INIT_AUTOMAKE(sweep, 0.9.3)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
