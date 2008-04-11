@@ -1,9 +1,13 @@
 Fri Apr 11 00:00:00 GMT 2008 Peter Shorthose <kickback@users.sourceforge.net>
 
+This is a bug fix release, containing the following changes:
+		
 	* Fixed bounds checking of mode in speex header. relates to:
 	  http://www.ocert.org/advisories/ocert-2008-2.html
 	* Fixed bug preventing device dialog being reopened when
 	  closed via the window manager.
+
+All users with speex handling enabled should upgrade.
 
 Tue Jan 30 00:00:00 GMT 2007 Peter Shorthose <kickback@users.sourceforge.net>
 

@@ -15,12 +15,14 @@ This release is available as a source tarball at:
 New in this release
 -------------------
 
-This is a maintenance release, containing the following changes:
+This is a bug fix release, containing the following changes:
 		
 	* Fixed bounds checking of mode in speex header. relates to:
 	  http://www.ocert.org/advisories/ocert-2008-2.html
 	* Fixed bug preventing device dialog being reopened when
 	  closed via the window manager.
+
+All users with speex handling enabled should upgrade.
 
 Further information
 -------------------
