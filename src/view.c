@@ -60,8 +60,6 @@
 #include "cursors.h"
 #include "head.h"
 #include "view_pixmaps.h"
-#include "scroll-pane.h"
-#include "schemes.h"
 
 /*#define DEBUG*/
 
@@ -733,7 +731,6 @@ create_view_menu (sw_view * view, GtkWidget * m)
   /* Store view */
 
   menuitem = gtk_menu_item_new_with_label(_("Remember as"));
-
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
   subsubmenu = gtk_menu_new();
@@ -798,13 +795,75 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_menu_append(GTK_MENU(submenu), menuitem);
   gtk_widget_show(menuitem);
 											  
-  GtkWidget *menuitem2 = gtk_menu_item_new_with_label(_("Color schemes"));
-  gtk_menu_append(GTK_MENU(submenu), menuitem2);
-  g_object_set_data (G_OBJECT (menuitem2), "view", view);
-  gtk_widget_show(menuitem2);
+  menuitem = gtk_menu_item_new_with_label(_("Color scheme"));
+  gtk_menu_append(GTK_MENU(submenu), menuitem);
+  gtk_widget_show(menuitem);
+  subsubmenu = gtk_menu_new();
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), subsubmenu);
 
-  /* pass in the parent so we can connect a signal to it in schemes_create_menu */
-  schemes_create_menu (menuitem2, TRUE);
+  menuitem = gtk_menu_item_new_with_label (_("Decoder Red"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_RED));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Orangeboom"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_ORANGE));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Lame Yellow"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_YELLOW));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Coogee Bay Blue"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_BLUE));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Blackwattle"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_BLACK));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Frigid"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_WHITE));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Radar"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_RADAR));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
+
+  menuitem = gtk_menu_item_new_with_label (_("Bluescreen"));
+  g_object_set_data (G_OBJECT(menuitem), "default", 
+			    GINT_TO_POINTER(VIEW_COLOR_BLUESCREEN));
+  gtk_menu_append (GTK_MENU(subsubmenu), menuitem);
+  gtk_widget_show (menuitem);
+  g_signal_connect (G_OBJECT(menuitem), "activate",
+		     G_CALLBACK(sample_set_color_cb), view);
 
   menuitem = gtk_menu_item_new(); /* Separator */
   gtk_menu_append(GTK_MENU(submenu), menuitem);
@@ -813,16 +872,18 @@ create_view_menu (sw_view * view, GtkWidget * m)
   create_view_menu_item (submenu, _("New View"), "<Sweep-View>/View/New View", view,
                                                   view_new_cb, FALSE,
 												  0, 0, s);
-  gtk_widget_show_all (submenu);
+
   /* Sample */
   menuitem = gtk_menu_item_new_with_label(_("Sample"));
   MENU_APPEND(m, menuitem);
+  gtk_widget_show(menuitem);
   submenu = gtk_menu_new();
   gtk_menu_set_accel_group (GTK_MENU (submenu), accel_group);
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), submenu);
 
   menuitem = gtk_menu_item_new_with_label (_("Channels"));
   gtk_menu_append (GTK_MENU(submenu), menuitem);
+  gtk_widget_show (menuitem);
 
   view->channelops_menuitem = menuitem;
   view->channelops_submenu = NULL;
@@ -1591,7 +1652,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   GtkWidget * progress;
   GtkWidget * frame;
   GtkWidget * label;
-  GtkWidget * scroll_frame;
 #if 0
   GtkWidget * entry;
 #endif
@@ -2037,11 +2097,11 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   /* main table */
 
   table = gtk_table_new (3, 3, FALSE);
-  //gtk_table_set_col_spacing (GTK_TABLE(table), 0, 1);
-  //gtk_table_set_col_spacing (GTK_TABLE(table), 1, 2);
- // gtk_table_set_row_spacing (GTK_TABLE(table), 0, 1);
-  //gtk_table_set_row_spacing (GTK_TABLE(table), 1, 2);
-  //gtk_container_set_border_width (GTK_CONTAINER(table), 2);
+  gtk_table_set_col_spacing (GTK_TABLE(table), 0, 1);
+  gtk_table_set_col_spacing (GTK_TABLE(table), 1, 2);
+  gtk_table_set_row_spacing (GTK_TABLE(table), 0, 1);
+  gtk_table_set_row_spacing (GTK_TABLE(table), 1, 2);
+  gtk_container_set_border_width (GTK_CONTAINER(table), 2);
 #ifdef DEVEL_CODE
   label = gtk_label_new (g_basename(sample->pathname));
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), table, label);
@@ -2189,7 +2249,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   g_signal_connect (G_OBJECT(button), "clicked",
 		      G_CALLBACK(view_rate_zeroed_cb), view);
 
-  /* scroll pane */
+  /* scrollbar */
   step = ((gfloat)(end - start)) / 10.0;
   if (step < 1.0) step = 1.0;
 
@@ -2206,40 +2266,14 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 		      G_CALLBACK(adj_value_changed_cb), view);
   g_signal_connect (G_OBJECT(view->adj), "changed",
 		      G_CALLBACK(adj_changed_cb), view);
-    
 
-    
-#define USE_SCROLLPANE TRUE
-    
-  if (USE_SCROLLPANE == TRUE) {
-    
-  scroll_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (scroll_frame), GTK_SHADOW_IN);
-  gtk_table_attach (GTK_TABLE(table), scroll_frame,
-		                1, 2, 2, 3,
-		                GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
-		                0, 0);
-  gtk_widget_show (scroll_frame);
-  view->scrollpane = scroll_pane_new(GTK_ADJUSTMENT(view->adj));
+  scrollbar = gtk_hscrollbar_new(GTK_ADJUSTMENT(view->adj));
+  gtk_table_attach (GTK_TABLE(table), scrollbar,
+		    1, 2, 2, 3,
+		    GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
+		    0, 0);
+  gtk_widget_show(scrollbar);
 
-  gtk_container_add (GTK_CONTAINER (scroll_frame), view->scrollpane);
-
-  scroll_pane_set_view(SCROLL_PANE(view->scrollpane), view);
-  gtk_widget_show(view->scrollpane);
-  
-  } else {
-
-    view->scrollbar = gtk_hscrollbar_new (GTK_ADJUSTMENT(view->adj));
-    gtk_table_attach (GTK_TABLE(table), scrollbar,
-		                1, 2, 2, 3,
-		                GTK_EXPAND|GTK_FILL|GTK_SHRINK, GTK_FILL,
-		                0, 0); 
-    gtk_widget_show (view->scrollbar);
-      
-  }
-
-      
-  
 
   /* playback toolbar */
 
@@ -2304,28 +2338,11 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   pixmap = create_widget_from_xpm (window, lowleft_xpm);
   gtk_widget_show (pixmap);
   gtk_box_pack_end (GTK_BOX(imagebox), pixmap, FALSE, FALSE, 0);
-
-  imagebox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(tool_hbox), imagebox, TRUE, FALSE, 0);
-  gtk_widget_show (imagebox);
- 
-  label = gtk_label_new ("TIME:");
-  gtk_box_pack_start (GTK_BOX(imagebox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  label = gtk_label_new ("00:00:00.000");
-  gtk_box_pack_start (GTK_BOX(imagebox), label, TRUE, TRUE, 12);
-  gtk_widget_show (label);
-  view->play_pos_time = label;
   
-  label = gtk_label_new ("FRAME:");
-  gtk_box_pack_start (GTK_BOX(imagebox), label, FALSE, FALSE, 0);
+  label = gtk_label_new ("00:00:00.000");
+  gtk_box_pack_start (GTK_BOX(tool_hbox), label, TRUE, TRUE, 0);
   gtk_widget_show (label);
-
-  label = gtk_label_new ("00000000");
-  gtk_box_pack_start (GTK_BOX(imagebox), label, TRUE, TRUE, 12);
-  gtk_widget_show (label);
-  view->play_pos_frame = label;
+  view->play_pos = label;
 
   imagebox = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX(tool_hbox), imagebox, FALSE, FALSE, 0);
@@ -2346,7 +2363,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_widget_set_style (entry, style_LCD);
   gtk_box_pack_start (GTK_BOX(hbox), entry, TRUE, TRUE, 0);
   gtk_widget_show (entry);
-  view->play_pos_time = entry;
+  view->play_pos = entry;
 #endif
 
 
@@ -3245,10 +3262,9 @@ void
 view_refresh_offset_indicators (sw_view * view)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(view->display);
-//  ScrollPane * sc = SCROLL_PANE(view->scrollbar);
   sw_sample * sample = view->sample;
   sw_framecount_t offset;
-//  static int rate_limit = 0;
+  static int rate_limit = 0;
 
 
 #define BUF_LEN 16
@@ -3260,27 +3276,21 @@ view_refresh_offset_indicators (sw_view * view)
 
   snprint_time (buf, BUF_LEN,
 		frames_to_time (sample->sounddata->format, offset));
-    
-/* FIXME: this is bad */    
 /* cheesy rate limiter. ugly in operation. limits pango damage */
-//if (rate_limit >= 3) {
-//	rate_limit=0;
+if (rate_limit >= 3) {
+	rate_limit=0;
 #ifdef PLAYPOS_LABEL
-  gtk_label_set_text (GTK_LABEL(view->play_pos_time), buf);
-
-  snprintf (buf, BUF_LEN, "%08d", offset );
-  gtk_label_set_text (GTK_LABEL(view->play_pos_frame), buf);
+  gtk_label_set_text (GTK_LABEL(view->play_pos), buf);
 #else
-  gtk_entry_set_text (GTK_ENTRY(view->play_pos_time), buf);
+  gtk_entry_set_text (GTK_ENTRY(view->play_pos), buf);
 #endif
 
-//}
-//++rate_limit;
+}
+++rate_limit;
 #undef BUF_LEN
 
   sample_display_refresh_play_marker (sd);
   sample_display_refresh_user_marker (sd);
-//  scroll_pane_refresh(sc);
 
   if (view->following) {
     view_zoom_to_offset (view, offset);
@@ -3390,7 +3400,6 @@ view_close (sw_view * view)
 	      g_basename (sample->pathname));
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Close"), _("Don't close"),
-      "gtk-close", "gtk-cancel",
 			 G_CALLBACK (view_close_ok_cb), view, NULL, NULL,
 			 SWEEP_EDIT_MODE_ALLOC);
   } else {
@@ -3541,11 +3550,8 @@ void
 view_refresh_display (sw_view * v)
 {
   SampleDisplay * sd = SAMPLE_DISPLAY(v->display);
-  ScrollPane * sc = SCROLL_PANE(v->scrollpane);
-  if (sc != NULL)
-    scroll_pane_refresh(sc);
+
   sample_display_refresh(sd);
-  scroll_pane_refresh(sc);
 }
 
 void

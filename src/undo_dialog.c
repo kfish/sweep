@@ -39,6 +39,8 @@
 #include "interface.h"
 #include "callbacks.h"
 
+#include "../pixmaps/undo.xpm"
+#include "../pixmaps/redo.xpm"
 #include "../pixmaps/done.xpm"
 
 /*#define DEBUG*/
@@ -287,11 +289,54 @@ ud_redo_cb (GtkWidget * widget, gpointer data)
   redo_current (ud_sample);
 }
 
+static GtkWidget *
+ud_create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
+			 const gchar * label_text, const gchar * tip_text,
+			 GCallback clicked)
+{
+  GtkWidget * hbox;
+  GtkWidget * label;
+  GtkWidget * pixmap;
+  GtkWidget * button;
+  GtkTooltips * tooltips;
+
+  button = gtk_button_new ();
+
+  hbox = gtk_hbox_new (FALSE, 2);
+  gtk_container_add (GTK_CONTAINER(button), hbox);
+  gtk_container_set_border_width (GTK_CONTAINER(button), 8);
+  gtk_widget_show (hbox);
+
+  if (xpm_data != NULL) {
+    pixmap = create_widget_from_xpm (widget, xpm_data);
+    gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 8);
+    gtk_widget_show (pixmap);
+  }
+
+  if (label_text != NULL) {
+    label = gtk_label_new (label_text);
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 8);
+    gtk_widget_show (label);
+  }
+
+  if (tip_text != NULL) {
+    tooltips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tooltips, button, tip_text, NULL);
+  }
+
+  if (clicked != NULL) {
+    g_signal_connect (G_OBJECT (button), "clicked",
+			G_CALLBACK(clicked), NULL);
+  }
+
+  return button;
+}
+
 void
 undo_dialog_create (sw_sample * sample)
 {
   GtkWidget * vbox;
-  GtkWidget * hbox, *hbox2/* , *button_hbox */;
+  GtkWidget * hbox /* , *button_hbox */;
   GtkWidget * label;
   /*  GtkWidget * ok_button;*/
   GtkWidget * button;
@@ -299,24 +344,21 @@ undo_dialog_create (sw_sample * sample)
   gchar * titles[] = { "", N_("Action") };
   GClosure *gclosure;
   GtkAccelGroup * accel_group;
-  GtkTooltips *tooltips;
 
   if (undo_dialog == NULL) {
-   undo_dialog = gtk_dialog_new ();
-   gtk_window_set_wmclass(GTK_WINDOW(undo_dialog), "undo_dialog", "Sweep");
-   gtk_window_set_title(GTK_WINDOW(undo_dialog), _("Sweep: History"));
-   gtk_window_set_resizable (GTK_WINDOW(undo_dialog), FALSE);
-   gtk_window_set_position (GTK_WINDOW(undo_dialog), GTK_WIN_POS_MOUSE);
-   gtk_container_set_border_width  (GTK_CONTAINER(undo_dialog), 8);
-   sweep_set_window_icon (GTK_WINDOW (undo_dialog));
-   accel_group = gtk_accel_group_new ();
-   gtk_window_add_accel_group (GTK_WINDOW(undo_dialog), accel_group);
+    undo_dialog = gtk_dialog_new ();
+    gtk_window_set_wmclass(GTK_WINDOW(undo_dialog), "undo_dialog", "Sweep");
+    gtk_window_set_title(GTK_WINDOW(undo_dialog), _("Sweep: History"));
+    gtk_window_set_resizable (GTK_WINDOW(undo_dialog), FALSE);
+    gtk_window_set_position (GTK_WINDOW(undo_dialog), GTK_WIN_POS_MOUSE);
+    gtk_container_set_border_width  (GTK_CONTAINER(undo_dialog), 8);
 
-   g_signal_connect (G_OBJECT(undo_dialog), "destroy",
+    accel_group = gtk_accel_group_new ();
+    gtk_window_add_accel_group (GTK_WINDOW(undo_dialog), accel_group);
+
+    g_signal_connect (G_OBJECT(undo_dialog), "destroy",
 		      G_CALLBACK(undo_dialog_destroy), NULL);
 
-      
-   tooltips = gtk_tooltips_new ();
 
    gclosure = g_cclosure_new  ((GCallback)hide_window_cb, NULL, NULL);
    gtk_accel_group_connect (accel_group,
@@ -348,38 +390,18 @@ undo_dialog_create (sw_sample * sample)
     gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
     gtk_widget_show (hbox);
 
-
-    button = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (button), 8);
-    gtk_tooltips_set_tip (tooltips, button, _("Undo"), _("Undo"));
-    hbox2  = create_widget_label (NULL, "gtk-undo", GTK_ICON_SIZE_BUTTON,
-                                _("Undo"), FALSE);
-    g_signal_connect (G_OBJECT(button), "clicked",
-			                G_CALLBACK (ud_undo_cb),
-			                NULL);
-    gtk_container_add (GTK_CONTAINER (button), hbox2);
+    button = ud_create_pixmap_button (undo_dialog, undo_xpm, _("Undo"), _("Undo"),
+				   G_CALLBACK (ud_undo_cb));
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
-    undo_button = button;
-      
     gtk_widget_add_accelerator (button, "clicked", accel_group,
-    GDK_z, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+				GDK_z, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    undo_button = button;
 
-    button = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (button), 8);
-    gtk_tooltips_set_tip (tooltips, button, _("Redo"), _("Redo"));
-    hbox2  = create_widget_label (NULL, "gtk-redo", GTK_ICON_SIZE_BUTTON,
-                                _("Redo"), FALSE);
-    g_signal_connect (G_OBJECT(button), "clicked",
-			                G_CALLBACK (ud_redo_cb),
-			                NULL);
-    gtk_container_add (GTK_CONTAINER (button), hbox2);
-    
+    button = ud_create_pixmap_button (undo_dialog, redo_xpm, _("Redo"), _("Redo"),
+				   G_CALLBACK (ud_redo_cb));
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-    gtk_widget_show (button);  
-      
-    redo_button = button;
-      
+    gtk_widget_show (button);
     gtk_widget_add_accelerator (button, "clicked", accel_group,
 				GDK_r, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
     redo_button = button;
@@ -401,11 +423,7 @@ undo_dialog_create (sw_sample * sample)
     gtk_container_add (GTK_CONTAINER(scrolled), undo_clist);
     gtk_widget_show (undo_clist);
 
-    button = gtk_button_new ();
-    hbox2  = create_widget_label (NULL, "gtk-undo", GTK_ICON_SIZE_BUTTON,
-                                _("Revert to selected state"),
-                                FALSE);
-    gtk_container_add (GTK_CONTAINER (button), hbox2);
+    button = gtk_button_new_with_label (_("Revert to selected state"));
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
 			button, TRUE, TRUE, 0);
@@ -431,11 +449,7 @@ undo_dialog_create (sw_sample * sample)
 
     /* Cancel */
 
-    button = gtk_button_new ();
-    hbox2  = create_widget_label (NULL, "gtk-close", GTK_ICON_SIZE_BUTTON,
-                                _("Close"),
-                                FALSE);
-    gtk_container_add (GTK_CONTAINER (button), hbox2);
+    button = gtk_button_new_with_label (_("Close"));
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
 			button, FALSE, FALSE, 0);

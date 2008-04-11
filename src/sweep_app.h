@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 #include <pthread.h>
-#include "schemes.h"
 
 /* #include "i18n.h" */
 
@@ -93,7 +92,6 @@ struct _sw_view {
   GtkWidget * window;
   GtkWidget * time_ruler;
   GtkWidget * scrollbar;
-  GtkWidget * scrollpane;
   GtkWidget * display;
   GtkWidget * pos;
   GtkWidget * status;
@@ -103,8 +101,7 @@ struct _sw_view {
   GtkWidget * progress;
 
   GtkWidget * follow_toggle;
-  GtkWidget * play_pos_time;
-  GtkWidget * play_pos_frame;
+  GtkWidget * play_pos;
   GtkWidget * loop_toggle;
   GtkWidget * playrev_toggle;
   GtkWidget * play_toggle;
@@ -251,8 +248,6 @@ struct _sw_sample {
   gfloat rate; /* XXX: */
 
   gint color;
-    
-  SweepScheme *scheme;
 
   GtkWidget * info_clist;
 

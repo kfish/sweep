@@ -22,7 +22,6 @@
 #define __CALLBACKS_H__
 
 #include <gtk/gtk.h>
-#include "sweep-scheme.h"
 
 void
 sample_new_empty_cb (GtkWidget * widget, gpointer data);
@@ -296,44 +295,5 @@ void
 recent_chooser_menu_activated_cb(GtkRecentChooser *chooser,
                                  gpointer          user_data);
 #endif
-
-void
-scheme_ed_new_clicked_cb (GtkButton *button, gpointer user_data);
-void
-scheme_ed_copy_clicked_cb (GtkButton *button, gpointer user_data);
-
-void
-scheme_ed_revert_clicked_cb (GtkButton *button, gpointer user_data);
-
-void
-scheme_ed_save_clicked_cb (GtkButton *button, gpointer user_data);
-
-void
-scheme_ed_delete_clicked_cb (GtkButton *button, gpointer user_data);
-void
-scheme_ed_close_clicked_cb (GtkButton *button, gpointer user_data);
-void
-scheme_ed_combo_changed_cb (GtkComboBox *widget, gpointer user_data);
-gboolean 
-schemes_ed_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data);
-void
-schemes_ed_destroy_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
-void
-schemes_ed_radio_toggled_cb (GtkToggleButton *togglebutton, gpointer user_data);
-
-void
-schemes_ed_color_changed_cb  (GtkColorSelection *colorselection,
-                              gpointer user_data);
-
-void
-schemes_ed_treeview_selection_changed_cb (GtkTreeSelection *treeselection,
-                                         gpointer user_data);
-void
-scheme_ed_update_default_button_cb (GtkComboBox *widget, gpointer user_data);
-
-void
-scheme_ed_default_button_toggled_cb (GtkToggleButton *togglebutton,
-                                     gpointer user_data);
-
 
 #endif /* __CALLBACKS_H__ */

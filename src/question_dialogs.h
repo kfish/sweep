@@ -26,7 +26,6 @@
 void
 question_dialog_new (sw_sample * sample, char * title, char * question,
 		     char * yes_answer, char * no_answer,
-         char * yes_stock_id, char * no_stock_id,
 		     GCallback yes_callback, gpointer yes_callback_data,
 		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode);

@@ -48,8 +48,6 @@
 #include "print.h"
 #include "record.h"
 #include "file_dialogs.h"
-#include "schemes.h"
-#include "preferences.h"
 
 /*
  * Default zooming parameters.
@@ -373,10 +371,10 @@ void
 sample_set_color_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *) data;
-  SweepScheme *scheme;
+  gint color;
 
-  scheme = SWEEP_SCHEME (g_object_get_data (G_OBJECT(widget), "scheme"));
-  sample_display_set_scheme (SAMPLE_DISPLAY (view->display), scheme);
+  color = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
+  sample_set_color (view->sample, color);
 }
 
 /* Playback */
@@ -1049,185 +1047,3 @@ recent_chooser_menu_activated_cb(GtkRecentChooser *chooser,
 }
 
 #endif
-
-void
-scheme_ed_new_clicked_cb (GtkButton *button, gpointer user_data)
-{
-  SweepScheme *scheme;
-    
-  scheme = schemes_get_scheme_system_default ();
-  schemes_copy_scheme (scheme, _("New Scheme"));
-  
-}
-
-void
-scheme_ed_copy_clicked_cb (GtkButton *button, gpointer user_data)
-{
-    
-  gint index;
-  SweepScheme *scheme;
-    
-  if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data))) != -1)
-  {
-      scheme = schemes_get_nth (index);
-      if (scheme != NULL)
-        schemes_copy_scheme (scheme, NULL);
-  }
-    
-}
-
-
-void
-scheme_ed_delete_clicked_cb (GtkButton *button, gpointer user_data)
-{
-    
-  gint index;
-  SweepScheme *scheme;
-    
-  if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data))) != -1)
-  {
-      scheme = schemes_get_nth (index);
-      if (scheme != NULL)
-        schemes_remove_scheme (scheme);
-  }
-    
-}
-
-void
-scheme_ed_revert_clicked_cb (GtkButton *button, gpointer user_data)
-{
-
-}
-
-void
-scheme_ed_save_clicked_cb (GtkButton *button, gpointer user_data)
-{
-
-}
-
-void
-scheme_ed_close_clicked_cb (GtkButton *button, gpointer user_data)
-{
-  GtkWidget *widget = GTK_WIDGET (user_data);
-  GtkWidget *parent = gtk_widget_get_parent (widget);
- 
-  gtk_widget_destroy (parent);
-}
-
-void
-scheme_ed_combo_changed_cb (GtkComboBox *widget, gpointer user_data)
-{
-    
-    gint index;
-    
-    if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) != -1)
-        schemes_refresh_list_store (index);
-}
-
-void
-schemes_ed_treeview_selection_changed_cb (GtkTreeSelection *selection,
-                                         gpointer user_data)
-{
-  GtkTreeIter iter;
-  GtkTreeModel *model;
-  gint element;
-  SweepScheme *scheme;
-    
-  if (gtk_tree_selection_get_selected (selection,
-                                        &model,
-                                        &iter)) {
-    gtk_tree_model_get (model,
-                        &iter,
-                        SCHEME_OBJECT_COLUMN, &scheme,
-                        ELEMENT_NUMBER_COLUMN, &element,
-                        -1);
-        
-    schemes_color_chooser_set_color (scheme, element);
-  }
-}
-
-void
-schemes_ed_destroy_cb                (GtkWidget       *widget,
-                                      GdkEvent        *event,
-                                      gpointer         user_data)
-{
-
-    gtk_widget_destroy (widget);
-
-}
-
-
-
-gboolean 
-schemes_ed_delete_event_cb         ( GtkWidget *widget,
-                                     GdkEvent  *event,
-                                     gpointer   data ) {
-
-    return FALSE;
-
-}
-
-void
-schemes_ed_radio_toggled_cb (GtkToggleButton *togglebutton, gpointer user_data)
-{
-    if (gtk_toggle_button_get_active (togglebutton))
-      prefs_set_int ("scheme-selection-method", GPOINTER_TO_INT (user_data));
-}
-
-void
-schemes_ed_color_changed_cb (GtkColorSelection *colorselection,
-                          gpointer user_data)
-{
-    schemes_set_active_element_color (colorselection);
-}
-
-void
-scheme_ed_update_default_button_cb (GtkComboBox *widget, gpointer user_data)
-{
-    GtkToggleButton * default_check_button;
-    gint index;
-    SweepScheme *scheme;
-    
-    default_check_button = GTK_TOGGLE_BUTTON (user_data);
-    
-    if ((index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) != -1) {
-      scheme = schemes_get_nth (index);
-      if (scheme != NULL)
-        g_signal_handlers_block_by_func (default_check_button,
-                                         scheme_ed_default_button_toggled_cb,
-                                         widget);
-                                         
-        gtk_toggle_button_set_active (default_check_button, scheme->is_default);
-        gtk_widget_set_sensitive (GTK_WIDGET (default_check_button),
-                                  !scheme->is_default);
-        
-        g_signal_handlers_unblock_by_func (default_check_button,
-                                         scheme_ed_default_button_toggled_cb,
-                                         widget);
-    }
-}
-
-void
-scheme_ed_default_button_toggled_cb (GtkToggleButton *togglebutton,
-                                     gpointer user_data)
-{
-    gint index;
-    gboolean toggled;
-    SweepScheme *scheme, *old_default_scheme;
-
-    toggled = gtk_toggle_button_get_active (togglebutton);
-    index = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
-    
-    if (index != -1) {
-      scheme = schemes_get_nth (index);
-    
-      if (scheme != NULL) {
-          old_default_scheme = schemes_get_scheme_user_default ();
-          old_default_scheme->is_default = FALSE;
-          scheme->is_default = toggled;
-          prefs_set_string ("user-default-scheme", scheme->name);
-          gtk_widget_set_sensitive (GTK_WIDGET (togglebutton),
-                                    !scheme->is_default);
-        }
-    }
-}

@@ -299,37 +299,6 @@ create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
   return button;
 }
 
-/* returns an hbox with aligned label and image/widget from supplied params */ 
-GtkWidget *
-create_widget_label (GtkWidget * icon, gchar * icon_stock_name, gint icon_size, 
-                     gchar * label_text, gboolean use_markup)
-{
-  GtkWidget * label;
-  GtkWidget * image;
-  GtkWidget * hbox;
-    
-  if ((icon == NULL) &&
-    (icon_stock_name != NULL))  {
-    image = gtk_image_new_from_stock (icon_stock_name, icon_size);
-      
-  } else
-    image = icon;
-      
-  hbox  = gtk_hbox_new (FALSE, 0);
-  label = gtk_label_new (label_text);
-  gtk_label_set_use_markup (GTK_LABEL (label), use_markup);
-  gtk_misc_set_alignment (GTK_MISC (image), 1, 0.5);
-  gtk_misc_set_padding (GTK_MISC (image), 2, 0);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 0);
-  gtk_box_pack_start_defaults (GTK_BOX (hbox), image);
-  gtk_box_pack_start_defaults (GTK_BOX (hbox), label);
-      
-  gtk_widget_show_all (hbox);
-      
-  return hbox;
-}
-                   
 
 #if 0
 static void

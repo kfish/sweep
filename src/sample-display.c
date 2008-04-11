@@ -227,119 +227,11 @@ static gchar * selection_mode_names[SELECTION_MODE_MAX] = {
 
 #define IS_INITIALIZED(s) (s->view != NULL)
 
-G_DEFINE_TYPE (SampleDisplay, sample_display, GTK_TYPE_WIDGET)
-
 static guint sample_display_signals[LAST_SIGNAL] = { 0 };
 
 static gint8 sel_dash_list[2] = { 4, 4 }; /* Equivalent to GDK's default
 					  *  dash list.
 					  */
-
-extern GList *schemes_list;
-
-void
-sample_display_refresh_scheme_data (SampleDisplay *s, gboolean redraw)
-{
-  gint element;
-  GdkColor *old_color = NULL;
-  GdkGC *old_gc = NULL;
-  SweepScheme *scheme;
-  
-  if (s == NULL) {
-    return;
-  }
-    
-  if (!GTK_WIDGET_REALIZED (GTK_WIDGET (s)))
-    return;
-    
-
-  if (s->scheme == NULL) {
-      
-    if (s->view->sample->scheme == NULL)
-      return;
-    else 
-      scheme = s->view->sample->scheme;
-  } else
-    scheme = s->scheme;
-    
-
-    
-
-  for (element = 0; element < SCHEME_ELEMENT_LAST; element++) {
-        
-    if (s->gcs[element] != NULL)
-      old_gc = s->gcs[element];
-    if (s->gc_colors[element] != NULL)
-      old_color = s->gc_colors[element];
-        
-    s->gc_colors[element] = copy_gdk_colour (scheme->colors[element]);
-    s->gcs[element]       = gdk_gc_new (GTK_WIDGET (s)->window);
-                                             
-    gdk_gc_set_rgb_fg_color(s->gcs[element], s->gc_colors[element]);
-      
-    if (element == SCHEME_ELEMENT_SELECTION_OUTLINE) /* marching ants */
-      gdk_gc_set_line_attributes(s->gcs[SCHEME_ELEMENT_SELECTION_OUTLINE], 1,
-			     GDK_LINE_DOUBLE_DASH,
-			     GDK_CAP_BUTT,
-			     GDK_JOIN_MITER);
-                                             
-    if (old_color != NULL)
-      g_free (old_color);
-    if (old_gc != NULL)
-      gdk_gc_unref (old_gc);
-  }
-    
-  if (redraw == TRUE)
-    gtk_widget_queue_draw (GTK_WIDGET (s));
-  if (s->view->scrollpane != NULL)
-    gtk_widget_queue_draw (s->view->scrollpane);
-}
-
-static void
-sample_display_scheme_changed_cb (SweepScheme *scheme, gpointer user_data)
-{                     
-    sample_display_refresh_scheme_data (SAMPLE_DISPLAY (user_data), TRUE);
-}
-
-void
-sample_display_connect_scheme (SampleDisplay *s, SweepScheme *scheme)
-{
-  g_return_if_fail (s);
-  g_return_if_fail (scheme);
-    
-  g_signal_connect ((gpointer) scheme, "changed",
-                      G_CALLBACK (sample_display_scheme_changed_cb),
-                      s);
-}
-
-void
-sample_display_disconnect_scheme (SampleDisplay *s, SweepScheme *scheme)
-{
-  g_return_if_fail (s);
-  g_return_if_fail (scheme);
-    
-  g_signal_handlers_disconnect_by_func (scheme, 
-                                        sample_display_scheme_changed_cb,
-                                        s);
-}
-
-void
-sample_display_set_scheme (SampleDisplay *s, SweepScheme *scheme)
-{
-  SweepScheme *scheme_old;
-  
-  scheme_old = s->view->sample->scheme;
-  
-  if (scheme_old != NULL)
-    sample_display_disconnect_scheme (s, scheme_old);
-  if (s->scheme != NULL)
-    sample_display_disconnect_scheme (s, s->scheme);
-  
-  s->scheme = scheme;
-                                    
-  sample_display_connect_scheme (s, scheme);
-  sample_display_refresh_scheme_data (s, TRUE);
-}
 
 void
 sample_display_refresh (SampleDisplay *s)
@@ -391,13 +283,10 @@ sample_display_set_view (SampleDisplay *s, sw_view *view)
   s->old_play_offset_x = -1;
   s->play_offset_x = -1;
 
-  /* gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->view->start, s->view->start + (s->view->end - s->view->start));*/
+  /*  gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->view->start, s->view->start + (s->view->end - s->view->start));*/
 	
   s->selecting = SELECTING_NOTHING;
   s->selection_mode = SELECTION_MODE_NONE;
-   
-  sample_display_set_scheme (s, view->sample->scheme);  
-  //sample_display_refresh_scheme_data (s, FALSE);
 
   gtk_widget_queue_draw(GTK_WIDGET(s));
 }
@@ -798,7 +687,7 @@ sample_display_realize (GtkWidget *widget)
   GdkWindowAttr attributes;
   gint attributes_mask;
   SampleDisplay *s;
-  //gint i;
+  gint i;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (IS_SAMPLE_DISPLAY (widget));
@@ -832,16 +721,15 @@ sample_display_realize (GtkWidget *widget)
   widget->style = gtk_style_attach (widget->style, widget->window);
 
   s->width = 0;
-  sample_display_refresh_scheme_data (s, FALSE);
-#if 0
+
   s->bg_gc = gdk_gc_new(widget->window);
   gdk_gc_set_foreground(s->bg_gc, &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->colors[SAMPLE_DISPLAYCOL_BG]);
 
   s->fg_gc = gdk_gc_new(widget->window);
   gdk_gc_set_foreground(s->fg_gc, &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->colors[SAMPLE_DISPLAYCOL_FG]);
 
-  s->gcs[SCHEME_ELEMENT_ZEROLINE] = gdk_gc_new(widget->window);
-  gdk_gc_set_foreground(s->gcs[SCHEME_ELEMENT_ZEROLINE], &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->colors[SAMPLE_DISPLAYCOL_ZERO]);
+  s->zeroline_gc = gdk_gc_new(widget->window);
+  gdk_gc_set_foreground(s->zeroline_gc, &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->colors[SAMPLE_DISPLAYCOL_ZERO]);
 
   s->play_gc = gdk_gc_new(widget->window);
   gdk_gc_set_foreground(s->play_gc, &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->colors[SAMPLE_DISPLAYCOL_PLAY]);
@@ -883,8 +771,6 @@ sample_display_realize (GtkWidget *widget)
     s->fg_gcs[i] = gdk_gc_new (widget->window);
     gdk_gc_set_foreground(s->fg_gcs[i], &SAMPLE_DISPLAY_CLASS(GTK_WIDGET_GET_CLASS(widget))->fg_colors[i]);
   }
-    
-#endif
 
   sample_display_init_display(s, attributes.width, attributes.height);
 
@@ -904,7 +790,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
 				  int channel)
 {
   GList * gl;
-  GdkGC * gc;
+  GdkGC * gc, * fg_gc;
   sw_sel * sel;
   int x1, x2, y1;
   sw_audio_t vhigh, vlow;
@@ -917,7 +803,9 @@ sample_display_draw_data_channel (GdkDrawable * win,
 
   sample = s->view->sample;
 
-  gdk_draw_rectangle(win, s->gcs[SCHEME_ELEMENT_BG],
+  fg_gc = s->fg_gcs[sample->color];
+
+  gdk_draw_rectangle(win, s->bg_gcs[sample->color],
 		     TRUE, x, y, width, height);
 
   /* Draw real selection */
@@ -931,7 +819,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
     x2 = CLAMP(x2, x, x+width);
 
     if (x2 - x1 > 1){ 
-      gdk_draw_rectangle (win, s->gcs[SCHEME_ELEMENT_SELECTION], TRUE,
+      gdk_draw_rectangle (win, s->crossing_gc, TRUE,
 			  x1, y, x2 - x1, y + height -1);
     }
   }
@@ -948,10 +836,8 @@ sample_display_draw_data_channel (GdkDrawable * win,
       x2 = CLAMP(x2, x, x+width);
       
       if (x2 - x1 > 1) {
-  gdk_gc_set_function(s->gcs[SCHEME_ELEMENT_TMP_SEL], GDK_XOR);
-	gdk_draw_rectangle (win, s->gcs[SCHEME_ELEMENT_TMP_SEL], TRUE,
+	gdk_draw_rectangle (win, s->tmp_sel_gc, TRUE,
 			    x1, y, x2 - x1, y + height -1);
-  gdk_gc_set_function(s->gcs[SCHEME_ELEMENT_TMP_SEL], GDK_COPY);
       }
     }
   }
@@ -964,15 +850,15 @@ sample_display_draw_data_channel (GdkDrawable * win,
 
   /* Draw zero and 6db lines */
   y1 = YPOS(0.5);
-  gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+  gdk_draw_line(win, s->zeroline_gc,
 		x, y1, x + width - 1, y1);
 
   y1 = YPOS(0.0);
-  gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+  gdk_draw_line(win, s->zeroline_gc,
 		x, y1, x + width - 1, y1);
 
   y1 = YPOS(-0.5);
-  gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+  gdk_draw_line(win, s->zeroline_gc,
 		x, y1, x + width - 1, y1);
 
   totpos = totneg = 0.0;
@@ -1063,21 +949,21 @@ sample_display_draw_data_channel (GdkDrawable * win,
       avgneg = 0;
     }
 
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_MINMAX],
+    gdk_draw_line(win, s->minmax_gc,
 		  x, YPOS(maxpos),
 		  x, YPOS(minneg));
 
-    gc = maxpos > prev_maxpos ? s->gcs[SCHEME_ELEMENT_HIGHLIGHT] : s->gcs[SCHEME_ELEMENT_LOWLIGHT];
+    gc = maxpos > prev_maxpos ? s->highlight_gc : s->lowlight_gc;
     gdk_draw_line(win, gc,
 		  x, YPOS(prev_maxpos),
 		  x, YPOS(maxpos));
 
-    gc = minneg > prev_minneg ? s->gcs[SCHEME_ELEMENT_LOWLIGHT] : s->gcs[SCHEME_ELEMENT_HIGHLIGHT];
+    gc = minneg > prev_minneg ? s->lowlight_gc : s->highlight_gc;
     gdk_draw_line(win, gc,
 		  x, YPOS(prev_minneg),
 		  x, YPOS(minneg));
 
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_FG],
+    gdk_draw_line(win, fg_gc,
 		  x, YPOS(avgpos),
 		  x, YPOS(avgneg));
 
@@ -1130,7 +1016,7 @@ sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
 					start_x - x, sh);
 
     if (start_x > 0)
-      gdk_draw_line (win, s->gcs[SCHEME_ELEMENT_LOWLIGHT], start_x-1, 0, start_x-1, sh);
+      gdk_draw_line (win, s->lowlight_gc, start_x-1, 0, start_x-1, sh);
 
     x = start_x;
   }
@@ -1142,7 +1028,7 @@ sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
 					end_x, 0,
 					x + width - end_x, sh);
 
-    gdk_draw_line (win, s->gcs[SCHEME_ELEMENT_HIGHLIGHT],
+    gdk_draw_line (win, s->highlight_gc,
 		   end_x, 0, end_x, sh);
 
     width = end_x - x;
@@ -1243,7 +1129,7 @@ static gint
 sd_march_ants (gpointer data)
 {
   SampleDisplay * s = (SampleDisplay *)data;
-  GdkGC * gc =s->gcs[SCHEME_ELEMENT_SELECTION_OUTLINE];
+  GdkGC * gc = s->sel_gc;
   static int dash_offset = 0;
 
   gdk_gc_set_dashes (gc, dash_offset, sel_dash_list, 2);
@@ -1366,7 +1252,7 @@ sample_display_draw_sel (GdkDrawable * win,
     x2 = CLAMP (x2, x_min, x_max);
     
     /* draw the selection */
-    sample_display_draw_sel_box(win, s->gcs[SCHEME_ELEMENT_SELECTION_OUTLINE],
+    sample_display_draw_sel_box(win, s->sel_gc,
 				s, x, x2 - x - 1,
 				l_end, r_end /* draw_ends */);
 
@@ -1386,7 +1272,7 @@ sample_display_draw_sel (GdkDrawable * win,
     x2 = CLAMP (x2, x_min, x_max);
 
     /* draw the selection */
-    sample_display_draw_sel_box(win, s->gcs[SCHEME_ELEMENT_TMP_SEL],
+    sample_display_draw_sel_box(win, s->tmp_sel_gc,
 				s, x, x2 - x - 1,
 				l_end, r_end /* draw_ends */);
   }
@@ -1441,9 +1327,9 @@ sd_pulse_cursor (gpointer data)
   SampleDisplay * s = (SampleDisplay *)data;
 
   if (s->pulse)
-    gdk_gc_set_function (s->gcs[SCHEME_ELEMENT_USER], GDK_NOOP);
+    gdk_gc_set_function (s->user_gc, GDK_NOOP);
   else
-    gdk_gc_set_function (s->gcs[SCHEME_ELEMENT_USER], GDK_COPY);
+    gdk_gc_set_function (s->user_gc, GDK_COPY);
 
   s->pulse = (!s->pulse);
 
@@ -1455,7 +1341,7 @@ sd_pulse_cursor (gpointer data)
 void
 sample_display_start_cursor_pulse (SampleDisplay * s)
 {
-  gdk_gc_set_function (s->gcs[SCHEME_ELEMENT_USER], GDK_NOOP);
+  gdk_gc_set_function (s->user_gc, GDK_NOOP);
 
   sample_display_refresh_user_marker (s);
 
@@ -1471,7 +1357,7 @@ sample_display_stop_cursor_pulse (SampleDisplay * s)
 
   s->pulsing_tag = 0;
 
-  gdk_gc_set_function (s->gcs[SCHEME_ELEMENT_USER], GDK_COPY);
+  gdk_gc_set_function (s->user_gc, GDK_COPY);
 
   sample_display_refresh_user_marker (s);
 }
@@ -1485,7 +1371,7 @@ sample_display_draw_user_offset (GdkDrawable * win, GdkGC * gc,
   gboolean fill;
 
   if(x >= x_min && x <= x_max) {
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+    gdk_draw_line(win, s->zeroline_gc,
 		  x-2, 0, 
 		  x-2, s->height);
 
@@ -1496,7 +1382,7 @@ sample_display_draw_user_offset (GdkDrawable * win, GdkGC * gc,
 		  x+1, 0, 
 		  x+1, s->height);
 
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+    gdk_draw_line(win, s->zeroline_gc,
 		  x+2, 0, 
 		  x+2, s->height);
 
@@ -1523,7 +1409,7 @@ sample_display_draw_user_offset (GdkDrawable * win, GdkGC * gc,
       poly[3].y = 4;
 
       gdk_draw_polygon (win, gc, fill, poly, 4);
-      gdk_draw_polygon (win, s->gcs[SCHEME_ELEMENT_ZEROLINE], FALSE, poly, 4);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 4);
 
       poly[0].x -= 5;
       poly[1].x -= 5;
@@ -1531,7 +1417,7 @@ sample_display_draw_user_offset (GdkDrawable * win, GdkGC * gc,
       poly[3].x -= 5;
 
       gdk_draw_polygon (win, gc, fill, poly, 4);
-      gdk_draw_polygon (win, s->gcs[SCHEME_ELEMENT_ZEROLINE], FALSE, poly, 4);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 4);
     }
   }
 }
@@ -1581,7 +1467,7 @@ sample_display_draw_play_offset (GdkDrawable * win, GdkGC * gc,
       poly[2].y = 9;
       
       gdk_draw_polygon (win, gc, !head->mute, poly, 3);
-      gdk_draw_polygon (win, s->gcs[SCHEME_ELEMENT_ZEROLINE], FALSE, poly, 3);
+      gdk_draw_polygon (win, s->zeroline_gc, FALSE, poly, 3);
     }
   }
 }
@@ -1600,7 +1486,7 @@ sample_display_draw_rec_offset (GdkDrawable * win, GdkGC * gc,
 		       3, s->height);
 #endif
 
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+    gdk_draw_line(win, s->zeroline_gc,
 		  x-2, 0, 
 		  x-2, s->height);
 #if 1
@@ -1612,7 +1498,7 @@ sample_display_draw_rec_offset (GdkDrawable * win, GdkGC * gc,
 		  x+1, s->height);
 #endif
 
-    gdk_draw_line(win, s->gcs[SCHEME_ELEMENT_ZEROLINE],
+    gdk_draw_line(win, s->zeroline_gc,
 		  x+2, 0, 
 		  x+2, s->height);
 
@@ -1620,7 +1506,7 @@ sample_display_draw_rec_offset (GdkDrawable * win, GdkGC * gc,
 
     if (x < 20) x = 19;
     gdk_draw_arc (win, gc, TRUE, x-14, 15, 8, 8, 0, 360 * 64);
-    gdk_draw_arc (win, s->gcs[SCHEME_ELEMENT_ZEROLINE], FALSE, x-14, 15, 8, 8, 0, 360 * 64);
+    gdk_draw_arc (win, s->zeroline_gc, FALSE, x-14, 15, 8, 8, 0, 360 * 64);
 
   }
 }
@@ -1679,18 +1565,18 @@ sample_display_draw (GtkWidget *widget, GdkRectangle *area)
 
     if(!sample->play_head->going) {
       /* Draw user offset */
-      sample_display_draw_user_offset (drawable, s->gcs[SCHEME_ELEMENT_USER],
+      sample_display_draw_user_offset (drawable, s->user_gc,
 				       s, s->user_offset_x,
 				       x_min, x_max);
     } else {
 #if 1
       /* Draw play offset */
-      sample_display_draw_play_offset (drawable, s->gcs[SCHEME_ELEMENT_PLAY],
+      sample_display_draw_play_offset (drawable, s->play_gc,
 				       s, s->play_offset_x,
 				       x_min, x_max);
 #endif
       /* Draw user offset */
-      sample_display_draw_user_offset (drawable, s->gcs[SCHEME_ELEMENT_USER],
+      sample_display_draw_user_offset (drawable, s->user_gc,
 				       s, s->user_offset_x,
 				       x_min, x_max);
 
@@ -1698,7 +1584,7 @@ sample_display_draw (GtkWidget *widget, GdkRectangle *area)
 
     /* Draw rec offset */
     if (sample->rec_head /*&& sample->rec_head->transport_mode != SWEEP_TRANSPORT_STOP*/ ) {
-      sample_display_draw_rec_offset (drawable, s->gcs[SCHEME_ELEMENT_REC],
+      sample_display_draw_rec_offset (drawable, s->rec_gc,
 				      s, s->rec_offset_x,
 				      x_min, x_max);
     }
@@ -1744,18 +1630,6 @@ sample_display_hand_scroll (SampleDisplay * s)
 {
   gint new_win_start, win_length;
   gfloat step;
-  gdouble elapsed;
-    
-  if (s->release_timer != NULL) {
-    elapsed = g_timer_elapsed (s->release_timer, NULL);
-    g_timer_destroy (s->release_timer);
-    s->release_timer = NULL;
-
-    if (elapsed > 0.13) {
-      s->hand_scroll_delta = 0;
-      return FALSE;
-    }
-  }
   
   win_length = s->view->end - s->view->start;
 
@@ -2056,11 +1930,6 @@ sample_display_handle_hand_motion (SampleDisplay * s, int x, int y)
   if (abs (delta) > abs (s->hand_scroll_delta))
 	  s->hand_scroll_delta = delta;
   
-  if (s->release_timer == NULL)
-    s->release_timer = g_timer_new ();
-  else
-    g_timer_start (s->release_timer);
-    
   if (s->view->hand_offset != x){
     move = s->view->hand_offset - x;
     move *= step;
@@ -2994,24 +2863,13 @@ sample_display_destroy (GtkWidget * widget, GdkEventAny * event)
 }
 
 static void
-sample_display_unrealize (GtkWidget *widget)
-{
-  SampleDisplay *s = SAMPLE_DISPLAY (widget);
-  SweepScheme *scheme = s->view->sample->scheme;
-  
-  sample_display_disconnect_scheme (s, scheme);
-  //gint ret = g_signal_handlers_disconnect_by_func (scheme,
-  //                                      sample_display_scheme_changed_cb,
-  //                                      widget);
-  //printf("%d/n", ret);
-  GTK_WIDGET_CLASS (sample_display_parent_class)->unrealize (widget);
-}
-
-static void
 sample_display_class_init (SampleDisplayClass *class)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
+  int n;
+  const int *p;
+  GdkColor *c;
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
@@ -3030,7 +2888,6 @@ sample_display_class_init (SampleDisplayClass *class)
   widget_class->key_release_event = sample_display_key_release;
   widget_class->focus_in_event = sample_display_focus_in;
   widget_class->focus_out_event = sample_display_focus_out;
-  widget_class->unrealize = sample_display_unrealize;
 
   widget_class->destroy_event = sample_display_destroy;
 
@@ -3070,7 +2927,6 @@ sample_display_class_init (SampleDisplayClass *class)
   class->window_changed = NULL;
   class->mouse_offset_changed = NULL;
 
-#if 0
   for(n = 0, p = default_colors, c = class->colors;
       n < SAMPLE_DISPLAYCOL_LAST; n++, c++) {
     c->red = *p++ * 65535 / 255;
@@ -3103,7 +2959,6 @@ sample_display_class_init (SampleDisplayClass *class)
 			(c->blue & 0xff00)/256);
     gdk_colormap_alloc_color(gdk_colormap_get_system(), c, TRUE, TRUE);
   }
-#endif
 }
 
 static void
@@ -3124,8 +2979,38 @@ sample_display_init (SampleDisplay *s)
   s->mouse_offset = 0;
   s->scroll_left_tag = 0;
   s->scroll_right_tag = 0;
-  s->scheme = NULL;
-  s->release_timer = NULL;
+}
+
+
+
+
+GType
+sample_display_get_type (void)
+{
+  static GType sample_display_type = 0;
+
+  if (!sample_display_type) 
+	{
+      static const GTypeInfo sample_display_info =
+    {
+      sizeof(SampleDisplayClass),
+	   NULL, /* base_init */
+	   NULL, /* base_finalize */
+	   (GClassInitFunc) sample_display_class_init,
+	   NULL, /* class_finalize */
+	   NULL, /* class_data */
+       sizeof (SampleDisplay),		  
+	   0,    /* n_preallocs */
+	   (GInstanceInitFunc) sample_display_init,
+		  
+    };
+
+		sample_display_type = g_type_register_static (GTK_TYPE_WIDGET,
+												  "SampleDisplay", &sample_display_info, 0);
+		
+  }
+
+  return sample_display_type;
 }
 
 GtkWidget*
@@ -3133,7 +3018,3 @@ sample_display_new (void)
 {
   return GTK_WIDGET (g_object_new (sample_display_get_type (), NULL));
 }
-
-
-
-

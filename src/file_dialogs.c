@@ -373,7 +373,6 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
 
   question_dialog_new (sample, _("Revert file"), buf,
 		       _("Revert"), _("Don't revert"),
-          "gtk-ok", "gtk-cancel",
 		       G_CALLBACK (sample_revert_ok_cb), sample, NULL, NULL,
 		       SWEEP_EDIT_MODE_ALLOC);
 }
@@ -814,7 +813,6 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 
         question_dialog_new (sample, _("File exists"), buf,
 		  	   _("Overwrite"), _("Don't overwrite"),
-          "gtk-ok", "gtk-cancel",
 			     G_CALLBACK (overwrite_ok_cb), sd, G_CALLBACK (overwrite_cancel_cb), sd,
 			     SWEEP_EDIT_MODE_META);
       }
@@ -892,7 +890,6 @@ sample_save_cb (GtkWidget * widget, gpointer data)
     
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Save"), _("Don't save"),
-      "gtk-save", "gtk-cancel",
 			  G_CALLBACK (sample_save_ok_cb), view, NULL, NULL,
 			 SWEEP_EDIT_MODE_ALLOC);
   } else {

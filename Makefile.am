@@ -4,7 +4,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = m4 intl po include src plugins doc
 
-pkgdata_DATA = sweep_splash.png sweep-schemes.ini
+pkgdata_DATA = sweep_splash.png
 
 desktop_DATA = sweep.desktop
 desktopdir = $(datadir)/applications
@@ -13,7 +13,7 @@ pixmapdir = $(datadir)/pixmaps
 pixmap_DATA = sweep.svg
 
 EXTRA_DIST = config.rpath mkinstalldirs  $(desktop_DATA) $(pkgdata_DATA)  $(pixmap_DATA) \
-             sweep.spec sweep-schemes.ini README.Solaris README.ALSA README.i18n TODO
+             sweep.spec README.Solaris README.ALSA README.i18n TODO
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in \
                        stamp-h.in \

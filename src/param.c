@@ -597,7 +597,6 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 
   window = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(window), _(proc->name));
-  sweep_set_window_icon (GTK_WINDOW (window));
   /*  gtk_container_border_width (GTK_CONTAINER (window), 8);*/
 
   ps = ps_adjuster_new (proc, view, pset, window);
@@ -777,7 +776,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   gtk_widget_show (vbox);
 #endif
 
-  ok_button = gtk_button_new_from_stock ("gtk-apply");
+  ok_button = gtk_button_new_with_label (_("OK"));
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), ok_button,
 		      TRUE, TRUE, 0);
@@ -786,7 +785,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 		      G_CALLBACK (param_set_apply_cb), ps);
   
 
-  button = gtk_button_new_from_stock ("gtk-cancel");
+  button = gtk_button_new_with_label (_("Cancel"));
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(window)->action_area), button,
 		      TRUE, TRUE, 0);
