@@ -12,7 +12,8 @@ INCLUDES = \
 	@GTK_CFLAGS@ \
 	@GLIB_CFLAGS@ \
 	@GTHREADS_CFLAGS@ \
-	@ALSA_CFLAGS@
+	@ALSA_CFLAGS@ \
+	@PULSEAUDIO_CFLAGS@
 
 TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
 
@@ -30,6 +31,7 @@ sweep_SOURCES = \
 	driver.c driver.h \
 	driver_alsa.c \
 	driver_oss.c \
+	driver_pulseaudio.c \
 	driver_solaris.c \
 	edit.c edit.h \
 	file_dialogs.c file_dialogs.h \
@@ -75,7 +77,8 @@ sweep_LDADD = $(TDB_LIBS) \
 	$(MAD_LIBS) $(SPEEX_LIBS) \
 	$(SAMPLERATE_LIBS) \
 	@GLIB_LIBS@ @GTHREADS_LIBS@ \
-	@ALSA_LIBS@
+	@ALSA_LIBS@ \
+	@PULSEAUDIO_LIBS@
 
 sweep_LDFLAGS = @EXPORT_DYNAMIC_FLAGS@
 

@@ -301,7 +301,7 @@ HAVE_LIBSAMPLERATE=no
 
 ac_enable_src=yes
 AC_ARG_ENABLE(src,
-     [  --disable-src            enable secret rabbit code (libsamplerate)],
+     [  --disable-src           enable secret rabbit code (libsamplerate)],
      [ ac_enable_src=no ], [ ac_enable_src=yes])
 
 if test "x${ac_enable_src}" != xno ; then
@@ -318,53 +318,68 @@ fi
 
 
 dnl
-dnl Test for ALSA -- requires explicit enabling
+dnl Detect output driver to use
 dnl
 
+dnl Test for PulseAudio
 
-ac_enable_alsa=yes
-AC_ARG_ENABLE(alsa,
-     [  --disable-alsa           Disable ALSA, and enable use of OSS],
-     [ ac_enable_alsa=no ])
+ac_enable_pulseaudio=no
+AC_ARG_ENABLE(pulseaudio,
+     [  --enable-pulseaudio     Enable PulseAudio driver],
+     [ ac_enable_pulseaudio=yes ])
 
-if test "x${ac_enable_alsa}" != xno ; then
-
-  PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
-                  HAVE_ALSA="yes", sweep_config_ok="no")
-  AC_SUBST(ALSA_CFLAGS)
-  AC_SUBST(ALSA_LIBS)
-  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
-  if test "x$HAVE_ALSA" != xyes ; then
-    AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
-  fi	
-  sweep_config_driver="ALSA"
-fi
-
-dnl Test for OSS
-AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h)
-if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
-  test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
-  if test "x$ac_enable_alsa" = xno ; then
-    AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
-
-    dnl Check for NetBSD's OSS compatability layer
-    AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
-
-    sweep_config_driver="OSS"
+if test "x${ac_enable_pulseaudio}" != xno ; then
+  PKG_CHECK_MODULES(PULSEAUDIO, libpulse-simple >= 0.9.10, HAVE_PULSEAUDIO="yes", sweep_config_ok="no")
+  AC_SUBST(PULSEAUDIO_CFLAGS)
+  AC_SUBST(PULSEAUDIO_LIBS)
+  if test "x$HAVE_PULSEAUDIO" = xyes; then
+    AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.]) 
+    sweep_config_driver="PulseAudio"
   fi
-fi
+else
+  ac_enable_alsa=yes
+  AC_ARG_ENABLE(alsa,
+       [  --disable-alsa          Disable ALSA, and enable use of OSS],
+       [ ac_enable_alsa=no ])
 
-dnl Test for Solaris audio
-case $host in
-*-*-solaris*)
-AC_CHECK_HEADERS(sys/audioio.h)
-if test "x${ac_cv_header_sys_audioio_h}" = xyes; then
-    AC_DEFINE([DRIVER_SOLARIS_AUDIO], [], [Define if we have and want the solaris audio driver.])
-    sweep_config_driver="Solaris"
-fi
-;;
-esac
+  if test "x${ac_enable_alsa}" != xno ; then
 
+    PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
+                    HAVE_ALSA="yes", sweep_config_ok="no")
+    AC_SUBST(ALSA_CFLAGS)
+    AC_SUBST(ALSA_LIBS)
+    AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
+    if test "x$HAVE_ALSA" != xyes ; then
+      AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
+    fi	
+    sweep_config_driver="ALSA"
+  fi
+
+  dnl Test for OSS
+  AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h)
+  if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
+    test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
+    if test "x$ac_enable_alsa" = xno ; then
+      AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
+
+      dnl Check for NetBSD's OSS compatability layer
+      AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
+
+      sweep_config_driver="OSS"
+    fi
+  fi
+
+  dnl Test for Solaris audio
+  case $host in
+  *-*-solaris*)
+  AC_CHECK_HEADERS(sys/audioio.h)
+  if test "x${ac_cv_header_sys_audioio_h}" = xyes; then
+      AC_DEFINE([DRIVER_SOLARIS_AUDIO], [], [Define if we have and want the solaris audio driver.])
+      sweep_config_driver="Solaris"
+    fi
+  ;;
+  esac
+fi
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then

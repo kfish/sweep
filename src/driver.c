@@ -44,6 +44,7 @@
 
 extern sw_driver * driver_alsa;
 extern sw_driver * driver_oss;
+extern sw_driver * driver_pulseaudio;
 extern sw_driver * driver_solaris;
 
 extern GMutex * play_mutex;
@@ -754,6 +755,8 @@ init_devices (void)
   pref = driver_alsa;
 #elif defined(DRIVER_OSS)
   pref = driver_oss;
+#elif defined(DRIVER_PULSEAUDIO)
+  pref = driver_pulseaudio;
 #elif defined(DRIVER_SOLARIS_AUDIO)
   pref = driver_solaris;
 #endif
