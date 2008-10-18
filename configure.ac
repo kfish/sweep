@@ -66,7 +66,7 @@ dnl
 dnl  Detect Gthread, GLib and GTK+ libraries
 dnl
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >=  2.4.0, HAVE_GTK="yes", sweep_config_ok="no")
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >=  2.10.0, HAVE_GTK="yes", sweep_config_ok="no")
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 if test "x$HAVE_GTK" != xyes ; then
