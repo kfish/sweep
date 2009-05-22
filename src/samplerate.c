@@ -336,12 +336,17 @@ static void
 src_quality_label_update (GtkWidget * dialog, int quality)
 {
   GtkWidget * label;
+  const char * desc;
   gchar * new_text, * c;
 
   label =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_label"));
 
-  new_text = g_strdup (src_get_description (quality));
+  desc = src_get_description (quality) ;
+  if (desc == NULL)
+    return ;
+
+  new_text = g_strdup (desc);
 
   /* replace commas in description with newline characters */
   for (c = new_text; *c != '\0'; c++) {
