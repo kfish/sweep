@@ -167,7 +167,7 @@ msgstr "Sweep: Audiogerätekonfiguration"
 #: src/driver.c:410
 msgid "Changes to device settings will take effect on next playback."
 msgstr ""
-"Änderungen der Geräte-Einstellungen werden bim nächsten Abspielen aktiviert."
+"Änderungen der Geräte-Einstellungen werden beim nächsten Abspielen aktiviert."
 
 #: src/driver.c:424
 msgid "Device name"
@@ -691,7 +691,7 @@ msgstr ""
 
 #: src/file_speex.c:1904
 msgid "Speex frames per Ogg packet:"
-msgstr "Speex Rahmen pro Ogg Paket:"
+msgstr "Speex Rahmen pro Ogg-Paket:"
 
 #: src/file_speex.c:1930
 msgid ""
@@ -884,7 +884,7 @@ msgstr "Maximale Bitrate:"
 msgid ""
 "Specify a maximum bitrate, useful for streaming applications. (Optional)"
 msgstr ""
-"Gben Sie eine maximale Bitrate an, die für Streaminganwendungen geeignet "
+"Geben Sie eine maximale Bitrate an, die für Streaminganwendungen geeignet "
 "ist. (Optional)"
 
 #: src/file_vorbis.c:1370
@@ -937,7 +937,7 @@ msgstr ""
 "Der Künstler, der generell als verantwortlich für das Werk zeichnet. In "
 "Popmusik ist dies gewöhnlich die aufführende Band oder der Sänger. Bei "
 "klassischer Musik wäre dies der Komponist. Bei einem Audiobuch wäre es der "
-"Author des Originaltextes."
+"Autor des Originaltextes."
 
 #: src/file_vorbis.c:1416
 msgid "Performer:"
@@ -1197,7 +1197,7 @@ msgid ""
 "Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
 "of the sample. Hold down shift and click on the view to zoom out."
 msgstr ""
-"Dieses Werkzeug erlaubt es, ine eine Ansicht hinein zu zoomen oder aus ihr "
+"Dieses Werkzeug erlaubt es, in eine Ansicht hinein zu zoomen oder aus ihr "
 "heraus zu zoomen. Durch Mausklick wird die Stelle zum Hineinzoomen "
 "ausgewählt. Durch Halten der Shift-Taste beim Mausklick wird herausgezoomt."
 
@@ -2467,7 +2467,7 @@ msgstr "Mit einem Löffel"
 
 #: plugins/example/example.c:39
 msgid "With false teeth"
-msgstr "Mit flaschen Zähnen"
+msgstr "Mit falschen Zähnen"
 
 #: plugins/example/example.c:40
 msgid "With Nigel's bum"
