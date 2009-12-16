@@ -27,6 +27,8 @@
 #include <string.h>
 #include <time.h>
 
+#include <X11/Xlib.h>
+
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -137,6 +139,8 @@ main (int argc, char *argv[])
 	}
 #endif
 #endif
+
+  XInitThreads ();
 
   gtk_init (&argc, &argv);
 
