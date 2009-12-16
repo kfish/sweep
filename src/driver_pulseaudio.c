@@ -121,12 +121,16 @@ pulse_wait (sw_handle * handle)
 static ssize_t
 pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 {
+  struct pa_simple * pa ;
   int error;
   size_t byte_count;
 
+  if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
+    return 0;
+
   byte_count = count * sizeof (sw_audio_t);
 
-  if (pa_simple_read((struct pa_simple *)handle->custom_data, buf, byte_count, &error) < 0) {
+  if (pa_simple_read(pa, buf, byte_count, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_read() failed: %s\n", pa_strerror(error));
     return 0;
   }
@@ -137,12 +141,16 @@ static ssize_t
 pulse_write (sw_handle * handle, sw_audio_t * buf, size_t count,
     sw_framecount_t offset)
 {
+  struct pa_simple * pa ;
   int error;
   size_t byte_count;
 
+  if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
+    return 0;
+
   byte_count = count * sizeof (sw_audio_t);
 
-  if (pa_simple_write((struct pa_simple *)handle->custom_data, buf, byte_count, &error) < 0) {
+  if (pa_simple_write(pa, buf, byte_count, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_write() failed: %s\n", pa_strerror(error));
     return 0;
   }
@@ -164,9 +172,13 @@ pulse_reset (sw_handle * handle)
 static void
 pulse_flush (sw_handle * handle)
 {
+  struct pa_simple * pa ;
   int error;
 
-  if (pa_simple_flush((struct pa_simple *)handle->custom_data, &error) < 0) {
+  if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
+    return;
+
+  if (pa_simple_flush(pa, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_flush() failed: %s\n", pa_strerror(error));
   }
 }
@@ -174,9 +186,13 @@ pulse_flush (sw_handle * handle)
 static void
 pulse_drain (sw_handle * handle)
 {
+  struct pa_simple * pa ;
   int error;
 
-  if (pa_simple_drain((struct pa_simple *)handle->custom_data, &error) < 0) {
+  if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
+    return;
+
+  if (pa_simple_drain(pa, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_drain() failed: %s\n", pa_strerror(error));
   }
 }
@@ -184,8 +200,14 @@ pulse_drain (sw_handle * handle)
 static void
 pulse_close (sw_handle * handle)
 {
+  struct pa_simple * pa ;
+
   pulse_drain(handle);
-  pa_simple_free((struct pa_simple *)handle->custom_data);
+
+  if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
+    return;
+
+  pa_simple_free(pa);
   handle->custom_data = NULL;
 }
 
