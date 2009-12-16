@@ -597,7 +597,13 @@ AC_MSG_ERROR([
 
 else
 
+# Shave make automake/libtool output much less verbose and much more
+# readable. See : git://git.lespiau.name/shave
+SHAVE_INIT([],[enable])
+
 AC_OUTPUT([
+shave
+shave-libtool
 Makefile
 sweep.spec
 m4/Makefile

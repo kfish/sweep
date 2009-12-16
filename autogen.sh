@@ -13,14 +13,17 @@ DIE=0
 
 ACLOCAL_FLAGS="-I $srcdir/m4"
 
-echo "checking for autoconf... "
+echo -n "checking for autoconf ... "
+result="yes"
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
         echo
         echo "You must have autoconf installed to compile $package."
         echo "Download the appropriate package for your distribution,"
         echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
+		result="no"
         DIE=1
 }
+echo $result
 
 VERSIONGREP="sed -e s/.*[^0-9\.]\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/"
 VERSIONMKMAJ="sed -e s/\([0-9][0-9]*\)[^0-9].*/\\1/"
@@ -34,7 +37,7 @@ if test -r Makefile.am; then
     AM_NEEDED=""
   fi
   if test -z $AM_NEEDED; then
-    echo -n "checking for automake... "
+    echo -n "checking for automake ... "
     AUTOMAKE=automake
     ACLOCAL=aclocal
     if ($AUTOMAKE --version < /dev/null > /dev/null 2>&1); then
@@ -44,7 +47,7 @@ if test -r Makefile.am; then
       AUTOMAKE=
     fi
   else
-    echo -n "checking for automake $AM_NEEDED or later... "
+    echo -n "checking for automake $AM_NEEDED or later ... "
     majneeded=`echo $AM_NEEDED | $VERSIONMKMAJ`
     minneeded=`echo $AM_NEEDED | $VERSIONMKMIN`
     for am in automake-$AM_NEEDED automake$AM_NEEDED \
@@ -60,7 +63,7 @@ if test -r Makefile.am; then
       fi
     done
     test -z $AUTOMAKE &&  echo "no"
-    echo -n "checking for aclocal $AM_NEEDED or later... "
+    echo -n "checking for aclocal $AM_NEEDED or later ... "
     for ac in aclocal-$AM_NEEDED aclocal$AM_NEEDED \
 	aclocal aclocal-1.7 aclocal-1.8 aclocal-1.9 aclocal-1.10; do
       ($ac --version < /dev/null > /dev/null 2>&1) || continue
@@ -84,7 +87,7 @@ if test -r Makefile.am; then
   }
 fi
 
-echo -n "checking for libtool... "
+echo -n "checking for libtool ... "
 for LIBTOOLIZE in libtoolize glibtoolize nope; do
   ($LIBTOOLIZE --version) < /dev/null > /dev/null 2>&1 && break
 done
@@ -102,6 +105,18 @@ fi
 	echo "listed in http://www.gnu.org/order/ftp.html"
 	DIE=1
 }
+
+echo -n "checking for pkg-config ... "
+result="yes"
+(pkg-config --version) < /dev/null > /dev/null 2>&1 || {
+        echo
+        echo "You must have pkg-config installed to compile $package."
+        echo "Download the appropriate package for your distribution."
+		result="no"
+        DIE=1
+}
+echo $result
+
 
 if test "$DIE" -eq 1; then
         exit 1
