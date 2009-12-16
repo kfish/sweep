@@ -194,7 +194,7 @@ file_is_ogg_speex (const char * pathname)
   ogg_stream_init (&os, ogg_page_serialno (&og));
   ogg_stream_pagein (&os, &og);
   if (ogg_stream_packetout (&os, &op) != 1) goto out_false_stream;
-  header = speex_packet_to_header (op.packet, op.bytes);
+  header = speex_packet_to_header ((char*) op.packet, op.bytes);
   if (!header) goto out_false_stream;
   if (header->mode >= SPEEX_NB_MODES) goto out_false_stream;
   mode = speex_mode_list[header->mode];

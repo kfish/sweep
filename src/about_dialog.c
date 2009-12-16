@@ -44,7 +44,8 @@ static GtkWidget *about_dialog = NULL;
 static void
 sweep_homepage (GtkWidget * widget, gpointer data)
 {
-  system ("gnome-moz-remote http://sweep.sourceforge.net/");
+  if (system ("gnome-moz-remote http://sweep.sourceforge.net/") < 0)
+    perror ("system") ;
 }
 
 void
