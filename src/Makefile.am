@@ -3,6 +3,7 @@
 SUBDIRS = tdb
 
 INCLUDES = \
+	-DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@' \
 	-I$(top_srcdir)/intl \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/src/tdb \
@@ -81,5 +82,3 @@ sweep_LDADD = $(TDB_LIBS) \
 	@PULSEAUDIO_LIBS@
 
 sweep_LDFLAGS = @EXPORT_DYNAMIC_FLAGS@
-
-sweep_CFLAGS = -DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@'
