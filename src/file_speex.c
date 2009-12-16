@@ -345,7 +345,7 @@ sample_load_speex_data (sw_op_instance * inst)
   int frame_size = 0;
   int rate = -1;
   int channels = -1;
-  int extra_headers;
+  int extra_headers = 0;
   SpeexStereoState stereo = SPEEX_STEREO_STATE_INIT;
   int packet_count = 0;
   int stream_init = 0;
