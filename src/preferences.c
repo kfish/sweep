@@ -249,7 +249,7 @@ prefs_get_float (char * key)
   TDB_DATA key_data, val_data;
   int nval, val;
   float fval;
-  union { int *ip; float *fp;} fp;
+  union { int ip; float fp;} fp;
   if (prefs_tdb == NULL) return NULL;
 
   key_data.dptr = key;
@@ -264,8 +264,8 @@ prefs_get_float (char * key)
   nval = *(int *)val_data.dptr;
   val = g_ntohl (nval);
 
-  fp.ip = &val;
-  fval = *fp.fp;
+  fp.ip = val;
+  fval = fp.fp;
 
 #ifdef DEBUG
   printf ("preferences.c: got %s is %f\n", key, fval);
@@ -281,7 +281,7 @@ prefs_set_float (char * key, float val)
 {
   TDB_DATA key_data, val_data;
   int nval, ival;
-  union { int *ip; float *fp;} fp;
+  union { int ip; float fp;} fp;
 
   if (prefs_tdb == NULL) return -1;
 
@@ -292,8 +292,8 @@ prefs_set_float (char * key, float val)
   key_data.dptr = key;
   key_data.dsize = strlen (key);
 
-  fp.fp = &val;
-  ival = *fp.ip;
+  fp.fp = val;
+  ival = fp.ip;
   nval = g_htonl (ival);
 
   val_data.dptr = (char *)&nval;
