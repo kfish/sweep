@@ -64,6 +64,11 @@ do { \
 } while (0)
 #endif
 
+static sw_handle alsa_handle = {
+ 0, -1, 0, 0, NULL
+};
+
+
 void print_pcm_state (snd_pcm_t * pcm)
 {
   switch (snd_pcm_state(pcm)) {
@@ -123,7 +128,7 @@ alsa_device_open (int monitoring, int flags)
   int err;
   char * alsa_pcm_name;
   snd_pcm_t * pcm_handle;
-  sw_handle * handle;
+  sw_handle * handle = &alsa_handle;
   snd_pcm_stream_t stream;
 
   if (monitoring) {
@@ -149,8 +154,6 @@ alsa_device_open (int monitoring, int flags)
 		  alsa_pcm_name /*, snd_strerror (err)*/);
     return NULL;
   }
-
-  handle = g_malloc0 (sizeof (sw_handle));
 
   handle->driver_flags = flags;
   handle->custom_data = pcm_handle;
@@ -443,6 +446,7 @@ alsa_device_close (sw_handle * handle)
   snd_pcm_t * pcm_handle = (snd_pcm_t *)handle->custom_data;
  
   snd_pcm_close (pcm_handle);
+  handle->custom_data = NULL;
 }
 
 static sw_driver _driver_alsa = {

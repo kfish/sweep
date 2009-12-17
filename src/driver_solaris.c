@@ -47,11 +47,15 @@
 #include <sys/conf.h>
 #define DEV_AUDIO "/dev/audio"
 
+static sw_handle dev_audio_handle = {
+ 0, -1, 0, 0, NULL
+};
+
 static sw_handle *
 open_dev_audio (int cueing, int flags)
 {
   int dev_audio;
-  sw_handle * handle;
+  sw_handle * handle = &dev_audio_handle;
 
   if (cueing) return NULL;
 
@@ -60,7 +64,6 @@ open_dev_audio (int cueing, int flags)
     return NULL;
   }
 
-  handle = g_malloc0 (sizeof (sw_handle));
   handle->driver_flags = flags;
   handle->driver_fd = dev_audio;
 
@@ -112,6 +115,7 @@ static void
 close_dev_audio (sw_handle * handle)
 {
   close (handle->driver_fd);
+  handle->driver_fd = -1;
 }
 
 static sw_driver _driver_solaris = {

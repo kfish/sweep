@@ -76,7 +76,9 @@ static int oindex;
 static int current_frame;
 static int frame;
 
-
+static sw_handle oss_handle = {
+ 0, -1, 0, 0, NULL
+};
 
 /* driver functions */
 
@@ -97,7 +99,7 @@ open_dev_dsp (int monitoring, int flags)
 {
   char * dev_name;
   int dev_dsp;
-  sw_handle * handle;
+  sw_handle * handle = &oss_handle;
   int i;
 
   if (monitoring) {
@@ -116,7 +118,6 @@ open_dev_dsp (int monitoring, int flags)
     return NULL;
   }
 
-  handle = g_malloc0 (sizeof (sw_handle));
   handle->driver_flags = flags;
   handle->driver_fd = dev_dsp;
 
@@ -430,6 +431,7 @@ static void
 close_dev_dsp (sw_handle * handle)
 {
   close (handle->driver_fd);
+  handle->driver_fd = -1;
 }
 
 static sw_driver _driver_oss = {
