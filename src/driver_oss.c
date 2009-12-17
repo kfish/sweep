@@ -433,6 +433,7 @@ close_dev_dsp (sw_handle * handle)
 }
 
 static sw_driver _driver_oss = {
+  "OSS",
   oss_get_names,
   open_dev_dsp,
   setup_dev_dsp,
@@ -452,7 +453,7 @@ static sw_driver _driver_oss = {
 #else
 
 static sw_driver _driver_oss = {
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 };
 
 #endif

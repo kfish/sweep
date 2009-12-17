@@ -446,6 +446,7 @@ alsa_device_close (sw_handle * handle)
 }
 
 static sw_driver _driver_alsa = {
+  "ALSA",
   alsa_get_names,
   alsa_device_open,
   alsa_device_setup,
@@ -465,7 +466,7 @@ static sw_driver _driver_alsa = {
 #else
 
 static sw_driver _driver_alsa = {
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 #endif

@@ -212,6 +212,7 @@ pulse_close (sw_handle * handle)
 }
 
 static sw_driver _driver_pulseaudio = {
+  "PulseAudio",
   pulse_get_names,
   pulse_open,
   pulse_setup,
@@ -231,7 +232,7 @@ static sw_driver _driver_pulseaudio = {
 #else
 
 static sw_driver _driver_pulseaudio = {
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 #endif

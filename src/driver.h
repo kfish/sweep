@@ -39,6 +39,7 @@ struct _sw_handle {
 };
 
 struct _sw_driver {
+  const char * name;
   GList * (*get_names) (void);
   sw_handle * (*open) (int cueing, int flags);
   void (*setup) (sw_handle * handle, sw_format * format);

@@ -115,6 +115,7 @@ close_dev_audio (sw_handle * handle)
 }
 
 static sw_driver _driver_solaris = {
+  "Solaris",
   NULL, /* config */
   open_dev_audio,
   setup_dev_audio,
@@ -132,7 +133,7 @@ static sw_driver _driver_solaris = {
 #else
 
 static sw_driver _driver_solaris = {
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 #endif
