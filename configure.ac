@@ -3,9 +3,11 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Require minimum autoconf version
 AC_PREREQ(2.50)
 
-AC_INIT(configure.ac)
-AM_INIT_AUTOMAKE(sweep, 0.9.3)
-AM_CONFIG_HEADER(config.h)
+AC_INIT([sweep],[0.9.3],[sweep-devel@lists.sourceforge.net],
+		[sweep],[http://www.metadecks.org/software/sweep/])
+
+AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 
 AC_ISC_POSIX
 AC_PROG_CC
