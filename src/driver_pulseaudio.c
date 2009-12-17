@@ -46,7 +46,17 @@
 #include <pulse/simple.h>
 #include <pulse/error.h>
 
-sw_handle * handle_in, * handle_out = NULL;
+static sw_handle handle_ro = {
+ 0, -1, 0, 0, NULL
+};
+
+static sw_handle handle_wo = {
+ 0, -1, 0, 0, NULL
+};
+
+static sw_handle handle_rw = {
+ 0, -1, 0, 0, NULL
+};
 
 static GList *
 pulse_get_names (void)
@@ -61,17 +71,13 @@ pulse_get_names (void)
 static sw_handle *
 pulse_open (int monitoring, int flags)
 {
-  sw_handle * handle = NULL;
+  sw_handle * handle = &handle_rw;
 
   if (flags == O_RDONLY) {
-    handle = handle_in;
+    handle = &handle_ro;
   } else if (flags == O_WRONLY) {
-    handle = handle_out;
-  } else {
-    return NULL;
+    handle = &handle_wo;
   }
-
-  handle = g_malloc0 (sizeof (sw_handle));
 
   handle->driver_flags = flags;
   handle->custom_data = NULL;
