@@ -30,7 +30,7 @@ dnl Overall configuration success flag
 sweep_config_ok=yes
 
 dnl Default audio handling to build in
-sweep_config_driver=none
+sweep_config_driver=""
 
 dnl
 dnl  Configuration option for building of experimental code.
@@ -321,15 +321,24 @@ fi
 
 
 dnl
-dnl Detect output driver to use
+dnl Detect output drivers. Enable as many as possible by default and
+dnl choose between them at runtime.
 dnl
 
-dnl Test for PulseAudio
-
-ac_enable_pulseaudio=no
+ac_enable_pulseaudio=yes
 AC_ARG_ENABLE(pulseaudio,
-     [  --enable-pulseaudio     Enable PulseAudio driver],
-     [ ac_enable_pulseaudio=yes ])
+     AC_HELP_STRING([--disable-pulseaudio],[Disable PulseAudio driver]),
+     [ ac_enable_pulseaudio=no ])
+
+ac_enable_alsa=yes
+AC_ARG_ENABLE(alsa,
+     AC_HELP_STRING([--disable-alsa],[Disable ALSA driver]),
+     [ ac_enable_alsa=no ])
+
+ac_enable_oss=yes
+AC_ARG_ENABLE(oss,
+     AC_HELP_STRING([--disable-oss],[Disable OSS driver]),
+     [ ac_enable_oss=no ])
 
 if test "x${ac_enable_pulseaudio}" != xno ; then
   PKG_CHECK_MODULES(PULSEAUDIO, libpulse-simple >= 0.9.10, HAVE_PULSEAUDIO="yes", sweep_config_ok="no")
@@ -337,52 +346,46 @@ if test "x${ac_enable_pulseaudio}" != xno ; then
   AC_SUBST(PULSEAUDIO_LIBS)
   if test "x$HAVE_PULSEAUDIO" = xyes; then
     AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.]) 
-    sweep_config_driver="PulseAudio"
+    sweep_config_driver="$sweep_config_driver PulseAudio"
+    fi
   fi
-else
-  ac_enable_alsa=yes
-  AC_ARG_ENABLE(alsa,
-       [  --disable-alsa          Disable ALSA, and enable use of OSS],
-       [ ac_enable_alsa=no ])
 
-  if test "x${ac_enable_alsa}" != xno ; then
-
-    PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
+if test "x${ac_enable_alsa}" != xno ; then
+  PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
                     HAVE_ALSA="yes", sweep_config_ok="no")
-    AC_SUBST(ALSA_CFLAGS)
-    AC_SUBST(ALSA_LIBS)
-    AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
-    if test "x$HAVE_ALSA" != xyes ; then
-      AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
+  AC_SUBST(ALSA_CFLAGS)
+  AC_SUBST(ALSA_LIBS)
+  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
+  if test "x$HAVE_ALSA" == xyes ; then
+    AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
+    sweep_config_driver="$sweep_config_driver ALSA"
     fi	
-    sweep_config_driver="ALSA"
   fi
 
+if test "x${ac_enable_oss}" != xno ; then
   dnl Test for OSS
   AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h)
   if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
     test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
-    if test "x$ac_enable_alsa" = xno ; then
+    if test "x$ac_enable_alsa" = xyes ; then
       AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
-
       dnl Check for NetBSD's OSS compatability layer
       AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
-
-      sweep_config_driver="OSS"
+      sweep_config_driver="$sweep_config_driver OSS"
+      fi
     fi
   fi
 
-  dnl Test for Solaris audio
-  case $host in
+dnl Test for Solaris audio
+case $host in
   *-*-solaris*)
   AC_CHECK_HEADERS(sys/audioio.h)
   if test "x${ac_cv_header_sys_audioio_h}" = xyes; then
       AC_DEFINE([DRIVER_SOLARIS_AUDIO], [], [Define if we have and want the solaris audio driver.])
-      sweep_config_driver="Solaris"
+      sweep_config_driver="$sweep_config_driver Solaris"
     fi
   ;;
   esac
-fi
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then
@@ -634,7 +637,7 @@ AC_MSG_RESULT([
 **  Configuration summary:
 **
 **     Experimental code: ....... ${ac_enable_experimental}
-**     Audio device handling: ... $sweep_config_driver
+**     Audio devices: ...........$sweep_config_driver
 **     PCM: libsndfile .......... $HAVE_LIBSNDFILE1
 **     Ogg Vorbis support: ...... $HAVE_VORBIS
 **     MPEG (MP3) loading: ...... $HAVE_MAD
