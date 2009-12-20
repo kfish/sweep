@@ -62,7 +62,7 @@
 
 #define USE_MONITOR_KEY "UseMonitor"
 
-GMutex * play_mutex = NULL;
+static GMutex * play_mutex = NULL;
 
 static sw_handle * main_handle = NULL;
 static sw_handle * monitor_handle = NULL;

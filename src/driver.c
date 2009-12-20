@@ -47,8 +47,6 @@ extern sw_driver * driver_oss;
 extern sw_driver * driver_pulseaudio;
 extern sw_driver * driver_solaris;
 
-extern GMutex * play_mutex;
-
 /* preferred driver */
 static sw_driver _driver_null = {
   NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
@@ -760,6 +758,4 @@ init_devices (void)
 #elif defined(DRIVER_SOLARIS_AUDIO)
   pref = driver_solaris;
 #endif
-
-  play_mutex = g_mutex_new ();
 }
