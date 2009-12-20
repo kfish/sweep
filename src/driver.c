@@ -41,35 +41,49 @@
 #include <sweep/sweep_sample.h>
 
 #include "driver.h"
+#include "preferences.h"
+#include "pcmio.h"
+
+#define ARRAY_LEN(x) ((int) (sizeof (x)) / (sizeof (x [0])))
 
 extern sw_driver * driver_alsa;
 extern sw_driver * driver_oss;
 extern sw_driver * driver_pulseaudio;
 extern sw_driver * driver_solaris;
 
+static sw_driver * driver_table [10];
+
 /* preferred driver */
 static sw_driver _driver_null = {
-  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-static sw_driver * pref = &_driver_null;
+/*
+** Always keep two pointers to the output diver. current_driver is the
+** one that is currently being used and dialog_driver is the one that
+** has been chosen on the dialog box.
+** This allows dialog_driver to be changed when current_driver is being
+** used, with the change from dialog_driver to current_driver occurring
+** at the next time the device_open() is called.
+*/
+static sw_driver * current_driver = &_driver_null;
+static sw_driver * dialog_driver = &_driver_null;
 
-#include "preferences.h"
-#include "pcmio.h"
+static char * prefs_driver_key = "driver";
 
 char *
 pcmio_get_default_main_dev (void)
 {
   GList * names = NULL, * gl;
 
-  if (pref->get_names)
-    names = pref->get_names ();
+  if (dialog_driver->get_names)
+    names = dialog_driver->get_names ();
 
   if ((gl = names) != NULL) {
     return (char *)gl->data;
   }
 
-  return NULL;
+  return "Default";
 }
 
 char *
@@ -77,8 +91,8 @@ pcmio_get_default_monitor_dev (void)
 {
   GList * names = NULL, * gl;
 
-  if (pref->get_names)
-    names = pref->get_names ();
+  if (dialog_driver->get_names)
+    names = dialog_driver->get_names ();
 
   if ((gl = names) != NULL) {
     if ((gl = gl->next) != NULL) {
@@ -86,7 +100,7 @@ pcmio_get_default_monitor_dev (void)
     }
   }
 
-  return NULL;
+  return "Default";
 }
 
 char *
@@ -94,7 +108,7 @@ pcmio_get_main_dev (void)
 {
   char * main_dev;
 
-  main_dev = prefs_get_string (pref->primary_device_key);
+  main_dev = prefs_get_string (dialog_driver->primary_device_key);
 
   if (main_dev == NULL) return pcmio_get_default_main_dev();
   
@@ -106,7 +120,7 @@ pcmio_get_monitor_dev (void)
 {
   char * monitor_dev;
 
-  monitor_dev = prefs_get_string (pref->monitor_device_key);
+  monitor_dev = prefs_get_string (dialog_driver->monitor_device_key);
 
   if (monitor_dev == NULL) return pcmio_get_default_monitor_dev ();
   
@@ -129,13 +143,14 @@ pcmio_get_log_frags (void)
 {
   int * log_frags;
 
-  log_frags = prefs_get_int (pref->log_frags_key);
+  log_frags = prefs_get_int (dialog_driver->log_frags_key);
   if (log_frags == NULL) return DEFAULT_LOG_FRAGS;
   else return (*log_frags);
 }
 
 extern GtkStyle * style_bw;
 static GtkWidget * dialog = NULL;
+static GtkWidget * driver_combo;
 static GtkWidget * main_combo;
 static GtkWidget * monitor_combo;
 static GtkObject * adj;
@@ -158,20 +173,24 @@ config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog = GTK_WIDGET (data);
   GtkAdjustment * adj;
   G_CONST_RETURN gchar * main_dev, * monitor_dev;
+  int driver_index;
+
+  driver_index = gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
+  prefs_set_string (prefs_driver_key, (gchar *)driver_table [driver_index]->name);
 
   adj = g_object_get_data (G_OBJECT(dialog), "buff_adj");
 
-  prefs_set_int (pref->log_frags_key, adj->value);
+  prefs_set_int (dialog_driver->log_frags_key, adj->value);
 
   main_dev =
     gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
 
-  prefs_set_string (pref->primary_device_key, (gchar *)main_dev);
+  prefs_set_string (dialog_driver->primary_device_key, (gchar *)main_dev);
 
   if (monitor_checked (dialog)) {
     monitor_dev =
-      gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry)); 
-    prefs_set_string (pref->monitor_device_key, (gchar *)monitor_dev);
+      gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
+    prefs_set_string (dialog_driver->monitor_device_key, (gchar *)monitor_dev);
 
     prefs_set_int (USE_MONITOR_KEY, 1);
   } else {
@@ -182,12 +201,51 @@ config_dev_dsp_dialog_ok_cb (GtkWidget * widget, gpointer data)
 }
 
 static void
+update_pcmio_settings (void)
+{
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry),
+		      pcmio_get_main_dev ());
+
+  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry),
+		      pcmio_get_monitor_dev ());
+
+  gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), pcmio_get_log_frags ());
+}
+
+static void
 config_dev_dsp_dialog_cancel_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog;
+  int k;
 
   dialog = gtk_widget_get_toplevel (widget);
   gtk_widget_hide (dialog);
+
+  dialog_driver = current_driver;
+
+  for (k = 0 ; driver_table [k] != NULL ; k++)
+    if (strcmp (current_driver->name, driver_table [k]->name) == 0) {
+	  gtk_combo_box_set_active (GTK_COMBO_BOX (driver_combo), k);
+      break ;
+	}
+
+  update_pcmio_settings ();
+}
+
+static void
+choose_driver_cb (GtkWidget * widget, gpointer data)
+{
+  int driver_index;
+
+  driver_index = gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
+
+  /* Change the driver dialog, not the current_dialog. The change in
+  ** dialog_driver gets picked up and transfered to current_driver
+  ** at the next call to driver_open().
+  */
+  dialog_driver = driver_table [driver_index];
+
+  update_pcmio_settings ();
 }
 
 static void
@@ -197,9 +255,12 @@ update_ok_button (GtkWidget * widget, gpointer data)
   GtkWidget * ok_button;
   gchar * main_devname, * monitor_devname;
   gboolean ok = FALSE;
+  int driver_index;
 
   ok_button =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "ok_button"));
+
+  driver_index = gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
 
   if (monitor_checked (dialog)) {
     main_devname = (gchar *)
@@ -247,14 +308,11 @@ pcmio_devname_swap_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog = GTK_WIDGET (data);
   gchar * main_dev, * monitor_dev;
 
-  main_dev =
-    g_strdup (gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry)));
+  main_dev = (gchar *)gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry));
   monitor_dev = (gchar *)gtk_entry_get_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry));
 
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), monitor_dev);
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry), main_dev);
-
-  g_free (main_dev);
 
   set_monitor_widgets (dialog, pcmio_get_use_monitor());
 
@@ -325,13 +383,32 @@ pcmio_buffering_default_cb (GtkWidget * widget, gpointer data)
 }
 
 static GtkWidget *
+create_drivers_combo (void)
+{
+  GtkWidget * combo;
+  int k, current=0;
+  
+  combo = gtk_combo_box_new_text ();
+
+  for (k = 0 ; k < ARRAY_LEN (driver_table) && driver_table [k] ; k++) {
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), driver_table [k]->name) ;
+    if (strcmp (driver_table [k]->name,  dialog_driver->name) == 0)
+      current = k;
+  }
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (combo), current);
+
+  return combo;
+}
+
+static GtkWidget *
 create_devices_combo (void)
 {
   GtkWidget * combo;
   GList * cbitems = NULL;
 
-  if (pref->get_names)
-    cbitems = pref->get_names();
+  if (dialog_driver->get_names)
+    cbitems = dialog_driver->get_names();
   
   combo = gtk_combo_new ();
   
@@ -411,9 +488,26 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, TRUE, 8);
     gtk_widget_show (label);
 
+    /* Choose driver */
+    hbox = gtk_hbox_new (FALSE, 8);
+    gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
+    gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
+    gtk_widget_show (hbox);
+
+    label = gtk_label_new (_("Driver:"));
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
+    gtk_widget_show (label);
+
+    driver_combo = create_drivers_combo ();
+    gtk_box_pack_start (GTK_BOX(hbox), driver_combo, TRUE, TRUE, 0);
+    gtk_widget_show (driver_combo);
+
+    g_signal_connect (GTK_COMBO_BOX(driver_combo), "changed",
+			G_CALLBACK(choose_driver_cb), dialog);
+
+    g_object_set_data (G_OBJECT (dialog), "driver_combo", driver_combo);
 
     /* Notebook */
-
     notebook = gtk_notebook_new ();
     gtk_box_pack_start (GTK_BOX(GTK_DIALOG(dialog)->vbox), notebook,
 			TRUE, TRUE, 4);
@@ -644,13 +738,7 @@ device_config (void)
 			  NULL);
   }
 
-  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry),
-		      pcmio_get_main_dev ());
-
-  gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(monitor_combo)->entry),
-		      pcmio_get_monitor_dev ());
-
-  gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), pcmio_get_log_frags ());
+  update_pcmio_settings ();
 
   if (!GTK_WIDGET_VISIBLE(dialog)) {
     gtk_widget_show(dialog);
@@ -662,8 +750,10 @@ device_config (void)
 sw_handle *
 device_open (int cueing, int flags)
 {
-  if (pref->open)
-    return pref->open (cueing, flags);
+  current_driver = dialog_driver;
+
+  if (current_driver->open)
+    return current_driver->open (cueing, flags);
   else
     return NULL;
 }
@@ -671,15 +761,15 @@ device_open (int cueing, int flags)
 void
 device_setup (sw_handle * handle, sw_format * format)
 {
-  if (pref->setup)
-    pref->setup (handle, format);
+  if (current_driver->setup)
+    current_driver->setup (handle, format);
 }
 
 int
 device_wait (sw_handle * handle)
 {
-  if (pref->wait)
-    return pref->wait (handle);
+  if (current_driver->wait)
+    return current_driver->wait (handle);
   else
     return 0;
 }
@@ -687,8 +777,8 @@ device_wait (sw_handle * handle)
 ssize_t
 device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 {
-  if (pref->read)
-    return pref->read (handle, buf, count);
+  if (current_driver->read)
+    return current_driver->read (handle, buf, count);
   else
     return -1;
 }
@@ -701,8 +791,8 @@ device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
   printf ("device_write: %d from %d\n", count, offset);
 #endif
 
-  if (pref->write)
-    return pref->write (handle, buf, count, offset);
+  if (current_driver->write)
+    return current_driver->write (handle, buf, count, offset);
   else
     return -1;
 }
@@ -710,8 +800,8 @@ device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
 sw_framecount_t
 device_offset (sw_handle * handle)
 {
-  if (pref->offset)
-    return pref->offset (handle);
+  if (current_driver->offset)
+    return current_driver->offset (handle);
   else
     return -1;
 }
@@ -719,29 +809,29 @@ device_offset (sw_handle * handle)
 void
 device_reset (sw_handle * handle)
 {
-  if (pref->reset)
-    pref->reset (handle);
+  if (current_driver->reset)
+    current_driver->reset (handle);
 }
 
 void
 device_flush (sw_handle * handle)
 {
-  if (pref->flush)
-    pref->flush (handle);
+  if (current_driver->flush)
+    current_driver->flush (handle);
 }
 
 void
 device_drain (sw_handle * handle)
 {
-  if (pref->drain)
-    pref->drain (handle);
+  if (current_driver->drain)
+    current_driver->drain (handle);
 }
 
 void
 device_close (sw_handle * handle)
 {
-  if (pref->close)
-    pref->close (handle);
+  if (current_driver->close)
+    current_driver->close (handle);
 
   handle->driver_fd = -1;
 }
@@ -749,13 +839,28 @@ device_close (sw_handle * handle)
 void
 init_devices (void)
 {
-#if defined(DRIVER_ALSA)
-  pref = driver_alsa;
-#elif defined(DRIVER_OSS)
-  pref = driver_oss;
-#elif defined(DRIVER_PULSEAUDIO)
-  pref = driver_pulseaudio;
-#elif defined(DRIVER_SOLARIS_AUDIO)
-  pref = driver_solaris;
-#endif
+  const char * driver;
+  int k = 0;
+
+  memset (driver_table, 0, sizeof (driver_table));
+
+  /* Populate the driver table, with all valid drivers (name field is non-NULL). */
+  if (driver_alsa->name != NULL)
+    driver_table [k++] = driver_alsa;
+  if (driver_oss->name != NULL)
+    driver_table [k++] = driver_oss;
+  if (driver_pulseaudio->name != NULL)
+    driver_table [k++] = driver_pulseaudio;
+  if (driver_solaris->name != NULL)
+    driver_table [k++] = driver_solaris;
+
+  driver = prefs_get_string (prefs_driver_key);
+
+  /* Switch to driver from preferences if possible. */
+  if (driver != NULL)
+    for (k = 0 ; driver_table [k] != NULL ; k++)
+      if (strcmp (driver, driver_table [k]->name) == 0) {
+        current_driver = driver_table [k];
+		dialog_driver = current_driver;
+      }
 }
