@@ -59,12 +59,12 @@ static sw_driver _driver_null = {
 };
 
 /*
-** Always keep two pointers to the output diver. current_driver is the
+** Always keep two pointers to the output driver. current_driver is the
 ** one that is currently being used and dialog_driver is the one that
-** has been chosen on the dialog box.
+** has been chosen in the dialog box.
 ** This allows dialog_driver to be changed when current_driver is being
 ** used, with the change from dialog_driver to current_driver occurring
-** at the next time the device_open() is called.
+** next time the device_open() is called.
 */
 static sw_driver * current_driver = &_driver_null;
 static sw_driver * dialog_driver = &_driver_null;
