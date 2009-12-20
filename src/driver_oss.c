@@ -95,7 +95,7 @@ oss_get_names (void)
 }
 
 static sw_handle *
-open_dev_dsp (int monitoring, int flags)
+oss_open (int monitoring, int flags)
 {
   char * dev_name;
   int dev_dsp;
@@ -133,7 +133,7 @@ open_dev_dsp (int monitoring, int flags)
 }
 
 static void
-setup_dev_dsp (sw_handle * handle, sw_format * format)
+oss_setup (sw_handle * handle, sw_format * format)
 {
   int dev_dsp;
   /*  int mask, format, stereo, frequency;*/
@@ -253,13 +253,13 @@ setup_dev_dsp (sw_handle * handle, sw_format * format)
 #define RECORD_SCALE (SW_AUDIO_T_MAX / 32768.0)
 
 static int
-wait_dev_dsp (sw_handle * handle)
+oss_wait (sw_handle * handle)
 {
   return 0;
 }
 
 static ssize_t
-read_dev_dsp (sw_handle * handle, sw_audio_t * buf, size_t count)
+oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 {
   gint16 * bbuf;
   size_t byte_count;
@@ -299,7 +299,7 @@ read_dev_dsp (sw_handle * handle, sw_audio_t * buf, size_t count)
 #define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
 
 static ssize_t
-write_dev_dsp (sw_handle * handle, sw_audio_t * buf, size_t count,
+oss_write (sw_handle * handle, sw_audio_t * buf, size_t count,
 	       sw_framecount_t play_offset)
 {
   gint16 * bbuf;
@@ -351,7 +351,7 @@ write_dev_dsp (sw_handle * handle, sw_audio_t * buf, size_t count,
 }
 
 static sw_framecount_t
-offset_dev_dsp (sw_handle * handle)
+oss_offset (sw_handle * handle)
 {
   count_info info;
   int i, o;
@@ -391,7 +391,7 @@ offset_dev_dsp (sw_handle * handle)
 }
 
 static void
-reset_dev_dsp (sw_handle * handle)
+oss_reset (sw_handle * handle)
 {
   if (handle == NULL) {
 #ifdef DEBUG
@@ -406,12 +406,12 @@ reset_dev_dsp (sw_handle * handle)
 }
 
 static void
-flush_dev_dsp (sw_handle * handle)
+oss_flush (sw_handle * handle)
 {
 }
 
 void
-drain_dev_dsp (sw_handle * handle)
+oss_drain (sw_handle * handle)
 {
   if (handle == NULL) {
     g_print ("handle NULL in drain ()\n");
@@ -428,7 +428,7 @@ drain_dev_dsp (sw_handle * handle)
 }
 
 static void
-close_dev_dsp (sw_handle * handle)
+oss_close (sw_handle * handle)
 {
   close (handle->driver_fd);
   handle->driver_fd = -1;
@@ -437,16 +437,16 @@ close_dev_dsp (sw_handle * handle)
 static sw_driver _driver_oss = {
   "OSS",
   oss_get_names,
-  open_dev_dsp,
-  setup_dev_dsp,
-  wait_dev_dsp,
-  read_dev_dsp,
-  write_dev_dsp,
-  offset_dev_dsp,
-  reset_dev_dsp,
-  flush_dev_dsp,
-  drain_dev_dsp,
-  close_dev_dsp,
+  oss_open,
+  oss_setup,
+  oss_wait,
+  oss_read,
+  oss_write,
+  oss_offset,
+  oss_reset,
+  oss_flush,
+  oss_drain,
+  oss_close,
   "oss_primary_device",
   "oss_monitor_device",
   "oss_log_frags"

@@ -47,15 +47,15 @@
 #include <sys/conf.h>
 #define DEV_AUDIO "/dev/audio"
 
-static sw_handle dev_audio_handle = {
+static sw_handle solaris_handle = {
  0, -1, 0, 0, NULL
 };
 
 static sw_handle *
-open_dev_audio (int cueing, int flags)
+solaris_open (int cueing, int flags)
 {
   int dev_audio;
-  sw_handle * handle = &dev_audio_handle;
+  sw_handle * handle = &solaris_handle;
 
   if (cueing) return NULL;
 
@@ -71,7 +71,7 @@ open_dev_audio (int cueing, int flags)
 }
 
 static void
-setup_dev_audio (sw_handle * handle, sw_format * format)
+solaris_setup (sw_handle * handle, sw_format * format)
 {
   audio_info_t info;
 
@@ -87,32 +87,32 @@ setup_dev_audio (sw_handle * handle, sw_format * format)
 }
 
 static ssize_t
-write_dev_audio (sw_handle * handle, void * buf, size_t count)
+solaris_write (sw_handle * handle, void * buf, size_t count)
 {
   return write (handle->driver_fd, buf, count);
 }
 
 static void
-reset_dev_audio (sw_handle * handle)
+solaris_reset (sw_handle * handle)
 {
 }
 
 static void
-flush_dev_audio (sw_handle * handle)
+solaris_flush (sw_handle * handle)
 {
   if (ioctl(handle->driver_fd, I_FLUSH, FLUSHW) == -1)
     perror("I_FLUSH");
 }
 
 static void
-drain_dev_audio (sw_handle * handle)
+solaris_drain (sw_handle * handle)
 {
   if(ioctl(handle->driver_fd, AUDIO_DRAIN, 0) == -1)
       perror("AUDIO_DRAIN");
 }
 
 static void
-close_dev_audio (sw_handle * handle)
+solaris_close (sw_handle * handle)
 {
   close (handle->driver_fd);
   handle->driver_fd = -1;
@@ -121,14 +121,14 @@ close_dev_audio (sw_handle * handle)
 static sw_driver _driver_solaris = {
   "Solaris",
   NULL, /* config */
-  open_dev_audio,
-  setup_dev_audio,
+  solaris_open,
+  solaris_setup,
   NULL,
-  write_dev_audio,
-  reset_dev_audio,
-  flush_dev_audio,
-  drain_dev_audio,
-  close_dev_audio,
+  solaris_write,
+  solaris_reset,
+  solaris_flush,
+  solaris_drain,
+  solaris_close,
   "solaris_primary_device",
   "solaris_monitor_device",
   "solaris_log_frags"
