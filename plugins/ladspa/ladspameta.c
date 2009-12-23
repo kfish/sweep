@@ -751,6 +751,8 @@ ladspa_meta_init_dir (gchar * dirname, GList ** gl)
     if (strcmp (name, ".") && strcmp (name, ".."))
       ladspa_meta_add_procs (dirname, dirent->d_name, gl);
   }
+
+  closedir (dir);
 }
 
 static GList *

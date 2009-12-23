@@ -107,6 +107,8 @@ init_dynamic_plugins_dir (gchar * dirname)
       sweep_plugin_init (path);
     }
   }
+
+  closedir (dir);
 }
 
 /* Initialise dynamically linked plugins */
