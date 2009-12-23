@@ -126,9 +126,9 @@ sounddata_destroy (sw_sounddata * sounddata)
     len = frames_to_bytes (sounddata->format, sounddata->nr_frames);
     munmap (sounddata->data, len);
 #endif
+    g_mutex_free(sounddata->data_mutex);
     sounddata_clear_selection (sounddata);
     g_free (sounddata);
-    g_mutex_free(sounddata->data_mutex);
   }
 }
 
