@@ -41,13 +41,15 @@
 
 GList * plugins = NULL;
 
+static GList * module_list = NULL;
+
 static gint
 cmp_proc_names (sw_procedure * a, sw_procedure * b)
 {
   return strcmp (_(a->name), _(b->name));
 }
 
-void
+static void
 sweep_plugin_init (const gchar * path)
 {
   GModule * module;
@@ -67,21 +69,12 @@ sweep_plugin_init (const gchar * path)
   
   if (g_module_symbol (module, "plugin", &m_plugin_ptr)) {
 	m_plugin = (sw_plugin *)m_plugin_ptr;
+	module_list = g_list_append (module_list, m_plugin);
     for (gl = m_plugin->plugin_init (); gl; gl = gl->next) {
       plugins = g_list_insert_sorted (plugins, (sw_procedure *)gl->data,
 				      (GCompareFunc)cmp_proc_names);
     }
   }
-}
-
-/* Initialise statically linked plugins */
-static void
-init_static_plugins (void)
-{
-#if 0
-  plugins = g_list_append (plugins, &proc_normalise);
-  plugins = g_list_append (plugins, &proc_reverse);
-#endif
 }
 
 static void
@@ -118,14 +111,27 @@ init_dynamic_plugins (void)
   init_dynamic_plugins_dir (PACKAGE_PLUGIN_DIR);
 }
 
+static void
+release_one (gpointer data, gpointer user_data)
+{
+  sw_plugin *p = (sw_plugin *) data;
+  if (p && p->plugin_cleanup)
+    p->plugin_cleanup ();
+}
+
+
 void
 init_plugins (void)
 {
-  init_static_plugins ();
-
   if (g_module_supported ()) {
     init_dynamic_plugins ();
   }
+}
 
-
+void
+release_plugins (void)
+{
+  g_list_foreach (module_list, release_one, NULL);
+  g_list_free (plugins);
+  plugins = NULL;
 }

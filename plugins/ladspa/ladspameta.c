@@ -61,6 +61,8 @@
 static char * default_ladspa_path = "/usr/lib/ladspa:/usr/local/lib/ladspa:/opt/ladspa/lib";
 
 static GList * modules_list = NULL;
+static GList * proc_list = NULL;
+
 static gboolean ladspa_meta_initialised = FALSE;
 
 /*
@@ -653,7 +655,7 @@ ladspa_meta_apply (sw_sample * sample,
  * and add these procs to the GList * (*gl)
  */
 static void
-ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
+ladspa_meta_add_procs (gchar * dir, gchar * name)
 {
 #define PATH_LEN 256
   gchar path[PATH_LEN];
@@ -721,7 +723,7 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
 
       proc->custom_data = lm_custom_new (d, proc->param_specs);
 
-      *gl = g_list_append (*gl, proc);
+      proc_list = g_list_append (proc_list, proc);
     }
   }
 }
@@ -733,7 +735,7 @@ ladspa_meta_add_procs (gchar * dir, gchar * name, GList ** gl)
  * each of them.
  */
 static void
-ladspa_meta_init_dir (gchar * dirname, GList ** gl)
+ladspa_meta_init_dir (gchar * dirname)
 {
   DIR * dir;
   struct dirent * dirent;
@@ -749,7 +751,7 @@ ladspa_meta_init_dir (gchar * dirname, GList ** gl)
   while ((dirent = readdir (dir)) != NULL) {
     name = dirent->d_name;
     if (strcmp (name, ".") && strcmp (name, ".."))
-      ladspa_meta_add_procs (dirname, dirent->d_name, gl);
+      ladspa_meta_add_procs (dirname, dirent->d_name);
   }
 
   closedir (dir);
@@ -758,7 +760,6 @@ ladspa_meta_init_dir (gchar * dirname, GList ** gl)
 static GList *
 ladspa_meta_init (void)
 {
-  GList * gl = NULL;
   char * ladspa_path=NULL;
   char * next_sep=NULL;
   char * saved_lp=NULL;
@@ -777,7 +778,7 @@ ladspa_meta_init (void)
     next_sep = strchr (ladspa_path, ':');
     if (next_sep != NULL) *next_sep = '\0';
     
-    ladspa_meta_init_dir (ladspa_path, &gl);
+    ladspa_meta_init_dir (ladspa_path);
 
     if (next_sep != NULL) ladspa_path = ++next_sep;
 
@@ -788,7 +789,7 @@ ladspa_meta_init (void)
   /* free string if dup'd for ladspa_path */
   if (saved_lp != NULL) free(saved_lp);
 
-  return gl;
+  return proc_list;
 }
 
 static void
@@ -798,9 +799,37 @@ ladspa_meta_cleanup (void)
 
   if (!ladspa_meta_initialised) return;
 
+  for (gl = proc_list; gl; gl = gl->next) {
+    sw_procedure * p = (sw_procedure *) gl->data;
+    if (p && p->custom_data) {
+      int j;
+
+      g_free (p->custom_data);
+      p->custom_data =  NULL;
+
+      for (j=0; j < p->nr_params; j++) {
+	  if (p->param_specs[j].constraint_type == SW_PARAM_CONSTRAINED_RANGE)
+	    g_free (p->param_specs[j].constraint.range);
+      }
+
+      g_free (p->param_specs);
+      p->param_specs = NULL;
+    }
+
+    g_free (p);
+    gl->data = NULL;
+  }
+
+  g_list_free (proc_list);
+  proc_list = NULL;
+
   for (gl = modules_list; gl; gl = gl->next) {
     dlclose(gl->data);
+    gl->data = NULL;
   }
+  g_list_free (modules_list);
+  modules_list = NULL;
+
 }
 
 sw_plugin plugin = {

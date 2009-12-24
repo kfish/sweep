@@ -25,4 +25,7 @@
 void
 init_plugins (void);
 
+void
+release_plugins (void);
+
 #endif /* __PLUGIN_H__ */

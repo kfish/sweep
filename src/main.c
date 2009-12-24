@@ -258,5 +258,8 @@ main (int argc, char *argv[])
   /* save key bindings */
   save_accels ();
 
+  /* initialise plugins */
+  release_plugins ();
+
   exit (0);
 }
