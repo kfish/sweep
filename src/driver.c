@@ -784,15 +784,14 @@ device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 ssize_t
-device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
-	      sw_framecount_t offset)
+device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
 {
 #ifdef DEBUG
   printf ("device_write: %d from %d\n", count, offset);
 #endif
 
   if (current_driver->write)
-    return current_driver->write (handle, buf, count, offset);
+    return current_driver->write (handle, buf, count);
   else
     return -1;
 }

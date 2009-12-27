@@ -144,8 +144,7 @@ pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 static ssize_t
-pulse_write (sw_handle * handle, sw_audio_t * buf, size_t count,
-    sw_framecount_t offset)
+pulse_write (sw_handle * handle, sw_audio_t * buf, size_t count)
 {
   struct pa_simple * pa ;
   int error;

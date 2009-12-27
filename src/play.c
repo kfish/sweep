@@ -882,18 +882,18 @@ play_active_heads (void)
       count = PSIZ * monitor_handle->driver_channels;
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_monitor_heads, monitor_handle);
-      device_write (monitor_handle, devbuf, count, -1 /* offset reference */);  
+      device_write (monitor_handle, devbuf, count);  
       
       count = PSIZ * main_handle->driver_channels;
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_main_heads, main_handle);
-      device_write (main_handle, devbuf, count, -1 /* offset reference */);
+      device_write (main_handle, devbuf, count);
     } else {
       count = PSIZ * main_handle->driver_channels;
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_monitor_heads, main_handle);
       play_heads (&active_main_heads, main_handle);
-      device_write (main_handle, devbuf, count, -1 /* offset reference */);  
+      device_write (main_handle, devbuf, count);  
     }
 
 #ifdef RECORD_DEMO_FILES

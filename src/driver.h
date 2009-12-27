@@ -45,8 +45,7 @@ struct _sw_driver {
   void (*setup) (sw_handle * handle, sw_format * format);
   int (*wait) (sw_handle * handle);
   ssize_t (*read) (sw_handle * handle, sw_audio_t * buf, size_t count);
-  ssize_t (*write) (sw_handle * handle, sw_audio_t * buf, size_t count,
-		    sw_framecount_t offset);
+  ssize_t (*write) (sw_handle * handle, sw_audio_t * buf, size_t count);
   sw_framecount_t (*offset) (sw_handle * handle);
   void (*reset) (sw_handle * handle);
   void (*flush) (sw_handle * handle);
@@ -77,8 +76,7 @@ ssize_t
 device_read (sw_handle * handle, sw_audio_t * buf, size_t count);
 
 ssize_t
-device_write (sw_handle * handle, sw_audio_t * buf, size_t count,
-	      sw_framecount_t offset);
+device_write (sw_handle * handle, sw_audio_t * buf, size_t count);
 
 /* As far as I'm aware the method
  * used to monitor latency in OSS and Solaris etc. is different to that which
