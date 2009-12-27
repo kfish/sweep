@@ -1498,41 +1498,6 @@ do_crop (sw_sample * sample)
   schedule_operation (sample, _("Crop"), &crop_op, NULL);
 }
 
-#if 0
-static sw_operation paste_in_op = {
-  SWEEP_EDIT_MODE_ALLOC,
-  (SweepCallback)do_paste_in,
-  (SweepFunction)NULL,
-  (SweepCallback)undo_by_splice_out,
-  (SweepFunction)splice_data_destroy,
-  (SweepCallback)redo_by_splice_in,
-  (SweepFunction)splice_data_destroy
-};
-
-/* XXX: why is this **out ?? */
-sw_op_instance *
-do_paste_in (sw_sample * in, sw_sample ** out)
-{
-  sw_op_instance * inst;
-  sw_edit_buffer * eb;
-
-  if (ebuf == NULL) return NULL;
-
-  inst = sw_op_instance_new (in, "Paste in", &paste_in_op);
-  /*eb = edit_buffer_copy (ebuf);*/
-  eb = edit_buffer_ref (ebuf);
-
-  (*out)->sounddata = splice_in_eb (in->sounddata, ebuf);
-
-  inst->redo_data = inst->undo_data =
-    splice_data_new (eb, NULL);
-
-  sample_refresh_views (*out);
-
-  return inst;
-}
-#endif
-
 static void
 do_paste_insert_thread (sw_op_instance * inst)
 {
@@ -1756,40 +1721,6 @@ do_paste_xfade (sw_sample * sample, gdouble src_gain_start,
 
   schedule_operation (sample, _("Paste xfade"), &paste_xfade_op, pd);
 }
-
-#if 0
-static sw_operation paste_over_op = {
-  SWEEP_EDIT_MODE_FILTER,
-  (SweepCallback)NULL,
-  (SweepFunction)NULL,
-  (SweepCallback)undo_by_paste_over,
-  (SweepFunction)paste_over_data_destroy,
-  (SweepCallback)redo_by_paste_over,
-  (SweepFunction)paste_over_data_destroy
-};
-
-sw_op_instance *
-do_paste_over (sw_sample * in, sw_sample **out)
-{
-  sw_op_instance * inst;
-  sw_edit_buffer * old_eb, * new_eb;
-
-  if (ebuf == NULL) return NULL;
-
-  inst = sw_op_instance_new (in, "Paste over", &paste_over_op);
-  old_eb = edit_buffer_from_sample (in);
-
-  *out = paste_over (in, ebuf);
-  new_eb = edit_buffer_from_sample (*out);
-
-  inst->redo_data = inst->undo_data =
-    paste_over_data_new (old_eb, new_eb);
-
-  sample_refresh_views (*out);
-
-  return inst;
-}
-#endif
 
 sw_sample *
 do_paste_as_new (void)

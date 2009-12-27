@@ -387,12 +387,6 @@ sample_load_mad_info (sw_sample * sample, char * pathname)
 
   if (!file_is_mpeg_audio (pathname)) return NULL;
 
-#if 0
-  fd = open (pathname, O_RDONLY);
-
-  if (fstat (fd, &statbuf) == -1 || statbuf.st_size == 0) return NULL;
-#endif
-
   /* Create the sample/sounddata, initially with length 0, to be grown
    * as the file is decoded
    */

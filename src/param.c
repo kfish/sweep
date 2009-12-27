@@ -247,15 +247,6 @@ ps_adjuster_new (sw_procedure * proc, sw_view * view, sw_param_set pset,
 static void
 ps_adjuster_destroy (sw_ps_adjuster * ps)
 {
-#if 0 /* XXX */
-  GList * gl;
-
-  g_free (ps->pset);
-
-  for (gl = ps->plsk_list; gl; gl = gl->next) {
-    g_free (gl->data);
-  }
-#endif
 }
 
 static void
@@ -764,17 +755,6 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 
   ps->scrolled = scrolled;
   ps->table = table;
-
-#if 0
-  frame = gtk_frame_new (_("Preview"));
-  gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 8);
-  gtk_widget_show (frame);
-
-  vbox = gtk_vbox_new (FALSE, 4);
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
-  gtk_container_set_border_width (GTK_CONTAINER(vbox), 8);
-  gtk_widget_show (vbox);
-#endif
 
   ok_button = gtk_button_new_with_label (_("OK"));
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);

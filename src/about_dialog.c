@@ -102,25 +102,9 @@ about_dialog_create()
     gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
     gtk_widget_show(label);
 
-#if 0
-    label = gtk_label_new("Copyright (c) 2000 Conrad Parker, conrad@vergenet.net");
-    gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
-    gtk_widget_show(label);
-#endif
-
  /* FIXME: old style code
   *   gtk_widget_pop_style();
   */
-
-#if 0
-    alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-    gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
-    gtk_widget_show(alignment);
-
-    label = gtk_label_new(_("http://sweep.sourceforge.net/"));
-    gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
-    gtk_widget_show(label);
-#endif
 
     button = gtk_button_new_with_label ("http://sweep.sourceforge.net/");
     gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, TRUE, 0);

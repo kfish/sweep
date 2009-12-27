@@ -295,11 +295,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	  /* draw label */ 
 	  if (i == 0)
 	    {
-#if 1
 	      snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)cur);
-#else
-	      snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)cur, 10.0);
-#endif
   		  pango_layout_set_text (layout, unit_str, -1);
  		  pango_layout_get_extents (layout, NULL, &logical_rect);
 

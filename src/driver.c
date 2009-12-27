@@ -543,14 +543,6 @@ device_config (void)
 
     g_object_set_data (G_OBJECT (dialog), "main_combo", main_combo);
 
-#if 0
-    button = gtk_button_new_with_label (_("Default"));
-    gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
-    gtk_widget_show (button);
-    g_signal_connect (G_OBJECT(button), "clicked",
-			G_CALLBACK(default_devicename_cb), NULL);
-#endif
-
     separator = gtk_hseparator_new ();
     gtk_box_pack_start (GTK_BOX (vbox), separator, FALSE, FALSE, 8);
     gtk_widget_show (separator);
@@ -696,17 +688,6 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
     gtk_widget_show (hbox);
-
-#if 0
-    checkbutton =
-      gtk_check_button_new_with_label (_("Remember these options"));
-    gtk_box_pack_start (GTK_BOX (hbox), checkbutton, TRUE, TRUE, 0);
-    gtk_widget_show (checkbutton);
-
-    g_object_set_data (G_OBJECT (dialog), "rem_options_chb", checkbutton);
-
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
-#endif
 
     hbox2 = gtk_hbox_new (TRUE, 4);
     gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, TRUE, 0);

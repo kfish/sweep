@@ -75,16 +75,6 @@ initial_sample_load (gpointer data)
   return FALSE;
 }
 
-#if 0
-static gint
-initial_sample_new (gpointer data)
-{
-  sample_new_empty_cb (NULL, NULL);
-
-  return FALSE;
-}
-#endif
-
 static gint
 initial_sample_ask (gpointer data)
 {
@@ -106,9 +96,6 @@ int
 main (int argc, char *argv[])
 {
   int i;
-#if 0
-  GtkWidget *toolbox;
-#endif
 
   gboolean show_version = FALSE;
   gboolean show_help = FALSE;
@@ -129,15 +116,6 @@ main (int argc, char *argv[])
 
 #ifdef DEVEL_CODE
   g_print (_("WARNING: Build includes incomplete development code.\n"));
-#endif
-
-#if 0
-#if defined (SNDFILE_1)
-  if (sizeof (sw_framecount_t) != sizeof (sf_count_t)) {
-    puts ("Software was configured incorrectly. Cannot run.\n") ;
-	exit (1) ;
-	}
-#endif
 #endif
 
   XInitThreads ();
@@ -168,11 +146,6 @@ main (int argc, char *argv[])
 	} else if ((strcmp (argv[i], "--ignore-failed-lock") == 0)) {
       ignore_failed_tdb_lock = TRUE;
       argv[i] = NULL;		   	   
-#if 0
-    } else if (strcmp (argv[i], "--no-toolbox") == 0) {
-      show_toolbox = FALSE;
-      argv[i] = NULL;
-#endif
 
 #ifdef DEVEL_CODE
     } else if (argv[i][0] == '-' && argv[i][1] != '\0') {
@@ -206,9 +179,6 @@ main (int argc, char *argv[])
                       "                           the users home directory is on an NFS\n"
 	                  "                           file system. (possibly unsafe) \n" ));
 
-#if 0
-    g_print (_("  --no-toolbox             Do not show the toolbox window.\n"));
-#endif
   }
 
   if (show_version || show_help) {
@@ -239,14 +209,6 @@ main (int argc, char *argv[])
 
   /* init playback subsystem */
   init_playback ();
-
-#if 0
-  if (show_toolbox) {
-    toolbox = create_toolbox ();
-    gtk_widget_show (toolbox);
-  }
-#endif
-
 
   
   gtk_main ();

@@ -51,44 +51,6 @@ fade (sw_sample * sample, gfloat start, gfloat end)
   if (op_total == 0) op_total = 1;
   run_total = 0;
 
-#if 0
-  /* Find max */
-  for (gl = sounddata->sels; active && gl; gl = gl->next) {
-    sel = (sw_sel *)gl->data;
-
-    offset = 0;
-    remaining = sel->sel_end - sel->sel_start;
-
-    while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
-
-      if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
-	active = FALSE;
-      } else {
-
-	d = sounddata->data + frames_to_bytes (f, sel->sel_start + offset);
-
-	n = MIN(remaining, 1024);
-
-	for (i=0; i < n * f->channels; i++) {
-	  if(d[i]>=0) max = MAX(max, d[i]);
-	  else max = MAX(max, -d[i]);
-	}
-
-	remaining -= n;
-	offset += n;
-
-	run_total += n;
-	sample_set_progress_percent (sample, run_total / op_total);
-      }
-
-      g_mutex_unlock (sample->ops_mutex);
-    }
-  }
-
-  if (max != 0) factor = SW_AUDIO_T_MAX / (gfloat)max;
-#endif
-
   /* Fade */
   for (gl = sounddata->sels; active && gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;

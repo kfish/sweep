@@ -634,14 +634,12 @@ create_save_menu (sw_sample * sample)
   gtk_menu_append (GTK_MENU(menu), menuitem);
   gtk_widget_show (menuitem);
 
-#if 1
   /* MP3 (encoding not supported due to patent restrictions) */
 
   menuitem = gtk_menu_item_new_with_label (_("MP3 (Use Ogg Vorbis instead)"));
   gtk_widget_set_sensitive (menuitem, FALSE);
   gtk_menu_append (GTK_MENU(menu), menuitem);
   gtk_widget_show (menuitem);
-#endif
 
 #ifdef HAVE_OGGVORBIS
   /* Ogg Vorbis */
@@ -859,11 +857,7 @@ sample_save_ok_cb(GtkWidget * widget, gpointer data)
     mp3_unsupported_dialog ();
     break;
   default:
-#if 0
-    g_assert_not_reached ();
-#else
     sample_save_as_cb (widget, data);
-#endif
     break;
   }
 }

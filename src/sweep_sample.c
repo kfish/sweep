@@ -161,16 +161,6 @@ sample_new_empty(gchar * pathname,
   s->pending_ops = NULL;
 
   s->play_mutex = g_mutex_new ();
-#if 0
-  s->play_mode = SWEEP_TRANSPORT_STOP;
-  s->stop_offset = 0;
-  s->play_offset = 0;
-  s->play_looping = FALSE;
-  s->play_scrubbing = FALSE;
-  s->previewing = FALSE;
-  s->play_reverse = FALSE;
-  s->play_mute = FALSE;
-#endif
   s->user_offset = 0;
   s->by_user = 0;
 
@@ -178,11 +168,7 @@ sample_new_empty(gchar * pathname,
 
   s->rate = 1.0;
 
-#if 0
-  s->color = ((int)random()) % VIEW_COLOR_MAX;
-#else
   s->color = filename_color_hash ((gchar *)g_basename (s->pathname));
-#endif
 
   s->info_clist = NULL;
 
@@ -1067,14 +1053,6 @@ sample_set_scrubbing (sw_sample * s, gboolean scrubbing)
 
   head_set_scrubbing (head, scrubbing);
 
-#if 0
-  g_mutex_lock (s->play_mutex);
-
-  s->play_scrubbing = scrubbing;
-
-  g_mutex_unlock (s->play_mutex);
-#endif
-
   sample_set_progress_ready (s);
 }
 
@@ -1087,20 +1065,10 @@ sample_set_looping (sw_sample * s, gboolean looping)
 
   head_set_looping (head, looping);
   
-#if 0
-  g_mutex_lock (s->play_mutex);
-
-  s->play_looping = looping;
-#endif
-
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
     view_refresh_looping (v);
   }
-
-#if 0
-  g_mutex_unlock (s->play_mutex);
-#endif
 }
 
 void
@@ -1112,20 +1080,10 @@ sample_set_playrev (sw_sample * s, gboolean reverse)
 
   head_set_reverse (head, reverse);
 
-#if 0
-  g_mutex_lock (s->play_mutex);
-
-  s->play_reverse = reverse;
-#endif
-
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
     view_refresh_playrev (v);
   }
-
-#if 0
-  g_mutex_unlock (s->play_mutex);
-#endif
 }
 
 void
@@ -1137,20 +1095,10 @@ sample_set_mute (sw_sample * s, gboolean mute)
 
   head_set_mute (head, mute);
 
-#if 0
-  g_mutex_lock (s->play_mutex);
-
-  s->play_mute = mute;
-#endif
-
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
     view_refresh_mute (v);
   }
-
-#if 0
-  g_mutex_unlock (s->play_mutex);
-#endif
 }
 
 void
@@ -1172,13 +1120,6 @@ void
 sample_set_previewing (sw_sample * s, gboolean previewing)
 {
   head_set_previewing (s->play_head, previewing);
-#if 0
-  g_mutex_lock (s->play_mutex);
-
-  s->previewing = previewing;
-
-  g_mutex_unlock (s->play_mutex);
-#endif
 }
 
 void
@@ -1419,11 +1360,6 @@ ss_invert (sw_sample * s, sw_param_set unused, gpointer unused2)
 
   g_mutex_lock (sounddata->sels_mutex);
 
-#if 0
-  sounddata->sels = sels_invert (sounddata->sels, sounddata->nr_frames);
-
-#else
-
   if (!sounddata->sels) {
     sounddata_set_selection_1 (sounddata, 0, sounddata->nr_frames);
     goto out;
@@ -1452,7 +1388,6 @@ ss_invert (sw_sample * s, sw_param_set unused, gpointer unused2)
   g_list_free (osels);
 
 out:
-#endif
 
   g_mutex_unlock (sounddata->sels_mutex);
 

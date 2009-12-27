@@ -619,11 +619,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
   if (remaining <= 0) {
     char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
 
-#if 1
     sample_store_and_free_pathname (sample, pathname);
-#else
-    g_free (pathname);
-#endif
 
     /* Mark the last mtime for this sample */
 

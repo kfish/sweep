@@ -209,11 +209,7 @@ prefs_get_long (char * key)
   }
 
   nval = * (long *)val_data.dptr;
-#if 0
-  val = g_ntohl (nval);
-#else
   val = nval;
-#endif
 
   * (long *)val_data.dptr = val;
 
@@ -231,11 +227,7 @@ prefs_set_long (char * key, long val)
   key_data.dptr = key;
   key_data.dsize = strlen (key);
 
-#if 0
-  nval = g_htonl (val);
-#else
   nval = val;
-#endif
 
   val_data.dptr = (char *)&nval;
   val_data.dsize = sizeof (long);

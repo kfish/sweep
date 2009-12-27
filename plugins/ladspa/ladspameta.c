@@ -143,13 +143,8 @@ convert_constraint ( /* sw_format * format, */
   upper = prh->UpperBound;
 
   if LADSPA_IS_HINT_SAMPLE_RATE (prhd) {
-#if 0
-    lower *= format->rate;
-    upper *= format->rate;
-#else
     lower *= 44100;
     upper *= 44100;
-#endif
   }
 
   if (LADSPA_IS_HINT_INTEGER(prhd)) {

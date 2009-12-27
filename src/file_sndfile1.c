@@ -136,35 +136,6 @@ update_ok_button (sndfile_save_options * so)
 static void
 update_save_options_caps (sndfile_save_options * so)
 {
-
-/*-    SF_INFO * sfinfo;
-  sndfile_subformat_caps * fcaps, * caps;
-
-  sfinfo = so->sfinfo;
-  fcaps = get_format_caps (sfinfo->format);
-  caps = get_subformat_caps (fcaps, sfinfo->format);
-
-  if (caps) {
-    gtk_widget_set_sensitive (so->radio_mono, caps->cap_mono);
-    gtk_widget_set_sensitive (so->radio_stereo, caps->cap_stereo);
-  } else {
-    gtk_widget_set_sensitive (so->radio_mono, FALSE);
-    gtk_widget_set_sensitive (so->radio_stereo, FALSE);
-  }
--*/
-#if 0
-
-  SF_INFO tmp_sfinfo;
-
-  memcpy (&tmp_sfinfo, so->sfinfo, sizeof (SF_INFO));
-
-  tmp_sfinfo.channels = 1;
-  gtk_widget_set_sensitive (so->radio_mono, sf_format_check (&tmp_sfinfo));
-
-  tmp_sfinfo.channels = 2;
-  gtk_widget_set_sensitive (so->radio_stereo, sf_format_check (&tmp_sfinfo));
-#endif
-
   update_ok_button (so);
 }
 
@@ -179,24 +150,6 @@ update_save_options_values (sndfile_save_options * so)
   format = sample->sounddata->format;
 
   sfinfo = so->sfinfo;
-
-#if 0
-#define BLOCK_AND_SET(r,d) \
-  gtk_signal_handler_block_by_data(GTK_OBJECT((r)), (d));       \
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON((r)), TRUE);  \
-  gtk_signal_handler_unblock_by_data(GTK_OBJECT((r)), (d));
-
-  switch (sfinfo->channels) {
-  case 1:
-    BLOCK_AND_SET(so->radio_mono, so);
-    break;
-  case 2:
-    BLOCK_AND_SET(so->radio_stereo, so);
-    break;
-  default:
-    break;
-  }
-#endif
 
   update_ok_button (so);
 }

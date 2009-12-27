@@ -488,11 +488,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
 				   G_CALLBACK (hctl_record_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
-#if 0
-    gtk_widget_add_accelerator (button, "clicked", accel_group,
-				GDK_r, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-#endif
-g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
+    g_signal_handlers_block_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
 									0, 0, 0, hctl);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button), head->going);
     g_signal_handlers_unblock_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,

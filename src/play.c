@@ -139,10 +139,6 @@ start_playmarker (sw_sample * s)
 		     (gpointer)s);
 }
 
-#if 0
-static struct timeval tv_instant = {0, 0};
-#endif
-
 static sw_framecount_t
 head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 			sw_framecount_t count, int driver_rate)
@@ -678,18 +674,7 @@ prepare_to_play_heads (GList * heads, sw_handle * handle)
     }
   }
 
-#if 0
-  {
-    fd_set fds;
-    
-    FD_ZERO (&fds);
-    FD_SET (handle->driver_fd, &fds);
-    
-    if (select (handle->driver_fd+1, &fds, NULL, NULL, &tv_instant) == 0);
-  }
-#else
   device_wait (handle);
-#endif
 
   return;
 }
@@ -732,29 +717,18 @@ play_heads (GList ** heads, sw_handle * handle)
       }
 
       head_read (head, pbuf, n, handle->driver_rate);
-	  
-#if 0
-      if (f->channels != handle->driver_channels) {
-	channel_convert (pbuf, f->channels, devbuf,
-			 handle->driver_channels, n);
-      }
-#else
+
       channel_convert_adding (pbuf, f->channels, devbuf,
 			      handle->driver_channels, n);
-#endif
 	
       /* XXX: store the head->offset NOW for device_offset referencing */
 	  
       g_mutex_lock (s->play_mutex);
 	  
-#if 0
-      head->realoffset = head->offset;
-#else
       head->realoffset = device_offset (handle);
       if (head->realoffset == -1) {
 	head->realoffset = head->offset;
       }
-#endif
 	
       head->offset = head->realoffset;
 	  
@@ -901,14 +875,6 @@ play_active_heads (void)
       sf_writef_float (sndfile, devbuf, count / main_handle->driver_channels);
 #endif
   }
-
-#if 0
-  if (!head->looping) {
-    device_drain (handle);
-
-    HEAD_SET_GOING (head, FALSE);
-  }
-#endif
 
   if (use_monitor) {
     device_reset (monitor_handle);

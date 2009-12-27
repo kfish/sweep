@@ -98,37 +98,6 @@ db_slider_get_type()
   return db_slider_type;
 }
 
-#if 0
-static int
-slider_get_value (GtkWidget * slider)
-{
-  return
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT(slider), "value"));
-}
-
-static int
-slider_set_value (GtkWidget * slider, int value)
-{
-  GtkWidget * combo_entry;
-  int i;
-
-  combo_entry =
-    GTK_WIDGET (g_object_get_data (G_OBJECT(slider), "combo_entry"));
-
-  for (i = 0; choices[i].name != NULL; i++) {
-    if (value == choices[i].value) {
-      gtk_entry_set_text (GTK_ENTRY(combo_entry), choices[i].name);
-      return value;
-    }
-  }
-
-  /* not in the entry -- assume first choice is "Custom" and set that */
-  gtk_entry_set_text (GTK_ENTRY(combo_entry), choices[0].name);
-
-  return slider_set_value_direct (slider, value);;
-}
-#endif
-
 #define VALUE_TO_DB(v) (20 * log10(v))
 #define DB_TO_VALUE(d) (pow (10, ((d) / 20)))
 

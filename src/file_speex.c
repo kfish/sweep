@@ -745,13 +745,6 @@ speex_sample_save_thread (sw_op_instance * inst)
   remaining = nr_frames;
   run_total = 0;
 
-#if 0
-  if (format->channels != 1) {
-    fprintf (stderr, "Unsupported channel count for Speex encoding\n");
-    return -1;
-  }
-#endif
-
   if (!(outfile = fopen (pathname, "w"))) {
     sweep_perror (errno, pathname);
     return -1;
@@ -927,12 +920,6 @@ speex_sample_save_thread (sw_op_instance * inst)
     op.bytes = nbBytes;
     op.b_o_s = 0;
     /* op.e_o_s was set above */
-#if 0 /* XXX: was set above */
-    if (eos)
-      op.e_o_s = 1;
-    else
-      op.e_o_s = 0;
-#endif
     op.granulepos = id * frame_size;
     op.packetno = 2 + (id-1)/so->framepack;
 
@@ -960,22 +947,6 @@ speex_sample_save_thread (sw_op_instance * inst)
     }
   }
 
-#if 0
-  /*Flush all pages left to be written*/
-  while (ogg_stream_flush(&os, &og))
-    {
-      n = fwrite (og.header, 1, og.header_len, outfile);
-      n += fwrite (og.body, 1, og.body_len, outfile);
-      
-      if (fflush (outfile) == 0) {
-	bytes_written += n;
-      } else {
-	errno_save = errno;
-	active = FALSE;
-      }
-    }
-#endif
-
   /* clean up and exit.  speex_info_clear() must be called last */
 
   speex_encoder_destroy (st);
@@ -992,11 +963,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   if (remaining <= 0) {
     char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
 
-#if 1
     sample_store_and_free_pathname (sample, pathname);
-#else
-    g_free (pathname);
-#endif
 
     /* Mark the last mtime for this sample */
 

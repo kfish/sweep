@@ -262,10 +262,6 @@ db_ruler_motion_notify (GtkWidget *widget, GdkEventMotion *event)
   if (ruler->backing_store != NULL)
     gtk_ruler_draw_pos (ruler);
 
-#if 0
-  printf ("%f\t%f dB\n", ruler->position, 20 * log10 (fabs(ruler->position)));
-#endif
-
   return FALSE;
 }
 

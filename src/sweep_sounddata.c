@@ -26,11 +26,6 @@
 #include <string.h>
 #include <glib.h>
 
-#if 0
-#include <unistd.h>
-#include <sys/mman.h>
-#endif
-
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_typeconvert.h>
 #include <sweep/sweep_selection.h>
@@ -61,23 +56,10 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
   if (sample_length > 0) {
     len = frames_to_bytes (s->format, sample_length);
 
-#if 1
     s->data = g_malloc0 ((size_t)len);
-#else
-    s->data = sweep_large_alloc_zero (len, PROT_READ|PROT_WRITE);
-#endif
-
 
     if (!(s->data)) {
-#if 0
-#if (SIZEOF_OFF_T == 8)
-      fprintf(stderr, "Unable to allocate %lld bytes for sample data.\n", len);
-#else
       fprintf(stderr, "Unable to allocate %d bytes for sample data.\n", len);
-#endif
-#else
-      fprintf(stderr, "Unable to allocate %d bytes for sample data.\n", len);
-#endif
       g_free(s);
       return NULL;
 #ifdef DEBUG
@@ -120,12 +102,7 @@ sounddata_destroy (sw_sounddata * sounddata)
   sounddata->refcount--;
 
   if (sounddata->refcount <= 0) {
-#if 1
     g_free (sounddata->data);
-#else
-    len = frames_to_bytes (sounddata->format, sounddata->nr_frames);
-    munmap (sounddata->data, len);
-#endif
     g_mutex_free(sounddata->data_mutex);
     sounddata_clear_selection (sounddata);
     g_free (sounddata);

@@ -90,16 +90,6 @@ static sw_noteplay notes [] =
   { N_("D5") , 2.244924, GDK_o, "D5" },
   { N_("D#5"), 2.378414, GDK_0, "D#5"},
   { N_("E5") , 2.519842, GDK_p, "E5" },
-#if 0
-  { N_("F5") , 2.669680, GDK_bracketleft, "F5" },
-  { N_("F#5"), 2.828427, GDK_None, "F#5" },
-  { N_("G5") , 2.996614, GDK_None, "G5" },
-  { N_("G#5"), 3.174802, GDK_None, "G#5" },
-  { N_("A5") , 3.363586, GDK_None, "A5" },
-  { N_("Bb5"), 3.563595, GDK_None, "Bb5" },
-  { N_("B5") , 3.775497, GDK_None, "B5" },
-#endif
-
 } ;
 
 

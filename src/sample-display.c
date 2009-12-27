@@ -92,23 +92,6 @@ extern GdkCursor * sweep_cursors[];
 #define YPOS_TO_VALUE(y) \
   ((sw_audio_t)(CHANNEL_HEIGHT/2 - (y - (YPOS_TO_CHANNEL(y) * CHANNEL_HEIGHT)))/(CHANNEL_HEIGHT/2))
 
-#if 0
-#define YPOS_TO_CHANNEL(y) \
-  (s->view->sample->sounddata->format->channels == 2 ? (y > s->height/2) : 0)
-
-#define YPOS_TO_VALUE_1(y) \
-  ((sw_audio_t)(s->height/2 - y)/(s->height/2))
-
-#define YPOS_TO_VALUE_L(y) \
-  ((sw_audio_t)(s->height/4 - y)/(s->height/4))
-
-#define YPOS_TO_VALUE_R(y) \
-  ((sw_audio_t)(3*s->height/4 - y)/(s->height/4))
-
-#define YPOS_TO_VALUE_2(y) \
-  (YPOS_TO_CHANNEL(y) ? YPOS_TO_VALUE_R(y) : YPOS_TO_VALUE_L(y))
-#endif
-
 #define MARCH_INTERVAL 300
 #define PULSE_INTERVAL 450
 #define HAND_SCROLL_INTERVAL 50
@@ -120,8 +103,6 @@ static int last_button; /* button index which started the last selection;
 			 * last_tmp_view
 			 */
 
-#if 1
-
 static const int default_colors[] = {
   200, 200, 193,  /* bg */
   199, 203, 158,  /* fg */
@@ -130,51 +111,19 @@ static const int default_colors[] = {
   100, 100, 100, /* zero */
   240, 230, 240, /* sel box */
   110, 110, 100, /* tmp_sel XOR mask */
-#if 1
   108, 115, 134,    /* sel bg */
-#else
-  62, 68, 118,  /* sel bg */
-#endif
   166, 166, 154, /* minmax */
   240, 250, 240, /* highlight */
   81, 101, 81,   /* lowlight */
   230, 0, 0,     /* rec */
 };
 
-#else
-
-static const int default_colors[] = {
-#if 0
-  86, 86, 80,    /* bg */
-#elif 0
-  220, 220, 210, /* bg */
-#else
-  200, 200, 193,    /* bg */
-#endif
-  199, 203, 158, /* fg */
-  20, 230, 0,    /* play */
-  200, 200, 200, /* user */
-  200, 200, 200, /* zero */
-  240, 230, 240, /* sel box */
-  110, 110, 100, /* tmp_sel XOR mask */
-  118, 118, 108, /* sel bg XOR mask */
-  154, 166, 154, /* minmax */
-  219, 219, 211, /* highlight */
-  81, 101, 81,   /* lowlight */
-  240, 0, 0,     /* rec */
-};
-#endif
-
 static const int bg_colors[] = {
   250, 250, 237,    /* black bg */
   200, 200, 193,    /* red bg */
   147, 147, 140,    /* orange bg */
   160, 160, 150,    /* yellow bg */
-#if 0
-  210, 210, 193,    /* blue bg */
-#else
   250, 250, 237,    /* blue bg */
-#endif
   160, 160, 150,    /* white bg */
   0, 0, 0,          /* greenscreen bg */
   60, 70, 170,          /* bluescreen bg */
@@ -701,15 +650,7 @@ sample_display_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
-#if 0
-  attributes.event_mask = gtk_widget_get_events (widget)
-    | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
-    | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK
-    | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
-    GDK_FOCUS_CHANGE_MASK | GDK_KEY_PRESS_MASK;
-#else
   attributes.event_mask = GDK_ALL_EVENTS_MASK;
-#endif
 
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
@@ -1034,15 +975,6 @@ sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
     width = end_x - x;
   }
 
-#if 0
-  cheight = (sh+3)/channels;
-  cerr = (sh+3) - (channels * cheight);
-  if (cerr == channels - 1) {
-    cheight++;
-    cerr = 0;
-  }
-  cy = 0;
-#else
   cheight = sh / channels;
   cerr = sh - (channels * cheight);
   if (cerr == channels - 1) {
@@ -1050,7 +982,6 @@ sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
     cerr = 0;
   }
   cy = 0;
-#endif
 
   for (i = 0; i < channels; i++) {
     if (i >= 0) {
@@ -1058,15 +989,6 @@ sample_display_draw_data (GdkDrawable *win, const SampleDisplay *s,
 					  TRUE, GTK_STATE_NORMAL, NULL,
 					  x, cy, width, 1);
       cy += 1;
-
-#if 0
-      if (i == channels/2) {
-	gtk_style_apply_default_background (GTK_WIDGET(s)->style, win,
-					    TRUE, GTK_STATE_NORMAL, NULL,
-					    x, cy, width, cerr);
-	cy += cerr;
-      }
-#endif
     }
 
     sample_display_draw_data_channel (win, s,
@@ -1279,48 +1201,6 @@ sample_display_draw_sel (GdkDrawable * win,
 }
 
 
-/*** PLAY MARKER, CURSOR ***/
-
-#if 0
-static int
-sample_display_startoffset_to_xpos (SampleDisplay *s,
-				    int offset)
-{
-  int d = offset - s->view->start;
-
-  if(d < 0)
-    return 0;
-  if(d >= (s->view->end - s->view->start))
-    return s->width;
-
-  return d * s->width / (s->view->end - s->view->start);
-}
-
-
-static int
-sample_display_endoffset_to_xpos (SampleDisplay *s,
-				  int offset)
-{
-  if((s->view->end - s->view->start) < s->width) {
-    return sample_display_startoffset_to_xpos(s, offset);
-  } else {
-    int d = offset - s->view->start;
-    int l = (1 - (s->view->end - s->view->start)) / s->width;
-
-    /* you get these tests by setting the complete formula below
-     * equal to 0 or s->width, respectively, and then resolving
-     * towards d.
-     */
-    if(d < l)
-      return 0;
-    if(d > (s->view->end - s->view->start) + l)
-      return s->width;
-
-    return (d * s->width + (s->view->end - s->view->start) - 1) / (s->view->end - s->view->start);
-  }
-}
-#endif /* _{start,end}offset_to_xpos */
-
 static gint
 sd_pulse_cursor (gpointer data)
 {
@@ -1480,23 +1360,16 @@ sample_display_draw_rec_offset (GdkDrawable * win, GdkGC * gc,
   sw_sample * sample;
 
   if(x >= x_min && x <= x_max) {
-#if 0
-    gdk_draw_rectangle(win, gc, TRUE,
-		       x-1, 0, 
-		       3, s->height);
-#endif
-
     gdk_draw_line(win, s->zeroline_gc,
 		  x-2, 0, 
 		  x-2, s->height);
-#if 1
+
     gdk_draw_line(win, gc,
 		  x-1, 0, 
 		  x-1, s->height);
     gdk_draw_line(win, gc,
 		  x+1, 0, 
 		  x+1, s->height);
-#endif
 
     gdk_draw_line(win, s->zeroline_gc,
 		  x+2, 0, 
@@ -1540,10 +1413,6 @@ sample_display_draw (GtkWidget *widget, GdkRectangle *area)
     gtk_style_apply_default_background (GTK_WIDGET(s)->style, widget->window,
 					TRUE, GTK_STATE_NORMAL,
 					NULL, 0, 0, s->width, s->height);
-#if 0
-					area->x, area->y,
-					area->width, area->height);
-#endif
   } else {
     const int x_min = area->x;
     const int x_max = area->x + area->width;
@@ -1569,12 +1438,10 @@ sample_display_draw (GtkWidget *widget, GdkRectangle *area)
 				       s, s->user_offset_x,
 				       x_min, x_max);
     } else {
-#if 1
       /* Draw play offset */
       sample_display_draw_play_offset (drawable, s->play_gc,
 				       s, s->play_offset_x,
 				       x_min, x_max);
-#endif
       /* Draw user offset */
       sample_display_draw_user_offset (drawable, s->user_gc,
 				       s, s->user_offset_x,
@@ -1588,13 +1455,6 @@ sample_display_draw (GtkWidget *widget, GdkRectangle *area)
 				      s, s->rec_offset_x,
 				      x_min, x_max);
     }
-
-#if 0
-    /* Draw focus indicator */
-    if (GTK_WIDGET_HAS_FOCUS(widget)) {
-      /* ??? */
-    }
-#endif
 
 #ifdef DOUBLE_BUFFER
     gdk_draw_pixmap(widget->window, s->fg_gc, s->backing_pixmap,
@@ -1901,17 +1761,6 @@ sample_display_handle_pencil_motion (SampleDisplay * s, int x, int y)
   value = YPOS_TO_VALUE(y);
   sampledata[offset*channels + channel] = value;
 
-#if 0
-  if (sample->sounddata->format->channels == 1) {
-    value = YPOS_TO_VALUE_1(y);
-    sampledata[offset] = value;
-  } else {
-    channel = YPOS_TO_CHANNEL(y);
-    value = YPOS_TO_VALUE_2(y);
-    sampledata[offset*2 + channel] = value;
-  }
-#endif
-
   sample_refresh_views (sample);
 }
 
@@ -2214,16 +2063,6 @@ sample_display_button_press (GtkWidget      *widget,
 	/* If the cursor is near a sel, move that */
 	if (sample_display_on_sel (s, x, y)) {
 	  sample_display_handle_sel_button_press (s, x, y, state);
-#if 0
-	} else if (sample_display_on_playmarker (s, x, y)) {
-	  /* If the cursor is near the play marker, move that */
-	  s->selecting = SELECTING_PLAYMARKER;
-	  SET_CURSOR(widget, NEEDLE);
-#ifndef SEL_SCRUBS
-	  sample_set_scrubbing (sample, TRUE);
-	  sample_display_handle_playmarker_motion (s, x, y);
-#endif
-#endif
 	} else {
 	  sample_display_handle_sel_button_press (s, x, y, state);
 	}
@@ -2502,16 +2341,6 @@ sample_display_motion_notify (GtkWidget *widget,
       else
 	gdk_window_set_cursor (widget->window, NULL);
     }
-
-#if 0
-    /* Consistency check: without this, some button release events
-     * are lost if they occur during motion. Here, we ensure that
-     * if this sample_display s is not selecting yet has a selection
-     */
-    if(s->selection_mode && s->view->sample->tmp_sel) {
-      sample_display_sink_tmp_sel (s);
-    }
-#endif
   }
     
   return FALSE;

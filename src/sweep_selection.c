@@ -245,10 +245,6 @@ do_selection_op_thread (sw_op_instance * inst)
 
     register_operation (sample, inst);
   }
-
-#if 0
-  sample_set_edit_state (sample, SWEEP_EDIT_STATE_DONE);
-#endif
 }
 
 static sw_operation selection_op = {

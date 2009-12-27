@@ -105,17 +105,6 @@ op_main (sw_sample * sample)
        * have sample as first arg ... */
       inst->op->_do_ ((sw_sample *)inst, (void *)inst);
 
-#if 0 /* XXX: need to tell main thread to start playback; freezes from here */
-      if (inst->op->edit_mode == SWEEP_EDIT_MODE_ALLOC && was_going) {
-#if 0
-	g_mutex_lock (sample->play_mutex);
-	head_set_going (sample->play_head, TRUE);
-	g_mutex_unlock (sample->play_mutex);
-#else
-	sample_play (sample);
-#endif
-      }
-#endif 
       g_mutex_lock (sample->edit_mutex);
       
 #ifdef DEBUG
@@ -694,37 +683,6 @@ cancel_active_op (sw_sample * s)
 }
 
 /* Standard undo/redo functions */
-
-#if 0
-replace_data *
-replace_data_new (sw_sample * old_sample, sw_sample * new_sample)
-{
-  replace_data * r;
-
-  r = g_malloc (sizeof(replace_data));
-
-  r->old_sample = old_sample;
-  r->new_sample = new_sample;
-
-  return r;
-};
-
-void
-undo_by_replace (replace_data * r)
-{
-  sample_replace_throughout (r->new_sample, r->old_sample);
-
-  sample_refresh_views (r->new_sample);
-}
-
-void
-redo_by_replace (replace_data * r)
-{
-  sample_replace_throughout (r->old_sample, r->new_sample);
-
-  sample_refresh_views (r->new_sample);
-}
-#endif
 
 sounddata_replace_data *
 sounddata_replace_data_new (sw_sample * sample,

@@ -57,17 +57,6 @@ undo_dialog_destroy (void)
   undo_dialog = NULL;
 }
 
-#if 0
-static void
-undo_dialog_ok_cb (GtkWidget * widget, gpointer data)
-{
-  GtkWidget * dialog;
-
-  dialog = gtk_widget_get_toplevel (widget);
-  gtk_widget_hide (dialog);
-}
-#endif
-
 static void
 undo_dialog_cancel_cb (GtkWidget * widget, gpointer data)
 {
@@ -246,14 +235,6 @@ undo_dialog_revert_cb (GtkWidget * widget, gpointer data)
   g_mutex_lock (ud_sample->ops_mutex);
 
   for (gl = g_list_last (ud_sample->registered_ops); gl; gl = gl->prev) {
-#if 0
-    inst = (sw_op_instance *)gl->data;
-
-    if (gl == ud_sample->current_undo) {
-      need_undo = TRUE;
-    }
-#endif
-
     if (i == s) {
       sel_gl = gl;
       break;
@@ -263,16 +244,6 @@ undo_dialog_revert_cb (GtkWidget * widget, gpointer data)
   }
 
   g_mutex_unlock (ud_sample->ops_mutex);
-
-#if 0
-  if (need_undo) {
-    while (ud_sample->current_undo != sel_gl)
-      undo_current (ud_sample);
-  } else {
-    while (ud_sample->current_undo != sel_gl)
-      redo_current (ud_sample);
-  }
-#endif
 
   revert_op (ud_sample, sel_gl);
 }
@@ -433,20 +404,6 @@ undo_dialog_create (sw_sample * sample)
 			NULL);
     revert_button = button;
 
-#if 0
-
-    /* OK */
-
-    ok_button = gtk_button_new_with_label (_("OK"));
-    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(undo_dialog)->action_area),
-			ok_button, TRUE, TRUE, 0);
-    gtk_widget_show (ok_button);
-    g_signal_connect (G_OBJECT(ok_button), "clicked",
-			G_CALLBACK (undo_dialog_ok_cb),
-			NULL);
-#endif
-
     /* Cancel */
 
     button = gtk_button_new_with_label (_("Close"));
@@ -459,12 +416,6 @@ undo_dialog_create (sw_sample * sample)
 			NULL);
 
     gtk_widget_grab_default (button);
-
-#if 0
-    gtk_widget_grab_default (ok_button);
-#endif
-
-
   }
 
   undo_dialog_refresh_sample_list ();

@@ -77,13 +77,8 @@
  * for pleasing dimensions.
  */
 #define VIEW_MIN_WIDTH 197
-#if 0
-#define VIEW_MAX_WIDTH 517
-#define VIEW_DEFAULT_HEIGHT 320
-#else
 #define VIEW_MAX_WIDTH 1034
 #define VIEW_DEFAULT_HEIGHT_PER_CHANNEL 320
-#endif
 
 #define DEFAULT_MIN_ZOOM 8
 
@@ -207,11 +202,6 @@ create_proc_menu (sw_view * view, GtkAccelGroup * accel_group)
 
   submenu = menu;
 
-#if 0
-  first_name[4] = '\0';
-  last_name[4] = '\0';
-#endif
-
   if (plugins)
     /*strncpy (first_name, ((sw_procedure *)plugins->data)->name, 4);*/
     sscanf (_(((sw_procedure *)plugins->data)->name), "%s", first_name);
@@ -291,10 +281,6 @@ view_refresh_channelops_menu (sw_view * view)
   /* Remove references to old channelops widgets from sensitivity updates */
   for (gl = view->channelops_widgets; gl; gl = gl->next) {
     view->nomodify_widgets = g_list_remove (view->nomodify_widgets, gl->data);
-#if 0
-    view->noready_widgets = g_list_remove (view->noready_widgets, gl->data);
-    view->noalloc_widgets = g_list_remove (view->noalloc_widgets, gl->data);
-#endif
   }
   g_list_free (view->channelops_widgets);
   view->channelops_widgets = NULL;
@@ -437,10 +423,6 @@ create_view_menu (sw_view * view, GtkWidget * m)
   /* Create a GtkAccelGroup and add it to the window. */
   accel_group = gtk_accel_group_new();
   g_object_set_data(G_OBJECT(view->window), "accel_group", accel_group);
-#if 0
-  if (GTK_IS_MENU(m))
-    gtk_window_add_accel_group (GTK_WINDOW(view->window), accel_group);
-#endif
 
   /* File */
   menuitem = gtk_menu_item_new_with_label(_("File"));
@@ -701,16 +683,6 @@ create_view_menu (sw_view * view, GtkWidget * m)
                                                   zoom_to_sel_cb, FALSE,
 												  0, 0, s); 
 
-
-#if 0
-  create_view_menu_item (submenu, _("Left"), "<Sweep-View>/View/Left", view,
-                                                  zoom_left_cb, FALSE,
-												  GDK_Left, GDK_BUTTON1_MASK, s); 
-
-  create_view_menu_item (submenu, _("Right"), "<Sweep-View>/View/Right", view,
-                                                  zoom_right_cb, FALSE,
-												  GDK_Right, GDK_BUTTON1_MASK, s); 
-#endif
 
   create_view_menu_item (submenu, _("Zoom normal"), "<Sweep-View>/View/Zoom normal", view,
                                                   zoom_norm_cb, FALSE,
@@ -1239,20 +1211,6 @@ create_context_menu_sel (sw_view * view)
 		     G_CALLBACK(view_new_cb), s);
   gtk_widget_show(menuitem);
 
-#if 0
-  menuitem = gtk_menu_item_new(); /* Separator */
-  gtk_menu_append(GTK_MENU(menu), menuitem);
-  gtk_widget_show(menuitem);
-
-  /* Properties */
-
-  menuitem = gtk_menu_item_new_with_label(_("File properties ..."));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(show_info_dialog_cb), view);
-  gtk_widget_show(menuitem);
-#endif
-
   return menu;
 }
 
@@ -1324,20 +1282,6 @@ create_context_menu_point (sw_view * view)
   g_signal_connect (G_OBJECT(menuitem), "activate",
 		     G_CALLBACK(view_new_cb), s);
   gtk_widget_show(menuitem);
-
-#if 0
-  menuitem = gtk_menu_item_new(); /* Separator */
-  gtk_menu_append(GTK_MENU(menu), menuitem);
-  gtk_widget_show(menuitem);
-
-  /* Properties */
-
-  menuitem = gtk_menu_item_new_with_label(_("File properties ..."));
-  gtk_menu_append(GTK_MENU(menu), menuitem);
-  g_signal_connect (G_OBJECT(menuitem), "activate",
-		     G_CALLBACK(show_info_dialog_cb), view);
-  gtk_widget_show(menuitem);
-#endif
 
   return menu;
 }
@@ -1496,72 +1440,6 @@ menu_button_handler (GtkWidget * widget, GdkEvent * event)
 #define VIEW_TOOLBAR_TOGGLE_BUTTON SW_TOOLBAR_TOGGLE_BUTTON
 #define VIEW_TOOLBAR_RADIO_BUTTON SW_TOOLBAR_RADIO_BUTTON
 
-#if 0
-typedef enum {
-  VIEW_TOOLBAR_BUTTON,
-  VIEW_TOOLBAR_TOGGLE_BUTTON,
-  VIEW_TOOLBAR_RADIO_BUTTON,
-} view_toolbar_button_type;
-
-static GtkWidget *
-create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
-		      const gchar * tip_text, const gchar * custom_name,
-		      view_toolbar_button_type button_type,
-		      GCallback clicked,
-		      GCallback pressed, GCallback released,
-		      gpointer data)
-{
-  GtkWidget * pixmap;
-  GtkWidget * button;
-  GtkTooltips * tooltips;
-
-  switch (button_type) {
-  case VIEW_TOOLBAR_TOGGLE_BUTTON:
-    button = gtk_toggle_button_new ();
-    break;
-  case VIEW_TOOLBAR_RADIO_BUTTON:
-    button = gtk_radio_button_new (NULL);
-    break;
-  case VIEW_TOOLBAR_BUTTON:
-  default:
-    button = gtk_button_new ();
-    break;
-  }
-
-  if (xpm_data != NULL) {
-    pixmap = create_widget_from_xpm (widget, xpm_data);
-    gtk_widget_show (pixmap);
-    gtk_container_add (GTK_CONTAINER (button), pixmap);
-  }
-
-  if (tip_text != NULL) {
-    tooltips = gtk_tooltips_new ();
-    gtk_tooltips_set_tip (tooltips, button, tip_text, NULL);
-  }
-
-  if (style != NULL) {
-    gtk_widget_set_style (button, style);
-  }
-
-  if (clicked != NULL) {
-    g_signal_connect (G_OBJECT (button), "clicked",
-			G_CALLBACK(clicked), data);
-  }
-
-  if (pressed != NULL) {
-    g_signal_connect (G_OBJECT(button), "pressed",
-			G_CALLBACK(pressed), data);
-  }
-
-  if (released != NULL) {
-    g_signal_connect (G_OBJECT(button), "released",
-			G_CALLBACK(released), data);
-  }
-
-  return button;
-}
-#endif
-
 static void
 scrub_clicked_cb (GtkWidget * widget, GdkEventButton * event, gpointer data)
 {
@@ -1652,13 +1530,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   GtkWidget * progress;
   GtkWidget * frame;
   GtkWidget * label;
-#if 0
-  GtkWidget * entry;
-#endif
-
-#if 0
-  GtkWidget * toolbar;
-#endif
 
 #ifdef DEVEL_CODE
   GtkWidget * notebook;
@@ -1697,13 +1568,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   view->channelops_widgets = NULL;
 
-#if 0
-  win_width = CLAMP (sample->sounddata->nr_frames / 150,
-		     VIEW_MIN_WIDTH, VIEW_MAX_WIDTH);
-  win_height =
-    VIEW_DEFAULT_HEIGHT_PER_CHANNEL *
-    MIN (2, sample->sounddata->format->channels);
-#else
   screen_width = gdk_screen_width ();
   screen_height = gdk_screen_height ();
 
@@ -1715,7 +1579,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   win_width = (win_height * 2 * 1618) / 1000;
 
   win_height *= MIN (2, sample->sounddata->format->channels);
-#endif
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -1982,16 +1845,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 
   gtk_widget_set_style (tool_hbox, style_dark_grey);
 
-#if 0
-  /* Zoom all */
-  button = create_pixmap_button (window, zoom_all_xpm, _("Zoom all"),
-				 NULL, VIEW_TOOLBAR_BUTTON, G_CALLBACK (zoom_all_cb),
-				 NULL, NULL, view);
-  gtk_button_set_relief (GTK_BUTTON(button), GTK_RELIEF_NONE);
-  gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
-  gtk_widget_show (button);
-#endif
-
   /* Zoom in */
   button = create_pixmap_button (window, zoom_in_xpm, _("Zoom in"),
 				 NULL, VIEW_TOOLBAR_BUTTON, NULL,
@@ -2208,15 +2061,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_box_pack_start (GTK_BOX(rate_vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-#if 0
-  rate_adj = gtk_adjustment_new (50.0,   /* value */
-				 0.0,    /* lower */
-				 100.0,  /* upper */
-				 0.001,  /* step incr */
-				 0.001,  /* page incr */
-				 0.001   /* page size */
-				 );
-#else
   rate_adj = gtk_adjustment_new (0.0,    /* value */
 				 -100.0, /* lower */
 				 100.0,  /* upper */
@@ -2224,7 +2068,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 				 20.0,   /* page incr */
 				 0.0     /* page size */
 				 );
-#endif
 
   /*  view->rate = 1.0;*/
   view->rate_adj = rate_adj;
@@ -2596,12 +2439,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   /* Status line */
 
   hbox = gtk_hbox_new (FALSE, 0);
-#if 0
-  gtk_table_attach (GTK_TABLE(table), hbox,
-		   0, 3, 3, 4,
-		   GTK_FILL|GTK_SHRINK, GTK_FILL,
-		   0, 0);
-#endif
+
   gtk_box_pack_start (GTK_BOX(main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -2704,13 +2542,6 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
 		      G_CALLBACK(view_set_pos_indicator_cb),
 		      view->display);
 		      
-#if 0
-  g_signal_connect_swapped (G_OBJECT(view->display),
-			     "motion_notify_event",
-			     G_CALLBACK(view_set_pos_indicator_cb),
-			     G_OBJECT(view->display));
-#endif
-
   if (sample->sounddata->sels)
     sample_display_start_marching_ants (SAMPLE_DISPLAY(view->display));
 
@@ -3346,14 +3177,6 @@ view_set_progress_ready (sw_view * view)
 	    g_basename (view->sample->pathname),
 	    view->sample->play_head->scrubbing ? _("Scrub!") : _("Ready"));
 
-#if 0
-  if (view->sample->play_head->scrubbing) {
-    snprintf (buf, BUF_LEN, "Sweep %s - %s", VERSION, _("Scrub!"));
-  } else {
-    snprintf (buf, BUF_LEN, "Sweep %s - %s", VERSION, _("Ready"));
-  }
-#endif
-
   gtk_progress_set_format_string (GTK_PROGRESS(view->progress), buf);
   gtk_progress_set_percentage (GTK_PROGRESS(view->progress), 0.0);
 #undef BUF_LEN
@@ -3439,29 +3262,16 @@ view_refresh_title (sw_view * view)
 
   if (s->sounddata->nr_frames > 0) {
     snprintf(buf, BUF_LEN,
-#if 0
-	     "%s (%dHz %s) %0d%% - Sweep " VERSION,
-	     s->filename ? s->filename : _("Untitled"),
-	     s->sounddata->format->rate,
-	     s->sounddata->format->channels == 1 ? _("Mono") : _("Stereo"),
-#else
 	     "%s%s %0d%% - Sweep " VERSION,
 	     s->modified ? _("*") : "",
 	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
-#endif
+
 	     s->progress_percent);
   } else {
     snprintf(buf, BUF_LEN,
-#if 0
-	     "%s (%dHz %s) %s - Sweep " VERSION,
-	     s->filename ? s->filename : _("Untitled"),
-	     s->sounddata->format->rate,
-	     s->sounddata->format->channels == 1 ? _("Mono") : _("Stereo"),
-#else
 	     "%s%s %s - Sweep " VERSION,
 	     s->modified ? _("*") : "",
 	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
-#endif
 	     _("Empty"));
   }
 
@@ -3572,15 +3382,6 @@ view_refresh_adjustment (sw_view * v)
     changed = TRUE;
   }
 
-#if 0
-  if (adj->page_size > adj->upper - adj->value)
-    adj->page_size = adj->upper - adj->value;
-#endif
-
-#if 0
-  if (v->end > v->sample->sounddata->nr_frames)
-    v->end = v->sample->sounddata->nr_frames;
-#endif 
 
   if (adj->page_increment == 0) {
     adj->page_increment = (gfloat)(v->end - v->start);

@@ -27,33 +27,6 @@
 
 #include "../src/sweep_app.h" /* XXX */
 
-#if 0
-static void
-region_reverse (gpointer data, sw_format * format, int nr_frames,
-		sw_param_set pset, gpointer custom_data)
-{
-  glong i, sw;
-  gpointer d, e, t;
-
-  sw = frames_to_bytes (format, 1);
-  t = g_malloc (sw);
-
-  d = data;
-  e = d + frames_to_bytes (format, nr_frames);
-
-  for (i = 0; i <= nr_frames/2; i++) {
-    memcpy (t, d, sw);
-    memcpy (d, e, sw);
-    memcpy (e, t, sw);
-    
-    d += sw;
-    e -= sw;
-  }
-
-  g_free (t);
-}
-#endif
-
 static sw_sample *
 sounddata_reverse (sw_sample * sample, sw_param_set pset,
 		   gpointer custom_data)
@@ -124,12 +97,6 @@ sounddata_reverse (sw_sample * sample, sw_param_set pset,
 static sw_op_instance *
 apply_reverse (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 {
-#if 0
-  return
-    perform_filter_region_op (sample, _("Reverse"),
-			       (SweepFilterRegion)region_reverse, pset, NULL);
-#endif
-
   return
     perform_filter_op (sample, _("Reverse"),
 		       (SweepFilter)sounddata_reverse, pset, NULL);

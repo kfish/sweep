@@ -175,7 +175,6 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   unsigned int periods;
   snd_pcm_uframes_t period_size = PBUF_SIZE/format->channels;
 
-#if 1
   if (handle->driver_flags == O_RDONLY) {
     dir = (int)SND_PCM_STREAM_CAPTURE;
   } else if (handle->driver_flags == O_WRONLY) {
@@ -183,9 +182,6 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   } else {
     return;
   }
-#else
-  dir = 0;
-#endif
 
   snd_pcm_hw_params_alloca (&hwparams);
 
@@ -338,29 +334,6 @@ alsa_device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
   snd_pcm_status_t * status;
   int err;
 
-#if 0
-  gint16 * bbuf;
-  size_t byte_count;
-  ssize_t bytes_written;
-  int need_bswap;
-  int i;
-
-  if (handle == NULL) {
-#ifdef DEBUG
-    g_print ("handle NULL in write()\n");
-#endif
-    return -1;
-  }
-
-  byte_count = count * sizeof (gint16);
-  bbuf = alloca (byte_count);
-
-  for (i = 0; i < count; i++) {
-    bbuf[i] = (gint16)(PLAYBACK_SCALE * buf[i]);
-  }
-
-  err = snd_pcm_writei(pcm_handle, bbuf, uframes);
-#else
   /*printf ("sweep: alsa_write \n");*/
 
   uframes = handle->driver_channels > 0 ? count / handle->driver_channels : 0;
@@ -368,7 +341,6 @@ alsa_device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
 
   // this basicaly ripped straight out of alsaplayer alsa-final driver:
   err = snd_pcm_writei(pcm_handle, buf, uframes);
-#endif
 
   if (err == -EPIPE) {
     snd_pcm_status_alloca(&status);

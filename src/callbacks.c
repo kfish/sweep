@@ -178,11 +178,6 @@ exit_cb (GtkWidget * widget, gpointer data)
 void
 set_tool_cb (GtkWidget * widget, gpointer data)
 {
-#if 0
-  gint tool = (gint)data;
-
-  /*  current_tool = tool;*/
-#endif
   g_print ("NOOOOOOOOOOOOOO global current_tool\n");
 }
 

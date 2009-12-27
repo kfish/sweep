@@ -49,51 +49,6 @@
 /*#define DEBUG*/
 
 
-#if 0
-static GtkWidget *
-create_pixmap_button (GtkWidget * widget, gchar ** xpm_data,
-		      const gchar * label_text, const gchar * tip_text,
-		      GCallback clicked)
-{
-  GtkWidget * hbox;
-  GtkWidget * label;
-  GtkWidget * pixmap;
-  GtkWidget * button;
-  GtkTooltips * tooltips;
-
-  button = gtk_button_new ();
-
-  hbox = gtk_hbox_new (FALSE, 2);
-  gtk_container_add (GTK_CONTAINER(button), hbox);
-  gtk_container_set_border_width (GTK_CONTAINER(button), 8);
-  gtk_widget_show (hbox);
-
-  if (xpm_data != NULL) {
-    pixmap = create_widget_from_xpm (widget, xpm_data);
-    gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 8);
-    gtk_widget_show (pixmap);
-  }
-
-  if (label_text != NULL) {
-    label = gtk_label_new (label_text);
-    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 8);
-    gtk_widget_show (label);
-  }
-
-  if (tip_text != NULL) {
-    tooltips = gtk_tooltips_new ();
-    gtk_tooltips_set_tip (tooltips, button, tip_text, NULL);
-  }
-
-  if (clicked != NULL) {
-    g_signal_connect (G_OBJECT (button), "clicked",
-			G_CALLBACK(clicked), NULL);
-  }
-
-  return button;
-}
-#endif
-
 static void
 paste_dialog_destroy (GtkWidget * widget, gpointer data)
 {
@@ -240,11 +195,6 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   g_signal_connect (G_OBJECT(dialog), "destroy",
 		     G_CALLBACK (paste_dialog_destroy), sample);
-
-#if 0
-  gtk_accel_group_add (accel_group, GDK_w, GDK_CONTROL_MASK, GDK_NONE,
-		       GTK_OBJECT(dialog), "destroy");
-#endif
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 

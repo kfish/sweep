@@ -210,14 +210,6 @@ dup_channels_dialog_new_cb (GtkWidget * widget, gpointer data)
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 
-#if 0
-  current = g_strdup_printf (_("Currently: %d channels"),
-			     sample->sounddata->format->channels);
-  label = gtk_label_new (current);
-  gtk_box_pack_start (GTK_BOX(main_vbox), label, TRUE, TRUE, 8);
-  gtk_widget_show (label);
-#endif
-
   chooser = channelcount_chooser_new (_("Output channels"));
   gtk_box_pack_start (GTK_BOX(main_vbox), chooser, TRUE, TRUE, 0);
   channelcount_chooser_set_count (chooser,
