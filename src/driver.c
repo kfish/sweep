@@ -836,11 +836,14 @@ init_devices (void)
 
   driver = prefs_get_string (prefs_driver_key);
 
+  /* Set a default in case preferences driver doesn't exist. */
+  current_driver = driver_table [0];
+
   /* Switch to driver from preferences if possible. */
   if (driver != NULL)
     for (k = 0 ; driver_table [k] != NULL ; k++)
-      if (strcmp (driver, driver_table [k]->name) == 0) {
+      if (strcmp (driver, driver_table [k]->name) == 0)
         current_driver = driver_table [k];
-		dialog_driver = current_driver;
-      }
+
+  dialog_driver = current_driver;
 }
