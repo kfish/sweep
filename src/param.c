@@ -674,19 +674,19 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
   n = 0;
 
   if (proc->description != NULL) {
-    n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->description));
+    n = snprintf (buf, sizeof (buf), "%s\n\n", _(proc->description));
   }
 
-  if (proc->author != NULL) {
-    n += snprintf (buf+n, BUF_LEN, "by %s", proc->author);
+  if (n < sizeof (buf) && proc->author != NULL) {
+    n += snprintf (buf+n, sizeof (buf)-n, "by %s", proc->author);
   }
 
-  if (proc->copyright != NULL) {
-    n += snprintf (buf+n, BUF_LEN, ", %s.\n", proc->copyright);
+  if (n < sizeof (buf) && proc->copyright != NULL) {
+    n += snprintf (buf+n, sizeof (buf)-n, ", %s.\n", proc->copyright);
   }
 
-  if (proc->url != NULL) {
-    n += snprintf (buf+n, BUF_LEN, "\nFor more information see\n%s\n",
+  if (n < sizeof (buf) && proc->url != NULL) {
+    n += snprintf (buf+n, sizeof (buf)-n, "\nFor more information see\n%s\n",
 		   proc->url);
   }
 
