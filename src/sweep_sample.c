@@ -179,6 +179,7 @@ sample_new_empty(gchar * pathname,
   s->tmp_message_active = FALSE;
   s->last_tmp_message = NULL;
   s->tmp_message_tag = -1;
+  s->progress_ready_tag = -1;
 
   return s;
 }
@@ -626,6 +627,9 @@ create_sample_new_dialog_like (sw_sample * s)
 void
 sample_destroy (sw_sample * s)
 {
+  sweep_timeout_remove (s->tmp_message_tag);
+  sweep_timeout_remove (s->progress_ready_tag);
+
   stop_playback (s);
 
   sounddata_destroy (s->sounddata);
@@ -730,7 +734,7 @@ sample_bank_remove (sw_sample * s)
     undo_dialog_refresh_sample_list ();
     rec_dialog_refresh_sample_list ();
     sample_destroy(s);
-	s = NULL;
+    s = NULL;
   }
 
   if (sample_bank == NULL) {
@@ -1222,15 +1226,14 @@ sample_set_tmp_message (sw_sample * s, const char * fmt, ...)
   s->tmp_message_active = TRUE;
   s->last_tmp_message = g_strdup (buf);
 
-  if (s->tmp_message_tag != -1) {
-    sweep_timeout_remove (s->tmp_message_tag);
-  }
-
+  sweep_timeout_remove (s->tmp_message_tag);
   s->tmp_message_tag =
     sweep_timeout_add ((guint32)5000,
 		       (GtkFunction)sample_clear_tmp_message, s);
 
-  sweep_timeout_add ((guint32)0, (GtkFunction)sample_set_progress_ready, s);
+  sweep_timeout_remove (s->progress_ready_tag);
+  s->progress_ready_tag =
+    sweep_timeout_add ((guint32)0, (GtkFunction)sample_set_progress_ready, s);
 }
 
 /*

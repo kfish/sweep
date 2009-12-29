@@ -258,6 +258,7 @@ struct _sw_sample {
   gboolean tmp_message_active;
   gchar * last_tmp_message;
   gint tmp_message_tag;
+  gint progress_ready_tag;
 };
 
 void
