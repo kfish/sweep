@@ -134,6 +134,9 @@ sweep_timeout_remove (guint sweep_timeout_handler_id)
   GList * gl, * gl_next;
   sweep_timeout_data * td;
 
+  if (sweep_timeout_handler_id == -1)
+    return;
+
   g_mutex_lock (timeouts_mutex);
 
   for (gl = timeouts; gl; gl = gl_next) {
