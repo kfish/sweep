@@ -138,14 +138,12 @@ static sw_operation dup_channels_op = {
 void
 dup_channels (sw_sample * sample, int new_channels)
 {
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
   if (sample->sounddata->format->channels == 1) {
-    g_snprintf (buf, BUF_LEN, _("Duplicate to %d channels"), new_channels);
+    g_snprintf (buf, sizeof (buf), _("Duplicate to %d channels"), new_channels);
   } else {
-    g_snprintf (buf, BUF_LEN, _("Duplicate from %d to %d channels"),
+    g_snprintf (buf, sizeof (buf), _("Duplicate from %d to %d channels"),
 		sample->sounddata->format->channels, new_channels);
   }
  
@@ -628,11 +626,9 @@ static sw_operation change_channels_op = {
 void
 change_channels (sw_sample * sample, int new_channels)
 {
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
-  g_snprintf (buf, BUF_LEN, _("Convert from %d to %d channels"),
+  g_snprintf (buf, sizeof (buf), _("Convert from %d to %d channels"),
 	      sample->sounddata->format->channels, new_channels);
  
   schedule_operation (sample, buf, &change_channels_op,

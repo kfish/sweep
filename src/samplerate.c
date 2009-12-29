@@ -80,7 +80,6 @@ do_samplerate_thread (sw_op_instance * inst)
   sw_framecount_t old_nr_frames, new_nr_frames;
   int channel = 0;
 
-  /*  float input[BUFFER_LEN], output[BUFFER_LEN];*/
   SRC_STATE * src_state;
   SRC_DATA src_data;
   int error;
@@ -226,12 +225,9 @@ void
 resample (sw_sample * sample, int new_rate, int quality)
 {
   src_options * so;
+  char buf[128];
 
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
-
-  g_snprintf (buf, BUF_LEN, _("Resample from %d Hz to %d Hz"),
+  g_snprintf (buf, sizeof (buf), _("Resample from %d Hz to %d Hz"),
 	      sample->sounddata->format->rate, new_rate);
 
   so = g_malloc (sizeof(src_options));

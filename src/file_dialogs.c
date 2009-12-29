@@ -142,10 +142,7 @@ static gboolean
 sweep_dir_exists (char * pathname)
 {
   struct stat statbuf;
-
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
 
   gchar * dirname;
 
@@ -154,7 +151,7 @@ sweep_dir_exists (char * pathname)
   if (dirname && strcmp (dirname, "") && stat (dirname, &statbuf) == -1) {
     switch (errno) {
     case ENOENT:
-      snprintf (buf, BUF_LEN, _("%s does not exist."), dirname);
+      snprintf (buf, sizeof (buf), _("%s does not exist."), dirname);
       info_dialog_new (_("Directory does not exist"), NULL, buf);
       g_free (dirname);
       return FALSE;
@@ -360,13 +357,11 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *)data;
   sw_sample * sample;
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
     
   sample = view->sample;
 
-  snprintf (buf, BUF_LEN,
+  snprintf (buf, sizeof (buf),
 	    _("Are you sure you want to revert %s to\n%s?\n\n"
 	      "All changes and undo information will be lost."),
 	    g_basename (sample->pathname), sample->pathname);
@@ -691,10 +686,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 
   save_as_data * sd;
 
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
-
+  char buf[512];
   char * last_save;
 
   win_width = gdk_screen_width () / 2;
@@ -807,7 +799,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
       if (access(filename, W_OK) == -1) {
         sweep_perror (errno, _("You are not allowed to write to\n%s"), filename);
       } else {
-        snprintf (buf, BUF_LEN, _("%s exists. Overwrite?"), filename);
+        snprintf (buf, sizeof (buf), _("%s exists. Overwrite?"), filename);
 
         question_dialog_new (sample, _("File exists"), buf,
 		  	   _("Overwrite"), _("Don't overwrite"),
@@ -867,9 +859,7 @@ sample_save_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *)data;
   sw_sample * sample;
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
     
   sample = view->sample;
 
@@ -877,7 +867,7 @@ sample_save_cb (GtkWidget * widget, gpointer data)
       sample->file_method == SWEEP_FILE_METHOD_MP3) {
     sample_save_as_cb (widget, data);
   } else if (sample_mtime_changed (sample)) {
-    snprintf (buf, BUF_LEN,
+    snprintf (buf, sizeof (buf),
 	      _("%s\n has changed on disk.\n\n"
 		"Are you sure you want to save?"),
 	      sample->pathname);

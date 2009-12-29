@@ -82,8 +82,6 @@
 #include <speex_callbacks.h>
 #endif
 
-#define BUFFER_LEN 1024
-
 #include <glib.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -119,8 +117,6 @@
 #ifdef SPEEX_SET_DTX
 #define HAVE_SPEEX_BETA4
 #endif
-
-#define BUF_LEN 128
 
 #define MODE_KEY "Speex_Mode"
 #define FEATURES_KEY "Speex_Features"
@@ -526,9 +522,7 @@ static sw_operation speex_load_op = {
 static sw_sample *
 sample_load_speex_info (sw_sample * sample, char * pathname)
 {
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
   gboolean isnew = (sample == NULL);
 
@@ -574,7 +568,7 @@ sample_load_speex_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, BUF_LEN, _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
 
   schedule_operation (sample, buf, &speex_load_op, sample);
 
@@ -957,11 +951,8 @@ speex_sample_save_thread (sw_op_instance * inst)
 
   /* Report success or failure; Calculate and display statistics */
 
-#undef BUF_LEN
-#define BUF_LEN 16
-
   if (remaining <= 0) {
-    char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
+    char time_buf[16], bytes_buf[16];
 
     sample_store_and_free_pathname (sample, pathname);
 
@@ -972,10 +963,10 @@ speex_sample_save_thread (sw_op_instance * inst)
     sample->edit_ignore_mtime = FALSE;
     sample->modified = FALSE;
 
-    snprint_time (time_buf, BUF_LEN,
+    snprint_time (time_buf, sizeof (time_buf),
 		  frames_to_time (format, nr_frames - remaining));
 
-    snprint_bytes (bytes_buf, BUF_LEN, bytes_written);
+    snprint_bytes (bytes_buf, sizeof (bytes_buf), bytes_written);
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)nr_frames/(double)format->rate));
@@ -988,12 +979,12 @@ speex_sample_save_thread (sw_op_instance * inst)
 		     bytes_buf, time_buf,
 		     average_bitrate);
   } else {
-    char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
+    char time_buf[16], bytes_buf[16];
 
-    snprint_time (time_buf, BUF_LEN,
+    snprint_time (time_buf, sizeof (time_buf),
 		  frames_to_time (format, nr_frames - remaining));
 
-    snprint_bytes (bytes_buf, BUF_LEN, bytes_written);
+    snprint_bytes (bytes_buf, sizeof (bytes_buf), bytes_written);
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)(nr_frames - remaining)/(double)format->rate));
@@ -1034,11 +1025,9 @@ static sw_operation speex_save_op = {
 int
 speex_sample_save (sw_sample * sample, char * pathname)
 {
-#undef BUF_LEN
-#define BUF_LEN 64
-  char buf[BUF_LEN];
+  char buf[64];
 
-  g_snprintf (buf, BUF_LEN, _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
 
   schedule_operation (sample, buf, &speex_save_op, pathname);
 

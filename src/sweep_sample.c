@@ -287,9 +287,7 @@ sample_new_dialog_update (GtkWidget * widget)
   gint sample_rate, nr_channels;
   glong bytes;
 
-#undef BUF_LEN
-#define BUF_LEN 16
-  char buf[BUF_LEN];
+  char buf[16];
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -309,7 +307,7 @@ sample_new_dialog_update (GtkWidget * widget)
   if (bytes < 0) {
     gtk_label_set_text (GTK_LABEL(memsize_label), _("Overflow"));
   } else {
-    snprint_bytes (buf, BUF_LEN, bytes);
+    snprint_bytes (buf, sizeof (buf), bytes);
     gtk_label_set_text (GTK_LABEL(memsize_label), buf);
   }
 
@@ -384,8 +382,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   GtkWidget * ok_button;
   GtkTooltips * tooltips;
 
-#define BUF_LEN 16
-  gchar buf[BUF_LEN];
+  gchar buf[16];
 
   dialog = gtk_dialog_new ();
   sweep_set_window_icon (GTK_WINDOW(dialog));
@@ -446,7 +443,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX(hbox), entry, TRUE, TRUE, 4);
   gtk_widget_show (entry);
 
-  snprint_time (buf, BUF_LEN, duration);
+  snprint_time (buf, sizeof (buf), duration);
   gtk_entry_set_text (GTK_ENTRY (entry), buf); 
 
   g_signal_connect (G_OBJECT(entry), "changed",
@@ -607,8 +604,6 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   }
 
   gtk_widget_show (dialog);
-
-#undef BUF_LEN
 }
 
 void
@@ -1217,12 +1212,10 @@ void
 sample_set_tmp_message (sw_sample * s, const char * fmt, ...)
 {
   va_list ap;
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
 
   va_start (ap, fmt);
-  vsnprintf (buf, BUF_LEN, fmt, ap);
+  vsnprintf (buf, sizeof (buf), fmt, ap);
   va_end (ap);
 
   s->tmp_message_active = TRUE;
@@ -1604,19 +1597,17 @@ void
 sample_selection_insert_tmp_sel (sw_sample * s)
 {
   int n;
-#undef BUF_LEN
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
   sw_format * format = s->sounddata->format;
   sw_sel * sel;
 
-  n = snprintf (buf, BUF_LEN, _("Insert selection ["));
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n = snprintf (buf, sizeof (buf), _("Insert selection ["));
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_start));
-  n += snprintf (buf+n, BUF_LEN-n, " - ");
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n += snprintf (buf+n, sizeof (buf)-n, " - ");
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_end));
-  n += snprintf (buf+n, BUF_LEN-n, "]");
+  n += snprintf (buf+n, sizeof (buf)-n, "]");
 
   g_mutex_lock (s->sounddata->sels_mutex);
 
@@ -1628,7 +1619,6 @@ sample_selection_insert_tmp_sel (sw_sample * s)
   g_mutex_unlock (s->sounddata->sels_mutex);
   
   perform_selection_op (s, buf, ssits, NULL, sel);
-#undef BUF_LEN
 }
 
 static sw_sample *
@@ -1658,18 +1648,17 @@ void
 sample_selection_subtract_tmp_sel (sw_sample * s)
 {
   int n;
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
   sw_format * format = s->sounddata->format;
   sw_sel * sel;
 
-  n = snprintf (buf, BUF_LEN, _("Subtract selection ["));
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n = snprintf (buf, sizeof (buf), _("Subtract selection ["));
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_start));
-  n += snprintf (buf+n, BUF_LEN-n, " - ");
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n += snprintf (buf+n, sizeof (buf)-n, " - ");
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_end));
-  n += snprintf (buf+n, BUF_LEN-n, "]");
+  n += snprintf (buf+n, sizeof (buf)-n, "]");
 
   g_mutex_lock (s->sounddata->sels_mutex);
 
@@ -1703,18 +1692,17 @@ void
 sample_selection_replace_with_tmp_sel (sw_sample * s)
 {
   int n;
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
   sw_format * format = s->sounddata->format;
   sw_sel * sel;
 
-  n = snprintf (buf, BUF_LEN, _("Set selection ["));
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n = snprintf (buf, sizeof (buf), _("Set selection ["));
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_start));
-  n += snprintf (buf+n, BUF_LEN-n, " - ");
-  n += snprint_time (buf+n, BUF_LEN-n,
+  n += snprintf (buf+n, sizeof (buf)-n, " - ");
+  n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_end));
-  n += snprintf (buf+n, BUF_LEN-n, "]");
+  n += snprintf (buf+n, sizeof (buf)-n, "]");
 
   g_mutex_lock (s->sounddata->sels_mutex);
 
@@ -1737,28 +1725,21 @@ sample_info_update (sw_sample * sample)
   sw_sounddata * sounddata = sample->sounddata;
   GtkWidget * clist = sample->info_clist;
 
-#define RATE_BUF_LEN 16
-  char rate_buf[RATE_BUF_LEN];
-
-#define CHAN_BUF_LEN 16
-  char chan_buf[CHAN_BUF_LEN];
-
-#define BYTE_BUF_LEN 16
-  char byte_buf[BYTE_BUF_LEN];
-
-#define TIME_BUF_LEN 16
-  char time_buf[TIME_BUF_LEN];
+  char rate_buf[16];
+  char chan_buf[16];
+  char byte_buf[16];
+  char time_buf[16];
 
   if (clist == NULL) return;
 
-  snprintf (rate_buf, RATE_BUF_LEN, "%d Hz", sounddata->format->rate);
+  snprintf (rate_buf, sizeof (rate_buf), "%d Hz", sounddata->format->rate);
 
-  snprintf (chan_buf, CHAN_BUF_LEN, "%d", sounddata->format->channels);
+  snprintf (chan_buf, sizeof (chan_buf), "%d", sounddata->format->channels);
 
-  snprint_bytes (byte_buf, BYTE_BUF_LEN,
+  snprint_bytes (byte_buf, sizeof (byte_buf),
 		 frames_to_bytes (sounddata->format, sounddata->nr_frames));
   
-  snprint_time (time_buf, TIME_BUF_LEN,
+  snprint_time (time_buf, sizeof (time_buf),
 		frames_to_time (sounddata->format, sounddata->nr_frames));
 
 

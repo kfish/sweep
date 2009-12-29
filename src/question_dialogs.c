@@ -215,11 +215,10 @@ info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
 {
   info_dialog_data * id;
   va_list ap;
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
 
   va_start (ap, fmt);
-  vsnprintf (buf, BUF_LEN, fmt, ap);
+  vsnprintf (buf, sizeof (buf), fmt, ap);
   va_end (ap);
 
   id = g_malloc (sizeof (info_dialog_data));
@@ -265,12 +264,10 @@ sweep_perror (int thread_errno, const char * fmt, ...)
 {
   sweep_perror_data * pd;
   va_list ap;
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
 
   va_start (ap, fmt);
-  vsnprintf (buf, BUF_LEN, fmt, ap);
+  vsnprintf (buf, sizeof (buf), fmt, ap);
   va_end (ap);
 
   pd = g_malloc (sizeof (sweep_perror_data));

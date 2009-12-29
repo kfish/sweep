@@ -340,8 +340,7 @@ db_ruler_draw_ticks (GtkRuler *ruler)
   gint scale;			/* Number of units per major unit */
   gfloat subd_incr;
   gfloat start, end, cur;
-#define UNIT_STR_LEN 32
-  gchar unit_str[UNIT_STR_LEN];
+  gchar unit_str[32];
   gint digit_height;
   gint digit_offset;
   gint text_height;
@@ -467,9 +466,9 @@ if (ruler_scale[scale] * abs_increment > 2 * digit_height)
 	    db_cur = 20 * log10 (a_cur);
 	    
 	    if (db_cur > -10.0) {
-	      snprintf (unit_str, UNIT_STR_LEN, "%1.1f", db_cur);
+	      snprintf (unit_str, sizeof (unit_str), "%1.1f", db_cur);
 	    } else {
-	      snprintf (unit_str, UNIT_STR_LEN, "%2.0f", db_cur);
+	      snprintf (unit_str, sizeof (unit_str), "%2.0f", db_cur);
 	    }
 	  
 		pango_layout_set_text (layout, unit_str, -1);

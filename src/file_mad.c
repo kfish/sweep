@@ -86,22 +86,21 @@ file_is_mpeg_audio (const char * pathname)
  *
  * reimplement this check as a contextual verfification of 
  * a sequence of frames, starting from somewhere in the middle
- * of a file. in the mean time, raise BUF_LEN from 2048 to 8192
+ * of a file. in the mean time, raise size of buf from 2048 to 8192
  * to mitigate the chance of a false negative. (with an increased 
  * change of a false positive as a result.)
  */
-#define BUF_LEN 8192 
-  unsigned char buf[BUF_LEN];
+  unsigned char buf[8192];
   int n, i;
 
   fd = open (pathname, O_RDONLY);
   if (fd == -1) goto out_false;
 
-  n = read (fd, buf, BUF_LEN);
+  n = read (fd, buf, sizeof (buf));
   if (n < 4) goto out_false;
 
   /* Check for MPEG frame marker */
-  for (i = 0; i < BUF_LEN-1; i++) {
+  for (i = 0; i < sizeof (buf)-1; i++) {
     if ((buf[i] & 0xff) == 0xff && (buf[i+1] & 0xe0) == 0xe0) {
       goto out_true;
     }
@@ -377,9 +376,7 @@ static sw_operation mad_load_op = {
 static sw_sample *
 sample_load_mad_info (sw_sample * sample, char * pathname)
 {
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
   gboolean isnew = (sample == NULL);
 
@@ -426,7 +423,7 @@ sample_load_mad_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, BUF_LEN, _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
 
   schedule_operation (sample, buf, &mad_load_op, sample);
 

@@ -52,8 +52,6 @@
 #include "sw_chooser.h"
 #include "view.h"
 
-#define BUF_LEN 128
-
 extern GtkStyle * style_wb;
 
 #if defined (SNDFILE_1)
@@ -77,11 +75,9 @@ typedef struct {
 static void
 sweep_sndfile_perror (SNDFILE * sndfile, gchar * pathname)
 {
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
-  sf_error_str (sndfile, buf, BUF_LEN);
+  sf_error_str (sndfile, buf, sizeof (buf));
 
   sweep_perror (errno, "libsndfile: %s\n\n%s", buf,
 		(pathname == NULL) ? "" : pathname);
@@ -622,9 +618,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 		      gboolean try_raw)
 {
   SNDFILE * sndfile;
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
   gchar * message;
 
   gboolean isnew = (sample == NULL);
@@ -652,9 +646,9 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
       return NULL;
     }
 
-    sf_error_str (NULL, buf, BUF_LEN);
-    if (!strncmp (buf, RAW_ERR_STR_1, BUF_LEN) ||
-	!strncmp (buf, RAW_ERR_STR_2, BUF_LEN)) {
+    sf_error_str (NULL, buf, sizeof (buf));
+    if (!strncmp (buf, RAW_ERR_STR_1, sizeof (buf)) ||
+	!strncmp (buf, RAW_ERR_STR_2, sizeof (buf))) {
 
       so = g_malloc0 (sizeof(*so));
       so->saving = FALSE;
@@ -721,7 +715,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, BUF_LEN, _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
 
   sf = g_malloc0 (sizeof(sf_data));
 
@@ -946,9 +940,9 @@ static sw_operation sndfile_save_op = {
 int
 sndfile_sample_save (sw_sample * sample, gchar * pathname)
 {
-  char buf[BUF_LEN];
+  char buf[128];
 
-  g_snprintf (buf, BUF_LEN, _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
 
   schedule_operation (sample, buf, &sndfile_save_op, g_strdup (pathname));
 

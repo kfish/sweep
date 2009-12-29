@@ -652,8 +652,7 @@ ladspa_meta_apply (sw_sample * sample,
 static void
 ladspa_meta_add_procs (gchar * dir, gchar * name)
 {
-#define PATH_LEN 256
-  gchar path[PATH_LEN];
+  gchar path[256];
   void * module;
   LADSPA_Descriptor_Function desc_func;
   const LADSPA_Descriptor * d;
@@ -662,7 +661,7 @@ ladspa_meta_add_procs (gchar * dir, gchar * name)
   int valid_mask;
   sw_procedure * proc;
 
-  snprintf (path, PATH_LEN, "%s/%s", dir, name);
+  snprintf (path, sizeof (path), "%s/%s", dir, name);
 
   module = dlopen (path, RTLD_NOW);
   if (!module) return;

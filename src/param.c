@@ -134,12 +134,10 @@ snprint_param (gchar * s, gint n, sw_param_type type, sw_param p)
 static void
 print_param (sw_param_type type, sw_param p)
 {
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
 
-  snprint_param (buf, BUF_LEN, type, p);
+  snprint_param (buf, sizeof (buf), type, p);
   printf ("%s", buf);
-#undef BUF_LEN
 }
 
 void
@@ -362,8 +360,7 @@ create_param_set_table (sw_ps_adjuster * ps)
   gint nr_options;
   int valid=0;
 
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
 
   GtkWidget * table;
   GtkWidget * hbox;
@@ -432,7 +429,7 @@ create_param_set_table (sw_ps_adjuster * ps)
 	  plsk[j].p1 = &ps->widgets[i].w.known_param;
 	  plsk[j].p2 = &pspec->constraint.list[j+1];
 
-	  snprint_param (buf, BUF_LEN, pspec->type,
+	  snprint_param (buf, sizeof (buf), pspec->type,
 			 pspec->constraint.list[j+1]);
 
 	  menuitem = gtk_menu_item_new_with_label (buf);
@@ -526,8 +523,6 @@ create_param_set_table (sw_ps_adjuster * ps)
   }
 
   return table;
-
-#undef BUF_LEN
 }
 
 /*
@@ -580,8 +575,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
 #ifdef _USE_TEXT
   GtkWidget * text;
 
-#define BUF_LEN 1024
-  gchar buf[BUF_LEN];
+  gchar buf[1024];
   gint n;
 
 #endif /* _USE_TEXT */
@@ -647,7 +641,7 @@ create_param_set_adjuster (sw_procedure * proc, sw_view * view,
  * font =
  * gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
  *
- * n = snprintf (buf, BUF_LEN, "%s\n\n", _(proc->name));
+ * n = snprintf (buf, sizeof (buf), "%s\n\n", _(proc->name));
  * gtk_text_insert (GTK_TEXT (text), font, NULL, NULL, buf, n);
  */
 #else

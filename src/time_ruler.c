@@ -183,8 +183,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   gint scale;			/* Number of units per major unit */
   gdouble subd_incr;
   gdouble start, end, cur;
-#define UNIT_STR_LEN 32
-  gchar unit_str[UNIT_STR_LEN];
+  gchar unit_str[32];
   gint digit_height;
   gint digit_offset;
   gint text_width;
@@ -244,8 +243,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
    *  for the scale looks consistent with an accompanying vruler
    */
   scale = ceil (ruler->max_size / TIME_RULER(ruler)->samplerate);
-  snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)scale);
-  /*  snprint_time_smpte (unit_str, UNIT_STR_LEN, (sw_time_t)scale, 10.0);*/
+  snprint_time (unit_str, sizeof (unit_str), (sw_time_t)scale);
 
  text_width = strlen (unit_str) * digit_height + 1;
 
@@ -295,7 +293,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	  /* draw label */ 
 	  if (i == 0)
 	    {
-	      snprint_time (unit_str, UNIT_STR_LEN, (sw_time_t)cur);
+	      snprint_time (unit_str, sizeof (unit_str), (sw_time_t)cur);
   		  pango_layout_set_text (layout, unit_str, -1);
  		  pango_layout_get_extents (layout, NULL, &logical_rect);
 

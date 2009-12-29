@@ -151,10 +151,9 @@ prepare_op (sw_op_instance * inst)
 {
   sw_sample * sample = inst->sample;
 
-#define BUF_LEN 128
-  gchar buf[BUF_LEN];
+  gchar buf[128];
 
-  g_snprintf (buf, BUF_LEN, "%s (%%p%%%%)", inst->description);
+  g_snprintf (buf, sizeof (buf), "%s (%%p%%%%)", inst->description);
   sample_set_progress_text (sample, buf);
   
   sample_set_edit_mode (sample, inst->op->edit_mode);
@@ -163,7 +162,6 @@ prepare_op (sw_op_instance * inst)
   if (sample->ops_thread == (pthread_t) -1) {
     pthread_create (&sample->ops_thread, NULL, (void *) (*op_main), sample);
   }
-#undef BUF_LEN
 }
 
 gint
@@ -302,9 +300,7 @@ schedule_operation (sw_sample * sample, char * description,
 		    sw_operation * operation, void * do_data)
 {
   sw_op_instance * inst;
-#undef BUF_LEN
-#define BUF_LEN 512
-  char buf[BUF_LEN];
+  char buf[512];
 
   inst = sw_op_instance_new (sample, description, operation);
   inst->do_data = do_data;
@@ -312,7 +308,7 @@ schedule_operation (sw_sample * sample, char * description,
   if (operation->edit_mode != SWEEP_EDIT_MODE_META &&
       !sample->edit_ignore_mtime && sample_mtime_changed (sample)) {
 
-    snprintf (buf, BUF_LEN,
+    snprintf (buf, sizeof (buf),
 	      _("%s\n has changed on disk.\n\n"
 		"Do you want to continue editing this buffer?"),
 	      sample->pathname);
@@ -443,11 +439,9 @@ static void
 schedule_undo_inst (sw_sample * sample, sw_op_instance * inst)
 {
   sw_operation * op;
-#undef BUF_LEN
-#define BUF_LEN 128
-  gchar buf[BUF_LEN];
+  gchar buf[128];
 
-  g_snprintf (buf, BUF_LEN, "Undo %s", inst->description);
+  g_snprintf (buf, sizeof (buf), "Undo %s", inst->description);
 
   if (inst->op->edit_mode == SWEEP_EDIT_MODE_FILTER)
     op = &undo_filter_op;
@@ -524,11 +518,9 @@ static void
 schedule_redo_inst (sw_sample * sample, sw_op_instance * inst)
 {
   sw_operation * op;
+  gchar buf[128];
 
-#define BUF_LEN 128
-  gchar buf[BUF_LEN];
-
-  g_snprintf (buf, BUF_LEN, "Redo %s", inst->description);
+  g_snprintf (buf, sizeof (buf), "Redo %s", inst->description);
 
   if (inst->op->edit_mode == SWEEP_EDIT_MODE_FILTER)
     op = &redo_filter_op;

@@ -56,8 +56,7 @@ about_dialog_create()
   */
   GtkWidget *vbox;
   GtkWidget *label;
-#define BUF_LEN 64
-  gchar buf[BUF_LEN];
+  gchar buf[64];
   GtkWidget * button;
   GtkWidget * about_image;
   GtkWidget * about_ebox;
@@ -97,7 +96,7 @@ about_dialog_create()
   *  style->font = gdk_font_load("-Adobe-Helvetica-Medium-R-Normal--*-140-*-*-*-*-*-*");
   *  gtk_widget_push_style(style);
   */
-    snprintf (buf, BUF_LEN, "%s %s", _("This is Sweep version"), VERSION);
+    snprintf (buf, sizeof (buf), "%s %s", _("This is Sweep version"), VERSION);
     label = gtk_label_new(buf);
     gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
     gtk_widget_show(label);

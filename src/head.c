@@ -233,10 +233,9 @@ hctl_refresh_offset (sw_head_controller * hctl)
   sw_sample * sample = head->sample;
   sw_framecount_t offset = head->offset;
 
-#define BUF_LEN 16
-  char buf[BUF_LEN];
+  char buf[16];
 
-  snprint_time (buf, BUF_LEN,
+  snprint_time (buf, sizeof (buf),
 		frames_to_time (sample->sounddata->format, offset));
 
   gtk_label_set_text (GTK_LABEL(hctl->pos_label), buf);

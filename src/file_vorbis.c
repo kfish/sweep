@@ -77,8 +77,6 @@
 #include <vorbis/vorbisfile.h>
 #include <vorbis/vorbisenc.h>
 
-#define BUFFER_LEN 1024
-
 #include <glib.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -102,8 +100,6 @@
 #include "../pixmaps/white-ogg.xpm"
 #include "../pixmaps/vorbisword2.xpm"
 #include "../pixmaps/xifish.xpm"
-
-#define BUF_LEN 128
 
 #define QUALITY_KEY "OggVorbis_Quality"
 #define ABR_KEY "OggVorbis_ABR"
@@ -250,9 +246,7 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
   vorbis_info * vi;
   int ret;
 
-#undef BUF_LEN
-#define BUF_LEN 128
-  char buf[BUF_LEN];
+  char buf[128];
 
   gboolean isnew = (sample == NULL);
 
@@ -321,7 +315,7 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, BUF_LEN, _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
 
 #ifdef DEVEL_CODE
   /* Throw the comments plus a few lines about the bitstream we're
@@ -330,9 +324,7 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
     GList * metadata_list = NULL;
     sw_metadata * metadata = NULL;
 
-#undef BUF_LEN
-#define BUF_LEN 1024
-    char buf[BUF_LEN];
+    char buf[1024];
     int n = 0;
 
     char **ptr = ov_comment(vf, -1)->user_comments;
@@ -345,7 +337,7 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
 	if (g_strcasecmp (metadata->content, "encoder"))
 	  metadata_list = g_list_append (metadata_list, metadata);
 
-	n += snprintf (buf+n, BUF_LEN-n, "%s: %s\n",
+	n += snprintf (buf+n, sizeof (buf)-n, "%s: %s\n",
 		       metadata->name, metadata->content);
       }
 
@@ -613,11 +605,8 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 
   /* Report success or failure; Calculate and display statistics */
 
-#undef BUF_LEN
-#define BUF_LEN 16
-
   if (remaining <= 0) {
-    char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
+    char time_buf[16], bytes_buf[16];
 
     sample_store_and_free_pathname (sample, pathname);
 
@@ -628,10 +617,10 @@ vorbis_sample_save_thread (sw_op_instance * inst)
     sample->edit_ignore_mtime = FALSE;
     sample->modified = FALSE;
 
-    snprint_time (time_buf, BUF_LEN,
+    snprint_time (time_buf, sizeof (time_buf),
 		  frames_to_time (format, nr_frames - remaining));
 
-    snprint_bytes (bytes_buf, BUF_LEN, bytes_written);
+    snprint_bytes (bytes_buf, sizeof (bytes_buf), bytes_written);
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)nr_frames/(double)format->rate));
@@ -644,12 +633,12 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 		     bytes_buf, time_buf,
 		     average_bitrate);
   } else {
-    char time_buf[BUF_LEN], bytes_buf[BUF_LEN];
+    char time_buf[16], bytes_buf[16];
 
-    snprint_time (time_buf, BUF_LEN,
+    snprint_time (time_buf, sizeof (time_buf),
 		  frames_to_time (format, nr_frames - remaining));
 
-    snprint_bytes (bytes_buf, BUF_LEN, bytes_written);
+    snprint_bytes (bytes_buf, sizeof (bytes_buf), bytes_written);
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)(nr_frames - remaining)/(double)format->rate));
@@ -691,11 +680,9 @@ static sw_operation vorbis_save_op = {
 int
 vorbis_sample_save (sw_sample * sample, char * pathname)
 {
-#undef BUF_LEN
-#define BUF_LEN 64
-  char buf[BUF_LEN];
+  char buf[64];
 
-  g_snprintf (buf, BUF_LEN, _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
 
   schedule_operation (sample, buf, &vorbis_save_op, pathname);
 

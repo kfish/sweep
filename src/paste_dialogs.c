@@ -167,10 +167,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gchar * title, * common_slider_title;
 
   sw_time_t duration;
-
-#undef BUF_LEN
-#define BUF_LEN 16
-  char buf[BUF_LEN];
+  char buf[16];
 
   if (xfade) {
     common_slider_title = _("Start gain");
@@ -314,7 +311,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   gtk_widget_show (label);
 
   duration = frames_to_time (sample->sounddata->format, clipboard_width ());
-  snprint_time (buf, BUF_LEN, duration);
+  snprint_time (buf, sizeof (buf), duration);
 
   label = gtk_label_new (buf);
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 4);

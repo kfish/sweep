@@ -145,8 +145,7 @@ static int
 chooser_set_number_direct (GtkWidget * chooser, int number)
 {
   GtkWidget * direct_entry;
-#define BUF_LEN 16
-  char buf[BUF_LEN];
+  char buf[16];
 
   direct_entry =
     GTK_WIDGET (g_object_get_data (G_OBJECT(chooser), "direct_entry"));
@@ -156,7 +155,7 @@ chooser_set_number_direct (GtkWidget * chooser, int number)
    * (otherwise, if zero is printed as '0', the GtkEntry behaves wierdly).
    */
   if (number > 0) {
-    snprintf (buf, BUF_LEN, "%d", number);
+    snprintf (buf, sizeof (buf), "%d", number);
   } else {
     buf[0] = '\0';
   }

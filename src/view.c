@@ -1395,23 +1395,18 @@ view_gain_changed_cb (GtkWidget * widget, gpointer data)
 static void
 view_set_pos_indicator_cb (GtkWidget * widget, gpointer data)
 {
+  char buf[16];
   SampleDisplay * sd = SAMPLE_DISPLAY(data);
   sw_view * view = sd->view;
 
-#define BUF_LEN 16
-  char buf[BUF_LEN];
-
   if (sd->mouse_offset >= 0) {
-    snprint_time (buf, BUF_LEN,
+    snprint_time (buf, sizeof (buf),
 		  frames_to_time (view->sample->sounddata->format,
 				  sd->mouse_offset));
     gtk_label_set_text (GTK_LABEL(view->pos), buf);
   } else {
     gtk_label_set_text (GTK_LABEL(view->pos), NO_TIME);
   }
-
-
-#undef BUF_LEN
 }
 
 static gint
@@ -2594,8 +2589,7 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
   GtkWidget * entry;
   sw_framecount_t orig_length;
   sw_time_t length;
-#define BUF_LEN 16
-  gchar buf[BUF_LEN];
+  gchar buf[16];
   gfloat step;
 
   /* Clamp view to within bounds of sample */
@@ -2610,7 +2604,7 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
 
   /* Update duration displayed in zoom combo */
   length = frames_to_time (view->sample->sounddata->format, end-start);
-  snprint_time (buf, BUF_LEN, length);
+  snprint_time (buf, sizeof (buf), length);
 
   entry = GTK_COMBO(view->zoom_combo)->entry;
  
@@ -2642,8 +2636,6 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
   /* Update title etc. */
   view_refresh_title(view);
   view_refresh_display(view);
-
-#undef BUF_LEN
 }
 
 void
@@ -3096,16 +3088,13 @@ view_refresh_offset_indicators (sw_view * view)
   sw_sample * sample = view->sample;
   sw_framecount_t offset;
   static int rate_limit = 0;
-
-
-#define BUF_LEN 16
-  char buf[BUF_LEN];
+  char buf[16];
 
   offset = (sample->play_head->going ?
 	    (sw_framecount_t)sample->play_head->offset :
 	    sample->user_offset);
 
-  snprint_time (buf, BUF_LEN,
+  snprint_time (buf, sizeof (buf),
 		frames_to_time (sample->sounddata->format, offset));
 /* cheesy rate limiter. ugly in operation. limits pango damage */
 if (rate_limit >= 3) {
@@ -3115,10 +3104,8 @@ if (rate_limit >= 3) {
 #else
   gtk_entry_set_text (GTK_ENTRY(view->play_pos), buf);
 #endif
-
 }
 ++rate_limit;
-#undef BUF_LEN
 
   sample_display_refresh_play_marker (sd);
   sample_display_refresh_user_marker (sd);
@@ -3167,19 +3154,17 @@ view_set_tmp_message (sw_view * view, gchar * message)
 void
 view_set_progress_ready (sw_view * view)
 {
-#define BUF_LEN 64
-  static gchar buf[BUF_LEN];
+  gchar buf[64];
 
   if (view == NULL) return;
 
-  snprintf (buf, BUF_LEN, "%s%s - %s",
+  snprintf (buf, sizeof (buf), "%s%s - %s",
 	    view->sample->modified ? "*" : "",
 	    g_basename (view->sample->pathname),
 	    view->sample->play_head->scrubbing ? _("Scrub!") : _("Ready"));
 
   gtk_progress_set_format_string (GTK_PROGRESS(view->progress), buf);
   gtk_progress_set_percentage (GTK_PROGRESS(view->progress), 0.0);
-#undef BUF_LEN
 }
 
 void
@@ -3215,11 +3200,10 @@ void
 view_close (sw_view * view)
 {
   sw_sample * sample = view->sample;
-#define BUF_LEN 256
-  char buf[BUF_LEN];
+  char buf[256];
 
   if (sample->modified && g_list_length (sample->views) == 1) {
-    snprintf (buf, BUF_LEN, _("%s has been modified. Close anyway?"),
+    snprintf (buf, sizeof (buf), _("%s has been modified. Close anyway?"),
 	      g_basename (sample->pathname));
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Close"), _("Don't close"),
@@ -3255,20 +3239,18 @@ view_volume_decrease (sw_view * view)
 void
 view_refresh_title (sw_view * view)
 {
+  char buf[256];
   sw_sample * s = (sw_sample *)view->sample;
 
-#define BUF_LEN 256
-  char buf[BUF_LEN];
-
   if (s->sounddata->nr_frames > 0) {
-    snprintf(buf, BUF_LEN,
+    snprintf(buf, sizeof (buf),
 	     "%s%s %0d%% - Sweep " VERSION,
 	     s->modified ? _("*") : "",
 	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
 
 	     s->progress_percent);
   } else {
-    snprintf(buf, BUF_LEN,
+    snprintf(buf, sizeof (buf),
 	     "%s%s %s - Sweep " VERSION,
 	     s->modified ? _("*") : "",
 	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
@@ -3276,7 +3258,6 @@ view_refresh_title (sw_view * view)
   }
 
   gtk_window_set_title (GTK_WINDOW(view->window), buf);
-#undef BUF_LEN
 }
 
 void
@@ -3285,47 +3266,36 @@ view_default_status (sw_view * view)
   sw_sample * s = (sw_sample *)view->sample;
   sw_sounddata * sounddata = s->sounddata;
 
-#define BYTE_BUF_LEN 16
-  char byte_buf[BYTE_BUF_LEN];
+  char byte_buf[16];
+  char time_buf[16];
+  char chan_buf[16];
+  char buf [256];
 
-#define TIME_BUF_LEN 16
-  char time_buf[TIME_BUF_LEN];
-
-#define CHAN_BUF_LEN 16
-  char chan_buf[CHAN_BUF_LEN];
-
-#define BUF_LEN 256
-  char buf [BUF_LEN];
-
-  snprint_bytes (byte_buf, BYTE_BUF_LEN,
+  snprint_bytes (byte_buf, sizeof (byte_buf),
 		 frames_to_bytes (sounddata->format, sounddata->nr_frames));
   
-  snprint_time (time_buf, TIME_BUF_LEN,
+  snprint_time (time_buf, sizeof (time_buf),
 		frames_to_time (sounddata->format, sounddata->nr_frames));
 
   switch (s->sounddata->format->channels) {
   case 1:
-    snprintf (chan_buf, CHAN_BUF_LEN, _("Mono"));
+    snprintf (chan_buf, sizeof (chan_buf), _("Mono"));
     break;
   case 2:
-    snprintf (chan_buf, CHAN_BUF_LEN, _("Stereo"));
+    snprintf (chan_buf, sizeof (chan_buf), _("Stereo"));
     break;
   default:
-    snprintf (chan_buf, CHAN_BUF_LEN, "%d %s", s->sounddata->format->channels,
+    snprintf (chan_buf, sizeof (chan_buf), "%d %s", s->sounddata->format->channels,
 	      _("channels"));
     break;
   }
 
-  snprintf (buf, BUF_LEN,
+  snprintf (buf, sizeof (buf),
 	    "%dHz %s [%s]",
 	    s->sounddata->format->rate,
 	    chan_buf, time_buf);
 
   gtk_label_set_text (GTK_LABEL(view->status), buf);
-
-#undef BUF_LEN
-#undef BYTE_BUF_LEN
-#undef TIME_BUF_LEN
 }
 
 void
