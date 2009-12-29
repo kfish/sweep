@@ -24,6 +24,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
@@ -311,10 +312,18 @@ void attach_window_close_accel(GtkWindow *window)
   gtk_window_add_accel_group (GTK_WINDOW(window), accel_group);
 }
 
+static void
+release_ui (void)
+{
+  g_object_unref (recent_manager);
+}
+
 
 void init_ui (void)
 {
   init_accels();
   init_styles();
   init_recent_manager();
+
+  atexit (release_ui);
 }

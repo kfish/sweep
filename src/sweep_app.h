@@ -91,7 +91,6 @@ struct _sw_view {
 
   GtkWidget * window;
   GtkWidget * time_ruler;
-  GtkWidget * scrollbar;
   GtkWidget * display;
   GtkWidget * pos;
   GtkWidget * status;
