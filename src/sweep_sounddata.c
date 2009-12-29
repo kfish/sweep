@@ -97,14 +97,13 @@ sounddata_clear_selection (sw_sounddata * sounddata)
 void
 sounddata_destroy (sw_sounddata * sounddata)
 {
-  /*size_t len;*/
-
   sounddata->refcount--;
 
   if (sounddata->refcount <= 0) {
     g_free (sounddata->data);
     g_mutex_free(sounddata->data_mutex);
     sounddata_clear_selection (sounddata);
+    memset (sounddata, 0, sizeof (*sounddata));
     g_free (sounddata);
   }
 }

@@ -637,6 +637,27 @@ sample_destroy (sw_sample * s)
   /* XXX: Should do this: */
   /* trim_registered_ops (s, 0); */
 
+  g_list_free (s->views);
+  g_free (s->pathname);
+
+  g_mutex_free (s->ops_mutex);
+  g_mutex_free (s->edit_mutex);
+  g_mutex_free (s->play_mutex);
+
+  g_list_free (s->registered_ops);
+  g_list_free (s->current_undo);
+  g_list_free (s->current_redo);
+  g_list_free (s->pending_ops);
+
+  if (s->info_clist)
+    gtk_widget_destroy (s->info_clist);
+
+  if (s->last_tmp_message) {
+    memset (s->last_tmp_message, 0, strlen (s->last_tmp_message));
+    g_free (s->last_tmp_message);
+  }
+
+  memset (s, 0, sizeof (*s));
   g_free (s);
 }
 
