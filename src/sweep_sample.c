@@ -1602,12 +1602,23 @@ sample_selection_insert_tmp_sel (sw_sample * s)
   sw_sel * sel;
 
   n = snprintf (buf, sizeof (buf), _("Insert selection ["));
-  n += snprint_time (buf+n, sizeof (buf)-n,
+  if (n < sizeof (buf)) {
+    n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_start));
-  n += snprintf (buf+n, sizeof (buf)-n, " - ");
-  n += snprint_time (buf+n, sizeof (buf)-n,
+  }
+
+  if (n < sizeof (buf)) {
+    n += snprintf (buf+n, sizeof (buf)-n, " - ");
+  }
+
+  if (n < sizeof (buf)) {
+    n += snprint_time (buf+n, sizeof (buf)-n,
 		     frames_to_time (format, s->tmp_sel->sel_end));
-  n += snprintf (buf+n, sizeof (buf)-n, "]");
+  }
+
+  if (n < sizeof (buf)) {
+    n += snprintf (buf+n, sizeof (buf)-n, "]");
+  }
 
   g_mutex_lock (s->sounddata->sels_mutex);
 
