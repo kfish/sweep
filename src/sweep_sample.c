@@ -725,11 +725,12 @@ void
 sample_bank_remove (sw_sample * s)
 {
   if (s) {
-    sample_destroy(s);
     sample_bank = g_list_remove(sample_bank, s);
     
     undo_dialog_refresh_sample_list ();
     rec_dialog_refresh_sample_list ();
+    sample_destroy(s);
+	s = NULL;
   }
 
   if (sample_bank == NULL) {
