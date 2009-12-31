@@ -505,13 +505,13 @@ create_view_menu (sw_view * view, GtkWidget * m)
   gtk_widget_show(menuitem);
   
   create_view_menu_item (submenu, _("Close"), "<Sweep-View>/File/Close", view,
-                                                  exit_cb, FALSE,
-												  GDK_q, GDK_CONTROL_MASK, s);
-
-  create_view_menu_item (submenu, _("Quit"), "<Sweep-View>/File/Quit", view,
                                                   view_close_cb, FALSE,
 												  GDK_w, GDK_CONTROL_MASK, s);
 												  
+  create_view_menu_item (submenu, _("Quit"), "<Sweep-View>/File/Quit", view,
+                                                  exit_cb, FALSE,
+												  GDK_q, GDK_CONTROL_MASK, s);
+
 
   /* Edit */
   menuitem = gtk_menu_item_new_with_label(_("Edit"));
