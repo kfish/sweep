@@ -3191,38 +3191,8 @@ static void
 view_close_ok_cb (GtkWidget * widget, gpointer data)
 {
   sw_view * view = (sw_view *)data;
-  int k;
 
-  gtk_widget_destroy (view->window);
-  gtk_widget_destroy (view->time_ruler);
-  gtk_widget_destroy (view->display);
-  gtk_widget_destroy (view->pos);
-  gtk_widget_destroy (view->status);
-  gtk_widget_destroy (view->menubar);
-  gtk_widget_destroy (view->menu);
-  gtk_widget_destroy (view->zoom_combo);
-  gtk_widget_destroy (view->progress);
-  gtk_widget_destroy (view->follow_toggle);
-  gtk_widget_destroy (view->play_pos);
-  gtk_widget_destroy (view->loop_toggle);
-  gtk_widget_destroy (view->playrev_toggle);
-  gtk_widget_destroy (view->play_toggle);
-  gtk_widget_destroy (view->play_sel_toggle);
-  gtk_widget_destroy (view->mute_toggle);
-  gtk_widget_destroy (view->monitor_toggle);
-  gtk_widget_destroy (view->menu_sel);
-  gtk_widget_destroy (view->menu_point);
-  gtk_widget_destroy (view->channelops_menuitem);
-  gtk_widget_destroy (view->channelops_submenu);
-  gtk_widget_destroy (view->follow_checkmenu);
-
-  for (k = 0 ; k < VIEW_COLOR_MAX ; k++)
-    gtk_widget_destroy (view->color_menuitems [k]);
-
-  gtk_widget_destroy (view->loop_checkmenu);
-  gtk_widget_destroy (view->playrev_checkmenu);
-  gtk_widget_destroy (view->mute_checkmenu);
-  gtk_widget_destroy (view->monitor_checkmenu);
+  gtk_widget_destroy(view->window);
 
   memset (view, 0, sizeof (*view));
   g_free(view);
