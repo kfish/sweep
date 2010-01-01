@@ -279,7 +279,7 @@ schedule_operation_do (sw_op_instance * inst)
 
   if (sample->op_progress_tag == -1) {
     sample->op_progress_tag =
-      gtk_timeout_add (30, (GtkFunction)update_edit_progress,
+      g_timeout_add (30, (GtkFunction)update_edit_progress,
 		       (gpointer)sample);
   }
 }

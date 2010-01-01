@@ -1479,7 +1479,7 @@ randomise_serialno_pressed_cb (GtkWidget * widget, gpointer data)
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "rem_serialno_chb"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
 
-  tag = gtk_timeout_add (30, randomise_serialno, data);
+  tag = g_timeout_add (30, randomise_serialno, data);
   g_object_set_data (G_OBJECT(widget), "tag", GINT_TO_POINTER(tag));
 }
 
@@ -1489,7 +1489,7 @@ randomise_serialno_released_cb (GtkWidget * widget, gpointer data)
   gint tag;
 
   tag = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "tag"));
-  gtk_timeout_remove (tag);
+  g_source_remove (tag);
 }
 
 

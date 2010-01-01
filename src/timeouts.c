@@ -81,11 +81,11 @@ sweep_timeouts_handle_pending (gpointer data)
     if (td->sweep_tag == -1) {
       g_assert (td->gtk_tag != -1);
 
-      gtk_timeout_remove (td->gtk_tag);
+      g_source_remove (td->gtk_tag);
       timeouts = g_list_remove_link (timeouts, gl);
       g_free (td);
     } else if (td->gtk_tag == -1) {
-      td->gtk_tag = gtk_timeout_add (td->interval, sweep_timeout_wrapper, td);
+      td->gtk_tag = g_timeout_add (td->interval, sweep_timeout_wrapper, td);
     }
   }
 
@@ -105,7 +105,7 @@ sweep_timeouts_init (void)
   timeouts = NULL;
   g_mutex_unlock (timeouts_mutex);
 
-  gtk_timeout_add ((guint32)500, sweep_timeouts_handle_pending, NULL);
+  g_timeout_add ((guint32)500, sweep_timeouts_handle_pending, NULL);
 }
 
 guint

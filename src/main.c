@@ -131,7 +131,7 @@ main (int argc, char *argv[])
 
 	
 
-  /* must be done before g_idle_add / gtk_timeout_add */
+  /* must be done before g_idle_add / g_timeout_add */
   sweep_timeouts_init ();
 
   for(i = 1; i < argc; i++) {
