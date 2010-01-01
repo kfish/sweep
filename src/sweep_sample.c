@@ -644,10 +644,13 @@ sample_destroy (sw_sample * s)
   g_mutex_free (s->edit_mutex);
   g_mutex_free (s->play_mutex);
 
+  /* XXX: Should do this, but GTK+ barfs. */
+  /*
   g_list_free (s->registered_ops);
   g_list_free (s->current_undo);
   g_list_free (s->current_redo);
   g_list_free (s->pending_ops);
+  */
 
   if (s->info_clist)
     gtk_widget_destroy (s->info_clist);
