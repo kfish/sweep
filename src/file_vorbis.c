@@ -73,6 +73,8 @@
 #include <errno.h>
 #include <ctype.h>
 
+#define OV_EXCLUDE_STATIC_CALLBACKS
+
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 #include <vorbis/vorbisenc.h>
