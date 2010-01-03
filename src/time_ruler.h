@@ -46,7 +46,7 @@ extern "C" {
 
 
 #define TIME_RULER(obj)          GTK_CHECK_CAST (obj, time_ruler_get_type (), TimeRuler)
-#define TIME_RULER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, time_ruler_get_type (), TimeRulerClass)
+#define TIME_RULER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, time_ruler_get_type (), TimeRulerClass)
 #define GTK_IS_TIME_RULER(obj)       GTK_CHECK_TYPE (obj, time_ruler_get_type ())
 
 

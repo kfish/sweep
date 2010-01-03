@@ -25,7 +25,7 @@
 
 #define SW_CHOOSER(obj) GTK_CHECK_CAST (obj, sw_chooser_get_type (), SWChooser)
 #define SW_CHOOSER_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, sw_chooser_get_type (), SWChooserClass)
+  G_TYPE_CHECK_CLASS_CAST (klass, sw_chooser_get_type (), SWChooserClass)
 #define IS_SW_CHOOSER(obj) GTK_CHECK_TYPE (obj, sw_chooser_get_type ())
 
 typedef struct _SWChooser SWChooser;

@@ -29,7 +29,7 @@ extern "C" {
 #endif
 
 #define LEVELMETER(obj)	GTK_CHECK_CAST(obj, levelmeter_get_type (), LevelMeter)
-#define LEVELMETER_CLASS(klass)	GTK_CHECK_CLASS_CAST(klass, levelmeter_get_type (), LevelMeterClass)
+#define LEVELMETER_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST(klass, levelmeter_get_type (), LevelMeterClass)
 #define IS_LEVELMETER(obj) GTK_CHECK_TYPE(obj, levelmeter_get_type())
 
 typedef struct _LevelMeter LevelMeter;

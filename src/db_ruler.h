@@ -47,7 +47,7 @@ extern "C" {
 
 
 #define DB_RULER(obj)          GTK_CHECK_CAST (obj, db_ruler_get_type (), DbRuler)
-#define DB_RULER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, db_ruler_get_type (), DbRulerClass)
+#define DB_RULER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, db_ruler_get_type (), DbRulerClass)
 #define GTK_IS_DB_RULER(obj)       GTK_CHECK_TYPE (obj, db_ruler_get_type ())
 
 

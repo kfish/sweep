@@ -25,7 +25,7 @@
 
 #define DB_SLIDER(obj) GTK_CHECK_CAST (obj, db_slider_get_type (), DbSlider)
 #define DB_SLIDER_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, db_slider_get_type (), DbSliderClass)
+  G_TYPE_CHECK_CLASS_CAST (klass, db_slider_get_type (), DbSliderClass)
 #define IS_DB_SLIDER(obj) GTK_CHECK_TYPE (obj, db_slider_get_type ())
 
 typedef struct _DbSlider DbSlider;
