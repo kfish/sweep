@@ -424,16 +424,24 @@ AC_ARG_ENABLE(gcc-werror,
 	AC_HELP_STRING([--enable-gcc-werror], [enable -Werror in all Makefiles]))
 
 dnl Use -Wall if we have gcc.
-dnl changequote(,)dnl
 if test "x$ac_cv_prog_gcc" = xyes ; then
   CFLAGS="$CFLAGS -Wall"
-
   if test x$enable_gcc_werror = "xyes" ; then
     CFLAGS="$CFLAGS -Werror"
 	fi
-
 fi
-dnl changequote([,])dnl
+
+AC_ARG_ENABLE(gtk-deprecated,
+	AC_HELP_STRING([--disable-gtk-deprecated], [disallow use of deprecated GTK functions]))
+
+GTK_DISABLE_DEPRECATED=""
+if test x$enable_gtk_deprecated = "xno" ; then
+  GTK_DISABLE_DEPRECATED="-DGTK_DISABLE_DEPRECATED" # -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED"
+  fi
+
+AC_SUBST(GTK_DISABLE_DEPRECATED)
+
+
 
 dnl - Modified from www.nagios.org who modified it from www.erlang.org 
 

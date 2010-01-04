@@ -2,11 +2,9 @@
 
 SUBDIRS = tdb
 
-INCLUDES = \
+AM_CFLAGS = \
+	$(GTK_DISABLE_DEPRECATED) \
 	-DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@' \
-	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/src/tdb \
 	@SNDFILE_CFLAGS@ \
 	@OGG_CFLAGS@ @VORBIS_CFLAGS@ \
 	@SAMPLERATE_CFLAGS@ \
@@ -15,6 +13,11 @@ INCLUDES = \
 	@GTHREADS_CFLAGS@ \
 	@ALSA_CFLAGS@ \
 	@PULSEAUDIO_CFLAGS@
+
+INCLUDES = \
+	-I$(top_srcdir)/intl \
+	-I$(top_srcdir)/include \
+	-I$(top_srcdir)/src/tdb
 
 TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
 
