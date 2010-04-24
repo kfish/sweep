@@ -9,3 +9,7 @@ information, mail sweep-devel@lists.sourceforge.net
 	* recording source management
 	* LADSPA browser
 	* modular drivers
+
+Recording
+	* add a "snap to pointer" shortcut key for the record cursor,
+	so that that can be modified during playback (Suggested by kia lol)
