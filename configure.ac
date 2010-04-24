@@ -348,6 +348,8 @@ if test "x${ac_enable_pulseaudio}" != xno ; then
     AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.]) 
     sweep_config_driver="$sweep_config_driver PulseAudio"
   fi
+else
+  HAVE_PULSEAUDIO=disabled
 fi
 
 if test "x${ac_enable_alsa}" != xno ; then
@@ -360,6 +362,8 @@ if test "x${ac_enable_alsa}" != xno ; then
     AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
     sweep_config_driver="$sweep_config_driver ALSA"
   fi
+else
+  HAVE_ALSA=disabled
 fi
 
 if test "x${ac_enable_oss}" != xno ; then
@@ -374,6 +378,8 @@ if test "x${ac_enable_oss}" != xno ; then
       sweep_config_driver="$sweep_config_driver OSS"
     fi
   fi
+else
+  HAVE_OSS=disabled
 fi
 
 dnl Test for Solaris audio
@@ -538,19 +544,28 @@ if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
 ])
 fi
 
-if test "x$HAVE_ALSA" = xmaybe ; then
+if test "x${ac_enable_alsa}" != xno ; then
+  if test "x$HAVE_ALSA" != xyes ; then
+    AC_MSG_RESULT([
+*** alsa-lib version 1.0.0 or greater, available from
+*** http://alsa-project.org/
+])
+  fi
+  if test "x$HAVE_ALSA" = xmaybe ; then
     AC_MSG_RESULT([
       Development files missing: alsa-lib 1.0.0 or greater seems to exist
       on your system, however the pkg-config tool cannot find the
       build information.
 ])
+  fi
 fi
 
-if test "x$HAVE_ALSA" != xyes ; then
-  AC_MSG_RESULT([
-*** alsa-lib version 1.0.0 or greater, available from
-*** http://alsa-project.org/
+if test "x${ac_enable_pulseaudio}" != xno ; then
+  if test "x$HAVE_PULSEAUDIO" != xyes ; then
+    AC_MSG_RESULT([
+*** PulseAudio, available from http://pulseaudio.org/
 ])
+  fi
 fi
 
 if test "x$HAVE_VORBIS" = xmaybe ; then
