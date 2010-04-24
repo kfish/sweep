@@ -347,8 +347,8 @@ if test "x${ac_enable_pulseaudio}" != xno ; then
   if test "x$HAVE_PULSEAUDIO" = xyes; then
     AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.]) 
     sweep_config_driver="$sweep_config_driver PulseAudio"
-    fi
   fi
+fi
 
 if test "x${ac_enable_alsa}" != xno ; then
   PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
@@ -359,8 +359,8 @@ if test "x${ac_enable_alsa}" != xno ; then
   if test "x$HAVE_ALSA" == xyes ; then
     AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
     sweep_config_driver="$sweep_config_driver ALSA"
-    fi	
   fi
+fi
 
 if test "x${ac_enable_oss}" != xno ; then
   dnl Test for OSS
@@ -372,9 +372,9 @@ if test "x${ac_enable_oss}" != xno ; then
       dnl Check for NetBSD's OSS compatability layer
       AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
       sweep_config_driver="$sweep_config_driver OSS"
-      fi
     fi
   fi
+fi
 
 dnl Test for Solaris audio
 case $host in
@@ -383,9 +383,9 @@ case $host in
   if test "x${ac_cv_header_sys_audioio_h}" = xyes; then
       AC_DEFINE([DRIVER_SOLARIS_AUDIO], [], [Define if we have and want the solaris audio driver.])
       sweep_config_driver="$sweep_config_driver Solaris"
-    fi
+  fi
   ;;
-  esac
+esac
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = xNONE; then
@@ -394,15 +394,15 @@ else
   AC_DEFINE_UNQUOTED([PACKAGE_LOCALE_DIR], "${prefix}/${DATADIRNAME}/locale")
 fi
 
- if test "x${datadir}" = 'x${prefix}/share'; then
-   if test "x${prefix}" = xNONE; then
+if test "x${datadir}" = 'x${prefix}/share'; then
+  if test "x${prefix}" = xNONE; then
      PACKAGE_DATA_DIR='"${ac_default_prefix}/share/${PACKAGE}"'
-   else
+  else
      PACKAGE_DATA_DIR='"${prefix}/share/${PACKAGE}"'
-   fi
- else
+  fi
+else
    PACKAGE_DATA_DIR='"${datadir}/${PACKAGE}"'
- fi
+fi
 AC_SUBST(PACKAGE_DATA_DIR)
 
 dnl Set PACKAGE_PLUGIN_DIR in Makefiles and config.h.
@@ -437,7 +437,7 @@ AC_ARG_ENABLE(gtk-deprecated,
 GTK_DISABLE_DEPRECATED=""
 if test x$enable_gtk_deprecated = "xno" ; then
   GTK_DISABLE_DEPRECATED="-DGTK_DISABLE_DEPRECATED" # -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED"
-  fi
+fi
 
 AC_SUBST(GTK_DISABLE_DEPRECATED)
 
