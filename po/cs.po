@@ -1,0 +1,2543 @@
+# Copyright (C) YEAR Conrad Parker
+# This file is distributed under the same license as the PACKAGE package.
+#
+#: src/sample-display.c:222
+# Pavel Fric <pavelfric@seznam.cz>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: sweep_cs\n"
+"Report-Msgid-Bugs-To: http://www.metadecks.org/software/sweep/\n"
+"POT-Creation-Date: 2008-04-11 15:11+0100\n"
+"PO-Revision-Date: 2009-11-10 18:08+0100\n"
+"Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: src/main.c:89
+msgid "Welcome to Sweep"
+msgstr "Vítejte v programu Sweep"
+
+#: src/main.c:90
+msgid ""
+"Hello, my name is Scrubby. Welcome to Sweep!\n"
+"\n"
+"Would you like to create a new file or load an existing file?"
+msgstr ""
+"Ahoj. Jmenuji se Scrubby. Vítejte v programu Sweep!\n"
+"\n"
+"Chcete vytvořit nový soubor nebo nahrát již existující?"
+
+#: src/main.c:94
+msgid "Create new file"
+msgstr "Vytvořit nový soubor"
+
+#: src/main.c:94
+msgid "Load existing file"
+msgstr "Otevřít existující soubor"
+
+#: src/main.c:129
+msgid "WARNING: Build includes incomplete development code.\n"
+msgstr ""
+"VAROVÁNÍ: tato sestavení programu zahrnuje nedokončený vývojářský kód.\n"
+
+#: src/main.c:188
+msgid "Sweep version"
+msgstr "Verze programu Sweep"
+
+#: src/main.c:189
+msgid "Sweep plugin API version"
+msgstr "Verze přídavného modulu API programu Sweep"
+
+#: src/main.c:195
+#, c-format
+msgid "Usage: %s [option ...] [files ...]\n"
+msgstr "Použití: %s [volba ...] [soubory ...]\n"
+
+#: src/main.c:196
+msgid "Valid options are:\n"
+msgstr "Platné volby jsou tyto:\n"
+
+#: src/main.c:197
+msgid "  -h --help                Output this help.\n"
+msgstr "  -h --help                Proveď výstup této nápovědy.\n"
+
+#: src/main.c:198
+msgid "  -v --version             Output version info.\n"
+msgstr "  -v --version             Provaď výstup informace o verzi.\n"
+
+#: src/main.c:199
+msgid "  --display <display>      Use the designated X display.\n"
+msgstr "  --display <display>      Použij určené zobrazení X.\n"
+
+#: src/main.c:200
+msgid ""
+"  --ignore-failed-lock     Continue when attempt to lock the\n"
+"                           preferences file fails.  For use when\n"
+"                           the users home directory is on an NFS\n"
+"                           file system. (possibly unsafe) \n"
+msgstr ""
+"  --ignore-failed-lock     Pokračuj, když selže pokus o uzamčení\n"
+"                           souboru s upřednostňovanými volbami.  Použít, "
+"když\n"
+"                           je uživatelův domovský adresář na NFS\n"
+"                           souborovém systému. (možná nebezpečné) \n"
+
+#: src/main.c:206
+msgid "  --no-toolbox             Do not show the toolbox window.\n"
+msgstr "  --no-toolbox             Neukazuj okno s panelem nástrojů.\n"
+
+#: src/about_dialog.c:99
+msgid "This is Sweep version"
+msgstr "Toto je verze programu Sweep"
+
+#: src/about_dialog.c:119
+msgid "http://sweep.sourceforge.net/"
+msgstr "http://sweep.sourceforge.net/"
+
+#: src/callbacks.c:926 src/callbacks.c:939 src/edit.c:1568 src/edit.c:1642
+#: src/edit.c:1726
+msgid "Clipboard empty"
+msgstr "Schránka je prázdná"
+
+#: src/channelops.c:146
+#, c-format
+msgid "Duplicate to %d channels"
+msgstr "Okopírovat do %d kanálů"
+
+#: src/channelops.c:148
+#, c-format
+msgid "Duplicate from %d to %d channels"
+msgstr "Okopírovat z %d do %d kanálů"
+
+#: src/channelops.c:207
+msgid "Sweep: Duplicate channel"
+msgstr "Sweep: Okopírovat kanál"
+
+#: src/channelops.c:214 src/channelops.c:698
+#, c-format
+msgid "Currently: %d channels"
+msgstr "Nyní: %d kanálů"
+
+#: src/channelops.c:221 src/channelops.c:704
+msgid "Output channels"
+msgstr "Provádět výstup kanálů"
+
+#: src/channelops.c:231 src/channelops.c:714 src/driver.c:374
+#: src/file_sndfile1.c:285 src/param.c:779 src/question_dialogs.c:144
+#: src/question_dialogs.c:204 src/question_dialogs.c:253
+#: src/sweep_sample.c:1918 src/undo_dialog.c:440
+msgid "OK"
+msgstr "OK"
+
+#: src/channelops.c:242 src/channelops.c:725 src/driver.c:387
+#: src/file_sndfile1.c:295 src/param.c:788 src/question_dialogs.c:158
+#: src/view.c:543 src/view.c:2650
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/channelops.c:347 src/view.c:361
+msgid "Mix down to mono"
+msgstr "Smíchat do monofonního zvuku"
+
+#: src/channelops.c:445 src/view.c:340
+msgid "Remove left channel"
+msgstr "Odstranit levý kanál"
+
+#: src/channelops.c:455 src/view.c:349
+msgid "Remove right channel"
+msgstr "Odstranit pravý kanál"
+
+#: src/channelops.c:539
+msgid "Swap channels"
+msgstr "Vyměnit kanály"
+
+#: src/channelops.c:541
+msgid "Not stereo"
+msgstr "Ne stereofonní zvuk"
+
+#: src/channelops.c:643
+#, c-format
+msgid "Convert from %d to %d channels"
+msgstr "Převést z %d do %d kanálů"
+
+#: src/channelops.c:692
+msgid "Sweep: Add/Remove channels"
+msgstr "Sweep: Přidat/Odstranit kanály"
+
+#: src/driver.c:369
+msgid "Sweep: audio device configuration"
+msgstr "Sweep: uzpůsobení zvukového zařízení"
+
+#: src/driver.c:410
+msgid "Changes to device settings will take effect on next playback."
+msgstr "Změny nastavení zařízení se projeví při příštím přehrávání."
+
+#: src/driver.c:424
+msgid "Device name"
+msgstr "Název zařízení"
+
+#: src/driver.c:430
+msgid "Set the main device for playback and recording"
+msgstr "Nastavit hlavní zařízení určené pro přehrávání a nahrávání"
+
+#: src/driver.c:440
+msgid "Main device:"
+msgstr "Hlavní zařízení:"
+
+#: src/driver.c:454 src/driver.c:636 src/samplerate.c:570
+msgid "Default"
+msgstr "Výchozí"
+
+#: src/driver.c:467
+msgid "Use a different device for monitoring"
+msgstr "Pro sledování použít jiné zařízení"
+
+#: src/driver.c:479
+msgid "Monitor output:"
+msgstr "Sledovat výstup:"
+
+#: src/driver.c:504
+msgid "Swap"
+msgstr "Vyměnit"
+
+#: src/driver.c:512
+msgid "Swap main and monitor devices."
+msgstr "Vyměnit hlavní a sledovací zařízení."
+
+#: src/driver.c:521 src/driver.c:622 src/file_speex.c:1957
+#: src/file_vorbis.c:1348 src/samplerate.c:556 src/sweep_sample.c:532
+msgid "Reset"
+msgstr "Přenastavit"
+
+#: src/driver.c:529
+msgid "Reset to the last remembered device names."
+msgstr "Přenastavit na poslední zapamatované názvy zařízení."
+
+#: src/driver.c:535 src/file_speex.c:1971 src/file_vorbis.c:1362
+#: src/param.c:747 src/sweep_sample.c:543
+msgid "Defaults"
+msgstr "Výchozí"
+
+#: src/driver.c:543
+msgid "Set to default device names."
+msgstr "Nastavit výchozí názvy zařízení."
+
+#: src/driver.c:554
+msgid "Device buffering"
+msgstr "Ukládání do vyrovnávací paměti zařízení"
+
+#: src/driver.c:564
+msgid ""
+"Low latency /\n"
+"More dropouts"
+msgstr ""
+"Nízká latence /\n"
+"Více výpadků"
+
+#: src/driver.c:586
+msgid ""
+"High latency /\n"
+"Fewer dropouts"
+msgstr ""
+"Vysoká latence /\n"
+"Méně výpadků"
+
+#: src/driver.c:590
+msgid ""
+"Varying this slider controls the lag between cursor movements and playback. "
+"This is particularly noticeable when \"scrubbing\" during playback.\n"
+"\n"
+"Lower values improve responsiveness but may degrade audio quality on heavily-"
+"loaded systems."
+msgstr ""
+"Měněním tohoto posuvníku kontroluje prodlevu mezi pohyby kurzoru "
+"a přehráváním. Je to obzvláště patrné při \"čištění\" během přehrávání.\n"
+"\n"
+"Nižší hodnoty zlepšují citlivost, ale mohou snižovat kvalitu zvuku u velice "
+"naložených systémů."
+
+#: src/driver.c:609
+msgid "Remember these options"
+msgstr "Zapamatovat si tyto volby"
+
+#: src/driver.c:630
+msgid "Reset to the last remembered device buffering."
+msgstr ""
+"Přenastavit na poslední zapamatované ukládání do vyrovnávací paměti zařízení."
+
+#: src/driver.c:644
+msgid "Set to default device buffering."
+msgstr "Nastavit na výchozí ukládání do vyrovnávací paměti zařízení"
+
+#: src/edit.c:1291
+msgid "No selection to copy"
+msgstr "Žádný výběr pro kopírování"
+
+#: src/edit.c:1308 src/view.c:572 src/view.c:1150
+msgid "Copy"
+msgstr "Kopírovat"
+
+#: src/edit.c:1342
+msgid "No selection to cut"
+msgstr "Žádný výběr pro vyjmutí"
+
+#: src/edit.c:1358 src/view.c:568 src/view.c:1144
+msgid "Cut"
+msgstr "Vyjmout"
+
+#: src/edit.c:1388
+msgid "No selection to clear"
+msgstr "Žádný výběr pro vyčištění"
+
+#: src/edit.c:1404 src/view.c:576 src/view.c:1156
+msgid "Clear"
+msgstr "Vyčistit"
+
+#: src/edit.c:1430
+msgid "No selection to delete"
+msgstr "Žádný výběr pro smazání"
+
+#: src/edit.c:1447 src/view.c:564
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/edit.c:1482
+msgid "Nothing to crop out"
+msgstr "Nic k oříznutí"
+
+#: src/edit.c:1498 src/view.c:580 src/view.c:1162 src/view.c:1868
+msgid "Crop"
+msgstr "Oříznout"
+
+#: src/edit.c:1572 src/edit.c:1646 src/edit.c:1730
+msgid "Clipboard data has incompatible format"
+msgstr "Data ve schránce mají neslučitelný formát"
+
+#: src/edit.c:1590
+msgid "Paste insert"
+msgstr "Vložit vložku"
+
+#: src/edit.c:1669
+msgid "Paste mix"
+msgstr "Vložit směsku"
+
+#: src/edit.c:1757
+msgid "Paste xfade"
+msgstr "Vložit prolínačku (xfade)"
+
+#: src/file_dialogs.c:73
+msgid "MP3 export unsupported"
+msgstr "Vyvedení do MP3 není podporováno"
+
+#: src/file_dialogs.c:74
+msgid ""
+"Export to MP3 format cannot legally be supported in free software\n"
+"due to patent licensing restrictions.\n"
+"\n"
+"Please use Ogg Vorbis format instead, which\n"
+"provides better quality and is free."
+msgstr ""
+"Ve svobodných programech nemůže být vyvedení do formátu MP3 zákonně "
+"podporováno\n"
+"kvůli omezením daným licencováním patentů.\n"
+"\n"
+"Místo něj používejte, prosím, formát Ogg Vorbis, který\n"
+"poskytuje lepší kvalitu a je svobodný a tedy zdarma."
+
+#: src/file_dialogs.c:99
+msgid "Raw PCM (headerless)"
+msgstr "Nezpracovaný PCM (bez hlavičky)"
+
+#: src/file_dialogs.c:157
+#, c-format
+msgid "%s does not exist."
+msgstr "%s neexistuje."
+
+#: src/file_dialogs.c:158
+msgid "Directory does not exist"
+msgstr "Adresář neexistuje"
+
+#: src/file_dialogs.c:262
+#, c-format
+msgid ""
+"Unable to read\n"
+"%s"
+msgstr ""
+"Neschopen číst z\n"
+"%s"
+
+#: src/file_dialogs.c:289
+msgid "Sweep: Open Files"
+msgstr "Sweep: Otevřít soubory"
+
+#: src/file_dialogs.c:370
+#, c-format
+msgid ""
+"Are you sure you want to revert %s to\n"
+"%s?\n"
+"\n"
+"All changes and undo information will be lost."
+msgstr ""
+"Jste si jist, že chcete navrátit %s do\n"
+"%s?\n"
+"\n"
+"Všechny změny a informace o krocích \"Zpět\" bude ztracena."
+
+#: src/file_dialogs.c:374
+msgid "Revert file"
+msgstr "Vrátit soubor"
+
+#: src/file_dialogs.c:375 src/view.c:509
+msgid "Revert"
+msgstr "Vrátit"
+
+#: src/file_dialogs.c:375
+msgid "Don't revert"
+msgstr "Nevracej"
+
+#: src/file_dialogs.c:545 src/file_dialogs.c:824
+#, c-format
+msgid "Save as %s cancelled"
+msgstr "Uložit jako %s bylo zrušeno"
+
+#: src/file_dialogs.c:582
+msgid "By extension"
+msgstr "Podle přípony"
+
+#: src/file_dialogs.c:640
+msgid "MP3 (Use Ogg Vorbis instead)"
+msgstr "MP3 (Místo něj použít Ogg Vorbis)"
+
+#: src/file_dialogs.c:707
+msgid "Sweep: Save file"
+msgstr "Sweep: Uložit soubor"
+
+#: src/file_dialogs.c:721
+msgid "Save Options"
+msgstr "Volby pro ukládání"
+
+#: src/file_dialogs.c:730
+msgid "Determine File Type:"
+msgstr "Určit typ souboru:"
+
+#: src/file_dialogs.c:810
+#, c-format
+msgid ""
+"You are not allowed to write to\n"
+"%s"
+msgstr ""
+"Nemáte povoleno zapisovat do\n"
+"%s"
+
+#: src/file_dialogs.c:812
+#, c-format
+msgid "%s exists. Overwrite?"
+msgstr "%s existuje. Přepsat?"
+
+#: src/file_dialogs.c:814
+msgid "File exists"
+msgstr "Soubor existuje"
+
+#: src/file_dialogs.c:815
+msgid "Overwrite"
+msgstr "Přepsat"
+
+#: src/file_dialogs.c:815
+msgid "Don't overwrite"
+msgstr "Nepřepisovat"
+
+#: src/file_dialogs.c:887
+#, c-format
+msgid ""
+"%s\n"
+" has changed on disk.\n"
+"\n"
+"Are you sure you want to save?"
+msgstr ""
+"%s\n"
+" byl na disku změněn.\n"
+"\n"
+"Jste si jist, že jej chcete uložit?"
+
+#: src/file_dialogs.c:891 src/sweep_undo.c:331 src/view.c:3401
+msgid "File modified"
+msgstr "Soubor byl upraven"
+
+#: src/file_dialogs.c:892 src/file_speex.c:2127 src/file_vorbis.c:1611
+#: src/view.c:501 src/view.c:1782
+msgid "Save"
+msgstr "Uložit"
+
+#: src/file_dialogs.c:892 src/file_speex.c:2138 src/file_vorbis.c:1622
+msgid "Don't save"
+msgstr "Neukládat"
+
+#: src/file_sndfile1.c:327
+msgid "Powered by libsndfile"
+msgstr "Poháněný libsndfile"
+
+#: src/file_sndfile1.c:354
+msgid "Encoding"
+msgstr "Kódování"
+
+#: src/file_sndfile1.c:375
+msgid "Encoding:"
+msgstr "Kódování:"
+
+#: src/file_sndfile1.c:447
+msgid "Sampling rate:"
+msgstr "Vzorkovací kmitočet:"
+
+#: src/file_sndfile1.c:480 src/file_speex.c:2078 src/file_vorbis.c:1562
+#: src/samplerate.c:584
+msgid "About"
+msgstr "O programu"
+
+#: src/file_sndfile1.c:496
+msgid ""
+"Libsndfile is a C library by Erik de Castro Lopo\n"
+"for reading and writing files containing sampled sound."
+msgstr ""
+"Libsndfile je knihovnou C od Erika de Castro Lopo.\n"
+"Slouží čtení a zapisování souborů, které obsahují zvuk složený ze vzorků."
+
+#: src/file_sndfile1.c:507
+msgid ""
+"This user interface by Erik de Castro Lopo\n"
+" and Conrad Parker,\n"
+"Copyright (C) 2002 Erik de Castro Lopo\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+msgstr ""
+"Toto uživatelské rozhraní vytvořil Erik de Castro Lopo\n"
+" a Conrad Parker,\n"
+"Copyright (C) 2002 Erik de Castro Lopo\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+
+#: src/file_sndfile1.c:550
+msgid "Sweep: Save PCM options"
+msgstr "Sweep: Uložit volby PCM"
+
+#: src/file_sndfile1.c:719
+msgid "Sweep: Load Raw PCM options"
+msgstr "Sweep: Nahrát volby PCM"
+
+#: src/file_sndfile1.c:771 src/file_mad.c:435 src/file_speex.c:577
+#: src/file_vorbis.c:324
+#, c-format
+msgid "Loading %s"
+msgstr "Nahrává %s"
+
+#: src/file_sndfile1.c:998 src/file_speex.c:1074 src/file_vorbis.c:702
+#, c-format
+msgid "Saving %s"
+msgstr "Ukládá %s"
+
+#: src/file_speex.c:1016 src/file_speex.c:1036
+msgid "Speex encoding results"
+msgstr "Výsledky kódování Speex"
+
+#: src/file_speex.c:1208
+msgid "Narrowband ~8 kHz (telephone quality)"
+msgstr "Úzké pásmo ~8 kHz (telefonní kvalita)"
+
+#: src/file_speex.c:1209
+msgid "Wideband ~16 kHz"
+msgstr "Široké pásmo ~16 kHz"
+
+#: src/file_speex.c:1211
+msgid "Ultra-wideband 32-48 kHz"
+msgstr "Ultra široké pásmo 32-48 kHz"
+
+#: src/file_speex.c:1218
+msgid "Constant bitrate (CBR) with no features"
+msgstr "Stálý datový tok bez funkcí (Constant bitrate - CBR)"
+
+#: src/file_speex.c:1221
+msgid "CBR with Voice Activity Detection (VAD)"
+msgstr ""
+"Stálý datový tok se zjištěním hlasové aktivity (Voice Activity "
+"Detection - VAD)"
+
+#: src/file_speex.c:1222
+msgid "VAD generates low bitrate comfort noise to replace non-speech"
+msgstr ""
+"Zjištění hlasové aktivity vytváří pohodlný šum s nízkým datovým tokem, "
+"kterým nahrazuje místa bez mluvení"
+
+#: src/file_speex.c:1225
+msgid "CBR with VAD and Discontinuous Transmission (DTX)"
+msgstr ""
+"Stálý datový tok se zjištěním hlasové aktivity a přerušovaný přenos "
+"(Discontinuous Transmission - DTX)"
+
+#: src/file_speex.c:1226
+msgid "DTX marks extended pauses with a minimum bitrate signal"
+msgstr ""
+"Přerušovaný přenos označuje delší odmlky s nejmenším signálem datového toku"
+
+#: src/file_speex.c:1229
+msgid "Variable bitrate (VBR) with VAD"
+msgstr ""
+"Proměnlivý datový tok (Variable bitrate - VBR) se zjištěním hlasové aktivity"
+
+#: src/file_speex.c:1230
+msgid ""
+"VBR allows the bitrate to adapt to the complexity of the speech; this "
+"selection uses VBR without DTX, which may improve performance compared to "
+"full VBR in the presence of background noise."
+msgstr ""
+"Proměnlivý datový tok umožňuje, aby se datový tok přizpůsobil složitosti "
+"řeči; "
+"tento výběr proměnlivého datového toku používá bez přerušovaného přenosu, "
+"které při srovnání s plným proměnlivým datového tokem v přítomnosti šumu "
+"na pozadí může vylepšit provedení."
+
+#: src/file_speex.c:1235
+msgid "Variable bitrate (VBR) with all features"
+msgstr "Proměnlivý datový tok se všemi funkcemi"
+
+#: src/file_speex.c:1236
+msgid ""
+"VBR allows the bitrate to adapt to the complexity of the speech, and handles "
+"pauses using VAD and DTX"
+msgstr ""
+"Proměnlivý datový tok umožňuje, aby se datový tok přizpůsobil složitosti "
+"řeči, "
+"a zachází s odmlkami za použití zjištění hlasové aktivity a přerušovaného "
+"přenosu"
+
+#: src/file_speex.c:1240
+msgid "Constant bitrate (CBR)"
+msgstr "Stálý datový tok"
+
+#: src/file_speex.c:1242
+msgid "Variable bitrate (VBR)"
+msgstr "Proměnlivý datový tok"
+
+#: src/file_speex.c:1243
+msgid "VBR allows the bitrate to adapt to the complexity of the speech."
+msgstr ""
+"Proměnlivý datový tok umožňuje, aby se datový tok přizpůsobil složitosti "
+"řeči."
+
+#: src/file_speex.c:1298 src/file_speex.c:1803
+msgid "Average bitrate"
+msgstr "Průměrný datový tok"
+
+#: src/file_speex.c:1301
+msgid "Maximum bitrate"
+msgstr "Nejvyšší datový tok"
+
+#: src/file_speex.c:1494 src/file_vorbis.c:1013
+msgid "Hack the planet!"
+msgstr "Nabourejte se do planety!"
+
+#: src/file_speex.c:1580
+msgid "Sweep: Speex save options"
+msgstr "Sweep: volby pro ukládání Speex"
+
+#: src/file_speex.c:1631
+msgid "Speex encoding"
+msgstr "Kódování Speex"
+
+#: src/file_speex.c:1644
+msgid "Mode:"
+msgstr "Režim:"
+
+#: src/file_speex.c:1670
+msgid "Auto"
+msgstr "Automaticky"
+
+#: src/file_speex.c:1679
+msgid ""
+"Automatically select the encoding mode based on the sampling rate of the "
+"file."
+msgstr ""
+"Automaticky vybrat režim kódování založený na vzorkovacím kmitočtu souboru."
+
+#: src/file_speex.c:1732 src/file_vorbis.c:1160
+msgid "Encoding quality:"
+msgstr "Kvalita kódování:"
+
+#: src/file_speex.c:1775
+msgid ""
+"Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
+"quality, largest file)."
+msgstr ""
+"Kvalita kódování mezi 0 (nejnižší kvalita, nejmenší soubor) a 10 (nejvyšší "
+"kvalita, největší soubor)."
+
+#: src/file_speex.c:1785
+msgid "Enable bitrate management"
+msgstr "Povolit správu datového toku"
+
+#: src/file_speex.c:1798
+msgid ""
+"For non-VBR (constant bitrate) encoding, this sets the maximum bitrate.For "
+"VBR encoding, this sets the average bitrate."
+msgstr ""
+"Pro kódování ne-proměnlivého datového toku (stálý datový tok) toto nastaví "
+"nejvyšší datový tok. Pro kódování proměnlivého datového toku toto nastaví "
+"průměrný datový tok."
+
+#: src/file_speex.c:1821
+msgid "bps"
+msgstr "bps"
+
+#: src/file_speex.c:1827
+msgid "Extra"
+msgstr "Extra"
+
+#: src/file_speex.c:1849
+msgid "Encoding complexity:"
+msgstr "Složitost kódování:"
+
+#: src/file_speex.c:1888
+msgid ""
+"This sets the encoding speed/quality tradeoff between 0 (faster encoding) "
+"and 10 (slower encoding)"
+msgstr ""
+"Toto nastaví vyvážení rychlosti/kvality kódování mezi 0 (rychlejší kódování) "
+"a 10 (pomalejší kódování)"
+
+#: src/file_speex.c:1904
+msgid "Speex frames per Ogg packet:"
+msgstr "Snímky Speex na Ogg datový paket:"
+
+#: src/file_speex.c:1930
+msgid ""
+"Number of Speex frames to pack into each Ogg packet. Higher values save "
+"space at low bitrates."
+msgstr ""
+"Počet snímků Speex pro zabalení do každého Ogg datového paketu. Vyšší "
+"hodnoty šetří místem při nižších datových tocích."
+
+#: src/file_speex.c:1945 src/file_vorbis.c:1336
+msgid "Remember these encoding options"
+msgstr "Zapamatovat si tyto volby kódování"
+
+#: src/file_speex.c:1965 src/file_vorbis.c:1356
+msgid "Reset to the last remembered encoding options."
+msgstr "Přenastavit na poslední zapamatovanou volbu kódování."
+
+#: src/file_speex.c:1980
+msgid "Automatically select best encoding options for this file."
+msgstr "Automaticky vybrat nejlepší volby kódování pro tento soubor."
+
+#: src/file_speex.c:1985 src/file_vorbis.c:1469
+msgid "Ogg stream"
+msgstr "Proud Ogg"
+
+#: src/file_speex.c:1998 src/file_vorbis.c:1482
+msgid "Ogg stream serial number:"
+msgstr "Sériové číslo proudu Ogg"
+
+#: src/file_speex.c:2019 src/file_vorbis.c:1503
+msgid "Remember this serial number"
+msgstr "Zapamatovat si toto sériové číslo"
+
+#: src/file_speex.c:2029 src/file_vorbis.c:1513
+msgid ""
+"Remember this serial number for future re-use.\n"
+"USE OF THIS OPTION IS NOT RECOMMENDED.\n"
+"Each encoded file should have a different serial number; re-use of Ogg "
+"serial numbers in different files may create incompatabilities with "
+"streaming applications. This option is provided for bitstream engineering "
+"purposes only.\n"
+"If this option is not checked, new serial numbers will be randomly generated "
+"for each file encoded."
+msgstr ""
+"Zapamatovat si toto sériové číslo pro opětovné budoucí použití.\n"
+"POUŽITÍ TÉTO VOLBY NENÍ DOPORUČENO.\n"
+"Každý kódovaný soubor by měl mít jiné sériové číslo; opětovné použití "
+"sériových čísel Ogg v dalších souborech může vytvořit jejich neslučitelnost "
+"s aplikacemi používajícími proudy. Tato volba je poskytována pouze pro "
+"účely řízení datových proudů.\n"
+"Pokud není tato volby zaškrtnuta, budou nová sériová čísla pro každý "
+"kódovaný "
+"soubor vytvářena náhodně."
+
+#: src/file_speex.c:2056 src/file_vorbis.c:1540
+msgid "Randomize!"
+msgstr "Vybrat náhodně!"
+
+#: src/file_speex.c:2063 src/file_vorbis.c:1547
+msgid ""
+"Generate a random serial number for the Ogg bitstream. The number will "
+"change while this button is held down."
+msgstr ""
+"Vytvořit náhodné sériové číslo pro datový proud Ogg. Číslo se změní, "
+"jestliže "
+"je toto tlačítko podrženo."
+
+#: src/file_speex.c:2094
+msgid ""
+"Speex is a high quality speech codec designed for\n"
+"voice over IP (VoIP) and file-based compression.\n"
+"It is free, open and unpatented."
+msgstr ""
+"Speex je vysoce kvalitní kodek řeči navržený pro\n"
+"hlas přes IP (VoIP) a pro kompresi založenou na souboru.\n"
+"Je svobodný, otevřený a nepatentovaný."
+
+#: src/file_speex.c:2105
+msgid ""
+"Ogg, Speex, Xiph.org Foundation and their logos\n"
+"are trademarks (tm) of the Xiph.org Foundation.\n"
+"Used with permission."
+msgstr ""
+"Ogg, Speex, Xiph.org Foundation a jejich loga\n"
+"jsou obchodními známkami (tm) Xiph.org Foundation.\n"
+"Používané s jejím svolením."
+
+#: src/file_speex.c:2120 src/file_vorbis.c:1604 src/samplerate.c:611
+msgid ""
+"This user interface by Conrad Parker,\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+msgstr ""
+"Toto uživatelské rozhraní vytvořil Conrad Parker,\n"
+"Copyright (C) 2002 CSIRO Australia.\n"
+"\n"
+
+#: src/file_vorbis.c:356
+#, c-format
+msgid ""
+"Decoding %s\n"
+"Encoded by: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Dekóduje se %s\n"
+"Zakódováno: %s\n"
+"\n"
+"%s"
+
+#: src/file_vorbis.c:470
+msgid "Unsupported encoding mode"
+msgstr "Nepodporovaný režim kódování"
+
+#: src/file_vorbis.c:473
+msgid "Invalid encoding options"
+msgstr "Neplatné volby kódování"
+
+#: src/file_vorbis.c:643 src/file_vorbis.c:663
+msgid "Ogg Vorbis encoding results"
+msgstr "Výsledky kódování Ogg Vorbis"
+
+#: src/file_vorbis.c:1089
+msgid "Sweep: Ogg Vorbis save options"
+msgstr "Sweep: Volby pro ukládání Ogg Vorbis"
+
+#: src/file_vorbis.c:1148
+msgid "Vorbis encoding"
+msgstr "Kódování Ogg Vorbis"
+
+#: src/file_vorbis.c:1195
+msgid ""
+"Encoding quality between 0 (lowest quality, smallest file) and 10 (highest "
+"quality, largest file) using variable bitrate mode (VBR)."
+msgstr ""
+"Kvalita zakódování mezi 0 (nejnižší kvalita, nejmenší velikost souboru) a 10 "
+"(nejvyšší kvalita, největší velikost souboru), používá se proměnlivý datový "
+"tok (VBR)."
+
+#: src/file_vorbis.c:1205
+msgid "Enable bitrate management engine"
+msgstr "Povolit stroj pro správu datového toku"
+
+#: src/file_vorbis.c:1211
+msgid ""
+"This enables average bitrate mode (ABR). You must suggest a nominal average "
+"bitrate and may specify minimum and maximum bounds.\n"
+"For best results it is generally recommended that you use the variable "
+"bitrate 'encoding quality' control (above) instead."
+msgstr ""
+"Tímto se povolí průměrný datový tok (ABR). Musíte navrhnout pouze formální "
+"datový tok a určit nejnižší a nejvyšší hranice.\n"
+"Kvůli nejlepším výsledkům se doporučuje, abyste místo toho používal ovládání "
+"proměnlivého datového toku 'kvality kódování' (výše)."
+
+#: src/file_vorbis.c:1221
+msgid "Bitrate management engine"
+msgstr "Stroj pro správu datového toku"
+
+#: src/file_vorbis.c:1247
+msgid "Nominal bitrate (ABR):"
+msgstr "Pouze formální datový tok (ABR):"
+
+#: src/file_vorbis.c:1260
+msgid ""
+"Specify a nominal bitrate. Attempt to encode at a bitrate averaging this."
+msgstr ""
+"Určete pouze formální datový tok. Pokus o kódování na datovém toku "
+"zprůměrováním tohoto."
+
+#: src/file_vorbis.c:1264 src/file_vorbis.c:1293 src/file_vorbis.c:1323
+msgid "kbps"
+msgstr "kbps"
+
+#: src/file_vorbis.c:1276
+msgid "Minimum bitrate:"
+msgstr "Nejnižší hodnota datového toku:"
+
+#: src/file_vorbis.c:1289
+msgid ""
+"Specify a minimum bitrate, useful for encoding for a fixed-size channel. "
+"(Optional)"
+msgstr ""
+"Určete nejnižší datový tok. Je to užitečné při kódování kanálů s pevně danou "
+"velikostí. (Volitelné)"
+
+#: src/file_vorbis.c:1306
+msgid "Maximum bitrate:"
+msgstr "Nejvyšší hodnota datového toku:"
+
+#: src/file_vorbis.c:1319
+msgid ""
+"Specify a maximum bitrate, useful for streaming applications. (Optional)"
+msgstr ""
+"Určete nejvyšší datový tok. Je to užitečné aplikací pracujících s datovými "
+"proudy. (Volitelné)"
+
+#: src/file_vorbis.c:1370
+msgid "Set to default encoding options."
+msgstr "Nastavit výchozí volby kódování."
+
+#: src/file_vorbis.c:1377
+msgid "Metadata"
+msgstr "Metadata"
+
+#: src/file_vorbis.c:1399
+msgid "Title:"
+msgstr "Název:"
+
+#: src/file_vorbis.c:1399
+msgid "Track/Work name"
+msgstr "Název skladby/práce"
+
+#: src/file_vorbis.c:1401
+msgid "Version:"
+msgstr "Verze:"
+
+#: src/file_vorbis.c:1402
+msgid ""
+"The version field may be used to differentiate multiple versions of the same "
+"track title in a single collection. (e.g. remix info)"
+msgstr ""
+"Pole vyjadřující číslo verze se dá používat kvůli odlišení četných verzí "
+"skladeb se "
+"stejným názvem v jednoduché sbírce (např. jako informace o remixu)"
+
+#: src/file_vorbis.c:1406
+msgid "Album:"
+msgstr "Album:"
+
+#: src/file_vorbis.c:1407
+msgid "The collection name to which this track belongs"
+msgstr "Název sbírky, ke které tato skladba patří"
+
+#: src/file_vorbis.c:1409
+msgid "Artist:"
+msgstr "Umělec:"
+
+#: src/file_vorbis.c:1410
+msgid ""
+"The artist generally considered responsible for the work. In popular music "
+"this is usually the performing band or singer. For classical music it would "
+"be the composer. For an audio book it would be the author of the original "
+"text."
+msgstr ""
+"Umělec, který je všeobecně považován za zodpovědného za práci. V populární "
+"hudbě je jím obvykle účinkující kapela nebo zpěvák. Pro klasickou hudbu by "
+"to "
+"tedy byl skladatel. V případě knihy převedené na zvuk by to zase byl autor "
+"původního textu."
+
+#: src/file_vorbis.c:1416
+msgid "Performer:"
+msgstr "Účinkující:"
+
+#: src/file_vorbis.c:1417
+msgid ""
+"The artist(s) who performed the work. In classical music this would be the "
+"conductor, orchestra, soloists. In an audio book it would be the actor who "
+"did the reading. In popular music this is typically the same as the ARTIST "
+"and is omitted."
+msgstr ""
+"Umělec(lci), který dílo zahrál. V klasické hudbě by to byl dirigent, "
+"orchestr, "
+"sólisté. V případě knihy převedené na zvuk by to zase byl účinkující, který "
+"četl. "
+"V populární hudbě je jím obvykle ten samý člověk jako v případě UMĚLCE, "
+"který "
+"se však vynechává."
+
+#: src/file_vorbis.c:1424
+msgid "Copyright:"
+msgstr "Autorské právo (Copyright):"
+
+#: src/file_vorbis.c:1425
+msgid ""
+"Copyright attribution, e.g., '2001 Nobody's Band' or '1999 Jack Moffitt'"
+msgstr ""
+"Přisuzování autorského práva, např. '2001 Nobody's Band' nebo '1999 Jack "
+"Moffitt'"
+
+#: src/file_vorbis.c:1428
+msgid "License:"
+msgstr "Licence:"
+
+#: src/file_vorbis.c:1429
+msgid ""
+"License information, eg, 'All Rights Reserved', 'Any Use Permitted', a URL "
+"to a license such as a Creative Commons license (\"www.creativecommons.org/"
+"blahblah/license.html\") or the EFF Open Audio License ('distributed under "
+"the terms of the Open Audio License. see http://www.eff.org/IP/Open_licenses/"
+"eff_oal.html for details'), etc."
+msgstr ""
+"Informace o licenci, např. 'Všechna práva vyhrazena (All Rights Reserved)', "
+"'Povoleno jakékoli využití (Any Use Permitted)', adresa licence na internetu "
+"jako Creative Commons license (\"www.creativecommons.org/"
+"blahblah/license.html\") nebo EFF Open Audio License ('šířeno za podmínek"
+"Open Audio License. see http://www.eff.org/IP/Open_licenses/"
+"eff_oal.html for details'), atd."
+
+#: src/file_vorbis.c:1438
+msgid "Organization:"
+msgstr "Organizace"
+
+#: src/file_vorbis.c:1439
+msgid "Name of the organization producing the track (i.e. the 'record label')"
+msgstr ""
+"Název organizace, píseň vytváří (to jest nahrávací společnost 'record label')"
+
+#: src/file_vorbis.c:1442
+msgid "Description:"
+msgstr "Popis:"
+
+#: src/file_vorbis.c:1443
+msgid "A short text description of the contents"
+msgstr "Krátký textový popis obsahu"
+
+#: src/file_vorbis.c:1445
+msgid "Genre:"
+msgstr "Žánr:"
+
+#: src/file_vorbis.c:1446
+msgid "A short text indication of music genre"
+msgstr "Krátké textové označení hudebního žánru "
+
+#: src/file_vorbis.c:1448
+msgid "Date:"
+msgstr "Datum:"
+
+#: src/file_vorbis.c:1449
+msgid "Date the track was recorded"
+msgstr "Datum nahrání skladby"
+
+#: src/file_vorbis.c:1451
+msgid "Location:"
+msgstr "Umístění:"
+
+#: src/file_vorbis.c:1452
+msgid "Location where track was recorded"
+msgstr "Místo, kam byla skladba nahrána"
+
+#: src/file_vorbis.c:1454
+msgid "Contact:"
+msgstr "Spojení:"
+
+#: src/file_vorbis.c:1455
+msgid ""
+"Contact information for the creators or distributors of the track. This "
+"could be a URL, an email address, the physical address of the producing "
+"label."
+msgstr ""
+"Spojovací informace pro tvůrce nebo šiřitele skladby. Může se jednat "
+"o internetovou adresu, e-mailovou adresu, fyzickou adresu společnosti "
+"výrobce."
+
+#: src/file_vorbis.c:1460
+msgid "ISRC:"
+msgstr "ISRC:"
+
+#: src/file_vorbis.c:1461
+msgid ""
+"ISRC number for the track; see the ISRC intro page (http://www.ifpi.org/site-"
+"content/online/isrc_intro.html) for more information on ISRC numbers."
+msgstr ""
+"ISRC číslo skladby; pro více informací o ISRC číslech se podívejte na ISRC "
+"úvodní stránku (http://www.ifpi.org/site-content/online/isrc_intro.html)"
+
+#: src/file_vorbis.c:1578
+msgid ""
+"Ogg Vorbis is a high quality general purpose\n"
+"perceptual audio codec. It is free, open and\n"
+"unpatented."
+msgstr ""
+"Ogg Vorbis je vysoce kvalitní učební zvukový kodek "
+"určený pro všeobecné použití. Je svobodný, otevřený\n"
+"a nepatentovaný."
+
+#: src/file_vorbis.c:1589
+msgid ""
+"Ogg, Vorbis, Xiph.org Foundation and their logos\n"
+"are trademarks (tm) of the Xiph.org Foundation.\n"
+"Used with permission."
+msgstr ""
+"Ogg, Vorbis, Xiph.org Foundation a jejich loga\n"
+"jsou obchodními známkami (tm) Xiph.org Foundation.\n"
+"Používané s jejím svolením."
+
+#: src/head.c:408 src/view.c:2324
+msgid "Cursor position (indicator)"
+msgstr "Poloha běžce (ukazatel)"
+
+#: src/head.c:449
+msgid "Reverse mode (toggle)"
+msgstr "Obrátit režim (přepnout)"
+
+#: src/head.c:467
+msgid "Loop mode recording (toggle)"
+msgstr "Nahrávání v režimu smyčky (přepnout)"
+
+#: src/head.c:486
+msgid "Record into selection"
+msgstr "Nahrávat do výběru"
+
+#: src/head.c:503 src/view.c:1068
+msgid "Stop"
+msgstr "Zastavit"
+
+#: src/head.c:516 src/view.c:2469
+msgid "Go to beginning"
+msgstr "Jít na začátek"
+
+#: src/head.c:527 src/view.c:2480
+msgid "Rewind"
+msgstr "Přetočit"
+
+#: src/head.c:540 src/view.c:2492
+msgid "Fast forward"
+msgstr "Rychle vpřed"
+
+#: src/head.c:555 src/view.c:2505
+msgid "Go to the end"
+msgstr "Jít na konec"
+
+#: src/interface.c:327
+msgid "Sweep"
+msgstr "Sweep"
+
+#: src/interface.c:352 src/view.c:446
+msgid "File"
+msgstr "Soubor"
+
+#: src/interface.c:357
+msgid "New"
+msgstr "Nový"
+
+#: src/interface.c:366
+msgid "Open"
+msgstr "Otevřít"
+
+#: src/interface.c:375 src/sweep_sample.c:800 src/sweep_sample.c:808
+#: src/view.c:529
+msgid "Quit"
+msgstr "Ukončit"
+
+#: src/interface.c:386 src/view.c:1073
+msgid "Help"
+msgstr "Nápověda"
+
+#: src/interface.c:391
+msgid "About..."
+msgstr "O programu..."
+
+#: src/interface.c:414 src/view.c:618
+msgid "Select"
+msgstr "Výběr"
+
+#: src/interface.c:415
+msgid "Select regions of a sample"
+msgstr "Vybrat oblasti vzorku"
+
+#: src/interface.c:416
+msgid ""
+"This tool allows you to select regions of a sample. You can then apply edits "
+"and effects to the: selected regions. Hold down shift whilst selecting to "
+"add discontinuous regions to the selection."
+msgstr ""
+"Tento nástroj vám umožní vybrat oblasti ve vzorku. Na vybrané oblasti "
+"potom můžete použít úpravy a efekty. Pro přidání nesouvislých oblastí "
+"do výběru držte při výběru klávesu SHIFT."
+
+#: src/interface.c:433
+msgid "Move"
+msgstr "Přesunout"
+
+#: src/interface.c:434
+msgid "Move regions in a sample"
+msgstr "Ve vzorku přesunout oblasti"
+
+#: src/interface.c:435
+msgid "With this tool you can move selected regions of a sample."
+msgstr "Za pomoci tohoto nástroje můžete přesunovat vybrané oblasti vzorku."
+
+#: src/interface.c:447
+msgid "Scrub"
+msgstr "Čistit"
+
+#: src/interface.c:448
+msgid "Locate sounds directly"
+msgstr "Najít přímo zvuky"
+
+#: src/interface.c:449
+msgid ""
+"Place the play marker on a sample. Click anywhere in a view to instantly "
+"move the playback position to that part of the sample."
+msgstr ""
+"Umístěte ve vzorku značku přehrávání. Klepněte kamkoliv v dohledu pro "
+"okamžité přesunutí polohy přehrávání na tuto část vzorku."
+
+#: src/interface.c:466
+msgid "Zoom"
+msgstr "Přiblížit/Oddálit"
+
+#: src/interface.c:467
+msgid "Zoom in & out"
+msgstr "Přiblížit a &oddálit"
+
+#: src/interface.c:468
+msgid ""
+"Zoom in and out of a view. Click anywhere in a view to zoom in on that part "
+"of the sample. Hold down shift and click on the view to zoom out."
+msgstr ""
+"Přiblížit a oddálit pohled. Klepněte kamkoliv v dohledu pro přiblížení této "
+"části vzorku. Držte SHIFT a klepněte na pohled pro oddálení."
+
+#: src/interface.c:484
+msgid "Pencil"
+msgstr "Tužka"
+
+#: src/interface.c:485
+msgid "Edit PCM sample values"
+msgstr "Upravit vzorkovací hodnoty PCM"
+
+#: src/interface.c:486
+msgid "When zoomed down to individual  samples, click to edit"
+msgstr "Když je zaměřeno na jednotlivé vzorky, klepněte pro úpravy"
+
+#: src/interface.c:497
+msgid "Noise"
+msgstr "Šum"
+
+#: src/interface.c:498
+msgid "Add noise"
+msgstr "Přidat šum"
+
+#: src/interface.c:499
+msgid "Randomise PCM values"
+msgstr "Hodnoty PCM založit náhodném výběru"
+
+#: src/notes.c:61
+msgid "C3"
+msgstr "C3"
+
+#: src/notes.c:62
+msgid "C#3"
+msgstr "C#3"
+
+#: src/notes.c:63
+msgid "D3"
+msgstr "D3"
+
+#: src/notes.c:64
+msgid "Eb3"
+msgstr "Eb3"
+
+#: src/notes.c:65
+msgid "E3"
+msgstr "E3"
+
+#: src/notes.c:66
+msgid "F3"
+msgstr "F3"
+
+#: src/notes.c:67
+msgid "F#3"
+msgstr "F#3"
+
+#: src/notes.c:68
+msgid "G3"
+msgstr "G3"
+
+#: src/notes.c:69
+msgid "G#3"
+msgstr "G#3"
+
+#: src/notes.c:70
+msgid "A3"
+msgstr "A3"
+
+#: src/notes.c:71
+msgid "Bb3"
+msgstr "Bb3"
+
+#: src/notes.c:72
+msgid "B3"
+msgstr "B3"
+
+#: src/notes.c:74
+msgid "C4"
+msgstr "C4"
+
+#: src/notes.c:76
+msgid "C#4"
+msgstr "C#4"
+
+#: src/notes.c:77
+msgid "D4"
+msgstr "D4"
+
+#: src/notes.c:78
+msgid "Eb4"
+msgstr "Eb4"
+
+#: src/notes.c:79
+msgid "E4"
+msgstr "E4"
+
+#: src/notes.c:80
+msgid "F4"
+msgstr "F4"
+
+#: src/notes.c:81
+msgid "F#4"
+msgstr "F#4"
+
+#: src/notes.c:82
+msgid "G4"
+msgstr "G4"
+
+#: src/notes.c:83
+msgid "G#4"
+msgstr "G#4"
+
+#: src/notes.c:84
+msgid "A4"
+msgstr "A4"
+
+#: src/notes.c:85
+msgid "Bb4"
+msgstr "Bb4"
+
+#: src/notes.c:86
+msgid "B4"
+msgstr "B4"
+
+#: src/notes.c:88
+msgid "C5"
+msgstr "C5"
+
+#: src/notes.c:89
+msgid "C#5"
+msgstr "C#5"
+
+#: src/notes.c:90
+msgid "D5"
+msgstr "D5"
+
+#: src/notes.c:91
+msgid "D#5"
+msgstr "D#5"
+
+#: src/notes.c:92
+msgid "E5"
+msgstr "E5"
+
+#: src/notes.c:94
+msgid "F5"
+msgstr "F5"
+
+#: src/notes.c:95
+msgid "F#5"
+msgstr "F#5"
+
+#: src/notes.c:96
+msgid "G5"
+msgstr "G5"
+
+#: src/notes.c:97
+msgid "G#5"
+msgstr "G#5"
+
+#: src/notes.c:98
+msgid "A5"
+msgstr "A5"
+
+#: src/notes.c:99
+msgid "Bb5"
+msgstr "Bb5"
+
+#: src/notes.c:100
+msgid "B5"
+msgstr "B5"
+
+#: src/param.c:117, c-format
+msgid "TRUE"
+msgstr "PRAVDIVĚ"
+
+#: src/param.c:118, c-format
+msgid "FALSE"
+msgstr "NESPRÁVNĚ"
+
+#: src/param.c:738
+msgid "Parameters"
+msgstr "Pomocné proměnné"
+
+#: src/param.c:769
+msgid "Preview"
+msgstr "Náhled"
+
+#: src/paste_dialogs.c:221
+msgid "Start gain"
+msgstr "Začít zesílení signálu"
+
+#: src/paste_dialogs.c:223 src/record.c:489 src/record.c:507
+#: plugins/echo/echo.c:61
+msgid "Gain"
+msgstr "Zesílení signálu"
+
+#: src/paste_dialogs.c:230
+msgid "Sweep: Paste crossfade"
+msgstr "Sweep: Vložit prolínání"
+
+#: src/paste_dialogs.c:232
+msgid "Sweep: Paste mix"
+msgstr "Sweep: vložit směsku"
+
+#: src/paste_dialogs.c:257
+msgid "Source"
+msgstr "Zdroj"
+
+#: src/paste_dialogs.c:257
+msgid "Clipboard"
+msgstr "Schránka"
+
+#: src/paste_dialogs.c:279 src/paste_dialogs.c:318
+msgid "End gain"
+msgstr "Ukončit zesílení signálu"
+
+#: src/paste_dialogs.c:287 src/paste_dialogs.c:326
+msgid "Invert phase"
+msgstr "Obrátit fázi"
+
+#: src/paste_dialogs.c:295
+msgid "Destination"
+msgstr "Cíl"
+
+#: src/paste_dialogs.c:345
+msgid ""
+"Indicates the total duration of the clipboard, which is the maximum length "
+"that will be pasted."
+msgstr ""
+"Ukazuje celkovou dobu trvání zvukových dat nacházejících se ve schránce, "
+"což je největší možná délka, která bude vložena."
+
+#: src/paste_dialogs.c:362
+msgid "Clipboard duration:"
+msgstr "Délka schránky:"
+
+#: src/paste_dialogs.c:375
+msgid "Crossfade"
+msgstr "Prolínat"
+
+#: src/paste_dialogs.c:375
+msgid "Mix"
+msgstr "Smíchat"
+
+#: src/paste_dialogs.c:394
+msgid "Don't crossfade"
+msgstr "Neprolínat"
+
+#: src/paste_dialogs.c:394
+msgid "Don't mix"
+msgstr "Nesmíchat"
+
+#: src/preferences.c:62
+msgid "Error creating ~/.sweep"
+msgstr "Chyba při vytváření ~/.sweep"
+
+#: src/preferences.c:66
+#, c-format
+msgid "Created %s/ mode %04o\n"
+msgstr "Vytvořen %s/ režim %04o\n"
+
+#: src/preferences.c:73
+msgid "Error on ~/.sweep"
+msgstr "Chyba u ~/.sweep"
+
+#: src/preferences.c:82
+msgid "Error setting permissions on ~/.sweep"
+msgstr "Chyba při nastavování oprávnění k ~/.sweep"
+
+#: src/preferences.c:89
+msgid "Error accessing ~/.sweep"
+msgstr "Chyba při přistupování k ~/.sweep"
+
+#: src/preferences.c:124
+msgid "Error opening ~/.sweep/preferences.tdb"
+msgstr "Chyba při otvírání ~/.sweep/preferences.tdb"
+
+#: src/record.c:94 src/record.c:544
+msgid "Ready to record"
+msgstr "Připraven pro nahrávání"
+
+#: src/record.c:308
+msgid "No selection to record into"
+msgstr "Žádný výběr, do kterého by se nahrávalo"
+
+#: src/record.c:446
+msgid "Sweep: Record"
+msgstr "Sweep: nahrávat"
+
+#: src/record.c:459 src/undo_dialog.c:376
+msgid "File:"
+msgstr "Soubor:"
+
+#: src/record.c:482
+msgid "Previous sound"
+msgstr "Předchozí zvuk"
+
+#: src/record.c:496
+msgid ""
+"This slider allows you to mix the new recording in with the previous "
+"contents of the buffer. Set it to -inf dB to overwrite the previous sound."
+msgstr ""
+"Posuvník vám umožní smíchat novou nahrávku s předchozím obsahem "
+"vyrovnávací paměti. Nastavte jej na -inf dB pro přepsání předchozího "
+"zvuku."
+
+#: src/record.c:502
+msgid "Recorded sound"
+msgstr "Nahrávaný zvuk"
+
+#: src/record.c:514
+msgid ""
+"This slider allows you to reduce the level of the recorded sound. Set it to "
+"0 dB to record without any reduction. Note that setting this to -inf dB will "
+"record silence."
+msgstr ""
+"Posuvník vám umožní snížit úroveň nahrávaného zvuku. Nastavte jej na "
+"0 dB pro nahrávání bez snížení. Povšimněte si, že jeho nastavení na -inf dB "
+"bude mít za následek nahrávání ticha."
+
+#: src/sample-display.c:223
+msgid "New selection"
+msgstr "Nový výběr"
+
+#: src/sample-display.c:224
+msgid "Selection: add/modify region"
+msgstr "Výběr: přidat/upravit oblast"
+
+#: src/sample-display.c:225
+msgid "Selection: subtract region"
+msgstr "Výběr: odečíst oblast"
+
+#: src/samplerate.c:103 src/samplerate.c:167
+msgid "Resample error"
+msgstr "Chyba v převzorkování"
+
+#: src/samplerate.c:104 src/samplerate.c:168
+msgid "libsamplerate error"
+msgstr "Chyba libsamplerate"
+
+#: src/samplerate.c:234
+#, c-format
+msgid "Resample from %d Hz to %d Hz"
+msgstr "Převzorkovat z %d Hz na %d Hz"
+
+#: src/samplerate.c:445
+msgid "Sweep: Resample"
+msgstr "Sweep: převzorkovat"
+
+#: src/samplerate.c:467
+msgid "Conversion"
+msgstr "Převod"
+
+#: src/samplerate.c:474
+#, c-format
+msgid "Current sample rate: %d Hz"
+msgstr "Nynější vzorkovací kmitočet: %d Hz"
+
+#: src/samplerate.c:483
+msgid "New sample rate"
+msgstr "Nový vzorkovací kmitočet"
+
+#: src/samplerate.c:494
+msgid "Quality"
+msgstr "Kvalita"
+
+#: src/samplerate.c:501
+msgid "Converter"
+msgstr "Převodník"
+
+#: src/samplerate.c:544
+msgid "Remember this quality"
+msgstr "Zapamatovat si tuto kvalitu"
+
+#: src/samplerate.c:564
+msgid "Reset to the last remembered quality."
+msgstr "Přenastavit poslední zapamatovanou kvalitu."
+
+#: src/samplerate.c:578
+msgid "Set to default quality."
+msgstr "Nastavit na výchozí kvalitu."
+
+#: src/samplerate.c:600
+msgid ""
+"Secret Rabbit Code (aka libsamplerate) is a\n"
+"Sample Rate Converter for audio by Erik de Castro Lopo\n"
+msgstr ""
+"Tajný Králíkův kód (také známý jako libsamplerate) je\n"
+"Sample Rate Converter for audio (převaděč vzorkovacího "
+"kmitočtu pro zvuk) od Erika de Castro Lopo\n"
+
+#: src/samplerate.c:620
+msgid "Resample"
+msgstr "Převzorkovat"
+
+#: src/samplerate.c:633
+msgid "Don't resample"
+msgstr "Nepřevzorkovat"
+
+#: src/sw_chooser.c:51 src/sw_chooser.c:66
+msgid "Custom"
+msgstr "Vlastní"
+
+#: src/sw_chooser.c:52
+msgid "192000 Hz (Studio quality)"
+msgstr "192000 Hz (Studiová kvalita)"
+
+#: src/sw_chooser.c:53
+msgid " 96000 Hz (High quality)"
+msgstr " 96000 Hz (Vysoká kvalita)"
+
+#: src/sw_chooser.c:54
+msgid " 48000 Hz (DAT quality)"
+msgstr " 48000 Hz (DAT kvalita)"
+
+#: src/sw_chooser.c:55
+msgid " 44100 Hz (CD quality)"
+msgstr " 44100 Hz (CD kvalita)"
+
+#: src/sw_chooser.c:56
+msgid " 32000 Hz (Ultra-wideband voice quality)"
+msgstr " 32000 Hz (Hlasová kvalita ultra širokého pásma)"
+
+#: src/sw_chooser.c:57
+msgid " 22050 Hz"
+msgstr " 22050 Hz"
+
+#: src/sw_chooser.c:58
+msgid " 16000 Hz (Wideband voice quality)"
+msgstr " 16000 Hz (Hlasová kvalita širokého pásma)"
+
+#: src/sw_chooser.c:59
+msgid " 11025 Hz"
+msgstr " 11025 Hz"
+
+#: src/sw_chooser.c:60
+msgid "  8000 Hz (Narrowband voice quality)"
+msgstr " 8000 Hz (Hlasová kvalita úzkého pásma)"
+
+#: src/sw_chooser.c:61
+msgid "  4000 Hz (Low quality)"
+msgstr " 4000 Hz (nízká kvalita)"
+
+#: src/sw_chooser.c:67 src/view.c:3446 src/view.c:3459 src/view.c:3498, c-format
+msgid "Mono"
+msgstr "Monofonní zvuk"
+
+#: src/sw_chooser.c:68 src/view.c:3446 src/view.c:3459 src/view.c:3501, c-format
+msgid "Stereo"
+msgstr "Stereofonní zvuk"
+
+#: src/sw_chooser.c:69
+msgid "Quadraphonic"
+msgstr "Kvadrofonní zvuk"
+
+#: src/sw_chooser.c:306
+msgid "Custom: "
+msgstr "Vlastní:"
+
+#: src/sw_chooser.c:341
+msgid "Sampling rate"
+msgstr "Vzorkovací kmitočet"
+
+#: src/sw_chooser.c:343
+msgid "Hz"
+msgstr "Hz"
+
+#: src/sw_chooser.c:367 src/view.c:884
+msgid "Channels"
+msgstr "Kanály"
+
+#: src/sw_chooser.c:369 src/view.c:3505
+msgid "channels"
+msgstr "Kanály"
+
+#: src/sweep_filter.c:125
+msgid "No selection to process"
+msgstr "Ke zpracování není žádný výběr"
+
+#: src/sweep_sample.c:119 src/view.c:3444 src/view.c:3450 src/view.c:3457
+#: src/view.c:3463
+msgid "Untitled"
+msgstr "Bez názvu"
+
+#: src/sweep_sample.c:324
+msgid "Overflow"
+msgstr "Přetečení"
+
+#: src/sweep_sample.c:407
+msgid "Sweep: New file"
+msgstr "Sweep: Nový soubor"
+
+#: src/sweep_sample.c:435
+msgid "Name:"
+msgstr "Název:"
+
+#: src/sweep_sample.c:455
+msgid "Duration:"
+msgstr "Doba trvání:"
+
+#: src/sweep_sample.c:471
+msgid "hh:mm:ss.xxx"
+msgstr "hh:mm:ss.xxx"
+
+#: src/sweep_sample.c:514
+msgid "Remember this format"
+msgstr "Zapamatovat si tento formát"
+
+#: src/sweep_sample.c:520
+msgid ""
+"Remember this sampling rate and channel configuration for creating new files."
+msgstr ""
+"Zapamatovat si tento vzorkovací kmitočet a uspořádání kanálů kvůli "
+"vytvoření nových souborů."
+
+#: src/sweep_sample.c:540
+msgid "Reset to the last remembered format for new files."
+msgstr "Pro nové soubory přenastavit na naposledy zapamatovaný formát."
+
+#: src/sweep_sample.c:551
+msgid "Set to the default format for new files."
+msgstr "Pro nové soubory nastavit na výchozí formát."
+
+#: src/sweep_sample.c:567
+msgid ""
+"Indicates the amount of data memory which will be allocated for the selected "
+"duration and format. All audio data is processed internally in 32 bit "
+"floating point format."
+msgstr ""
+"Ukazuje množství paměti pro data, které bude přiděleno pro vybranou dobu "
+"trvání a formát. Všechna zvuková data jsou zpracovávána v 32 bitovém formátu "
+"s pohyblivou desetinnou čárkou."
+
+#: src/sweep_sample.c:582
+msgid "Data memory:"
+msgstr "Paměť s daty:"
+
+#: src/sweep_sample.c:594
+msgid "Create"
+msgstr "Vytvořit"
+
+#: src/sweep_sample.c:606
+msgid "Don't create"
+msgstr "Nevytvářet"
+
+#: src/sweep_sample.c:774
+msgid "Excellent!!!"
+msgstr "Výborně!"
+
+#: src/sweep_sample.c:796
+msgid "Files unsaved"
+msgstr "Soubory nebyly uloženy"
+
+#: src/sweep_sample.c:797
+msgid ""
+"Some files are unsaved. If you quit, all changes will be lost.\n"
+"\n"
+"Are you sure you want to quit?"
+msgstr ""
+"Některé soubory nejsou uloženy. Pokud teď skončíte, všechny změny "
+"budou ztraceny.\n"
+"\n"
+"Jste si jist, že chcete skončit?"
+
+#: src/sweep_sample.c:800 src/sweep_sample.c:808
+msgid "Don't quit"
+msgstr "Neukončovat"
+
+#: src/sweep_sample.c:804
+msgid "Files playing"
+msgstr "Přehrávání souborů"
+
+#: src/sweep_sample.c:805
+msgid ""
+"No files are unsaved, but some files are currently playing.\n"
+"\n"
+"Are you sure you want to quit?"
+msgstr ""
+"Všechny soubory jsou uloženy, ale některé soubory se nyní přehrávají.\n"
+"\n"
+"Jste si jist, že chcete skončit?"
+
+#: src/sweep_sample.c:1465 src/view.c:1206
+msgid "Invert selection"
+msgstr "Obrátit výběr"
+
+#: src/sweep_sample.c:1485 src/view.c:1214 src/view.c:1308
+msgid "Select all"
+msgstr "Vybrat vše"
+
+#: src/sweep_sample.c:1505 src/view.c:1222
+msgid "Select none"
+msgstr "Nevybrat žádný"
+
+#: src/sweep_sample.c:1525
+msgid "Halve selection"
+msgstr "Poloviční výběr"
+
+#: src/sweep_sample.c:1545
+msgid "Double selection"
+msgstr "Dvojitý výběr"
+
+#: src/sweep_sample.c:1568
+msgid "Selection left"
+msgstr "Levý výběr"
+
+#: src/sweep_sample.c:1590
+msgid "Selection right"
+msgstr "Pravý výběr"
+
+#: src/sweep_sample.c:1678
+#, c-format
+msgid "Insert selection ["
+msgstr "Vložit výběr ["
+
+#: src/sweep_sample.c:1731
+#, c-format
+msgid "Subtract selection ["
+msgstr "Odečíst výběr ["
+
+#: src/sweep_sample.c:1776
+#, c-format
+msgid "Set selection ["
+msgstr "Nastavit výběr ["
+
+#: src/sweep_sample.c:1875
+msgid "Sweep: File properties"
+msgstr "Sweep: vlastnosti souboru"
+
+#: src/sweep_sample.c:1899
+msgid "Filename: "
+msgstr "Název souboru:"
+
+#: src/sweep_sample.c:1901
+msgid "Sampling rate: "
+msgstr "Vzorkovací kmitočet:"
+
+#: src/sweep_sample.c:1903
+msgid "Channels: "
+msgstr "Kanály:"
+
+#: src/sweep_sample.c:1905
+msgid "Data memory: "
+msgstr "Paměť s daty:"
+
+#: src/sweep_sample.c:1907
+msgid "Duration: "
+msgstr "Doba trvání:"
+
+#: src/sweep_undo.c:327
+#, c-format
+msgid ""
+"%s\n"
+" has changed on disk.\n"
+"\n"
+"Do you want to continue editing this buffer?"
+msgstr ""
+"%s\n"
+" se na disku změnilo.\n"
+"\n"
+"Chcete pokračovat v úpravách této vyrovnávací paměti?"
+
+#: src/sweep_undo.c:332
+msgid "Continue editing"
+msgstr "Pokračovat v úpravách"
+
+#: src/sweep_undo.c:332
+msgid "Reread from disk"
+msgstr "Znovu přečíst z disku"
+
+#: src/sweep_undo.c:430 src/sweep_undo.c:488
+msgid "Nothing to undo"
+msgstr "Nic pro: Zpět"
+
+#: src/sweep_undo.c:511 src/sweep_undo.c:567
+msgid "Nothing to redo"
+msgstr "Nic pro: Znovu"
+
+#: src/undo_dialog.c:159
+msgid "Original data"
+msgstr "Původní data"
+
+#: src/undo_dialog.c:344
+msgid "Action"
+msgstr "Krok"
+
+#: src/undo_dialog.c:351
+msgid "Sweep: History"
+msgstr "Sweep: historie"
+
+#: src/undo_dialog.c:393 src/view.c:548 src/view.c:1887
+msgid "Undo"
+msgstr "Zpět"
+
+#: src/undo_dialog.c:401 src/view.c:552 src/view.c:1896
+msgid "Redo"
+msgstr "Znovu"
+
+#: src/undo_dialog.c:426
+msgid "Revert to selected state"
+msgstr "Vrátit se do vybraného stavu"
+
+#: src/undo_dialog.c:452 src/view.c:525 src/view.c:3402
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/view.c:311
+msgid "Duplicate to stereo"
+msgstr "Okopírovat do stereofonního zvuku"
+
+#: src/view.c:319
+msgid "Duplicate to multichannel"
+msgstr "Okopírovat do vícekanálového zvuku"
+
+#: src/view.c:331
+msgid "Swap left and right"
+msgstr "Vyměnit levý a pravý"
+
+#: src/view.c:371
+msgid "Add/Remove channels"
+msgstr "Přidat/Odstranit kanály"
+
+#: src/view.c:454 src/view.c:1768
+msgid "New ..."
+msgstr "Nový..."
+
+#: src/view.c:458 src/view.c:1775
+msgid "Open ..."
+msgstr "Otevřít..."
+
+#: src/view.c:488
+msgid "Open Recent"
+msgstr "Otevřít nedávný"
+
+#: src/view.c:505
+msgid "Save As ..."
+msgstr "Uložit jako..."
+
+#: src/view.c:517
+msgid "Properties ..."
+msgstr "Vlastnosti..."
+
+#: src/view.c:535 src/view.c:1136
+msgid "Edit"
+msgstr "Úpravy"
+
+#: src/view.c:556
+msgid "Show history ..."
+msgstr "Ukázat historii..."
+
+#: src/view.c:588 src/view.c:1172
+msgid "Paste: Insert"
+msgstr "Vložit: vložka"
+
+#: src/view.c:592 src/view.c:1178
+msgid "Paste: Mix"
+msgstr "Vložit: směs"
+
+#: src/view.c:596 src/view.c:1184
+msgid "Paste: Crossfade"
+msgstr "Vložit: prolínání"
+
+#: src/view.c:600
+msgid "Paste as New"
+msgstr "Vložit jako nové"
+
+#: src/view.c:608
+msgid "Preview Cut/Cursor"
+msgstr "Náhled na vyjmout/ukazovátko"
+
+#: src/view.c:612
+msgid "Pre-roll to Cursor"
+msgstr "Přetočit na polohu ukazatele"
+
+#: src/view.c:626
+msgid "Invert"
+msgstr "Obrátit"
+
+#: src/view.c:630
+msgid "All"
+msgstr "Vše"
+
+#: src/view.c:634
+msgid "None"
+msgstr "Žádné"
+
+#: src/view.c:642
+msgid "Halve"
+msgstr "Zkrátit na polovinu"
+
+#: src/view.c:646
+msgid "Double"
+msgstr "Zdvojit"
+
+#: src/view.c:650
+msgid "Shift left"
+msgstr "Přesunout doleva"
+
+#: src/view.c:654
+msgid "Shift right"
+msgstr "Přesunout doprava"
+
+#: src/view.c:659
+msgid "View"
+msgstr "Pohled"
+
+#: src/view.c:666 src/view.c:2061
+msgid "Autoscroll: follow playback cursor"
+msgstr "Automatické projíždění: sledovat ukazatel přehrávání"
+
+#: src/view.c:684
+msgid "Center"
+msgstr "Zarovnat na střed"
+
+#: src/view.c:692 src/view.c:1996
+msgid "Zoom in"
+msgstr "Přiblížit"
+
+#: src/view.c:696 src/view.c:2005
+msgid "Zoom out"
+msgstr "Oddálit"
+
+#: src/view.c:700 src/view.c:1111
+msgid "Zoom to selection"
+msgstr "Najet na výběr"
+
+#: src/view.c:706
+msgid "Left"
+msgstr "Doleva"
+
+#: src/view.c:710
+msgid "Right"
+msgstr "Doprava"
+
+#: src/view.c:715 src/view.c:1117 src/view.c:1276
+msgid "Zoom normal"
+msgstr "Přiblížit normálně"
+
+#: src/view.c:719 src/view.c:1123 src/view.c:1282 src/view.c:1987
+msgid "Zoom all"
+msgstr "Přiblížit vše"
+
+#: src/view.c:723
+msgid "1:1"
+msgstr "1:1"
+
+#: src/view.c:733
+msgid "Remember as"
+msgstr "Zapamatovat si jako"
+
+#: src/view.c:752 src/view.c:783
+msgid "Area 1"
+msgstr "Oblast 1"
+
+#: src/view.c:753 src/view.c:784
+msgid "Area 2"
+msgstr "Oblast 2"
+
+#: src/view.c:754 src/view.c:785
+msgid "Area 3"
+msgstr "Oblast 3"
+
+#: src/view.c:755 src/view.c:786
+msgid "Area 4"
+msgstr "Oblast 4"
+
+#: src/view.c:756 src/view.c:787
+msgid "Area 5"
+msgstr "Oblast 5"
+
+#: src/view.c:757 src/view.c:788
+msgid "Area 6"
+msgstr "Oblast 6"
+
+#: src/view.c:758 src/view.c:789
+msgid "Area 7"
+msgstr "Oblast 7"
+
+#: src/view.c:759 src/view.c:790
+msgid "Area 8"
+msgstr "Oblast 8"
+
+#: src/view.c:760 src/view.c:791
+msgid "Area 9"
+msgstr "Oblast 9"
+
+#: src/view.c:761 src/view.c:792
+msgid "Area 10"
+msgstr "Oblast 10"
+
+#: src/view.c:765
+msgid "Zoom to"
+msgstr "Přiblížit"
+
+#: src/view.c:798
+msgid "Color scheme"
+msgstr "Barevné schéma"
+
+#: src/view.c:804
+msgid "Decoder Red"
+msgstr "Dekodér v červené"
+
+#: src/view.c:812
+msgid "Orangeboom"
+msgstr "Vzestup oranžové"
+
+#: src/view.c:820
+msgid "Lame Yellow"
+msgstr "Plátek žluté"
+
+#: src/view.c:828
+msgid "Coogee Bay Blue"
+msgstr "Coogee záliv v modré"
+
+#: src/view.c:836
+msgid "Blackwattle"
+msgstr "Černé proutí"
+
+#: src/view.c:844
+msgid "Frigid"
+msgstr "Mrazivý"
+
+#: src/view.c:852
+msgid "Radar"
+msgstr "Radar"
+
+#: src/view.c:860
+msgid "Bluescreen"
+msgstr "Modrá obrazovka"
+
+#: src/view.c:872 src/view.c:1236 src/view.c:1322
+msgid "New View"
+msgstr "Nový pohled"
+
+#: src/view.c:877
+msgid "Sample"
+msgstr "Vzorek"
+
+#: src/view.c:894
+msgid "Resample ..."
+msgstr "Převzorkovat..."
+
+#: src/view.c:903
+msgid "Duplicate"
+msgstr "Okopírovat"
+
+#: src/view.c:908 src/view.c:1192
+msgid "Process"
+msgstr "Zpracování"
+
+#: src/view.c:917
+msgid "Playback"
+msgstr "Přehrávání"
+
+#: src/view.c:924
+msgid "Configure audio device ..."
+msgstr "Nastavit zvukové zařízení..."
+
+#: src/view.c:934
+msgid "Transport"
+msgstr "Přesun"
+
+#: src/view.c:943
+msgid "Go to start of file"
+msgstr "Jít na začátek souboru"
+
+#: src/view.c:949
+msgid "Go to start of window"
+msgstr "Jít na začátek okna"
+
+#: src/view.c:954
+msgid "Skip back"
+msgstr "Skočit zpět"
+
+#: src/view.c:959
+msgid "Skip forward"
+msgstr "Skočit dopředu"
+
+#: src/view.c:964
+msgid "Go to end of window"
+msgstr "Jít na konec okna"
+
+#: src/view.c:969
+msgid "Go to end of file"
+msgstr "Jít na konec souboru"
+
+#: src/view.c:978
+msgid "Play selection"
+msgstr "Přehrávat výběr"
+
+#: src/view.c:984
+msgid "Play sample"
+msgstr "Přehrávat vzorek"
+
+#: src/view.c:990
+msgid "Play note"
+msgstr "Přehrávat notu"
+
+#: src/view.c:1009
+msgid "Toggle monitoring"
+msgstr "Přepnout sledování"
+
+#: src/view.c:1022
+msgid "Toggle looping"
+msgstr "Přepnout opakování smyčky"
+
+#: src/view.c:1034
+msgid "Toggle muting"
+msgstr "Přepnout ztlumení"
+
+#: src/view.c:1045
+msgid "Toggle reverse playback"
+msgstr "Přepnout obrácené přehrávání"
+
+#: src/view.c:1063
+msgid "Pause"
+msgstr "Pozastavit"
+
+#: src/view.c:1079
+msgid "About MP3 export..."
+msgstr "O vyvedení do MP3..."
+
+#: src/view.c:1085
+msgid "About Sweep ..."
+msgstr "O programu Sweep"
+
+#: src/view.c:1249 src/view.c:1335
+msgid "File properties ..."
+msgstr "Vlastnosti souboru..."
+
+#: src/view.c:1294
+msgid "Paste"
+msgstr "Vložit"
+
+#: src/view.c:1791
+msgid "Save as ..."
+msgstr "Uložit jako..."
+
+#: src/view.c:1811
+msgid "Cut selection to clipboard"
+msgstr "Vyjmout výběr do schránky"
+
+#: src/view.c:1821
+msgid "Copy selection to clipboard"
+msgstr "Kopírovat výběr do schránky"
+
+#: src/view.c:1832
+msgid "Paste: insert clipboard at cursor position"
+msgstr "Vložit: vložit obsah schránky na poloze kurzoru"
+
+#: src/view.c:1843
+msgid "Paste: mix clipboard in from cursor position"
+msgstr "Vložit: přimíchat obsah schránky od polohy kurzoru"
+
+#: src/view.c:1854
+msgid "Paste: fade clipboard in from cursor position"
+msgstr "Vložit: prolínat obsah schránky od polohy kurzoru"
+
+#: src/view.c:1924
+msgid "Hand tool"
+msgstr "Růční nástroj"
+
+#: src/view.c:1932
+msgid "Selector tool"
+msgstr "Nástroj přepínače"
+
+#: src/view.c:1944
+msgid "\"Scrubby\" the scrub tool"
+msgstr "\"Čistič\" čistící nástroj"
+
+#: src/view.c:1954
+msgid "Pencil tool"
+msgstr "Nástroj tužka"
+
+#: src/view.c:1962
+msgid "Noise tool"
+msgstr "Nástroj pro šum"
+
+#: src/view.c:2052
+msgid "Visible length"
+msgstr "Viditelná délka"
+
+#: src/view.c:2171
+msgid "Vertical zoom [Shift + Arrow Up/Down]"
+msgstr "Svislé přiblížení a oddálení [Shift + Arrow Up/Down]"
+
+#: src/view.c:2301
+msgid "Record ..."
+msgstr "Nahrávat..."
+
+#: src/view.c:2377
+msgid "Reverse mode playback (toggle)"
+msgstr "Obrátit režim přehrávání (přepnout)"
+
+#: src/view.c:2395
+msgid "Loop mode playback (toggle)"
+msgstr "Přehrávání v režimu opakování (přepnout)"
+
+#: src/view.c:2419
+msgid "Play all / Pause"
+msgstr "Přehrávat vše/Pozastavit"
+
+#: src/view.c:2436
+msgid "Play selection / Pause"
+msgstr "Přehrávat výběr/Pozastavit"
+
+#: src/view.c:2452
+msgid "Stop playback"
+msgstr "Zastavit přehrávání"
+
+#: src/view.c:2519
+msgid "Muted playback (toggle)"
+msgstr "Ztlumené přehrávání (přepnout)"
+
+#: src/view.c:2539 src/view.c:2557
+msgid "Playback gain slider (volume)"
+msgstr "Posuvník pro zesílení přehrávání (hlasitost)"
+
+#: src/view.c:2569
+msgid "Monitor (toggle)"
+msgstr "Sledování (přepnout)"
+
+#: src/view.c:2587
+msgid "SYNC"
+msgstr "SYNC (seřízení)"
+
+#: src/view.c:3144
+#, c-format
+msgid "Remembered as area %d"
+msgstr "Zapamatováno jako oblast %d"
+
+#: src/view.c:3162
+#, c-format
+msgid "No area remembered as %d"
+msgstr "Žádná oblast nebyla zapamatována jako %d"
+
+#: src/view.c:3165
+#, c-format
+msgid "Zoomed to area %d"
+msgstr "Zaměřeno na oblast %d"
+
+#: src/view.c:3347 src/view.c:3351
+msgid "Scrub!"
+msgstr "Čistit!"
+
+#: src/view.c:3347 src/view.c:3353
+msgid "Ready"
+msgstr "Připraven"
+
+#: src/view.c:3399
+#, c-format
+msgid "%s has been modified. Close anyway?"
+msgstr "%s  byl upraven. Tak jako tak zavřít?"
+
+#: src/view.c:3402
+msgid "Don't close"
+msgstr "Nezavírat"
+
+#: src/view.c:3449 src/view.c:3462
+msgid "*"
+msgstr "*"
+
+#: src/view.c:3465
+msgid "Empty"
+msgstr "Prázdný"
+
+#: plugins/byenergy/byenergy.c:58
+msgid "Select regions above threshold"
+msgstr "Vybrat oblasti nad prahem"
+
+#: plugins/byenergy/byenergy.c:59
+msgid ""
+"Whether to select those regions lying above a given threshold or below it."
+msgstr "Vybrat ony oblasti ležící nad zadaným prahem nebo pod ním."
+
+#: plugins/byenergy/byenergy.c:66
+msgid "Resolution"
+msgstr "Rozlišení"
+
+#: plugins/byenergy/byenergy.c:67
+msgid "Width of energy detection window (s)"
+msgstr "Šířka okna pro zjišťování síly (s)"
+
+#: plugins/byenergy/byenergy.c:73
+msgid "Threshold"
+msgstr "Hranice"
+
+#: plugins/byenergy/byenergy.c:74
+msgid "Energy level to detect [0.0 - 1.0]"
+msgstr "Úroveň síly, která se zjišťuje [0.0 - 1.0]"
+
+#: plugins/byenergy/byenergy.c:80
+msgid "Minimum duration"
+msgstr "Nejmenší doba trvání"
+
+#: plugins/byenergy/byenergy.c:81
+msgid "Shortest region of selection to detect (s)"
+msgstr "Nejkratší oblast výběru, která se zjišťuje (s)"
+
+#: plugins/byenergy/byenergy.c:87
+msgid "Maximum interruption"
+msgstr "Největší možné přerušení"
+
+#: plugins/byenergy/byenergy.c:88
+msgid "Longest length of sound above threshold to allow (s)"
+msgstr "Nejdelší délka zvuku nad hranicí, která se povoluje (s)"
+
+#: plugins/byenergy/byenergy.c:227 plugins/byenergy/byenergy.c:232
+msgid "Select by energy"
+msgstr "Vybrat podle síly"
+
+#: plugins/byenergy/byenergy.c:233
+msgid "Select loud or quiet regions"
+msgstr "Vybrat hlasité nebo tiché oblasti"
+
+#: plugins/echo/echo.c:53
+msgid "Delay"
+msgstr "Zpoždění"
+
+#: plugins/echo/echo.c:54
+msgid "Time to delay by"
+msgstr "Čas zpoždění podle"
+
+#: plugins/echo/echo.c:62
+msgid "Gain with which to mix in delayed signal"
+msgstr "Zesílení, se kterým se míchá zpožděný signál"
+
+#: plugins/echo/echo.c:107 plugins/echo/echo.c:113
+msgid "Echo"
+msgstr "Ozvěna"
+
+#: plugins/echo/echo.c:114
+msgid "Apply an echo to selected regions of a sample"
+msgstr "Na vybrané oblasti vzorku použít ozvěnu"
+
+#: plugins/normalise/normalise.c:128 plugins/normalise/normalise.c:133
+msgid "Normalise"
+msgstr "Znormalizovat"
+
+#: plugins/normalise/normalise.c:134
+msgid "Alter the sample's amplitude to lie between 1.0 and -1.0"
+msgstr "Upravit rozkmit vzorku tak, aby ležel mezi 1.0 a -1.0"
+
+#: plugins/reverse/reverse.c:129 plugins/reverse/reverse.c:134
+#: plugins/reverse/reverse.c:140
+msgid "Reverse"
+msgstr "Obrátit"
+
+#: plugins/reverse/reverse.c:141
+msgid "Reverse selected regions of a sample"
+msgstr "Obrátit vybrané oblasti vzorku"
+
+#: plugins/example/example.c:37 plugins/example/example.c:86
+msgid "With a fork"
+msgstr "S vidlicí"
+
+#: plugins/example/example.c:38
+msgid "With a spoon"
+msgstr "Se lžící"
+
+#: plugins/example/example.c:39
+msgid "With false teeth"
+msgstr "S umělými zuby"
+
+#: plugins/example/example.c:40
+msgid "With Nigel's bum"
+msgstr "S Nigelovou řití"
+
+#: plugins/example/example.c:56
+msgid "Flim"
+msgstr "Flim"
+
+#: plugins/example/example.c:57
+msgid "Should you manage your flim?"
+msgstr "Měl byste spravovat své nesmysly?"
+
+#: plugins/example/example.c:64
+msgid "Beans"
+msgstr "Fazole"
+
+#: plugins/example/example.c:65
+msgid "Method of eating beans"
+msgstr "Způsob, jak správně jíst fazole"
+
+#: plugins/example/example.c:72
+msgid "Pants methodology"
+msgstr "Souhrn způsobů funění"
+
+#: plugins/example/example.c:73
+msgid "How many pants should you wear per day?"
+msgstr "Kolikrá za den by se mělo zasupět?"
+
+#: plugins/example/example.c:122 plugins/example/example.c:129
+msgid "Example Filter Region"
+msgstr "Příklad filtru oblasti"
+
+#: plugins/example/example.c:130
+msgid "An example filter region plugin"
+msgstr "Příklad přídavného modulu filtru oblasti"
+
+#: plugins/fade/fade.c:148 plugins/fade/fade.c:161
+msgid "Fade in"
+msgstr "Postupné zeslabení signálu"
+
+#: plugins/fade/fade.c:156 plugins/fade/fade.c:177
+msgid "Fade out"
+msgstr "Postupné zesílení signálu"
+
+#: plugins/fade/fade.c:162
+msgid "Apply a linear fade to the selection, fading in from silence"
+msgstr ""
+"Na výběr použít přímočaré utichání zvuku, postupné zesilování signálu z "
+"ticha."
+
+#: plugins/fade/fade.c:178
+msgid "Apply a linear fade to the selection, fading out to silence"
+msgstr ""
+"Na výběr použít přímočaré utichání zvuku, postupné zeslabování signálu "
+"až po ticho."
+
+
