@@ -371,12 +371,10 @@ if test "x${ac_enable_oss}" != xno ; then
   AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h)
   if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
     test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
-    if test "x$ac_enable_alsa" = xyes ; then
-      AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
-      dnl Check for NetBSD's OSS compatability layer
-      AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
-      sweep_config_driver="$sweep_config_driver OSS"
-    fi
+    AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
+    dnl Check for NetBSD's OSS compatability layer
+    AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
+    sweep_config_driver="$sweep_config_driver OSS"
   fi
 else
   HAVE_OSS=disabled
