@@ -286,7 +286,7 @@ enum mad_flow error(void *data,
     /* else fall through */
   default:
 
-    fprintf(stderr, "decoding error 0x%04x (%s) at byte offset %u\n",
+    fprintf(stderr, "decoding error 0x%04x (%s) at byte offset %ld\n",
 	    stream->error, mad_stream_errorstr(stream),
 	    stream->this_frame - info->start);
     break;
