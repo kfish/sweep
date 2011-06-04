@@ -2,7 +2,7 @@
 # Copyright @ 2007 Free Software Foundation, Inc.
 # Current translator: Yuri Bongiorno http://yuri.webhop.org, 2007.
 # Traduttori Italiani GNU:   http://www.linux.it/tp
-# 
+#
 #: src/sample-display.c:222
 msgid ""
 msgstr ""
@@ -12,6 +12,7 @@ msgstr ""
 "PO-Revision-Date: 2007-12-24 19:13+0200\n"
 "Last-Translator: Yuri Bongiorno http://yuri.webhop.org\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

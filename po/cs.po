@@ -1,8 +1,8 @@
 # Copyright (C) YEAR Conrad Parker
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: src/sample-display.c:222
 # Pavel Fric <pavelfric@seznam.cz>, 2009.
+#: src/sample-display.c:222
 msgid ""
 msgstr ""
 "Project-Id-Version: sweep_cs\n"
@@ -11,6 +11,7 @@ msgstr ""
 "PO-Revision-Date: 2009-11-10 18:08+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -254,8 +255,8 @@ msgid ""
 "Lower values improve responsiveness but may degrade audio quality on heavily-"
 "loaded systems."
 msgstr ""
-"Měněním tohoto posuvníku kontroluje prodlevu mezi pohyby kurzoru "
-"a přehráváním. Je to obzvláště patrné při \"čištění\" během přehrávání.\n"
+"Měněním tohoto posuvníku kontroluje prodlevu mezi pohyby kurzoru a "
+"přehráváním. Je to obzvláště patrné při \"čištění\" během přehrávání.\n"
 "\n"
 "Nižší hodnoty zlepšují citlivost, ale mohou snižovat kvalitu zvuku u velice "
 "naložených systémů."
@@ -561,8 +562,8 @@ msgstr "Stálý datový tok bez funkcí (Constant bitrate - CBR)"
 #: src/file_speex.c:1221
 msgid "CBR with Voice Activity Detection (VAD)"
 msgstr ""
-"Stálý datový tok se zjištěním hlasové aktivity (Voice Activity "
-"Detection - VAD)"
+"Stálý datový tok se zjištěním hlasové aktivity (Voice Activity Detection - "
+"VAD)"
 
 #: src/file_speex.c:1222
 msgid "VAD generates low bitrate comfort noise to replace non-speech"
@@ -593,10 +594,9 @@ msgid ""
 "full VBR in the presence of background noise."
 msgstr ""
 "Proměnlivý datový tok umožňuje, aby se datový tok přizpůsobil složitosti "
-"řeči; "
-"tento výběr proměnlivého datového toku používá bez přerušovaného přenosu, "
-"které při srovnání s plným proměnlivým datového tokem v přítomnosti šumu "
-"na pozadí může vylepšit provedení."
+"řeči; tento výběr proměnlivého datového toku používá bez přerušovaného "
+"přenosu, které při srovnání s plným proměnlivým datového tokem v přítomnosti "
+"šumu na pozadí může vylepšit provedení."
 
 #: src/file_speex.c:1235
 msgid "Variable bitrate (VBR) with all features"
@@ -608,9 +608,8 @@ msgid ""
 "pauses using VAD and DTX"
 msgstr ""
 "Proměnlivý datový tok umožňuje, aby se datový tok přizpůsobil složitosti "
-"řeči, "
-"a zachází s odmlkami za použití zjištění hlasové aktivity a přerušovaného "
-"přenosu"
+"řeči, a zachází s odmlkami za použití zjištění hlasové aktivity a "
+"přerušovaného přenosu"
 
 #: src/file_speex.c:1240
 msgid "Constant bitrate (CBR)"
@@ -757,11 +756,10 @@ msgstr ""
 "POUŽITÍ TÉTO VOLBY NENÍ DOPORUČENO.\n"
 "Každý kódovaný soubor by měl mít jiné sériové číslo; opětovné použití "
 "sériových čísel Ogg v dalších souborech může vytvořit jejich neslučitelnost "
-"s aplikacemi používajícími proudy. Tato volba je poskytována pouze pro "
-"účely řízení datových proudů.\n"
+"s aplikacemi používajícími proudy. Tato volba je poskytována pouze pro účely "
+"řízení datových proudů.\n"
 "Pokud není tato volby zaškrtnuta, budou nová sériová čísla pro každý "
-"kódovaný "
-"soubor vytvářena náhodně."
+"kódovaný soubor vytvářena náhodně."
 
 #: src/file_speex.c:2056 src/file_vorbis.c:1540
 msgid "Randomize!"
@@ -773,8 +771,7 @@ msgid ""
 "change while this button is held down."
 msgstr ""
 "Vytvořit náhodné sériové číslo pro datový proud Ogg. Číslo se změní, "
-"jestliže "
-"je toto tlačítko podrženo."
+"jestliže je toto tlačítko podrženo."
 
 #: src/file_speex.c:2094
 msgid ""
@@ -932,8 +929,7 @@ msgid ""
 "track title in a single collection. (e.g. remix info)"
 msgstr ""
 "Pole vyjadřující číslo verze se dá používat kvůli odlišení četných verzí "
-"skladeb se "
-"stejným názvem v jednoduché sbírce (např. jako informace o remixu)"
+"skladeb se stejným názvem v jednoduché sbírce (např. jako informace o remixu)"
 
 #: src/file_vorbis.c:1406
 msgid "Album:"
@@ -956,9 +952,8 @@ msgid ""
 msgstr ""
 "Umělec, který je všeobecně považován za zodpovědného za práci. V populární "
 "hudbě je jím obvykle účinkující kapela nebo zpěvák. Pro klasickou hudbu by "
-"to "
-"tedy byl skladatel. V případě knihy převedené na zvuk by to zase byl autor "
-"původního textu."
+"to tedy byl skladatel. V případě knihy převedené na zvuk by to zase byl "
+"autor původního textu."
 
 #: src/file_vorbis.c:1416
 msgid "Performer:"
@@ -972,12 +967,9 @@ msgid ""
 "and is omitted."
 msgstr ""
 "Umělec(lci), který dílo zahrál. V klasické hudbě by to byl dirigent, "
-"orchestr, "
-"sólisté. V případě knihy převedené na zvuk by to zase byl účinkující, který "
-"četl. "
-"V populární hudbě je jím obvykle ten samý člověk jako v případě UMĚLCE, "
-"který "
-"se však vynechává."
+"orchestr, sólisté. V případě knihy převedené na zvuk by to zase byl "
+"účinkující, který četl. V populární hudbě je jím obvykle ten samý člověk "
+"jako v případě UMĚLCE, který se však vynechává."
 
 #: src/file_vorbis.c:1424
 msgid "Copyright:"
@@ -1004,10 +996,9 @@ msgid ""
 msgstr ""
 "Informace o licenci, např. 'Všechna práva vyhrazena (All Rights Reserved)', "
 "'Povoleno jakékoli využití (Any Use Permitted)', adresa licence na internetu "
-"jako Creative Commons license (\"www.creativecommons.org/"
-"blahblah/license.html\") nebo EFF Open Audio License ('šířeno za podmínek"
-"Open Audio License. see http://www.eff.org/IP/Open_licenses/"
-"eff_oal.html for details'), atd."
+"jako Creative Commons license (\"www.creativecommons.org/blahblah/license."
+"html\") nebo EFF Open Audio License ('šířeno za podmínekOpen Audio License. "
+"see http://www.eff.org/IP/Open_licenses/eff_oal.html for details'), atd."
 
 #: src/file_vorbis.c:1438
 msgid "Organization:"
@@ -1060,9 +1051,8 @@ msgid ""
 "could be a URL, an email address, the physical address of the producing "
 "label."
 msgstr ""
-"Spojovací informace pro tvůrce nebo šiřitele skladby. Může se jednat "
-"o internetovou adresu, e-mailovou adresu, fyzickou adresu společnosti "
-"výrobce."
+"Spojovací informace pro tvůrce nebo šiřitele skladby. Může se jednat o "
+"internetovou adresu, e-mailovou adresu, fyzickou adresu společnosti výrobce."
 
 #: src/file_vorbis.c:1460
 msgid "ISRC:"
@@ -1082,8 +1072,8 @@ msgid ""
 "perceptual audio codec. It is free, open and\n"
 "unpatented."
 msgstr ""
-"Ogg Vorbis je vysoce kvalitní učební zvukový kodek "
-"určený pro všeobecné použití. Je svobodný, otevřený\n"
+"Ogg Vorbis je vysoce kvalitní učební zvukový kodek určený pro všeobecné "
+"použití. Je svobodný, otevřený\n"
 "a nepatentovaný."
 
 #: src/file_vorbis.c:1589
@@ -1175,9 +1165,9 @@ msgid ""
 "and effects to the: selected regions. Hold down shift whilst selecting to "
 "add discontinuous regions to the selection."
 msgstr ""
-"Tento nástroj vám umožní vybrat oblasti ve vzorku. Na vybrané oblasti "
-"potom můžete použít úpravy a efekty. Pro přidání nesouvislých oblastí "
-"do výběru držte při výběru klávesu SHIFT."
+"Tento nástroj vám umožní vybrat oblasti ve vzorku. Na vybrané oblasti potom "
+"můžete použít úpravy a efekty. Pro přidání nesouvislých oblastí do výběru "
+"držte při výběru klávesu SHIFT."
 
 #: src/interface.c:433
 msgid "Move"
@@ -1391,11 +1381,13 @@ msgstr "Bb5"
 msgid "B5"
 msgstr "B5"
 
-#: src/param.c:117, c-format
+#: src/param.c:117
+#, c-format
 msgid "TRUE"
 msgstr "PRAVDIVĚ"
 
-#: src/param.c:118, c-format
+#: src/param.c:118
+#, c-format
 msgid "FALSE"
 msgstr "NESPRÁVNĚ"
 
@@ -1449,8 +1441,8 @@ msgid ""
 "Indicates the total duration of the clipboard, which is the maximum length "
 "that will be pasted."
 msgstr ""
-"Ukazuje celkovou dobu trvání zvukových dat nacházejících se ve schránce, "
-"což je největší možná délka, která bude vložena."
+"Ukazuje celkovou dobu trvání zvukových dat nacházejících se ve schránce, což "
+"je největší možná délka, která bude vložena."
 
 #: src/paste_dialogs.c:362
 msgid "Clipboard duration:"
@@ -1522,9 +1514,8 @@ msgid ""
 "This slider allows you to mix the new recording in with the previous "
 "contents of the buffer. Set it to -inf dB to overwrite the previous sound."
 msgstr ""
-"Posuvník vám umožní smíchat novou nahrávku s předchozím obsahem "
-"vyrovnávací paměti. Nastavte jej na -inf dB pro přepsání předchozího "
-"zvuku."
+"Posuvník vám umožní smíchat novou nahrávku s předchozím obsahem vyrovnávací "
+"paměti. Nastavte jej na -inf dB pro přepsání předchozího zvuku."
 
 #: src/record.c:502
 msgid "Recorded sound"
@@ -1536,9 +1527,9 @@ msgid ""
 "0 dB to record without any reduction. Note that setting this to -inf dB will "
 "record silence."
 msgstr ""
-"Posuvník vám umožní snížit úroveň nahrávaného zvuku. Nastavte jej na "
-"0 dB pro nahrávání bez snížení. Povšimněte si, že jeho nastavení na -inf dB "
-"bude mít za následek nahrávání ticha."
+"Posuvník vám umožní snížit úroveň nahrávaného zvuku. Nastavte jej na 0 dB "
+"pro nahrávání bez snížení. Povšimněte si, že jeho nastavení na -inf dB bude "
+"mít za následek nahrávání ticha."
 
 #: src/sample-display.c:223
 msgid "New selection"
@@ -1608,8 +1599,8 @@ msgid ""
 "Sample Rate Converter for audio by Erik de Castro Lopo\n"
 msgstr ""
 "Tajný Králíkův kód (také známý jako libsamplerate) je\n"
-"Sample Rate Converter for audio (převaděč vzorkovacího "
-"kmitočtu pro zvuk) od Erika de Castro Lopo\n"
+"Sample Rate Converter for audio (převaděč vzorkovacího kmitočtu pro zvuk) od "
+"Erika de Castro Lopo\n"
 
 #: src/samplerate.c:620
 msgid "Resample"
@@ -1663,11 +1654,13 @@ msgstr " 8000 Hz (Hlasová kvalita úzkého pásma)"
 msgid "  4000 Hz (Low quality)"
 msgstr " 4000 Hz (nízká kvalita)"
 
-#: src/sw_chooser.c:67 src/view.c:3446 src/view.c:3459 src/view.c:3498, c-format
+#: src/sw_chooser.c:67 src/view.c:3446 src/view.c:3459 src/view.c:3498
+#, c-format
 msgid "Mono"
 msgstr "Monofonní zvuk"
 
-#: src/sw_chooser.c:68 src/view.c:3446 src/view.c:3459 src/view.c:3501, c-format
+#: src/sw_chooser.c:68 src/view.c:3446 src/view.c:3459 src/view.c:3501
+#, c-format
 msgid "Stereo"
 msgstr "Stereofonní zvuk"
 
@@ -1732,8 +1725,8 @@ msgstr "Zapamatovat si tento formát"
 msgid ""
 "Remember this sampling rate and channel configuration for creating new files."
 msgstr ""
-"Zapamatovat si tento vzorkovací kmitočet a uspořádání kanálů kvůli "
-"vytvoření nových souborů."
+"Zapamatovat si tento vzorkovací kmitočet a uspořádání kanálů kvůli vytvoření "
+"nových souborů."
 
 #: src/sweep_sample.c:540
 msgid "Reset to the last remembered format for new files."
@@ -1779,8 +1772,8 @@ msgid ""
 "\n"
 "Are you sure you want to quit?"
 msgstr ""
-"Některé soubory nejsou uloženy. Pokud teď skončíte, všechny změny "
-"budou ztraceny.\n"
+"Některé soubory nejsou uloženy. Pokud teď skončíte, všechny změny budou "
+"ztraceny.\n"
 "\n"
 "Jste si jist, že chcete skončit?"
 
@@ -2537,7 +2530,5 @@ msgstr ""
 #: plugins/fade/fade.c:178
 msgid "Apply a linear fade to the selection, fading out to silence"
 msgstr ""
-"Na výběr použít přímočaré utichání zvuku, postupné zeslabování signálu "
-"až po ticho."
-
-
+"Na výběr použít přímočaré utichání zvuku, postupné zeslabování signálu až po "
+"ticho."
