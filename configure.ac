@@ -8,6 +8,7 @@ AC_INIT([sweep],[0.9.3],[sweep-devel@lists.sourceforge.net],
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_SILENT_RULES([yes])
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -345,7 +346,7 @@ if test "x${ac_enable_pulseaudio}" != xno ; then
   AC_SUBST(PULSEAUDIO_CFLAGS)
   AC_SUBST(PULSEAUDIO_LIBS)
   if test "x$HAVE_PULSEAUDIO" = xyes; then
-    AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.]) 
+    AC_DEFINE([DRIVER_PULSEAUDIO], [], [Define if we have and want pulseaudio.])
     sweep_config_driver="$sweep_config_driver PulseAudio"
   fi
 else
@@ -357,7 +358,7 @@ if test "x${ac_enable_alsa}" != xno ; then
                     HAVE_ALSA="yes", sweep_config_ok="no")
   AC_SUBST(ALSA_CFLAGS)
   AC_SUBST(ALSA_LIBS)
-  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.]) 
+  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.])
   if test "x$HAVE_ALSA" == xyes ; then
     AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
     sweep_config_driver="$sweep_config_driver ALSA"
@@ -447,7 +448,7 @@ AC_SUBST(GTK_DISABLE_DEPRECATED)
 
 
 
-dnl - Modified from www.nagios.org who modified it from www.erlang.org 
+dnl - Modified from www.nagios.org who modified it from www.erlang.org
 
 dnl   Check how to export functions from the sweep executable, needed
 dnl   when dynamically loaded drivers are loaded (so that they can find
@@ -459,7 +460,7 @@ dnl   variants); some sysVr4 system(s) instead need(s) '-Wl,-Bexport'.
 dnl   AIX 4.x (perhaps only for x>=2) wants -Wl,-bexpall,-brtl and doesn't
 dnl   reliably return an error for others, thus we separate it out.
 dnl   Otherwise we assume that if the linker accepts the flag, it is needed.
-      
+
        AC_MSG_CHECKING(for extra flags needed to export symbols)
        case $host_os in
                aix4*|aix5*)
@@ -623,13 +624,7 @@ AC_MSG_ERROR([
 
 else
 
-# Shave make automake/libtool output much less verbose and much more
-# readable. See : git://git.lespiau.name/shave
-SHAVE_INIT([],[enable])
-
 AC_OUTPUT([
-shave
-shave-libtool
 Makefile
 sweep.spec
 m4/Makefile
@@ -677,7 +672,7 @@ AC_MSG_RESULT([
 **
 **  Type 'make install' to install Sweep. Plugins will not be
 **  accessible until you have done this.
-**  
+**
 **  Have fun with Scrubby!
  *
   ************************************************************
