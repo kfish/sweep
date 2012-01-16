@@ -63,12 +63,12 @@ init_recent_manager(void)
 #if GTK_CHECK_VERSION (2, 10, 0)
 
   recent_manager = gtk_recent_manager_get_default();
-    
+
   /* good idea / bad idea? */
   if (!recent_manager)
     recent_manager = gtk_recent_manager_new();
-    
-#endif    
+
+#endif
 }
 
 void
@@ -77,50 +77,50 @@ recent_manager_add_item (gchar *path)
 #if GTK_CHECK_VERSION (2, 10, 0)
 
   gchar *uri;
-    
+
   //uri = g_strconcat("file:/", path, NULL);
   uri = g_filename_to_uri(path, NULL, NULL);
-    
+
   if (recent_manager != NULL)
-    gtk_recent_manager_add_item (recent_manager, uri);  
-    
+    gtk_recent_manager_add_item (recent_manager, uri);
+
   g_free(uri);
-#endif    
+#endif
 }
 
 static void
 init_accels (void)
 {
   gchar * accels_path;
- 
+
   accels_path = (char *)g_get_home_dir ();
   accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
   gtk_accel_map_load (accels_path);
-	
+
 }
 
-void 
+void
 save_accels (void)
 {
   gchar * accels_path;
- 
+
   accels_path = (char *)g_get_home_dir ();
   accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
   gtk_accel_map_save (accels_path);
-	
+
 }
 
 
-void 
+void
 sweep_set_window_icon (GtkWindow *window)
 {
   GdkPixbuf * window_icon;
-  
+
   if (!GTK_IS_WINDOW(window))
 	return;
-  
+
   window_icon = gdk_pixbuf_new_from_xpm_data((const char **)sweep_app_icon_xpm);
-  
+
   if (window_icon)
    {
       gtk_window_set_icon (GTK_WINDOW (window), window_icon);
@@ -205,21 +205,20 @@ init_styles (void)
   GdkColor gdkwhite;
   GdkColor * color_LCD;
   GdkColor * color_light_grey;
-  GdkColor * color_green_grey;
   GdkColor * color_red_grey;
-  GdkColor * color_dark_grey;
   GdkColor * color_red;
 
   gdk_color_white(gdk_colormap_get_system(),&gdkwhite);
   gdk_color_black(gdk_colormap_get_system(),&gdkblack);
-  
+
   color_LCD = create_color (33686,38273,29557);
   color_light_grey = create_color (0xaaaa, 0xaaaa, 0xaaaa);
-  color_green_grey = create_color (0xaaaa, 0xbbbb, 0xaaaa);
   color_red_grey = create_color (0xd3d3, 0x9898, 0x9898);
-  /*  color_dark_grey = create_color (0x4444,0x4444,0x4444);*/
-  color_dark_grey = create_color (0x5555, 0x5555, 0x5555);
   color_red = create_color (0xffff, 0x0000, 0x0000);
+
+  /* These two are created, but not used in this function. */
+  create_color (0xaaaa, 0xbbbb, 0xaaaa);
+  create_color (0x5555, 0x5555, 0x5555);
 
   style_wb = create_style(&gdkwhite,&gdkblack,FALSE);
   style_bw = create_style(&gdkblack,&gdkwhite,FALSE);
@@ -301,7 +300,7 @@ void attach_window_close_accel(GtkWindow *window)
 {
   GClosure *gclosure;
   GtkAccelGroup *accel_group;
-	
+
   accel_group = gtk_accel_group_new ();
   gclosure = g_cclosure_new  ((GCallback)close_window_cb, NULL, NULL);
   gtk_accel_group_connect (accel_group,

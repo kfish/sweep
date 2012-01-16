@@ -82,12 +82,12 @@ file_is_mpeg_audio (const char * pathname)
  * one blind check for a marker can produce a false postive.
  * similarly, due to the metadata tags, the max
  * frame size may also not be a large enough window within
- * which to find a frame in a legal mpegfile. 
+ * which to find a frame in a legal mpegfile.
  *
- * reimplement this check as a contextual verfification of 
+ * reimplement this check as a contextual verfification of
  * a sequence of frames, starting from somewhere in the middle
  * of a file. in the mean time, raise size of buf from 2048 to 8192
- * to mitigate the chance of a false negative. (with an increased 
+ * to mitigate the chance of a false negative. (with an increased
  * change of a false positive as a result.)
  */
   unsigned char buf[8192];
@@ -150,7 +150,7 @@ struct mad_info {
 
 static enum mad_flow
 input(void *data, struct mad_stream *stream)
-{ 
+{
   struct mad_info * info = data;
   unsigned long n;
 
@@ -169,17 +169,17 @@ input(void *data, struct mad_stream *stream)
       info->end_buffer = g_malloc0 (info->remaining + MAD_BUFFER_GUARD);
       if (info->end_buffer == NULL)
 	return MAD_FLOW_BREAK;
-      
+
       info->eof = 1;
-      
+
       memcpy (info->end_buffer, info->start + info->offset, info->remaining);
-      
+
       mad_stream_buffer (stream, info->end_buffer,
 			 info->remaining + MAD_BUFFER_GUARD);
 
       info->offset += n;
       info->remaining -= n;
-      
+
       return MAD_FLOW_CONTINUE;
     }
   } else {
@@ -222,48 +222,48 @@ enum mad_flow output(void *data,
 
     sample->sounddata->format->channels = pcm->channels;
     sample->sounddata->format->rate = pcm->samplerate;
-    
+
     data_start = info->nr_frames;
-    
+
     info->nr_frames += pcm->length;
 
     if (info->nr_frames > sample->sounddata->nr_frames) {
 		g_mutex_lock(sample->sounddata->data_mutex);
-		
+
 		sample->sounddata->data = g_realloc(sample->sounddata->data,
 		   frames_to_bytes (sample->sounddata->format,
 				    info->nr_frames));
 	    g_mutex_unlock(sample->sounddata->data_mutex);
 
     }
-    
+
     sample->sounddata->nr_frames = info->nr_frames;
-    
+
     d = (sw_audio_t *)sample->sounddata->data;
     d = &d[data_start * pcm->channels];
-    
+
     for (i = 0; i < pcm->channels; i++) {
       for (j = 0; j < pcm->length; j++) {
 	d[j*pcm->channels + i] =
 	  (sw_audio_t)mad_f_todouble(pcm->samples[i][j]);
       }
     }
-    
+
     percent = (info->length - info->remaining) * 100 / info->length;
     sample_set_progress_percent (info->sample, percent);
-    
+
 #ifdef DEBUG
     printf ("decoded %u samples, %d%% percent complete (%u / %u)\n",
 	    nsamples, percent, info->remaining, info->length);
 #endif
-    
+
   }
   g_mutex_unlock (sample->ops_mutex);
 
   return (active ? MAD_FLOW_CONTINUE : MAD_FLOW_STOP);
 }
 
-/* 
+/*
  * This is the error callback function. It is called whenever a decoding
  * error occurs. The error is indicated by stream->error; the list of
  * possible MAD_ERROR_* errors can be found in the mad.h (or
@@ -309,7 +309,6 @@ sample_load_mad_data (sw_op_instance * inst)
 
   struct mad_decoder decoder;
   struct mad_info info;
-  int result;
 
   fd = open (sample->pathname, O_RDONLY);
 
@@ -339,7 +338,7 @@ sample_load_mad_data (sw_op_instance * inst)
 		    input, 0 /* header */, 0 /* filter */, output,
 		    error, 0 /* message */);
 
-  result = mad_decoder_run (&decoder, MAD_DECODER_MODE_SYNC);
+  mad_decoder_run (&decoder, MAD_DECODER_MODE_SYNC);
 
   mad_decoder_finish (&decoder);
 

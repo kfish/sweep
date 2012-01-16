@@ -28,7 +28,7 @@
  * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 
@@ -71,7 +71,7 @@ time_ruler_get_type (void)
     {
       static const GTypeInfo time_ruler_info =
       {
-		  
+
 	sizeof (TimeRulerClass),
 	NULL, /* base_init */
 	NULL, /* base_finalize */
@@ -80,7 +80,7 @@ time_ruler_get_type (void)
 	NULL, /* class_data */
 	sizeof (TimeRuler),
 	0,    /* n_preallocs */
-	(GInstanceInitFunc) time_ruler_init,	  
+	(GInstanceInitFunc) time_ruler_init,
 
       };
 
@@ -172,7 +172,7 @@ static void
 time_ruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
-  GdkGC *gc, *bg_gc;
+  GdkGC *gc;
   gint i;
   gint width, height;
   gint xthickness;
@@ -185,7 +185,6 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   gdouble start, end, cur;
   gchar unit_str[32];
   gint digit_height;
-  gint digit_offset;
   gint text_width;
   gint pos;
   PangoLayout *layout;
@@ -194,13 +193,12 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   g_return_if_fail (ruler != NULL);
   g_return_if_fail (GTK_IS_TIME_RULER (ruler));
 
-  if (!GTK_WIDGET_DRAWABLE (ruler)) 
+  if (!GTK_WIDGET_DRAWABLE (ruler))
     return;
 
   widget = GTK_WIDGET (ruler);
 
   gc = widget->style->fg_gc[GTK_STATE_NORMAL];
-  bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
 
   xthickness = widget->style->xthickness;
   ythickness = widget->style->ythickness;
@@ -210,15 +208,13 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 
   layout = gtk_widget_create_pango_layout (widget, "012456789");
   pango_layout_get_extents (layout, &ink_rect, &logical_rect);
-  
-  digit_height = PANGO_PIXELS (ink_rect.height) + 2;
-  digit_offset = ink_rect.y;
 
-   
+  digit_height = PANGO_PIXELS (ink_rect.height) + 2;
+
   gtk_paint_box (widget->style, ruler->backing_store,
-		 GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
+		 GTK_STATE_NORMAL, GTK_SHADOW_OUT,
 		 NULL, widget, "time_ruler",
-		 0, 0, 
+		 0, 0,
 		 widget->allocation.width, widget->allocation.height);
 
 
@@ -231,7 +227,7 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   upper = ruler->upper / TIME_RULER(ruler)->samplerate;
   lower = ruler->lower / TIME_RULER(ruler)->samplerate;
 
-  if ((upper - lower) == 0) 
+  if ((upper - lower) == 0)
     return;
 
   increment = (gdouble) width / (upper - lower);
@@ -258,9 +254,9 @@ time_ruler_draw_ticks (GtkRuler *ruler)
   length = 0;
   for (i = MAXIMUM_SUBDIVIDE - 1; i >= 0; i--)
     {
-      subd_incr = (gdouble) ruler_scale[scale] / 
+      subd_incr = (gdouble) ruler_scale[scale] /
 	          (gdouble) subdivide[i];
-      if (subd_incr * fabs(increment) <= MINIMUM_INCR) 
+      if (subd_incr * fabs(increment) <= MINIMUM_INCR)
 	continue;
 
       /* Calculate the length of the tickmarks. Make sure that
@@ -281,16 +277,16 @@ time_ruler_draw_ticks (GtkRuler *ruler)
 	  end   = ceil  (lower / subd_incr) * subd_incr;
 	}
 
-  
+
       for (cur = start; cur <= end; cur += subd_incr)
 	{
 	  pos = ROUND ((cur - lower) * increment);
 
 	  gdk_draw_line (ruler->backing_store, gc,
-			 pos, height + ythickness, 
+			 pos, height + ythickness,
 			 pos, height - length + ythickness);
 
-	  /* draw label */ 
+	  /* draw label */
 	  if (i == 0)
 	    {
 	      snprint_time (unit_str, sizeof (unit_str), (sw_time_t)cur);
