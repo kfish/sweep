@@ -111,7 +111,7 @@ pcmio_get_main_dev (void)
   main_dev = prefs_get_string (dialog_driver->primary_device_key);
 
   if (main_dev == NULL) return pcmio_get_default_main_dev();
-  
+
   return main_dev;
 }
 
@@ -123,7 +123,7 @@ pcmio_get_monitor_dev (void)
   monitor_dev = prefs_get_string (dialog_driver->monitor_device_key);
 
   if (monitor_dev == NULL) return pcmio_get_default_monitor_dev ();
-  
+
   return monitor_dev;
 }
 
@@ -255,12 +255,11 @@ update_ok_button (GtkWidget * widget, gpointer data)
   GtkWidget * ok_button;
   gchar * main_devname, * monitor_devname;
   gboolean ok = FALSE;
-  int driver_index;
 
   ok_button =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "ok_button"));
 
-  driver_index = gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
+  gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
 
   if (monitor_checked (dialog)) {
     main_devname = (gchar *)
@@ -387,7 +386,7 @@ create_drivers_combo (void)
 {
   GtkWidget * combo;
   int k, current=0;
-  
+
   combo = gtk_combo_box_new_text ();
 
   for (k = 0 ; k < ARRAY_LEN (driver_table) && driver_table [k] ; k++) {
@@ -409,9 +408,9 @@ create_devices_combo (void)
 
   if (dialog_driver->get_names)
     cbitems = dialog_driver->get_names();
-  
+
   combo = gtk_combo_new ();
-  
+
   gtk_combo_set_popdown_strings (GTK_COMBO(combo), cbitems);
 
   return combo;
@@ -436,10 +435,10 @@ device_config (void)
   if (dialog == NULL) {
 
     dialog = gtk_dialog_new ();
-			
-				 
-		g_signal_connect ((gpointer) dialog, "destroy", 
-                       G_CALLBACK(gtk_widget_destroyed), 
+
+
+		g_signal_connect ((gpointer) dialog, "destroy",
+                       G_CALLBACK(gtk_widget_destroyed),
 											&dialog);
 
     gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: audio device configuration"));
@@ -524,16 +523,16 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 4);
     gtk_widget_show (label);
 
-    /* Main output */ 
+    /* Main output */
     hbox = gtk_hbox_new (FALSE, 8);
     gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
     gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
     gtk_widget_show (hbox);
-      
+
     label = gtk_label_new (_("Main device:"));
     gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
-      
+
     main_combo = create_devices_combo ();
     gtk_box_pack_start (GTK_BOX(hbox), main_combo, TRUE, TRUE, 0);
     gtk_widget_show (main_combo);
@@ -560,7 +559,7 @@ device_config (void)
     gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, TRUE, 8);
     gtk_container_set_border_width (GTK_CONTAINER(hbox), 12);
     gtk_widget_show (hbox);
-      
+
     label = gtk_label_new (_("Monitor output:"));
     gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);

@@ -138,15 +138,6 @@ update_save_options_caps (sndfile_save_options * so)
 static void
 update_save_options_values (sndfile_save_options * so)
 {
-  sw_sample * sample;
-  sw_format * format;
-  SF_INFO * sfinfo;
-
-  sample = so->sample;
-  format = sample->sounddata->format;
-
-  sfinfo = so->sfinfo;
-
   update_ok_button (so);
 }
 
@@ -220,10 +211,10 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   int	k, count ;
 
   SF_INFO tmp_sfinfo;
-	
+
   dialog = gtk_dialog_new ();
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-  
+
   attach_window_close_accel(GTK_WINDOW(dialog));
 
   /* Set up the action area first so the sensitivity of the ok button
@@ -290,7 +281,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   gtk_box_pack_start (GTK_BOX(vbox), label,
 		      FALSE, FALSE, 8);
   gtk_widget_show (label);
-  
+
 /*gtk_widget_pop_style ();*/
 
   notebook = gtk_notebook_new ();
@@ -320,7 +311,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 0, 1,
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (_("Encoding:"));
   gtk_box_pack_end (GTK_BOX(hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -352,7 +343,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
       }
 
       menuitem = gtk_menu_item_new_with_label (info.name);
-      g_object_set_data (G_OBJECT(menuitem), "default", 
+      g_object_set_data (G_OBJECT(menuitem), "default",
 				GINT_TO_POINTER(info.format));
       g_signal_connect (G_OBJECT(menuitem), "activate",
 			  G_CALLBACK(set_subformat_cb), so);
@@ -364,10 +355,10 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
     }
   }
 
-  
+
 
   /*------------------------------------------------------*/
-  
+
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
   gtk_widget_show (menu);
 
@@ -392,11 +383,11 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
     gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 1, 2,
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
     gtk_widget_show (hbox);
-    
+
     label = gtk_label_new (_("Sampling rate:"));
     gtk_box_pack_end (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
-    
+
     hbox = gtk_hbox_new (FALSE, 0);
     gtk_table_attach (GTK_TABLE(table), hbox, 1, 2, 1, 2,
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
@@ -414,7 +405,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   gtk_table_attach (GTK_TABLE(table), entry, 0, 2, 2, 3,
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (entry);
-  
+
   g_signal_connect (G_OBJECT(entry), "number-changed",
 		      G_CALLBACK(set_channels_cb), so);
 

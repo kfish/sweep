@@ -51,16 +51,12 @@ static gint db_slider_signals[LAST_SIGNAL] = { 0 };
 static void
 db_slider_class_init(DbSliderClass * klass)
 {
-  GtkObjectClass *object_class;
-
-  object_class = (GtkObjectClass *) klass;
-
   db_slider_signals[VALUE_CHANGED_SIGNAL] = g_signal_new ("value-changed",
 					 					 G_TYPE_FROM_CLASS (klass),
 	                                	 G_SIGNAL_RUN_FIRST,
 	                                 	 G_STRUCT_OFFSET (DbSliderClass, value_changed),
-                                         NULL, 
-                                         NULL,                
+                                         NULL,
+                                         NULL,
 										 g_cclosure_marshal_VOID__FLOAT,
                                          G_TYPE_NONE, 1, G_TYPE_FLOAT);
   klass->value_changed = NULL;
@@ -87,12 +83,12 @@ db_slider_get_type()
 	 NULL, /* class_data */
      sizeof (DbSlider),
 	 0,
-	(GInstanceInitFunc) db_slider_init, 
+	(GInstanceInitFunc) db_slider_init,
 
     };
 
     db_slider_type = g_type_register_static(GTK_TYPE_VBOX, "DbSlider" ,&db_slider_info, 0);
-				    
+
   }
 
   return db_slider_type;
@@ -193,7 +189,7 @@ db_slider_build (GtkWidget * slider, gchar * title, gfloat value)
 
   label = gtk_label_new (range_text);
   gtk_box_pack_start (GTK_BOX(vbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);  
+  gtk_widget_show (label);
 }
 
 

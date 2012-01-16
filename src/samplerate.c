@@ -78,7 +78,6 @@ do_samplerate_thread (sw_op_instance * inst)
   sw_format * old_format = sample->sounddata->format;
   sw_sounddata * old_sounddata, * new_sounddata;
   sw_framecount_t old_nr_frames, new_nr_frames;
-  int channel = 0;
 
   SRC_STATE * src_state;
   SRC_DATA src_data;
@@ -121,7 +120,6 @@ do_samplerate_thread (sw_op_instance * inst)
   ctotal = remaining / 100;
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
-  channel = 0;
   offset_in = 0, offset_out = 0;
 
   /* Create selections */
@@ -171,7 +169,7 @@ do_samplerate_thread (sw_op_instance * inst)
 
 	remaining -= (sw_framecount_t)src_data.output_frames_gen;
 	run_total += (sw_framecount_t)src_data.output_frames_gen;
-	
+
 	offset_in += (sw_framecount_t)src_data.input_frames_used;
 	offset_out += (sw_framecount_t)src_data.output_frames_gen;
 
@@ -179,7 +177,7 @@ do_samplerate_thread (sw_op_instance * inst)
 	if (src_data.output_frames_gen == 0) {
 	    active = FALSE;
 	}
-	
+
 #ifdef DEBUG
 	printf ("%ld ->\t%ld\t(%d)\n", src_data.input_frames_used,
 		src_data.output_frames_gen, remaining);
@@ -199,7 +197,7 @@ do_samplerate_thread (sw_op_instance * inst)
   } else if (sample->edit_state == SWEEP_EDIT_STATE_BUSY) {
     /* Set real number of frames. */
     new_sounddata->nr_frames = run_total ;
-    
+
     sample->sounddata = new_sounddata;
 
     inst->redo_data = inst->undo_data =
@@ -296,7 +294,7 @@ static gboolean samplerate_dialog_delete_event_cb( GtkWidget *widget,
                               gpointer   data )
 {
     samplerate_dialog_cancel_cb(widget, data);
-    return FALSE; 
+    return FALSE;
 }
 
 static void
@@ -383,9 +381,9 @@ src_quality_options_reset_cb (GtkWidget * widget, gpointer data)
 
   quality_menu =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_menu"));
-  
+
   i = prefs_get_int (QUALITY_KEY);
-  
+
   if (i == NULL) {
     quality = DEFAULT_QUALITY;
   } else {
@@ -445,7 +443,7 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Resample"));
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-  
+
   g_signal_connect (G_OBJECT (dialog), "delete_event", G_CALLBACK (samplerate_dialog_delete_event_cb), sample);
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
@@ -647,7 +645,7 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   sample_set_edit_state (sample, SWEEP_EDIT_STATE_BUSY);
   sample_set_edit_mode (sample, SWEEP_EDIT_MODE_FILTER);
   sample_set_progress_percent (sample, 0);
-  
+
   gtk_widget_show (dialog);
 }
 

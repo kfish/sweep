@@ -28,7 +28,7 @@
  * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 
@@ -57,7 +57,7 @@
 static void db_ruler_class_init    (DbRulerClass *klass);
 static void db_ruler_init          (DbRuler      *db_ruler);
 static void db_ruler_realize (GtkWidget * widget);
-static gint 
+static gint
 db_ruler_button_press  (GtkWidget * widget, GdkEventButton * event);
 static gint
 db_ruler_button_release  (GtkWidget * widget, GdkEventButton * event);
@@ -89,7 +89,7 @@ db_ruler_get_type (void)
     {
       static const GTypeInfo db_ruler_info =
       {
-		  
+
 	sizeof (DbRulerClass),
 	NULL, /* base_init */
 	NULL, /* base_finalize */
@@ -98,7 +98,7 @@ db_ruler_get_type (void)
 	NULL, /* class_data */
 	sizeof (DbRuler),
 	0,    /* n_preallocs */
-	(GInstanceInitFunc) db_ruler_init,	  
+	(GInstanceInitFunc) db_ruler_init,
 
       };
 
@@ -111,11 +111,9 @@ db_ruler_get_type (void)
 static void
 db_ruler_class_init (DbRulerClass *klass)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkRulerClass *ruler_class;
 
-  object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass*) klass;
   ruler_class = (GtkRulerClass*) klass;
 
@@ -135,8 +133,8 @@ db_ruler_class_init (DbRulerClass *klass)
 					 			  G_TYPE_FROM_CLASS (klass),
 	                              G_SIGNAL_RUN_FIRST,
 	                              G_STRUCT_OFFSET (DbRulerClass, changed),
-                                  NULL, 
-                                  NULL,                
+                                  NULL,
+                                  NULL,
 					 			  g_cclosure_marshal_VOID__VOID,
                                   G_TYPE_NONE, 0);
   klass->changed = NULL;
@@ -271,7 +269,7 @@ db_ruler_button_press (GtkWidget * widget, GdkEventButton * event)
    int y;
 
   gdk_window_get_pointer (event->window, NULL, &y, NULL);
-  
+
   switch (event->button) {
   case 1:
     DB_RULER(widget)->y = y;
@@ -299,18 +297,18 @@ db_ruler_scroll_event (GtkWidget *widget, GdkEventScroll *event)
   float delta;
 
   if (event->direction == GDK_SCROLL_UP) {    /* mouse wheel scroll up */
-  	
+
 	delta = ruler->upper - ruler->lower;
     gtk_ruler_set_range (ruler, ruler->lower + delta/8, ruler->upper - delta/8,
-			 (ruler->upper - ruler->lower)/2.0, 2.0);    
+			 (ruler->upper - ruler->lower)/2.0, 2.0);
     g_signal_emit_by_name (ruler, "changed");
 	return TRUE;
-	  
+
   }  else if (event->direction == GDK_SCROLL_DOWN) {   /* mouse wheel scroll down */
-  	
+
     delta = ruler->upper - ruler->lower;
     gtk_ruler_set_range (ruler, ruler->lower - delta/8, ruler->upper + delta/8,
-			 (ruler->upper - ruler->lower)/2.0, 2.0);    
+			 (ruler->upper - ruler->lower)/2.0, 2.0);
     g_signal_emit_by_name (ruler, "changed");
 	return TRUE;
   }
@@ -329,7 +327,7 @@ static void
 db_ruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
-  GdkGC *gc, *bg_gc;
+  GdkGC *gc;
   gint i;
   gint width, height;
   gint xthickness;
@@ -342,8 +340,6 @@ db_ruler_draw_ticks (GtkRuler *ruler)
   gfloat start, end, cur;
   gchar unit_str[32];
   gint digit_height;
-  gint digit_offset;
-  gint text_height;
   gint pos;
   PangoLayout *layout;
   PangoRectangle logical_rect, ink_rect;
@@ -351,13 +347,12 @@ db_ruler_draw_ticks (GtkRuler *ruler)
   g_return_if_fail (ruler != NULL);
   g_return_if_fail (GTK_IS_DB_RULER (ruler));
 
-  if (!GTK_WIDGET_DRAWABLE (ruler)) 
+  if (!GTK_WIDGET_DRAWABLE (ruler))
     return;
 
   widget = GTK_WIDGET (ruler);
 
   gc = widget->style->fg_gc[GTK_STATE_NORMAL];
-  bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
 
   xthickness = widget->style->xthickness;
   ythickness = widget->style->ythickness;
@@ -368,14 +363,13 @@ db_ruler_draw_ticks (GtkRuler *ruler)
 
   layout = gtk_widget_create_pango_layout (widget, "012456789dBinf-");
   pango_layout_get_extents (layout, &ink_rect, &logical_rect);
-  
+
   digit_height = PANGO_PIXELS (ink_rect.height) + 2;
-  digit_offset = ink_rect.y;
 
   gtk_paint_box (widget->style, ruler->backing_store,
-		 GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
+		 GTK_STATE_NORMAL, GTK_SHADOW_OUT,
 		 NULL, widget, "db_ruler",
-		 0, 0, 
+		 0, 0,
 		 widget->allocation.width, widget->allocation.height);
 
   gdk_draw_line (ruler->backing_store, gc,
@@ -384,25 +378,17 @@ db_ruler_draw_ticks (GtkRuler *ruler)
 		 width + xthickness,
 		 height - ythickness);
 
-upper = ruler->upper / ruler->metric->pixels_per_unit;
-lower = ruler->lower / ruler->metric->pixels_per_unit;
+  upper = ruler->upper / ruler->metric->pixels_per_unit;
+  lower = ruler->lower / ruler->metric->pixels_per_unit;
 
-//   upper = ruler->upper;
-//   lower = ruler->lower;
-
-  if ((upper - lower) == 0) 
+  if ((upper - lower) == 0)
     return;
 
   increment = (gfloat) height / (upper - lower);
   abs_increment = (gfloat) fabs((double)increment);
 
-// * strlen (unit_str)
-text_height =  digit_height + 1;
-
   for (scale = 0; scale < MAXIMUM_SCALES; scale++)
- /*   if (ruler->metric->ruler_scale[scale] * fabs(increment) > 2 * text_height)
-      break;*/
-if (ruler_scale[scale] * abs_increment > 2 * digit_height)
+    if (ruler_scale[scale] * abs_increment > 2 * digit_height)
       break;
   if (scale == MAXIMUM_SCALES)
     scale = MAXIMUM_SCALES - 1;
@@ -426,9 +412,9 @@ if (ruler_scale[scale] * abs_increment > 2 * digit_height)
   length = 0;
   for (i = MAXIMUM_SUBDIVIDE - 1; i >= 0; i--)
     {
-      subd_incr = (gfloat) ruler_scale[scale] / 
+      subd_incr = (gfloat) ruler_scale[scale] /
 	          (gfloat) subdivide[i];
-      if (subd_incr * fabs(increment) <= MINIMUM_INCR) 
+      if (subd_incr * fabs(increment) <= MINIMUM_INCR)
 	continue;
 
       /* Calculate the length of the tickmarks. Make sure that
@@ -460,17 +446,17 @@ if (ruler_scale[scale] * abs_increment > 2 * digit_height)
 	  /* draw label */
 	  if (i == 0 && cur < upper && cur > lower) {
 	    float a_cur = fabs(cur), db_cur;
-	    
+
 	    /* ensure inf. stays as 'inf.', not nearby large values */
 	    if (a_cur < subd_incr/2) a_cur = 0.0;
 	    db_cur = 20 * log10 (a_cur);
-	    
+
 	    if (db_cur > -10.0) {
 	      snprintf (unit_str, sizeof (unit_str), "%1.1f", db_cur);
 	    } else {
 	      snprintf (unit_str, sizeof (unit_str), "%2.0f", db_cur);
 	    }
-	  
+
 		pango_layout_set_text (layout, unit_str, -1);
 
   		gtk_paint_layout (widget->style,
@@ -485,9 +471,9 @@ if (ruler_scale[scale] * abs_increment > 2 * digit_height)
                   layout);
 	    }
 	}
-	
+
     }
-	
+
 }
 
 static void
@@ -497,11 +483,9 @@ db_ruler_draw_pos (GtkRuler *ruler)
   GdkGC *gc;
   int i;
   gint x, y;
-  gint width, height;
+  gint width;
   gint bs_width, bs_height;
   gint xthickness;
-  gint ythickness;
-  gfloat increment;
 
   g_return_if_fail (ruler != NULL);
   g_return_if_fail (GTK_IS_DB_RULER (ruler));
@@ -512,9 +496,7 @@ db_ruler_draw_pos (GtkRuler *ruler)
 
       gc = widget->style->fg_gc[GTK_STATE_NORMAL];
       xthickness = widget->style->xthickness;
-      ythickness = widget->style->ythickness;
       width = widget->allocation.width - xthickness * 2;
-      height = widget->allocation.height;
 
       bs_height = 7;
       bs_width = 4;
@@ -529,8 +511,6 @@ db_ruler_draw_pos (GtkRuler *ruler)
 			     ruler->xsrc, ruler->ysrc,
 			     ruler->xsrc, ruler->ysrc,
 			     bs_width, bs_height);
-
-	  increment = (gfloat) height / (ruler->upper - ruler->lower);
 
 	  x = (width - bs_width) + xthickness - 2;
 	  y = DB_RULER(ruler)->y;
