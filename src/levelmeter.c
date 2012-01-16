@@ -63,7 +63,7 @@ levelmeter_set_level(LevelMeter * levelmeter, guint level)
 
   levelmeter->level = level;
 /*
-  gtk_widget_queue_draw_area(GTK_WIDGET(levelmeter), 
+  gtk_widget_queue_draw_area(GTK_WIDGET(levelmeter),
 									        gint x,
                                              gint y,
                                              gint width,
@@ -73,7 +73,6 @@ levelmeter_set_level(LevelMeter * levelmeter, guint level)
 static void
 levelmeter_realize(GtkWidget * widget)
 {
-  LevelMeter *levelmeter;
   GdkWindowAttr attributes;
   gint attributes_mask;
 
@@ -81,7 +80,6 @@ levelmeter_realize(GtkWidget * widget)
   g_return_if_fail(IS_LEVELMETER(widget));
 
   GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-  levelmeter = LEVELMETER(widget);
 
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
@@ -116,16 +114,12 @@ levelmeter_size_request(GtkWidget * widget, GtkRequisition * requisition)
 static void
 levelmeter_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
 {
-  LevelMeter *levelmeter;
-
   g_return_if_fail(widget != NULL);
   g_return_if_fail(IS_LEVELMETER(widget));
   g_return_if_fail(allocation != NULL);
 
   widget->allocation = *allocation;
   if (GTK_WIDGET_REALIZED(widget)) {
-    levelmeter = LEVELMETER(widget);
-
     gdk_window_move_resize(widget->window,
        allocation->x, allocation->y, allocation->width, allocation->height);
   }
@@ -173,12 +167,8 @@ levelmeter_expose(GtkWidget * widget, GdkEventExpose * event)
 static void
 levelmeter_destroy(GtkObject * object)
 {
-  LevelMeter *levelmeter;
-
   g_return_if_fail(object != NULL);
   g_return_if_fail(IS_LEVELMETER(object));
-
-  levelmeter = LEVELMETER(object);
 
   /* unref contained widgets */
 
@@ -240,7 +230,7 @@ levelmeter_get_type()
   if (!levelmeter_type) {
     static const GTypeInfo levelmeter_info =
     {
-		  
+
       sizeof(LevelMeterClass),
 	NULL, /* base_init */
 	NULL, /* base_finalize */
@@ -249,13 +239,13 @@ levelmeter_get_type()
 	NULL, /* class_data */
 	sizeof (LevelMeter),
 	0,    /* n_preallocs */
-	(GInstanceInitFunc) levelmeter_init,	  
+	(GInstanceInitFunc) levelmeter_init,
 
     };
 
       levelmeter_type = g_type_register_static (GTK_TYPE_WIDGET, "LevelMeter", &levelmeter_info, 0);
   }
-	
+
   return levelmeter_type;
 }
 
@@ -264,7 +254,7 @@ levelmeter_new(guint level)
 {
   LevelMeter *levelmeter;
 
-    levelmeter = LEVELMETER (g_object_new (levelmeter_get_type (), NULL));	
+    levelmeter = LEVELMETER (g_object_new (levelmeter_get_type (), NULL));
   levelmeter_set_level(levelmeter, level);
 
   return GTK_WIDGET(levelmeter);

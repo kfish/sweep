@@ -112,12 +112,12 @@ update_playmarker (gpointer data)
     } else {
       sample_set_playmarker (s, (sw_framecount_t)head->offset, TRUE);
     }
-    
+
     /* As this may have been stopped by the player thread, refresh the
      * interface */
     head_set_going (head, FALSE);
     sample_refresh_playmode (s);
-    
+
     return FALSE;
   } else {
     sample_set_playmarker (s, head->realoffset, FALSE);
@@ -146,7 +146,6 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
   sw_sample * sample = head->sample;
   sw_sounddata * sounddata = sample->sounddata;
   sw_format * f = sounddata->format;
-  sw_audio_t * d;
   gdouble po = 0.0, p;
   gfloat relpitch;
   sw_framecount_t i, j, b;
@@ -157,15 +156,13 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
   int pbuf_size = count * f->channels;
   gdouble scrub_rate = f->rate / 30.0;
 
-  d = (sw_audio_t *)sounddata->data;
-
   b = 0;
 
   po = head->offset;
 
   /* compensate for sampling rate of driver */
   relpitch = (gfloat)((gdouble)f->rate / (gdouble)driver_rate);
-  
+
   for (i = 0; i < count; i++) {
     if (head->mute || sample->user_offset == last_user_offset) {
       for (j = 0; j < f->channels; j++) {
@@ -174,9 +171,9 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
       }
     } else {
       si = (int)floor(po);
-      
+
       interpolate = (si < sounddata->nr_frames);
-      
+
       p = po - (gdouble)si;
       si *= f->channels;
       g_mutex_lock(head->sample->sounddata->data_mutex);
@@ -217,28 +214,28 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 
       if (sample->by_user) {
 	new_delta = (sample->user_offset - po) / scrub_rate;
-	
+
 	head->delta = head->delta * 0.9 + new_delta * 0.1;
-	
+
 	sample->by_user = FALSE;
-	
+
 	last_user_offset = sample->user_offset;
       } else  {
 	gfloat new_po, u_po = (gdouble)sample->user_offset;
 
 	new_delta = (sample->user_offset - po) / scrub_rate;
-	
+
 	head->delta = head->delta * 0.99 + new_delta * 0.01;
-	
+
 	new_po = po + (head->delta * relpitch);
-	
+
 	if ((head->delta < 0 && new_po < u_po) ||
 	    (head->delta > 0 && new_po > u_po)) {
 	  po = u_po;
 	  head->delta = 0.0;
 	}
       }
-      
+
       do_smoothing = TRUE;
 
     } else {
@@ -330,14 +327,14 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	  osel = NULL;
 	  for (gl = g_list_last (sounddata->sels); gl; gl = gl->prev) {
 	    sel = (sw_sel *)gl->data;
-	    
+
 	    if (osel && ((sw_framecount_t)head->offset > osel->sel_start))
 	      head->offset = osel->sel_start;
 
 	    osel = sel;
 
 	    head_offset = (sw_framecount_t)head->offset;
-	    
+
 	    if (head_offset > sel->sel_end) {
 	      n = MIN (remaining, head_offset - sel->sel_end);
 	      break;
@@ -350,7 +347,7 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	      head->offset = osel->sel_start;
 
 	    head_offset = (sw_framecount_t)head->offset;
-	    
+
 	    /* continue 1 second */
 	    delta = time_to_frames (sounddata->format, 1.0);
 	    bound = MAX((osel->sel_start - delta), 0);
@@ -363,12 +360,12 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	  osel = NULL;
 	  for (gl = sounddata->sels; gl; gl = gl->next) {
 	    sel = (sw_sel *)gl->data;
-	    
+
 	    if (osel && ((sw_framecount_t)head->offset < osel->sel_end))
 	      head->offset = osel->sel_end;
 
 	    osel = sel;
-	    
+
 	    head_offset = (sw_framecount_t)head->offset;
 
 	    if (head_offset < sel->sel_start) {
@@ -376,7 +373,7 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	      break;
 	    }
 	  }
-	  
+
 	  /* If now at end of last selection region ... */
 	  if (gl == NULL && osel != NULL) {
 	    if ((sw_framecount_t)head->offset < osel->sel_end)
@@ -397,10 +394,10 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	if (head->reverse) {
 	  for (gl = g_list_last (sounddata->sels); gl; gl = gl->prev) {
 	    sel = (sw_sel *)gl->data;
-	    
+
 	    if ((sw_framecount_t)head->offset > sel->sel_end)
 	      head->offset = sel->sel_end;
-	    
+
 	    if ((sw_framecount_t)head->offset > sel->sel_start) {
 	      n = MIN (remaining, (sw_framecount_t)head->offset - sel->sel_start);
 	      break;
@@ -409,10 +406,10 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	} else {
 	  for (gl = sounddata->sels; gl; gl = gl->next) {
 	    sel = (sw_sel *)gl->data;
-	    
+
 	    if ((sw_framecount_t)head->offset < sel->sel_start)
 	      head->offset = sel->sel_start;
-	    
+
 	    if ((sw_framecount_t)head->offset < sel->sel_end) {
 	      n = MIN (remaining, sel->sel_end - (sw_framecount_t)head->offset);
 	      break;
@@ -518,23 +515,23 @@ head_init_playback (sw_sample * s)
     if ((gl = s->sounddata->sels) != NULL) {
       sel = (sw_sel *)gl->data;
       sels_start = sel->sel_start;
-      
+
       gl = g_list_last (s->sounddata->sels);
-      
+
       sel = (sw_sel *)gl->data;
       sels_end = sel->sel_end;
       g_mutex_unlock (s->sounddata->sels_mutex);
-      
+
       if (head->previewing) {
 	/* preroll 1 second */
 	delta = time_to_frames (s->sounddata->format, 1.0);
-	
+
 	if (head->reverse) {
 	  head_set_offset (head, sels_end + delta);
 	} else {
 	  head_set_offset (head, sels_start - delta);
 	}
-	
+
 	head_set_offset (head,
 			 CLAMP((sw_framecount_t)head->offset, 0, s->sounddata->nr_frames));
       } else {
@@ -547,13 +544,13 @@ head_init_playback (sw_sample * s)
     } else if (head->previewing) {
 	/* preroll 1 second */
 	delta = time_to_frames (s->sounddata->format, 1.0);
-	
+
 	if (head->reverse) {
 	  head_set_offset (head, head->offset + delta);
 	} else {
 	  head_set_offset (head, head->offset - delta);
 	}
-	
+
 	head_set_offset (head,
 			 CLAMP(head->offset, 0, s->sounddata->nr_frames));
     }
@@ -667,7 +664,7 @@ prepare_to_play_heads (GList * heads, sw_handle * handle)
     head = (sw_head *)gl->data;
 
     f = head->sample->sounddata->format;
-    
+
     if (f->channels > pbuf_chans) {
       pbuf = g_realloc (pbuf, PSIZ * f->channels * sizeof (sw_audio_t));
       pbuf_chans = f->channels;
@@ -692,7 +689,7 @@ play_heads (GList ** heads, sw_handle * handle)
   if (*heads == NULL) return;
 
   n = PSIZ;
-  
+
   for (gl = *heads; gl; gl = gl_next) {
 
     g_mutex_lock (play_mutex);
@@ -710,7 +707,7 @@ play_heads (GList ** heads, sw_handle * handle)
     } else {
       s = head->sample;
       f = s->sounddata->format;
-	  
+
       if (f->channels > pbuf_chans) {
 	pbuf = g_realloc (pbuf, n * f->channels * sizeof (sw_audio_t));
 	pbuf_chans = f->channels;
@@ -720,26 +717,26 @@ play_heads (GList ** heads, sw_handle * handle)
 
       channel_convert_adding (pbuf, f->channels, devbuf,
 			      handle->driver_channels, n);
-	
+
       /* XXX: store the head->offset NOW for device_offset referencing */
-	  
+
       g_mutex_lock (s->play_mutex);
-	  
+
       head->realoffset = device_offset (handle);
       if (head->realoffset == -1) {
 	head->realoffset = head->offset;
       }
-	
+
       head->offset = head->realoffset;
-	  
+
       if (s->by_user /* && s->play_scrubbing */) {
 	/*head->offset = s->user_offset;*/
       } else {
 	if (!head->scrubbing) s->user_offset = head->realoffset;
       }
-	  
+
       /*	if (!head->going) active = FALSE;*/
-	  
+
       g_mutex_unlock (s->play_mutex);
     }
   }
@@ -787,12 +784,12 @@ play_active_heads (void)
     if ((gl = active_monitor_heads)) {
       head = (sw_head *)gl->data;
       f = head->sample->sounddata->format;
-      
+
       device_setup (monitor_handle, f);
     } else if ((gl = active_main_heads)) {
       head = (sw_head *)gl->data;
       f = head->sample->sounddata->format;
-      
+
       device_setup (monitor_handle, f);
     }
   }
@@ -803,7 +800,7 @@ play_active_heads (void)
 
     device_setup (main_handle, f);
 
-#ifdef RECORD_DEMO_FILES    
+#ifdef RECORD_DEMO_FILES
     filename = generate_demo_filename ();
     sfinfo.samplerate = f->rate;
     sfinfo.channels = handle->driver_channels;
@@ -856,8 +853,8 @@ play_active_heads (void)
       count = PSIZ * monitor_handle->driver_channels;
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_monitor_heads, monitor_handle);
-      device_write (monitor_handle, devbuf, count);  
-      
+      device_write (monitor_handle, devbuf, count);
+
       count = PSIZ * main_handle->driver_channels;
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_main_heads, main_handle);
@@ -867,7 +864,7 @@ play_active_heads (void)
       memset (devbuf, 0, count * sizeof (sw_audio_t));
       play_heads (&active_monitor_heads, main_handle);
       play_heads (&active_main_heads, main_handle);
-      device_write (main_handle, devbuf, count);  
+      device_write (main_handle, devbuf, count);
     }
 
 #ifdef RECORD_DEMO_FILES
@@ -957,7 +954,7 @@ play_view_all (sw_view * view)
 
   sample_set_stop_offset (s);
   sample_set_previewing (s, FALSE);
-    
+
   prev_sample = s;
 
   head_set_restricted (head, FALSE);
@@ -996,7 +993,7 @@ play_preroll (sw_view * view)
   sample_set_stop_offset (s);
   sample_set_previewing (s, TRUE);
   sample_set_scrubbing (s, FALSE);
-    
+
   prev_sample = s;
 
   head_set_restricted (head, FALSE);
@@ -1019,7 +1016,7 @@ play_preview_cut (sw_view * view)
   sample_set_stop_offset (s);
   sample_set_previewing (s, TRUE);
   sample_set_scrubbing (s, FALSE);
-    
+
   prev_sample = s;
 
   head_set_restricted (head, TRUE);

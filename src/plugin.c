@@ -66,7 +66,7 @@ sweep_plugin_init (const gchar * path)
 #endif
     return;
   }
-  
+
   if (g_module_symbol (module, "plugin", &m_plugin_ptr)) {
 	m_plugin = (sw_plugin *)m_plugin_ptr;
 	module_list = g_list_append (module_list, m_plugin);
@@ -82,7 +82,7 @@ init_dynamic_plugins_dir (gchar * dirname)
 {
   DIR * dir;
   struct dirent * dirent;
-  char * name, * path;
+  char * path;
   struct stat statbuf;
 
   dir = opendir (dirname);
@@ -92,7 +92,6 @@ init_dynamic_plugins_dir (gchar * dirname)
   }
 
   while ((dirent = readdir (dir)) != NULL) {
-    name = dirent->d_name;
     path = g_module_build_path (PACKAGE_PLUGIN_DIR, dirent->d_name);
     if (stat (path, &statbuf) == -1) {
       /* system error -- non-fatal, ignore for plugin loading */

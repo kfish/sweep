@@ -192,7 +192,6 @@ do_record_regions (sw_sample * sample)
   sw_framecount_t sel_total, run_total;
   sw_framecount_t offset, remaining, n, count;
   gint percent;
-  gboolean rec_mixing = FALSE;
 
   sw_audio_t * rbuf;
 
@@ -211,41 +210,39 @@ do_record_regions (sw_sample * sample)
 
   rbuf = alloca (1024 * f->channels * sizeof (sw_audio_t));
 
-  rec_mixing = TRUE;
-
   while (active) {
-      
+
     FD_ZERO (&fds);
     FD_SET (rec_handle->driver_fd, &fds);
-    
+
     if (select (rec_handle->driver_fd+1, &fds, NULL, NULL, &tv_instant) == 0);
 
     n = 1024;
     count = n * f->channels;
-    
+
     count = device_read (rec_handle, rbuf, count);
-    
+
     g_mutex_lock (sample->ops_mutex);
-    
+
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL || count == -1 ||
 	!head->going) {
       active = FALSE;
     } else {
       head_write (head, rbuf, n);
-      
+
       remaining -= n;
       offset += n;
-      
+
       run_total += n;
       percent = run_total / sel_total;
       percent = MIN (100, percent);
       sample_set_progress_percent (sample, percent);
-      
+
     }
-    
+
     g_mutex_unlock (sample->ops_mutex);
   }
-  
+
  done:
   if (rec_handle != NULL) {
     device_close (rec_handle);
@@ -274,7 +271,7 @@ do_record_regions_thread (sw_op_instance * inst)
 
   if (sample->edit_state == SWEEP_EDIT_STATE_BUSY) {
     p->new_eb = edit_buffer_from_sample (sample);
-    
+
     register_operation (sample, inst);
   }
 }
@@ -344,7 +341,7 @@ _rec_dialog_set_sample (sw_sample * sample, gboolean select_current)
                                              0,
                                              0,
                                              rec_head);
-												 
+
 	g_signal_handlers_disconnect_matched
                                             (GTK_OBJECT(gain_slider),
                                              G_SIGNAL_MATCH_DATA,
@@ -353,7 +350,7 @@ _rec_dialog_set_sample (sw_sample * sample, gboolean select_current)
                                              0,
                                              0,
                                              rec_head);
-    
+
   }
 
   db_slider_set_value (DB_SLIDER(mix_slider), head->mix);
@@ -436,8 +433,8 @@ rec_dialog_create (sw_sample * sample)
     sweep_set_window_icon (GTK_WINDOW(window));
 
 	attach_window_close_accel(GTK_WINDOW(window));
-    rec_dialog = window;       
-	  
+    rec_dialog = window;
+
     main_vbox = gtk_vbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER(window), main_vbox);
     gtk_widget_show (main_vbox);

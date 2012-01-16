@@ -169,17 +169,12 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
   int err;
   snd_pcm_t * pcm_handle = (snd_pcm_t *)handle->custom_data;
   snd_pcm_hw_params_t * hwparams;
-  int dir;
   unsigned int rate = format->rate;
   unsigned int channels = format->channels;
   unsigned int periods;
   snd_pcm_uframes_t period_size = PBUF_SIZE/format->channels;
 
-  if (handle->driver_flags == O_RDONLY) {
-    dir = (int)SND_PCM_STREAM_CAPTURE;
-  } else if (handle->driver_flags == O_WRONLY) {
-    dir = (int)SND_PCM_STREAM_PLAYBACK;
-  } else {
+  if (handle->driver_flags != O_RDONLY && handle->driver_flags == O_WRONLY) {
     return;
   }
 
@@ -285,7 +280,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
 
     handle->driver_rate = r;
     handle->driver_channels = c;
-	
+
     if (c < 1) {
       fprintf (stderr, "sweep: alsa_setup: alsa says channels == %i\n", c);
       return;
@@ -357,7 +352,7 @@ alsa_device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
       } else {
         fprintf(stderr, "sweep: alsa_write: xrun. can't determine length\n");
       }
-    }  
+    }
     snd_pcm_prepare(pcm_handle);
     err = snd_pcm_writei(pcm_handle, buf, uframes);
     if (err != uframes) {
@@ -394,7 +389,7 @@ alsa_device_flush (sw_handle * handle)
 /*
  * alsa lib provides:
  * int snd_pcm_drop (snd_pcm_t *pcm) // Stop a PCM dropping pending frames.
- * int snd_pcm_drain (snd_pcm_t *pcm) // Stop a PCM preserving pending frames. 
+ * int snd_pcm_drain (snd_pcm_t *pcm) // Stop a PCM preserving pending frames.
  */
 static void
 alsa_device_drain (sw_handle * handle)
@@ -415,7 +410,7 @@ static void
 alsa_device_close (sw_handle * handle)
 {
   snd_pcm_t * pcm_handle = (snd_pcm_t *)handle->custom_data;
- 
+
   snd_pcm_close (pcm_handle);
   handle->custom_data = NULL;
 }

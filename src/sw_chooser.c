@@ -81,21 +81,17 @@ static gint sw_chooser_signals[LAST_SIGNAL] = { 0 };
 static void
 sw_chooser_class_init(SWChooserClass * class)
 {
-  GtkObjectClass *object_class;
-
-  object_class = (GtkObjectClass *) class;
-
   sw_chooser_signals[NUMBER_CHANGED_SIGNAL] = g_signal_new ("number-changed",
 					 			  G_TYPE_FROM_CLASS (class),
 	                              G_SIGNAL_RUN_FIRST,
 	                              G_STRUCT_OFFSET (SWChooserClass, number_changed),
-                                  NULL, 
-                                  NULL,                
+                                  NULL,
+                                  NULL,
 					 			  g_cclosure_marshal_VOID__INT,
                                   G_TYPE_NONE, 1,
 								  G_TYPE_INT);
 
-  
+
   class->number_changed = NULL;
 }
 
@@ -114,7 +110,7 @@ sw_chooser_get_type (void)
     {
       static const GTypeInfo sw_chooser_info =
       {
-		  
+
       sizeof(SWChooserClass),
 	NULL, /* base_init */
 	NULL, /* base_finalize */
@@ -123,7 +119,7 @@ sw_chooser_get_type (void)
 	NULL, /* class_data */
 	sizeof (SWChooser),
 	0,    /* n_preallocs */
-	(GInstanceInitFunc) sw_chooser_init,	  
+	(GInstanceInitFunc) sw_chooser_init,
 
     };
 
@@ -201,7 +197,7 @@ chooser_combo_changed_cb (GtkWidget * widget, gpointer data)
   int i, number = -1;
 
   /* find what number the chosen menu string corresponds to */
-  
+
   text = gtk_entry_get_text (GTK_ENTRY(widget));
 
   choices = g_object_get_data (G_OBJECT(chooser), "choices");
@@ -262,7 +258,7 @@ static void
 sw_chooser_build (GtkWidget * chooser)
 {
   GtkWidget * frame;
-  GtkWidget * vbox;  
+  GtkWidget * vbox;
   GList * choice_names = NULL;
   GtkWidget * combo;
   GtkWidget * hbox;
@@ -286,7 +282,7 @@ sw_chooser_build (GtkWidget * chooser)
   for (i = 0; choices[i].name != NULL; i++) {
     choice_names = g_list_append (choice_names, _(choices[i].name));
   }
-  
+
   combo = gtk_combo_new ();
   gtk_combo_set_popdown_strings (GTK_COMBO(combo), choice_names);
   gtk_combo_set_value_in_list (GTK_COMBO(combo), TRUE, FALSE);
@@ -318,7 +314,7 @@ sw_chooser_build (GtkWidget * chooser)
 
   g_signal_connect (G_OBJECT(combo_entry), "changed",
 		      G_CALLBACK(chooser_combo_changed_cb), chooser);
-  
+
   g_signal_connect (G_OBJECT(direct_entry), "changed",
 		      G_CALLBACK(chooser_entry_changed_cb), chooser);
 
