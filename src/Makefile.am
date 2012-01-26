@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = tdb
-
 AM_CFLAGS = \
 	$(GTK_DISABLE_DEPRECATED) \
 	-DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@' \
@@ -12,14 +10,12 @@ AM_CFLAGS = \
 	@GLIB_CFLAGS@ \
 	@GTHREADS_CFLAGS@ \
 	@ALSA_CFLAGS@ \
-	@PULSEAUDIO_CFLAGS@
+	@PULSEAUDIO_CFLAGS@ \
+	@TDB_CFLAGS@
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/src/tdb
-
-TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
+	-I$(top_srcdir)/include
 
 bin_PROGRAMS = sweep
 
@@ -74,7 +70,7 @@ sweep_SOURCES = \
 	view.c view.h \
 	view_pixmaps.h
 
-sweep_LDADD = $(TDB_LIBS) \
+sweep_LDADD = @TDB_LIBS@ \
 	@GTK_LIBS@ $(INTLLIBS) $(PTHREAD_LIBS) \
 	$(SNDFILE_LIBS) \
 	$(OGG_LIBS) $(VORBIS_LIBS) $(VORBISFILE_LIBS) $(VORBISENC_LIBS) \
