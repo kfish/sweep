@@ -1108,7 +1108,7 @@ paste_mix (sw_sample * sample, sw_edit_buffer * eb,
   sw_framecount_t length, eb_delta;
   GList * gl;
   sw_edit_region * er;
-  sw_audio_t * d, * e;
+  float * d, * e;
   sw_framecount_t offset, remaining, n, i;
   sw_framecount_t run_total, eb_total;
   gint percent;
@@ -1188,7 +1188,7 @@ paste_xfade (sw_sample * sample, sw_edit_buffer * eb,
   sw_framecount_t length, eb_delta;
   GList * gl;
   sw_edit_region * er;
-  sw_audio_t * d, * e;
+  float * d, * e;
   sw_framecount_t offset, remaining, n, i, j, k;
   sw_framecount_t run_total, eb_total;
   gint percent;

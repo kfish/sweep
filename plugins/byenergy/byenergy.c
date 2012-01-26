@@ -112,13 +112,13 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
   gfloat max_interruption_f = pset[4].f;
 
   sw_sounddata * sounddata;
-  sw_audio_t * d;
+  float * d;
   glong window, win_s;
   gint i, doff;
   glong min_duration, max_interruption;
   glong length, loc=0;
   glong start=-1, end=-1;
-  sw_audio_intermediate_t di, energy, max_energy=0, factor=1.0;
+  double di, energy, max_energy=0, factor=1.0;
 
   sounddata = sample_get_sounddata (s);
 
@@ -130,7 +130,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
   min_duration = MAX(2*window, min_duration);
   max_interruption = (glong)(max_interruption_f * (gfloat)sounddata->format->rate);
 
-  d = (sw_audio_t *)sounddata->data;
+  d = (float *)sounddata->data;
 
   sounddata_lock_selection (sounddata);
 
@@ -147,12 +147,12 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
 
     /* calculate avg. for this window */
     for (i=0; i<win_s; i++) {
-      di = (sw_audio_intermediate_t)(d[doff+i] * factor);
+      di = (double)(d[doff+i] * factor);
       energy += fabs(di);
     }
     doff += win_s;
 
-    energy /= (sw_audio_intermediate_t)win_s;
+    energy /= (double)win_s;
     energy = sqrt(energy);
 
     max_energy = MAX(energy, max_energy);
@@ -160,7 +160,7 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
     length -= window;
   }
 
-  factor = SW_AUDIO_T_MAX / max_energy;
+  factor = SW_AUDIO_MAX / max_energy;
 
 #ifdef DEBUG
   g_print ("factor: %f\tmax_energy: %f\n", factor, max_energy);
@@ -177,12 +177,12 @@ select_by_energy (sw_sample * s, sw_param_set pset, gpointer custom_data)
 
     /* calculate RMS energy for this window */
     for (i=0; i<win_s; i++) {
-      di = (sw_audio_intermediate_t)(d[doff+i]);
+      di = (double)(d[doff+i]);
       energy += fabs(di);
     }
     doff += win_s;
 
-    energy /= (sw_audio_intermediate_t)win_s;
+    energy /= (double)win_s;
     energy = sqrt(energy);
 
 #ifdef DEBUG

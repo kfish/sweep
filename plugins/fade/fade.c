@@ -34,7 +34,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
   sw_format * f;
   GList * gl;
   sw_sel * sel;
-  sw_audio_t * d;
+  float * d;
   gfloat factor = start;
   sw_framecount_t op_total, run_total, frames_total;
   glong i, j;
@@ -75,7 +75,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
 
 		for (j = 0; j < f->channels; j++)
 		{
-			d[i*f->channels+j] = (sw_audio_t)((gfloat)d[i*f->channels+j] * factor);
+			d[i*f->channels+j] = (float)((gfloat)d[i*f->channels+j] * factor);
 		}
 	}
 

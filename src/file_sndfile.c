@@ -532,7 +532,7 @@ sample_load_sf_data (sw_op_instance * inst)
   sf_data * sf = (sf_data *)inst->do_data;
   SNDFILE * sndfile = sf->sndfile;
   SF_INFO * sfinfo = sf->sfinfo;
-  sw_audio_t * d;
+  float * d;
   sw_framecount_t remaining, n, run_total;
   sw_framecount_t cframes;
   gint percent;
@@ -739,7 +739,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
   SNDFILE *sndfile;
   SF_INFO * sfinfo;
   sw_format * format;
-  sw_audio_t * fbuf, * d;
+  float * fbuf, * d;
   sw_framecount_t nwritten = 0, len, n;
   sw_framecount_t cframes;
   int i, j;
@@ -804,7 +804,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
     }
   } else if (format->channels == 1 && sfinfo->channels == 2) {
     /* Duplicate mono to stereo */
-    fbuf = (sw_audio_t *)alloca(1024 * sizeof(sw_audio_t));
+    fbuf = (float *)alloca(1024 * sizeof(float));
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
       g_mutex_lock (sample->ops_mutex);
@@ -832,7 +832,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
     }
   } else if (format->channels == 2 && sfinfo->channels == 1) {
     /* Mix down stereo to mono */
-    fbuf = (sw_audio_t *)alloca(1024 * sizeof(sw_audio_t));
+    fbuf = (float *)alloca(1024 * sizeof(float));
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
       g_mutex_lock (sample->ops_mutex);
@@ -862,10 +862,10 @@ sndfile_sample_save_thread (sw_op_instance * inst)
     }
   } else {
     gint min_channels = MIN (format->channels, sfinfo->channels);
-    size_t buf_size = 1024 * sizeof (sw_audio_t) * sfinfo->channels;
+    size_t buf_size = 1024 * sizeof (float) * sfinfo->channels;
 
     /* Copy corresponding channels as much as possible */
-    fbuf = (sw_audio_t *)alloca(buf_size);
+    fbuf = (float *)alloca(buf_size);
     memset (fbuf, 0, buf_size);
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {

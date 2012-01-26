@@ -34,8 +34,8 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
   sw_format * f;
   GList * gl;
   sw_sel * sel;
-  sw_audio_t * d;
-  sw_audio_t max = 0;
+  float * d;
+  float max = 0;
   gfloat factor = 1.0;
   sw_framecount_t op_total, run_total;
   glong i;
@@ -84,7 +84,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
     }
   }
 
-  if (max != 0) factor = SW_AUDIO_T_MAX / (gfloat)max;
+  if (max != 0) factor = SW_AUDIO_MAX / (gfloat)max;
 
   /* Scale */
   for (gl = sounddata->sels; active && gl; gl = gl->next) {
@@ -104,7 +104,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	n = MIN(remaining, 1024);
 
 	for (i=0; i < n * f->channels; i++) {
-	  d[i] = (sw_audio_t)((gfloat)d[i] * factor);
+	  d[i] = (float)((gfloat)d[i] * factor);
 	}
 
 	remaining -= n;

@@ -157,7 +157,7 @@ sample_load_vorbis_data (sw_op_instance * inst)
   int channels;
   float ** pcm;
   int i, j;
-  sw_audio_t * d;
+  float * d;
   sw_framecount_t remaining, n, run_total;
   sw_framecount_t cframes;
   gint percent;
@@ -394,7 +394,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 
   FILE * outfile;
   sw_format * format;
-  sw_audio_t * d;
+  float * d;
   sw_framecount_t remaining, len, run_total;
   sw_framecount_t nr_frames, cframes;
   gint percent = 0;

@@ -77,7 +77,7 @@ struct _sw_view {
   sw_sample * sample;
 
   sw_framecount_t start, end; /* bounds of visible frames */
-  sw_audio_t vlow, vhigh; /* bounds of vertical zoom */
+  float vlow, vhigh; /* bounds of vertical zoom */
   /*  gfloat gain;*/
   /*gfloat rate;*/
 

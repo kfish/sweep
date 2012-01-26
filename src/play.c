@@ -76,7 +76,7 @@ static pthread_t player_thread = (pthread_t)-1;
 
 static gboolean stop_all = FALSE;
 
-static sw_audio_t * pbuf = NULL, * devbuf = NULL;
+static float * pbuf = NULL, * devbuf = NULL;
 static int pbuf_chans = 0, devbuf_chans = 0;
 
 
@@ -140,7 +140,7 @@ start_playmarker (sw_sample * s)
 }
 
 static sw_framecount_t
-head_read_unrestricted (sw_head * head, sw_audio_t * buf,
+head_read_unrestricted (sw_head * head, float * buf,
 			sw_framecount_t count, int driver_rate)
 {
   sw_sample * sample = head->sample;
@@ -181,7 +181,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
       if (interpolate) {
 	si_next = si+f->channels;
 	for (j = 0; j < f->channels; j++) {
-         buf[b] = head->gain * (((sw_audio_t *)head->sample->sounddata->data)[si] * p + ((sw_audio_t *)head->sample->sounddata->data)[si_next] * (1 - p));
+         buf[b] = head->gain * (((float *)head->sample->sounddata->data)[si] * p + ((float *)head->sample->sounddata->data)[si_next] * (1 - p));
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -194,7 +194,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 	}
       } else {
 	for (j = 0; j < f->channels; j++) {
-	 buf[b] = head->gain * ((sw_audio_t *)head->sample->sounddata->data)[si];
+	 buf[b] = head->gain * ((float *)head->sample->sounddata->data)[si];
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -287,7 +287,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 }
 
 sw_framecount_t
-head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
+head_read (sw_head * head, float * buf, sw_framecount_t count,
 	   int driver_rate)
 {
   sw_sample * sample = head->sample;
@@ -574,13 +574,13 @@ head_init_playback (sw_sample * s)
 }
 
 static void
-channel_convert_adding (sw_audio_t * src, int src_channels,
-			sw_audio_t * dest, int dest_channels,
+channel_convert_adding (float * src, int src_channels,
+			float * dest, int dest_channels,
 			sw_framecount_t n)
 {
   int j;
   sw_framecount_t i, b = 0;
-  sw_audio_intermediate_t a;
+  double a;
 
   if (src_channels == 1) { /* mix mono data up */
     for (i = 0; i < n; i++) {
@@ -596,8 +596,8 @@ channel_convert_adding (sw_audio_t * src, int src_channels,
 	a += src[b];
 	b++;
       }
-      a /= (sw_audio_intermediate_t)src_channels;
-      dest[i] += (sw_audio_t)a;
+      a /= (double)src_channels;
+      dest[i] += (float)a;
     }
   } else if (src_channels < dest_channels) { /* copy to first channels */
     for (i = 0; i < n; i++) {
@@ -666,7 +666,7 @@ prepare_to_play_heads (GList * heads, sw_handle * handle)
     f = head->sample->sounddata->format;
 
     if (f->channels > pbuf_chans) {
-      pbuf = g_realloc (pbuf, PSIZ * f->channels * sizeof (sw_audio_t));
+      pbuf = g_realloc (pbuf, PSIZ * f->channels * sizeof (float));
       pbuf_chans = f->channels;
     }
   }
@@ -709,7 +709,7 @@ play_heads (GList ** heads, sw_handle * handle)
       f = s->sounddata->format;
 
       if (f->channels > pbuf_chans) {
-	pbuf = g_realloc (pbuf, n * f->channels * sizeof (sw_audio_t));
+	pbuf = g_realloc (pbuf, n * f->channels * sizeof (float));
 	pbuf_chans = f->channels;
       }
 
@@ -824,7 +824,7 @@ play_active_heads (void)
 
   if (max_driver_chans > devbuf_chans) {
     devbuf = g_realloc (devbuf,
-			PSIZ * max_driver_chans * sizeof (sw_audio_t));
+			PSIZ * max_driver_chans * sizeof (float));
     devbuf_chans = max_driver_chans;
   }
 
@@ -848,17 +848,17 @@ play_active_heads (void)
 
     if (use_monitor) {
       count = PSIZ * monitor_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_monitor_heads, monitor_handle);
       device_write (monitor_handle, devbuf, count);
 
       count = PSIZ * main_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_main_heads, main_handle);
       device_write (main_handle, devbuf, count);
     } else {
       count = PSIZ * main_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_monitor_heads, main_handle);
       play_heads (&active_main_heads, main_handle);
       device_write (main_handle, devbuf, count);

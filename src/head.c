@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 #include <gtk/gtk.h>
 
@@ -187,12 +188,12 @@ hctl_refresh_reverse (sw_head_controller * hctl)
 
   if (hctl->reverse_toggle) {
   g_signal_handlers_block_matched (GTK_OBJECT(hctl->reverse_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
-	
+									0, 0, 0, hctl);
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(hctl->reverse_toggle),
 				head->reverse);
   g_signal_handlers_unblock_matched (GTK_OBJECT(hctl->reverse_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
+									0, 0, 0, hctl);
   }
 }
 
@@ -203,11 +204,11 @@ hctl_refresh_mute (sw_head_controller * hctl)
 
   if (hctl->mute_toggle) {
   g_signal_handlers_block_matched (GTK_OBJECT(hctl->mute_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
+									0, 0, 0, hctl);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(hctl->mute_toggle),
 				head->mute);
   g_signal_handlers_unblock_matched (GTK_OBJECT(hctl->mute_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
+									0, 0, 0, hctl);
   }
 }
 
@@ -218,11 +219,11 @@ hctl_refresh_going (sw_head_controller * hctl)
 
   if (hctl->go_toggle) {
   g_signal_handlers_block_matched (GTK_OBJECT(hctl->go_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
+									0, 0, 0, hctl);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(hctl->go_toggle),
 				head->going);
   g_signal_handlers_unblock_matched (GTK_OBJECT(hctl->go_toggle), G_SIGNAL_MATCH_DATA, 0,
-									0, 0, 0, hctl); 
+									0, 0, 0, hctl);
   }
 }
 
@@ -375,12 +376,12 @@ head_controller_create (sw_head * head, GtkWidget * window,
   } else {
       style = style_green_grey;
   }
- 
+
     handlebox = gtk_handle_box_new ();
     /*    gtk_box_pack_start (GTK_BOX (main_vbox), handlebox, FALSE, TRUE, 0);
     gtk_widget_show (handlebox);
     */
-    
+
     gtk_widget_set_style (handlebox, style);
 
     g_signal_connect (G_OBJECT (handlebox), "destroy",
@@ -389,7 +390,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
     hbox = gtk_hbox_new (FALSE, 8);
     gtk_container_add (GTK_CONTAINER (handlebox), hbox);
     gtk_widget_show (hbox);
-    
+
     gtk_widget_set_size_request(hbox, -1, 24);
 
     frame = gtk_frame_new (NULL);
@@ -405,7 +406,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
     tooltips = gtk_tooltips_new ();
     gtk_tooltips_set_tip (tooltips, lcdbox,
 			  _("Cursor position (indicator)"), NULL);
-    
+
     tool_hbox = gtk_hbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER(lcdbox), tool_hbox);
     gtk_widget_show (tool_hbox);
@@ -421,7 +422,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
     pixmap = create_widget_from_xpm (window, lowleft_xpm);
     gtk_widget_show (pixmap);
     gtk_box_pack_end (GTK_BOX(imagebox), pixmap, FALSE, FALSE, 0);
-  
+
     label = gtk_label_new ("00:00:00.000");
     gtk_box_pack_start (GTK_BOX(tool_hbox), label, TRUE, TRUE, 0);
     gtk_widget_show (label);
@@ -453,10 +454,10 @@ head_controller_create (sw_head * head, GtkWidget * window,
 									0, 0, 0, hctl);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button),
 				  head->reverse);
-    
+
 	g_signal_handlers_unblock_matched (GTK_OBJECT(button), G_SIGNAL_MATCH_DATA, 0,
 									0, 0, 0, hctl);
-    
+
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
 
@@ -476,7 +477,7 @@ head_controller_create (sw_head * head, GtkWidget * window,
     gtk_widget_show (button);
 
     hctl->loop_toggle = button;
-    
+
     tool_hbox = gtk_hbox_new (TRUE, 0);
     gtk_box_pack_start (GTK_BOX (hbox), tool_hbox, TRUE, TRUE, 0);
     gtk_widget_show (tool_hbox);
@@ -513,11 +514,11 @@ head_controller_create (sw_head * head, GtkWidget * window,
 			      G_CALLBACK (hctl_goto_start_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
-    
+
     /*NOALLOC(button);*/
-    
+
     /* Rewind */
-    
+
     button
       = create_pixmap_button (window, rew_xpm, _("Rewind"),
 			      style, SW_TOOLBAR_BUTTON,
@@ -526,11 +527,11 @@ head_controller_create (sw_head * head, GtkWidget * window,
 			      G_CALLBACK (hctl_repeater_released_cb), hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
-    
+
     /*    NOALLOC(button);*/
-    
+
     /* Fast forward */
-    
+
     button
       = create_pixmap_button (window, ff_xpm, _("Fast forward"),
 			      style, SW_TOOLBAR_BUTTON,
@@ -540,11 +541,11 @@ head_controller_create (sw_head * head, GtkWidget * window,
 			      hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
-    
+
     /*NOALLOC(button);*/
-    
+
     /* End */
-    
+
     button
       = create_pixmap_button (window, nexttrk_xpm,
 			      _("Go to the end"),
@@ -552,13 +553,13 @@ head_controller_create (sw_head * head, GtkWidget * window,
 			      G_CALLBACK (hctl_goto_end_cb), NULL, NULL, hctl);
     gtk_box_pack_start (GTK_BOX (tool_hbox), button, FALSE, TRUE, 0);
     gtk_widget_show (button);
-    
+
     /*NOALLOC(button);*/
 
     head->controllers = g_list_append (head->controllers, hctl);
 
     *hctl_ret = hctl;
-    
+
     return handlebox;
 }
 
@@ -570,7 +571,7 @@ int
 head_dump (sw_head * head)
 {
   printf ("head %p\toffset: %f", head, head->offset);
-  printf ("\tstop:\t%d\n", head->stop_offset);
+  printf ("\tstop:\t%" PRId64 "\n", head->stop_offset);
   printf ("\tgoing:\t%s\n", PBOOL(head->going));
   printf ("\trestricted:\t%s\n", PBOOL(head->restricted));
   printf ("\tlooping:\t%s\n", PBOOL(head->looping));
@@ -683,7 +684,7 @@ head_set_mute (sw_head * h, gboolean mute)
     hctl_refresh_mute (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);  
+  g_mutex_unlock (h->head_mutex);
 }
 
 void
@@ -701,7 +702,7 @@ head_set_going (sw_head * h, gboolean going)
     hctl_refresh_going (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);  
+  g_mutex_unlock (h->head_mutex);
 }
 
 void
@@ -719,7 +720,7 @@ head_set_restricted (sw_head * h, gboolean restricted)
     hctl_refresh_going (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);  
+  g_mutex_unlock (h->head_mutex);
 }
 
 void
@@ -729,7 +730,7 @@ head_set_stop_offset (sw_head * h, sw_framecount_t offset)
 
   h->stop_offset = offset;
 
-  g_mutex_unlock (h->head_mutex);  
+  g_mutex_unlock (h->head_mutex);
 }
 
 void
@@ -752,7 +753,7 @@ head_set_offset (sw_head * h, sw_framecount_t offset)
   if (h == h->sample->rec_head)
     sample_refresh_rec_marker (h->sample);
 
-  g_mutex_unlock (h->head_mutex);  
+  g_mutex_unlock (h->head_mutex);
 }
 
 void
@@ -796,19 +797,19 @@ head_set_monitor (sw_head * h, gboolean monitor)
 }
 
 static sw_framecount_t
-head_write_unrestricted (sw_head * head, sw_audio_t * buf,
+head_write_unrestricted (sw_head * head, float * buf,
 			 sw_framecount_t count)
 {
   sw_sample * sample = head->sample;
   sw_sounddata * sounddata = sample->sounddata;
   sw_format * f = sounddata->format;
   gpointer d;
-  sw_audio_t * rd;
+  float * rd;
   sw_framecount_t i, j, t, b;
 
   d = sounddata->data +
     (int)frames_to_bytes (f, head->offset);
-  rd = (sw_audio_t *)d;
+  rd = (float *)d;
 
   if (head->reverse) {
     b = 0;
@@ -838,7 +839,7 @@ head_write_unrestricted (sw_head * head, sw_audio_t * buf,
 }
 
 sw_framecount_t
-head_write (sw_head * head, sw_audio_t * buf, sw_framecount_t count)
+head_write (sw_head * head, float * buf, sw_framecount_t count)
 {
   sw_sample * sample = head->sample;
   sw_sounddata * sounddata = sample->sounddata;
@@ -854,10 +855,10 @@ head_write (sw_head * head, sw_audio_t * buf, sw_framecount_t count)
     if (head->reverse) {
       for (gl = g_list_last (sounddata->sels); gl; gl = gl->prev) {
 	sel = (sw_sel *)gl->data;
-	
+
 	if (head->offset > sel->sel_end)
 	  head->offset = sel->sel_end;
-	
+
 	if (head->offset > sel->sel_start) {
 	  n = MIN (remaining, head->offset - sel->sel_start);
 	  break;
@@ -866,10 +867,10 @@ head_write (sw_head * head, sw_audio_t * buf, sw_framecount_t count)
     } else {
       for (gl = sounddata->sels; gl; gl = gl->next) {
 	sel = (sw_sel *)gl->data;
-	
+
 	if (head->offset < sel->sel_start)
 	  head->offset = sel->sel_start;
-	
+
 	if (head->offset < sel->sel_end) {
 	  n = MIN (remaining, sel->sel_end - head->offset);
 	  break;

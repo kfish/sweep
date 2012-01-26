@@ -208,7 +208,7 @@ enum mad_flow output(void *data,
   struct mad_info * info = data;
   sw_sample * sample = info->sample;
   sw_framecount_t data_start;
-  sw_audio_t * d;
+  float * d;
   int i, j;
   gint percent;
 
@@ -239,13 +239,13 @@ enum mad_flow output(void *data,
 
     sample->sounddata->nr_frames = info->nr_frames;
 
-    d = (sw_audio_t *)sample->sounddata->data;
+    d = (float *)sample->sounddata->data;
     d = &d[data_start * pcm->channels];
 
     for (i = 0; i < pcm->channels; i++) {
       for (j = 0; j < pcm->length; j++) {
 	d[j*pcm->channels + i] =
-	  (sw_audio_t)mad_f_todouble(pcm->samples[i][j]);
+	  (float)mad_f_todouble(pcm->samples[i][j]);
       }
     }
 

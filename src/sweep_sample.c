@@ -304,7 +304,7 @@ sample_new_dialog_update (GtkWidget * widget)
 
   memsize_label = g_object_get_data (G_OBJECT(dialog), "memsize_label");
 
-  bytes = (glong) (seconds * sample_rate * nr_channels * sizeof(sw_audio_t));
+  bytes = (glong) (seconds * sample_rate * nr_channels * sizeof(float));
   if (bytes < 0) {
     gtk_label_set_text (GTK_LABEL(memsize_label), _("Overflow"));
   } else {

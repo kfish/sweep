@@ -82,21 +82,21 @@ region_echo (gpointer data, sw_format * format, sw_framecount_t nr_frames,
   gfloat gain = pset[1].f;
 
   sw_framecount_t i, delay_f, dlen_s;
-  sw_audio_t * d, * e;
+  float * d, * e;
   gpointer ep;
 
   delay_f = time_to_frames (format, delay);
 
-  d = (sw_audio_t *)data;
+  d = (float *)data;
   ep = data + frames_to_bytes (format, delay_f);
-  e = (sw_audio_t *)ep;
+  e = (float *)ep;
 
   if (delay > nr_frames) return;
 
   dlen_s = frames_to_samples (format, nr_frames - delay_f);
 
   for (i = 0; i < dlen_s; i++) {
-    e[i] += (sw_audio_t)((gfloat)(d[i]) * gain);
+    e[i] += (float)((gfloat)(d[i]) * gain);
   }
 }
 

@@ -193,7 +193,7 @@ do_record_regions (sw_sample * sample)
   sw_framecount_t offset, remaining, n, count;
   gint percent;
 
-  sw_audio_t * rbuf;
+  float * rbuf;
 
   gboolean active = TRUE;
 
@@ -208,7 +208,7 @@ do_record_regions (sw_sample * sample)
   if (sel_total == 0) sel_total = 1;
   run_total = 0;
 
-  rbuf = alloca (1024 * f->channels * sizeof (sw_audio_t));
+  rbuf = alloca (1024 * f->channels * sizeof (float));
 
   while (active) {
 

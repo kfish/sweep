@@ -143,11 +143,11 @@ do_samplerate_thread (sw_op_instance * inst)
     } else {
 
       src_data.input_frames = MIN (old_nr_frames - offset_in, BUFFER_LEN);
-      src_data.data_in = &((sw_audio_t *)old_sounddata->data)
+      src_data.data_in = &((float *)old_sounddata->data)
 	[offset_in * old_format->channels];
 
       src_data.output_frames = MAX (new_nr_frames - offset_out, 0);
-      src_data.data_out = &((sw_audio_t *)new_sounddata->data)
+      src_data.data_out = &((float *)new_sounddata->data)
 	[offset_out * old_format->channels];
 
       if (src_data.input_frames < BUFFER_LEN) {

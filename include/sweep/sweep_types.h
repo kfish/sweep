@@ -37,35 +37,15 @@
 
 /* Audio data representation */
 
-/* gfloats in the range [-1.0, 1.0] */
-typedef gfloat sw_audio_t;
-
-/* Intermediate audio representation format:
- * Use this for intermediate values for mixing etc. */
-typedef gdouble sw_audio_intermediate_t;
-
-#define SW_AUDIO_T_MAX (1.0)
-#define SW_AUDIO_T_MIN (-1.0)
+#define SW_AUDIO_MAX (1.0)
+#define SW_AUDIO_MIN (-1.0)
 
 /* Time, in seconds */
 typedef gfloat sw_time_t;
 
 /* Frame Counts */
-#if 0
-
-#if (SIZEOF_OFF_T == 8) 
-/* For libsndfile version 1 */
-typedef off_t sw_framecount_t;
-#else
-typedef int sw_framecount_t;
-#endif
-
-#else
-
-typedef int sw_framecount_t;
+typedef int64_t sw_framecount_t;
 #define FRAMECOUNT_MAX INT_MAX
-
-#endif
 
 
 /*
@@ -112,7 +92,7 @@ struct _sw_sounddata {
 
   gpointer data;
   GMutex * data_mutex; /* Mutex for access to sample data */
-	
+
   GList * sels;     /* selection: list of sw_sels */
   GMutex * sels_mutex; /* Mutex for access to sels */
 };
@@ -302,7 +282,7 @@ typedef enum {
  */
 #define SW_RANGE_STEP_VALID (1<<2)
 
-#define SW_RANGE_ALL_VALID (SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_UPPER_BOUND_VALID|SW_RANGE_STEP_VALID) 
+#define SW_RANGE_ALL_VALID (SW_RANGE_LOWER_BOUND_VALID|SW_RANGE_UPPER_BOUND_VALID|SW_RANGE_STEP_VALID)
 
 /*
  * HINTS for user interface semantics
@@ -334,7 +314,7 @@ typedef int sw_hints;
  * interpreted as a valid filename on the user's system.
  */
 #define SW_PARAM_HINT_FILENAME     (1<<3)
- 
+
 
 typedef struct _sw_param_spec sw_param_spec;
 typedef struct _sw_param_range sw_param_range;

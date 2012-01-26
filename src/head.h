@@ -79,10 +79,10 @@ void
 head_set_monitor (sw_head * h, gboolean monitor);
 
 sw_framecount_t
-head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
+head_read (sw_head * head, float * buf, sw_framecount_t count,
 	   int driver_rate);
 
 sw_framecount_t
-head_write (sw_head * head, sw_audio_t * buf, sw_framecount_t count);
+head_write (sw_head * head, float * buf, sw_framecount_t count);
 
 #endif /* __HEAD_H__ */

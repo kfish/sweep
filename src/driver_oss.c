@@ -250,7 +250,7 @@ oss_setup (sw_handle * handle, sw_format * format)
 #endif
 }
 
-#define RECORD_SCALE (SW_AUDIO_T_MAX / 32768.0)
+#define RECORD_SCALE (SW_AUDIO_MAX / 32768.0)
 
 static int
 oss_wait (sw_handle * handle)
@@ -259,7 +259,7 @@ oss_wait (sw_handle * handle)
 }
 
 static ssize_t
-oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
+oss_read (sw_handle * handle, float * buf, size_t count)
 {
   gint16 * bbuf;
   size_t byte_count;
@@ -290,16 +290,16 @@ oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
   }
 
   for (i = 0; i < count; i++) {
-    buf[i] = (sw_audio_t)(bbuf[i] * RECORD_SCALE);
+    buf[i] = (float)(bbuf[i] * RECORD_SCALE);
   }
 
   return (bytes_read / sizeof (gint16));
 }
 
-#define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
+#define PLAYBACK_SCALE (32768 / SW_AUDIO_MAX)
 
 static ssize_t
-oss_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
+oss_write (sw_handle * handle, const float * buf, size_t count)
 {
   gint16 * bbuf;
   size_t byte_count;

@@ -359,7 +359,7 @@ sample_load_speex_data (sw_op_instance * inst)
   int forceMode = -1;
 
   int i, j;
-  sw_audio_t * d = NULL;
+  float * d = NULL;
   sw_framecount_t frames_total = 0, frames_decoded = 0;
   size_t file_length, remaining, n;
   ssize_t nread;
@@ -447,12 +447,12 @@ sample_load_speex_data (sw_op_instance * inst)
 	    if (sample->sounddata->nr_frames != frames_total) {
 	      sample->sounddata->data =
 		g_realloc (sample->sounddata->data,
-			   frames_total * channels * sizeof (sw_audio_t));
+			   frames_total * channels * sizeof (float));
 	    }
 
 	    sample->sounddata->nr_frames = frames_total;
 
-	    d = &((sw_audio_t *)sample->sounddata->data)
+	    d = &((float *)sample->sounddata->data)
 		  [frames_decoded * channels];
 
 	    if (d != NULL) {
@@ -688,7 +688,7 @@ speex_sample_save_thread (sw_op_instance * inst)
 
   FILE * outfile;
   sw_format * format;
-  sw_audio_t * d;
+  float * d;
   sw_framecount_t remaining, len, run_total;
   sw_framecount_t nr_frames, cframes;
   gint percent = 0;
@@ -876,10 +876,10 @@ speex_sample_save_thread (sw_op_instance * inst)
 	if (remaining > 0) {
 	  len = MIN (remaining, frame_size);
 
-	  d = &((sw_audio_t *)sample->sounddata->data)
+	  d = &((float *)sample->sounddata->data)
 	    [run_total * format->channels];
 
-	  memcpy (input, d, sizeof (sw_audio_t) * len * format->channels);
+	  memcpy (input, d, sizeof (float) * len * format->channels);
 
 	  /* rip channel 0 out, in required format */
 	  for (j = 0; j < len * format->channels; j++) {

@@ -53,7 +53,7 @@ do_dup_channels_thread (sw_op_instance * inst)
   sw_sounddata * old_sounddata, * new_sounddata;
   sw_framecount_t nr_frames;
 
-  sw_audio_t * old_d, * new_d;
+  float * old_d, * new_d;
 
   sw_framecount_t remaining, n, run_total, ctotal;
   int i, j, k;
@@ -74,8 +74,8 @@ do_dup_channels_thread (sw_op_instance * inst)
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
 
-  old_d = (sw_audio_t *)old_sounddata->data;
-  new_d = (sw_audio_t *)new_sounddata->data;
+  old_d = (float *)old_sounddata->data;
+  new_d = (float *)new_sounddata->data;
 
   /* Create selections */
   g_mutex_lock (sample->ops_mutex);
@@ -249,7 +249,7 @@ do_mono_mixdown_thread (sw_op_instance * inst)
   sw_sounddata * old_sounddata, * new_sounddata;
   sw_framecount_t nr_frames;
 
-  sw_audio_t * old_d, * new_d;
+  float * old_d, * new_d;
 
   sw_framecount_t remaining, n, run_total, ctotal;
   int i, j;
@@ -267,8 +267,8 @@ do_mono_mixdown_thread (sw_op_instance * inst)
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
 
-  old_d = (sw_audio_t *)old_sounddata->data;
-  new_d = (sw_audio_t *)new_sounddata->data;
+  old_d = (float *)old_sounddata->data;
+  new_d = (float *)new_sounddata->data;
 
   /* Create selections */
   g_mutex_lock (sample->ops_mutex);
@@ -344,7 +344,7 @@ do_remove_channel_thread (sw_op_instance * inst)
   sw_sounddata * old_sounddata, * new_sounddata;
   sw_framecount_t nr_frames;
 
-  sw_audio_t * old_d, * new_d;
+  float * old_d, * new_d;
 
   sw_framecount_t remaining, n, run_total, ctotal;
   int i, j;
@@ -363,8 +363,8 @@ do_remove_channel_thread (sw_op_instance * inst)
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
 
-  old_d = (sw_audio_t *)old_sounddata->data;
-  new_d = (sw_audio_t *)new_sounddata->data;
+  old_d = (float *)old_sounddata->data;
+  new_d = (float *)new_sounddata->data;
 
   /* Create selections */
   g_mutex_lock (sample->ops_mutex);
@@ -447,7 +447,7 @@ static void
 do_stereo_swap (sw_sample * sample, gpointer data)
 {
   sw_framecount_t nr_frames;
-  sw_audio_t * dl, * dr, t;
+  float * dl, * dr, t;
 
   sw_framecount_t remaining, n, run_total, ctotal;
   int i;
@@ -462,7 +462,7 @@ do_stereo_swap (sw_sample * sample, gpointer data)
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
 
-  dl = (sw_audio_t *)sample->sounddata->data;
+  dl = (float *)sample->sounddata->data;
   dr = dl; dr++;
 
   /* Swap channels */
@@ -541,7 +541,7 @@ do_change_channels_thread (sw_op_instance * inst)
   sw_sounddata * old_sounddata, * new_sounddata;
   sw_framecount_t nr_frames;
 
-  sw_audio_t * old_d, * new_d;
+  float * old_d, * new_d;
 
   sw_framecount_t remaining, n, run_total, ctotal;
   int i, j;
@@ -562,8 +562,8 @@ do_change_channels_thread (sw_op_instance * inst)
   if (ctotal == 0) ctotal = 1;
   run_total = 0;
 
-  old_d = (sw_audio_t *)old_sounddata->data;
-  new_d = (sw_audio_t *)new_sounddata->data;
+  old_d = (float *)old_sounddata->data;
+  new_d = (float *)new_sounddata->data;
 
   /* Create selections */
   g_mutex_lock (sample->ops_mutex);

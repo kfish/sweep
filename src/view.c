@@ -103,7 +103,7 @@ static GtkWidget * create_view_menu_item(GtkWidget * menu, gchar * label, gchar 
 												  guint accel_key, GdkModifierType accel_mods, gpointer user_data);
 
 void
-view_set_vzoom (sw_view * view, sw_audio_t low, sw_audio_t high);
+view_set_vzoom (sw_view * view, float low, float high);
 
 extern GList * plugins;
 extern GdkCursor * sweep_cursors[];
@@ -1548,8 +1548,8 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   view->sample = sample;
   view->start = start;
   view->end = end;
-  view->vlow = SW_AUDIO_T_MIN;
-  view->vhigh = SW_AUDIO_T_MAX;
+  view->vlow = SW_AUDIO_MIN;
+  view->vhigh = SW_AUDIO_MAX;
 
   /*  view->gain = gain;*/
 
@@ -2640,9 +2640,9 @@ view_set_ends (sw_view * view, sw_framecount_t start, sw_framecount_t end)
 }
 
 void
-view_set_vzoom (sw_view * view, sw_audio_t low, sw_audio_t high)
+view_set_vzoom (sw_view * view, float low, float high)
 {
-  sw_audio_t length;
+  float length;
 
   length = high - low;
 
@@ -2667,11 +2667,11 @@ view_set_vzoom (sw_view * view, sw_audio_t low, sw_audio_t high)
 void
 view_vzoom_in (sw_view * view, double ratio)
 {
-  sw_audio_t oz, z;
-  sw_audio_t nhigh, nlow;
+  float oz, z;
+  float nhigh, nlow;
 
   oz = view->vhigh - view->vlow;
-  z = (sw_audio_t)((gdouble)oz / ratio);
+  z = (float)((gdouble)oz / ratio);
 
   nlow = view->vlow + (oz - z)/2;
   nhigh = nlow + z;
@@ -2682,11 +2682,11 @@ view_vzoom_in (sw_view * view, double ratio)
 void
 view_vzoom_out (sw_view * view, double ratio)
 {
-  sw_audio_t oz, z;
-  sw_audio_t nhigh, nlow;
+  float oz, z;
+  float nhigh, nlow;
 
   oz = view->vhigh - view->vlow;
-  z = (sw_audio_t)((gdouble)oz * ratio);
+  z = (float)((gdouble)oz * ratio);
 
   nlow = view->vlow + (oz - z)/2;
   nhigh = nlow + z;
