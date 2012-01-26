@@ -255,7 +255,7 @@ struct _sw_sample {
   gint playmarker_tag; /* gtk_timeout tag for playmarkers */
 
   gboolean tmp_message_active;
-  gchar * last_tmp_message;
+  gchar last_tmp_message [512];
   gint tmp_message_tag;
   gint progress_ready_tag;
 };

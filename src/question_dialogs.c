@@ -189,8 +189,8 @@ question_dialog_new (sw_sample * sample, char * title, char * question,
 /* Thread safe info dialogs */
 
 typedef struct {
-  char * title;
-  char * message;
+  char title [256];
+  char message [512];
   gpointer xpm_data;
 } info_dialog_data;
 
@@ -202,9 +202,6 @@ do_info_dialog (gpointer data)
   query_dialog_new (NULL, id->title, id->message, FALSE,
 		    _("OK"), NULL, NULL, NULL,
 		    NULL, NULL, id->xpm_data, TRUE);
-
-  g_free (id->title);
-  g_free (id->message);
 
   return FALSE;
 }
@@ -221,8 +218,8 @@ info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
   va_end (ap);
 
   id = g_malloc (sizeof (info_dialog_data));
-  id->title = g_strdup (title);
-  id->message = g_strdup (buf);
+  snprintf (id->title, sizeof (id->title), "%s", title);
+  snprintf (id->message, sizeof (id->message), "%s", buf);
   id->xpm_data = xpm_data;
 
   sweep_timeout_add ((guint32)0, (GtkFunction)do_info_dialog, id);
@@ -252,7 +249,6 @@ syserror_dialog_new (gpointer data)
 		      NULL, NULL, scrubby_system_xpm, TRUE);
   }
 
-  g_free (pd->message);
   g_free (pd);
 
   return FALSE;
@@ -263,15 +259,12 @@ sweep_perror (int thread_errno, const char * fmt, ...)
 {
   sweep_perror_data * pd;
   va_list ap;
-  char buf[512];
-
-  va_start (ap, fmt);
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  va_end (ap);
 
   pd = g_malloc (sizeof (sweep_perror_data));
-  pd->thread_errno = thread_errno;
-  pd->message = g_strdup (buf);
+
+  va_start (ap, fmt);
+  snprintf (pd->message, sizeof (pd->message), fmt, ap);
+  va_end (ap);
 
   sweep_timeout_add ((guint32)0, (GtkFunction)syserror_dialog_new, pd);
 }

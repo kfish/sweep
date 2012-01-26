@@ -67,7 +67,7 @@ typedef struct {
 typedef struct {
   gboolean saving; /* loading or saving ? */
   sw_sample * sample;
-  gchar * pathname;
+  gchar pathname [512];
   SF_INFO * sfinfo;
   GtkWidget * ok_button;
 } sndfile_save_options;
@@ -484,7 +484,7 @@ sndfile_save_options_dialog (sw_sample * sample, gchar * pathname)
 
   sfinfo->format = sample->file_format;
 
-  so->pathname = g_strdup (pathname);
+  snprintf (so->pathname, sizeof (so->pathname), "%s", pathname);
   so->sfinfo = sfinfo;
 
   dialog = create_sndfile_encoding_options_dialog (so);
@@ -515,16 +515,14 @@ sndfile_load_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 {
   sndfile_save_options * so = (sndfile_save_options *)data;
   sw_sample * sample = so->sample;
-  gchar * pathname = so->pathname;
   SF_INFO * sfinfo = so->sfinfo;
   GtkWidget * dialog;
 
   dialog = gtk_widget_get_toplevel (widget);
   gtk_widget_destroy (dialog);
 
-  _sndfile_sample_load (sample, pathname, sfinfo, TRUE);
+  _sndfile_sample_load (sample, so->pathname, sfinfo, TRUE);
 
-  g_free (so->pathname);
   g_free (so);
 }
 
@@ -645,7 +643,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
       so = g_malloc0 (sizeof(*so));
       so->saving = FALSE;
       so->sample = sample;
-      so->pathname = g_strdup (pathname);
+      snprintf (so->pathname, sizeof (so->pathname), "%s", pathname);
       so->sfinfo = sfinfo;
 
       sfinfo->format = (SF_FORMAT_RAW | SF_FORMAT_PCM_S8);

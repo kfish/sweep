@@ -119,8 +119,8 @@ extern GtkStyle * style_bw;
 typedef struct _sw_metadata sw_metadata;
 
 struct _sw_metadata {
-  char * name;
-  char * content;
+  char name [128];
+  char content [512];
 };
 
 static sw_metadata *
@@ -139,8 +139,8 @@ vorbis_metadata_from_str (char * str)
     if (str[i] == '=') {
       str[i] = '\0';
       meta = g_malloc (sizeof (sw_metadata));
-      meta->name = g_strdup (str);
-      meta->content = g_strdup (&str[i+1]);
+      snprintf (meta->name, sizeof (meta->name), "%s", str);
+      snprintf (meta->content, sizeof (meta->content), "%s", str + i +1);
       break;
     }
   }
@@ -852,6 +852,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   GtkObject * quality_adj;
   float quality;
   long l, bitrate;
+  char temp [64];
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -869,7 +870,8 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "nominal_bitrate_entry"));
   bitrate = prefs_get_long (NOMINAL_KEY, DEFAULT_NOMINAL);
-  gtk_entry_set_text (GTK_ENTRY (entry), g_strdup_printf ("%ld", bitrate));
+  snprintf (temp, sizeof (temp), "%ld", bitrate);
+  gtk_entry_set_text (GTK_ENTRY (entry), temp);
 
   /* Max bitrate */
 

@@ -177,7 +177,7 @@ sample_new_empty(gchar * pathname,
   s->rec_head = NULL;
 
   s->tmp_message_active = FALSE;
-  s->last_tmp_message = NULL;
+  s->last_tmp_message [0] = 0;
   s->tmp_message_tag = -1;
   s->progress_ready_tag = -1;
 
@@ -657,8 +657,7 @@ sample_destroy (sw_sample * s)
     gtk_widget_destroy (s->info_clist);
 
   if (s->last_tmp_message) {
-    memset (s->last_tmp_message, 0, strlen (s->last_tmp_message));
-    g_free (s->last_tmp_message);
+    memset (s->last_tmp_message, 0, sizeof (s->last_tmp_message));
   }
 
   memset (s, 0, sizeof (*s));
@@ -1229,8 +1228,7 @@ sample_clear_tmp_message (gpointer data)
   if (sample->edit_state == SWEEP_EDIT_STATE_IDLE)
     sample_set_progress_ready (sample);
 
-  g_free (sample->last_tmp_message);
-  sample->last_tmp_message = NULL;
+  sample->last_tmp_message [0] = 0;
 
   sample->tmp_message_tag = -1;
 
@@ -1248,7 +1246,7 @@ sample_set_tmp_message (sw_sample * s, const char * fmt, ...)
   va_end (ap);
 
   s->tmp_message_active = TRUE;
-  s->last_tmp_message = g_strdup (buf);
+  snprintf (s->last_tmp_message, sizeof (s->last_tmp_message), "%s", buf);
 
   sweep_timeout_remove (s->tmp_message_tag);
   s->tmp_message_tag =
