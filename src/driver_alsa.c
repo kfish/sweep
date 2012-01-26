@@ -322,7 +322,7 @@ alsa_device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 static ssize_t
-alsa_device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
+alsa_device_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
 {
   snd_pcm_t * pcm_handle = (snd_pcm_t *)handle->custom_data;
   snd_pcm_uframes_t uframes;

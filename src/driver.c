@@ -761,7 +761,7 @@ device_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 ssize_t
-device_write (sw_handle * handle, sw_audio_t * buf, size_t count)
+device_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
 {
 #ifdef DEBUG
   printf ("device_write: %d from %d\n", count, offset);

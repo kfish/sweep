@@ -299,7 +299,7 @@ oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 #define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
 
 static ssize_t
-oss_write (sw_handle * handle, sw_audio_t * buf, size_t count)
+oss_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
 {
   gint16 * bbuf;
   size_t byte_count;
