@@ -750,12 +750,9 @@ play_heads (GList ** heads, sw_handle * handle)
 static gboolean
 monitor_active (void)
 {
-  int * use_monitor;
+  int use_monitor = prefs_get_int (USE_MONITOR_KEY, 0);
 
-  use_monitor = prefs_get_int (USE_MONITOR_KEY);
-
-  if (use_monitor == NULL) return 0;
-  else return (*use_monitor != 0);
+  return (use_monitor != 0);
 }
 
 static void

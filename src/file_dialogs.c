@@ -274,7 +274,7 @@ sample_load_cb(GtkWidget * widget, gpointer data)
 {
 
   GtkWidget *dialog;
-  gchar *load_current_file;
+  gchar load_current_file [512];
   gint win_width, win_height;
   GSList *filenames, *list;
 
@@ -297,12 +297,10 @@ sample_load_cb(GtkWidget * widget, gpointer data)
   sweep_set_window_icon (GTK_WINDOW(dialog));
   attach_window_close_accel(GTK_WINDOW(dialog));
 
-  load_current_file = prefs_get_string (LAST_LOAD_KEY);
+  prefs_get_string (LAST_LOAD_KEY, load_current_file, sizeof (load_current_file), "");
 
-  if (load_current_file) {
+  if (load_current_file [0]) {
       gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog), load_current_file);
-
-      g_free(load_current_file);
   }
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -686,7 +684,6 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   save_as_data * sd;
 
   char buf[512];
-  char * last_save;
 
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
@@ -739,10 +736,11 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   gtk_widget_set_size_request (dialog, win_width, win_height);
 
   if (strcmp (g_path_get_dirname(sample->pathname), ".") == 0) {
+    char last_save [512];
 
-    last_save = prefs_get_string (LAST_SAVE_KEY);
+    prefs_get_string (LAST_SAVE_KEY, last_save, sizeof (last_save), "");
 
-    if (last_save != NULL) {
+    if (last_save [0]) {
       gchar * last_save_dir = g_dirname (last_save);
 
 	  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER(dialog),
@@ -751,8 +749,6 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 				      sample->pathname);
 
       g_free (last_save_dir);
-      g_free (last_save);
-
     }
   } else {
      retval =  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog),

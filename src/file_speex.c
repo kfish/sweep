@@ -1339,7 +1339,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog;
 
   GtkObject * adj;
-  int * i, features, quality, complexity, framepack;
+  int features, quality, complexity, framepack;
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -1347,13 +1347,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   speex_encode_options_mode_auto_cb (widget, data);
 
   /* Features menu */
-  i = prefs_get_int (FEATURES_KEY);
-
-  if (i == NULL) {
-    features = DEFAULT_FEATURES;
-  } else {
-    features = *i;
-  }
+  features = prefs_get_int (FEATURES_KEY, DEFAULT_FEATURES);
 
   speex_encode_options_set_features (dialog, features);
 
@@ -1361,13 +1355,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
 
-  i = prefs_get_int (QUALITY_KEY);
-
-  if (i == NULL) {
-    quality = DEFAULT_QUALITY;
-  } else {
-    quality = *i;
-  }
+  quality = prefs_get_int (QUALITY_KEY, DEFAULT_QUALITY);
 
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)quality);
 
@@ -1375,13 +1363,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "complexity_adj"));
 
-  i = prefs_get_int (COMPLEXITY_KEY);
-
-  if (i == NULL) {
-    complexity = DEFAULT_COMPLEXITY;
-  } else {
-    complexity = *i;
-  }
+  complexity = prefs_get_int (COMPLEXITY_KEY, DEFAULT_COMPLEXITY);
 
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)complexity);
 
@@ -1389,13 +1371,7 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "framepack_adj"));
 
-  i = prefs_get_int (FRAMEPACK_KEY);
-
-  if (i == NULL) {
-    framepack = DEFAULT_FRAMEPACK;
-  } else {
-    framepack = *i;
-  }
+  framepack = prefs_get_int (FRAMEPACK_KEY, DEFAULT_FRAMEPACK);
 
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)framepack);
 
@@ -1528,7 +1504,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 /*  GtkStyle * style; */
 
   int i;
-  long * l;
+  long l;
 
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog),
@@ -1996,15 +1972,15 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   g_object_set_data (G_OBJECT (dialog), "rem_serialno_chb", checkbutton);
 
-  l = prefs_get_long (SERIALNO_KEY);
+  l = prefs_get_long (SERIALNO_KEY, 0);
 
-  if (l == NULL) {
+  if (l == 0) {
     randomise_serialno (entry);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
   } else {
     char temp [128];
 
-    snprintf (temp, sizeof (temp), "%ld", *l);
+    snprintf (temp, sizeof (temp), "%ld", l);
     gtk_entry_set_text (GTK_ENTRY(entry), temp);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
   }

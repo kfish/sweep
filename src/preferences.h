@@ -25,22 +25,22 @@ void prefs_init ();
 
 int prefs_close (void);
 
-int prefs_delete (char * key);
+int prefs_delete (const char * key);
 
-int * prefs_get_int (char * key);
+int prefs_get_int (const char * key, int default_value);
 
-int prefs_set_int (char * key, int val);
+int prefs_set_int (const char * key, int val);
 
-long * prefs_get_long (char * key);
+long prefs_get_long (const char * key, long default_value);
 
-int prefs_set_long (char * key, long val);
+int prefs_set_long (const char * key, long val);
 
-float * prefs_get_float (char * key);
+float prefs_get_float (const char * key, float default_value);
 
-int prefs_set_float (char * key, float val);
+int prefs_set_float (const char * key, float val);
 
-char * prefs_get_string (char * key);
+void prefs_get_string (const char * key, char * value, size_t maxlen, const char * default_value);
 
-int prefs_set_string (char * key, char * val);
+int prefs_set_string (const char * key, const char * val);
 
 #endif /* __PREFERENCES_H__ */

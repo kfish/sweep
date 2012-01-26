@@ -97,7 +97,7 @@ oss_get_names (void)
 static sw_handle *
 oss_open (int monitoring, int flags)
 {
-  char * dev_name;
+  const char * dev_name;
   int dev_dsp;
   sw_handle * handle = &oss_handle;
   int i;

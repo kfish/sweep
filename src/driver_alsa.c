@@ -126,7 +126,7 @@ static sw_handle *
 alsa_device_open (int monitoring, int flags)
 {
   int err;
-  char * alsa_pcm_name;
+  const char * alsa_pcm_name;
   snd_pcm_t * pcm_handle;
   sw_handle * handle = &alsa_handle;
   snd_pcm_stream_t stream;

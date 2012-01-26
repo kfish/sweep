@@ -373,7 +373,7 @@ src_quality_options_reset_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog;
   GtkWidget * quality_menu;
 
-  int * i, quality;
+  int quality;
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -382,13 +382,7 @@ src_quality_options_reset_cb (GtkWidget * widget, gpointer data)
   quality_menu =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "quality_menu"));
 
-  i = prefs_get_int (QUALITY_KEY);
-
-  if (i == NULL) {
-    quality = DEFAULT_QUALITY;
-  } else {
-    quality = *i;
-  }
+  quality =prefs_get_int (QUALITY_KEY, DEFAULT_QUALITY);
 
   gtk_option_menu_set_history (GTK_OPTION_MENU(quality_menu), quality);
   src_quality_label_update (dialog, quality);

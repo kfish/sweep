@@ -33,10 +33,10 @@
 
 #define LOGFRAGS_TO_FRAGS(l) (1 << ((int)(floor((l)) - 1)))
 
-char *
+const char *
 pcmio_get_main_dev (void);
 
-char *
+const char *
 pcmio_get_monitor_dev (void);
 
 gboolean

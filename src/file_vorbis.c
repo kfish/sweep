@@ -848,12 +848,10 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   GtkWidget * checkbutton;
   GtkWidget * entry;
 
-  char temp [128];
-  int * i;
   gboolean use_abr;
   GtkObject * quality_adj;
-  float * q, quality;
-  long * l, bitrate;
+  float quality;
+  long l, bitrate;
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -862,13 +860,7 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   quality_adj =
     GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
 
-  q = prefs_get_float (QUALITY_KEY);
-
-  if (q == NULL) {
-    quality = DEFAULT_QUALITY;
-  } else {
-    quality = *q;
-  }
+  quality = prefs_get_float (QUALITY_KEY, DEFAULT_QUALITY);
 
   gtk_adjustment_set_value (GTK_ADJUSTMENT(quality_adj), quality);
 
@@ -876,23 +868,17 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "nominal_bitrate_entry"));
-  l = prefs_get_long (NOMINAL_KEY);
-  if (l == NULL) {
-    bitrate = DEFAULT_NOMINAL;
-  } else {
-    bitrate = *l;
-  }
-  snprintf (temp, sizeof (temp), "%ld", bitrate);
-  gtk_entry_set_text (GTK_ENTRY (entry), temp);
+  bitrate = prefs_get_long (NOMINAL_KEY, DEFAULT_NOMINAL);
+  gtk_entry_set_text (GTK_ENTRY (entry), g_strdup_printf ("%ld", bitrate));
 
   /* Max bitrate */
 
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "max_bitrate_entry"));
-  l = prefs_get_long (MAXIMUM_KEY);
-  if (l != NULL && (*l != -1)) {
-	char temp [128];
-	snprintf (temp, sizeof (temp), "%ld", *l);
+  l = prefs_get_long (MAXIMUM_KEY, 0);
+  if (l) {
+    char temp [64];
+    snprintf (temp, sizeof (temp), "%ld", l);
     gtk_entry_set_text (GTK_ENTRY (entry), temp);
   }
 
@@ -900,20 +886,16 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "min_bitrate_entry"));
-  l = prefs_get_long (MINIMUM_KEY);
-  if (l != NULL && (*l != -1)) {
-	snprintf (temp, sizeof (temp), "%ld", *l);
+  l = prefs_get_long (MINIMUM_KEY, 0);
+  if (l) {
+    char temp [128];
+    snprintf (temp, sizeof (temp), "%ld", l);
     gtk_entry_set_text (GTK_ENTRY (entry), temp);
   }
 
   /* Use ABR */
 
-  i = prefs_get_int (ABR_KEY);
-  if (i == NULL) {
-    use_abr = FALSE;
-  } else {
-    use_abr = (gboolean) *i;
-  }
+  use_abr = prefs_get_int (ABR_KEY, FALSE);
 
   checkbutton =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "abr_chb"));
@@ -1067,7 +1049,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   GtkWidget * entry;
   GtkTooltips * tooltips;
 
-  long * l;
+  long l;
 
 #ifdef DEVEL_CODE /* metadata */
   int t; /* table row */
@@ -1515,14 +1497,14 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   g_object_set_data (G_OBJECT (dialog), "rem_serialno_chb", checkbutton);
 
-  l = prefs_get_long (SERIALNO_KEY);
+  l = prefs_get_long (SERIALNO_KEY, 0);
 
-  if (l == NULL) {
+  if (l == 0) {
     randomise_serialno (entry);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
   } else {
     char temp [128];
-    snprintf (temp, sizeof (temp), "%ld", *l);
+    snprintf (temp, sizeof (temp), "%ld", l);
     gtk_entry_set_text (GTK_ENTRY(entry), temp);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
   }

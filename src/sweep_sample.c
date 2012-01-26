@@ -327,13 +327,11 @@ sample_new_dialog_reset_cb (GtkWidget * widget, gpointer data)
   GtkWidget * dialog;
   GtkWidget * entry;
 
-  int * i, sample_rate, nr_channels;
+  int sample_rate, nr_channels;
 
-  i = prefs_get_int (SAMPLERATE_KEY);
-  sample_rate = i ? *i : DEFAULT_SAMPLERATE;
+  sample_rate = prefs_get_int (SAMPLERATE_KEY, DEFAULT_SAMPLERATE);
 
-  i = prefs_get_int (CHANNELS_KEY);
-  nr_channels = i ? *i : DEFAULT_CHANNELS;
+  nr_channels = prefs_get_int (CHANNELS_KEY, DEFAULT_CHANNELS);
 
   dialog = gtk_widget_get_toplevel (widget);
 

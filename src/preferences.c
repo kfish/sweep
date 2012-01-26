@@ -18,6 +18,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Currently use Samba's TDB (Tiny DataBase) for preferences storage. This
+ * should probably be replaced at some time.
+ *
+ * The two problem with is are:
+ *   - Its API TDB not const correct ie it requires that the const correct API
+ *     for preferences needs to cast away const internally.
+ *   - Samba uses Talloc for memory management and the TDB API is therefore a
+ *     little alloction happy. For instance, *every* tdb_fetch() call returns
+ *     a pointer than the *caller* needs to free.
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -48,7 +60,7 @@ gboolean ignore_failed_tdb_lock = FALSE;
 void
 prefs_init ()
 {
-  G_CONST_RETURN char * prefs_path;
+  G_CONST_RETURN const char * prefs_path;
   struct stat sbuf;
 
   prefs_path = g_get_home_dir ();
@@ -135,123 +147,117 @@ prefs_close (void)
 }
 
 int
-prefs_delete (char * key)
+prefs_delete (const char * key)
 {
   TDB_DATA key_data;
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   return tdb_delete (prefs_tdb, key_data);
 }
 
-int *
-prefs_get_int (char * key)
+int
+prefs_get_int (const char * key, int default_value)
 {
   TDB_DATA key_data, val_data;
   int nval, val;
 
-  if (prefs_tdb == NULL) return NULL;
+  if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
 
-  if (val_data.dptr == NULL) {
-    return NULL;
-  }
+  if (val_data.dptr == NULL) return default_value;
 
   nval = * (int *)val_data.dptr;
   val = g_ntohl (nval);
 
-  * (int *)val_data.dptr = val;
+  free (val_data.dptr);
 
-  return (int *)val_data.dptr;
+  return val;
 }
 
 int
-prefs_set_int (char * key, int val)
+prefs_set_int (const char * key, int val)
 {
   TDB_DATA key_data, val_data;
   int nval;
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   nval = g_htonl (val);
 
-  val_data.dptr = (char *)&nval;
+  val_data.dptr = (unsigned char *)&nval;
   val_data.dsize = sizeof (int);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
 }
 
-long *
-prefs_get_long (char * key)
+long
+prefs_get_long (const char * key, long default_value)
 {
   TDB_DATA key_data, val_data;
   long nval, val;
 
-  if (prefs_tdb == NULL) return NULL;
+  if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
 
-  if (val_data.dptr == NULL) {
-    return NULL;
-  }
+  if (val_data.dptr == NULL) return default_value;
 
   nval = * (long *)val_data.dptr;
   val = nval;
 
-  * (long *)val_data.dptr = val;
+  free (val_data.dptr);
 
-  return (long *)val_data.dptr;
+  return val;
 }
 
 int
-prefs_set_long (char * key, long val)
+prefs_set_long (const char * key, long val)
 {
   TDB_DATA key_data, val_data;
   long nval;
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   nval = val;
 
-  val_data.dptr = (char *)&nval;
+  val_data.dptr = (unsigned char *)&nval;
   val_data.dsize = sizeof (long);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
 }
 
-float *
-prefs_get_float (char * key)
+float
+prefs_get_float (const char * key, float default_value)
 {
   TDB_DATA key_data, val_data;
   int nval, val;
   float fval;
   union { int ip; float fp;} fp;
-  if (prefs_tdb == NULL) return NULL;
+  if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
 
-  if (val_data.dptr == NULL) {
-    return NULL;
-  }
+  if (val_data.dptr == NULL) return default_value;
 
   nval = *(int *)val_data.dptr;
   val = g_ntohl (nval);
@@ -263,13 +269,13 @@ prefs_get_float (char * key)
   printf ("preferences.c: got %s is %f\n", key, fval);
 #endif
 
-  *(float *)val_data.dptr = fval;
+  free (val_data.dptr);
 
-  return (float *)val_data.dptr;
+  return fval;
 }
 
 int
-prefs_set_float (char * key, float val)
+prefs_set_float (const char * key, float val)
 {
   TDB_DATA key_data, val_data;
   int nval, ival;
@@ -281,45 +287,51 @@ prefs_set_float (char * key, float val)
   printf ("preferences.c: setting %s to %f\n", key, val);
 #endif
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   fp.fp = val;
   ival = fp.ip;
   nval = g_htonl (ival);
 
-  val_data.dptr = (char *)&nval;
+  val_data.dptr = (unsigned char *)&nval;
   val_data.dsize = sizeof (float);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
 }
 
-char *
-prefs_get_string (char * key)
+void
+prefs_get_string (const char * key, char * value, size_t maxlen, const char * default_value)
 {
   TDB_DATA key_data, val_data;
 
-  if (prefs_tdb == NULL) return NULL;
+  if (value == NULL) return;
 
-  key_data.dptr = key;
+  if (prefs_tdb == NULL) {
+    strncpy (value, default_value, maxlen);
+    return;
+  }
+
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
 
-  return (char *)val_data.dptr;
+  strncpy (value, (char *) val_data.dptr, MIN (val_data.dsize, maxlen));
+  value [MIN (val_data.dsize, maxlen)] = 0;
 }
 
 int
-prefs_set_string (char * key, char * val)
+prefs_set_string (const char * key, const char * val)
 {
   TDB_DATA key_data, val_data;
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = key;
+  key_data.dptr = (unsigned char *) key;
   key_data.dsize = strlen (key);
 
-  val_data.dptr = val;
+  val_data.dptr = (unsigned char *) val;
   val_data.dsize = strlen (val) + 1;
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);

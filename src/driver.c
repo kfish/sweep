@@ -71,24 +71,27 @@ static sw_driver * dialog_driver = &_driver_null;
 
 static char * prefs_driver_key = "driver";
 
-char *
+const char *
 pcmio_get_default_main_dev (void)
 {
+  static char name [128];
   GList * names = NULL, * gl;
 
   if (dialog_driver->get_names)
     names = dialog_driver->get_names ();
 
   if ((gl = names) != NULL) {
-    return (char *)gl->data;
+    strncpy (name, gl->data, sizeof (name));
+    return name;
   }
 
   return "Default";
 }
 
-char *
+const char *
 pcmio_get_default_monitor_dev (void)
 {
+  static char name [128];
   GList * names = NULL, * gl;
 
   if (dialog_driver->get_names)
@@ -96,33 +99,36 @@ pcmio_get_default_monitor_dev (void)
 
   if ((gl = names) != NULL) {
     if ((gl = gl->next) != NULL) {
-      return (char *)gl->data;
+      strncpy (name, gl->data, sizeof (name));
+      return name;
     }
   }
 
   return "Default";
 }
 
-char *
+const char *
 pcmio_get_main_dev (void)
 {
-  char * main_dev;
+  static char main_dev [128];
 
-  main_dev = prefs_get_string (dialog_driver->primary_device_key);
+  prefs_get_string (dialog_driver->primary_device_key, main_dev, sizeof (main_dev), "");
 
-  if (main_dev == NULL) return pcmio_get_default_main_dev();
+  if (main_dev [0] == 0)
+    return pcmio_get_default_main_dev();
 
   return main_dev;
 }
 
-char *
+const char *
 pcmio_get_monitor_dev (void)
 {
-  char * monitor_dev;
+  static char monitor_dev [128];
 
-  monitor_dev = prefs_get_string (dialog_driver->monitor_device_key);
+  prefs_get_string (dialog_driver->monitor_device_key, monitor_dev, sizeof (monitor_dev), "");
 
-  if (monitor_dev == NULL) return pcmio_get_default_monitor_dev ();
+  if (monitor_dev [0] == 0)
+    return pcmio_get_default_monitor_dev ();
 
   return monitor_dev;
 }
@@ -130,22 +136,13 @@ pcmio_get_monitor_dev (void)
 gboolean
 pcmio_get_use_monitor (void)
 {
-  int * use_monitor;
-
-  use_monitor = prefs_get_int (USE_MONITOR_KEY);
-
-  if (use_monitor == NULL) return DEFAULT_USE_MONITOR;
-  else return (*use_monitor != 0);
+  return prefs_get_int (USE_MONITOR_KEY, DEFAULT_USE_MONITOR);
 }
 
 int
 pcmio_get_log_frags (void)
 {
-  int * log_frags;
-
-  log_frags = prefs_get_int (dialog_driver->log_frags_key);
-  if (log_frags == NULL) return DEFAULT_LOG_FRAGS;
-  else return (*log_frags);
+  return prefs_get_int (dialog_driver->log_frags_key, DEFAULT_LOG_FRAGS);
 }
 
 extern GtkStyle * style_bw;
@@ -322,7 +319,7 @@ static void
 pcmio_devname_reset_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog = GTK_WIDGET (data);
-  char * main_dev, * monitor_dev;
+  const char * main_dev, * monitor_dev;
 
   main_dev = pcmio_get_main_dev ();
   monitor_dev = pcmio_get_monitor_dev ();
@@ -339,7 +336,7 @@ static void
 pcmio_devname_default_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog = GTK_WIDGET (data);
-  char * name;
+  const char * name;
 
   if ((name = pcmio_get_default_main_dev ()) != NULL) {
     gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(main_combo)->entry), name);
@@ -818,7 +815,7 @@ device_close (sw_handle * handle)
 void
 init_devices (void)
 {
-  const char * driver;
+  char driver [64];
   int k = 0;
 
   memset (driver_table, 0, sizeof (driver_table));
@@ -833,13 +830,13 @@ init_devices (void)
   if (driver_solaris->name != NULL)
     driver_table [k++] = driver_solaris;
 
-  driver = prefs_get_string (prefs_driver_key);
+  prefs_get_string (prefs_driver_key, driver, sizeof (driver), "");
 
   /* Set a default in case preferences driver doesn't exist. */
   current_driver = driver_table [0];
 
   /* Switch to driver from preferences if possible. */
-  if (driver != NULL)
+  if (driver [0] != 0)
     for (k = 0 ; driver_table [k] != NULL ; k++)
       if (strcmp (driver, driver_table [k]->name) == 0)
         current_driver = driver_table [k];
