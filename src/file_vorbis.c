@@ -32,7 +32,7 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * - Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *
@@ -43,7 +43,7 @@
  * - Neither the name of the Xiph.org Foundation nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -204,11 +204,11 @@ sample_load_vorbis_data (sw_op_instance * inst)
 	    d[j*channels + i] = pcm[i][j];
 	  }
 	}
-	
+
 	d += (n * channels);
 
 	remaining -= n;
-	
+
 	run_total += n;
 	percent = run_total / cframes;
 	sample_set_progress_percent (sample, percent);
@@ -519,13 +519,13 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 
   while (!eos) {
     g_mutex_lock (sample->ops_mutex);
-    
+
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
     }
 
     if (active == FALSE || remaining <= 0) {
-      /* Tell the library we're at end of stream so that it can handle   
+      /* Tell the library we're at end of stream so that it can handle
        * the last frame and mark end of stream in the output properly
        */
       vorbis_analysis_wrote (&vd, 0);
@@ -596,7 +596,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
   }
 
   /* clean up and exit.  vorbis_info_clear() must be called last */
- 
+
   ogg_stream_clear(&os);
   vorbis_block_clear(&vb);
   vorbis_dsp_clear(&vd);
@@ -626,7 +626,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)nr_frames/(double)format->rate));
-    
+
     info_dialog_new (_("Ogg Vorbis encoding results"), xifish_xpm,
 		     "Encoding of %s succeeded.\n\n"
 		     "%s written, %s audio\n"
@@ -702,7 +702,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   const gchar * text;
 
   gboolean use_abr;
-  GtkObject * quality_adj; 
+  GtkObject * quality_adj;
   gfloat quality = -1.0;
   long max_bitrate = -1, nominal_bitrate = -1, min_bitrate = -1;
   gboolean rem_encode;
@@ -718,7 +718,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   checkbutton =
     GTK_WIDGET(g_object_get_data (G_OBJECT(dialog), "abr_chb"));
   use_abr =
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));  
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbutton));
 
   if (use_abr) {
     entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
@@ -809,7 +809,7 @@ vorbis_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   so->serialno = serialno;
 
-  sample->file_info = so;  
+  sample->file_info = so;
 
   vorbis_sample_save (sample, pathname);
 }
@@ -848,9 +848,10 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   GtkWidget * checkbutton;
   GtkWidget * entry;
 
+  char temp [128];
   int * i;
   gboolean use_abr;
-  GtkObject * quality_adj; 
+  GtkObject * quality_adj;
   float * q, quality;
   long * l, bitrate;
 
@@ -860,15 +861,15 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 
   quality_adj =
     GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
-  
+
   q = prefs_get_float (QUALITY_KEY);
-  
+
   if (q == NULL) {
     quality = DEFAULT_QUALITY;
   } else {
     quality = *q;
   }
-  
+
   gtk_adjustment_set_value (GTK_ADJUSTMENT(quality_adj), quality);
 
   /* Nominal bitrate */
@@ -881,7 +882,8 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   } else {
     bitrate = *l;
   }
-  gtk_entry_set_text (GTK_ENTRY (entry), g_strdup_printf ("%ld", bitrate));
+  snprintf (temp, sizeof (temp), "%ld", bitrate);
+  gtk_entry_set_text (GTK_ENTRY (entry), temp);
 
   /* Max bitrate */
 
@@ -889,16 +891,19 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 					 "max_bitrate_entry"));
   l = prefs_get_long (MAXIMUM_KEY);
   if (l != NULL && (*l != -1)) {
-    gtk_entry_set_text (GTK_ENTRY (entry), g_strdup_printf ("%ld", *l));
+	char temp [128];
+	snprintf (temp, sizeof (temp), "%ld", *l);
+    gtk_entry_set_text (GTK_ENTRY (entry), temp);
   }
 
   /* Min bitrate */
-  
+
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "min_bitrate_entry"));
   l = prefs_get_long (MINIMUM_KEY);
   if (l != NULL && (*l != -1)) {
-    gtk_entry_set_text (GTK_ENTRY (entry), g_strdup_printf ("%ld", *l));
+	snprintf (temp, sizeof (temp), "%ld", *l);
+    gtk_entry_set_text (GTK_ENTRY (entry), temp);
   }
 
   /* Use ABR */
@@ -918,11 +923,12 @@ vorbis_encode_options_reset_cb (GtkWidget * widget, gpointer data)
 static void
 vorbis_encode_options_default_cb (GtkWidget * widget, gpointer data)
 {
+  char temp [128];
   GtkWidget * dialog;
   GtkWidget * checkbutton;
   GtkWidget * entry;
 
-  GtkObject * quality_adj; 
+  GtkObject * quality_adj;
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -936,8 +942,8 @@ vorbis_encode_options_default_cb (GtkWidget * widget, gpointer data)
 
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "nominal_bitrate_entry"));
-  gtk_entry_set_text (GTK_ENTRY (entry),
-		      g_strdup_printf ("%ld", DEFAULT_NOMINAL));
+  snprintf (temp, sizeof (temp), "%ld", DEFAULT_NOMINAL);
+  gtk_entry_set_text (GTK_ENTRY (entry), temp);
 
   /* Max bitrate */
 
@@ -946,7 +952,7 @@ vorbis_encode_options_default_cb (GtkWidget * widget, gpointer data)
   gtk_entry_set_text (GTK_ENTRY (entry), "");
 
   /* Min bitrate */
-  
+
   entry = GTK_WIDGET(g_object_get_data (G_OBJECT(dialog),
 					 "min_bitrate_entry"));
   gtk_entry_set_text (GTK_ENTRY (entry), "");
@@ -971,7 +977,7 @@ metadata_table_add_row (GtkWidget * table, int row, char * title, char * tip)
   gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, row, row+1,
 		    GTK_FILL, GTK_SHRINK, 0, 0);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (title);
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1005,11 +1011,10 @@ static gboolean
 randomise_serialno (gpointer data)
 {
   GtkWidget * entry = (GtkWidget *)data;
-  gchar * new_text;
+  gchar new_text [128];
 
-  new_text = g_strdup_printf ("%ld", random ());
+  snprintf (new_text, sizeof (new_text), "%ld", random ());
   gtk_entry_set_text (GTK_ENTRY (entry), new_text);
-  g_free (new_text);
 
   return TRUE;
 }
@@ -1054,7 +1059,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   GtkWidget * notebook;
 
-  GtkWidget * checkbutton;  
+  GtkWidget * checkbutton;
   GtkWidget * frame;
   GtkObject * quality_adj;
   GtkWidget * quality_hscale;
@@ -1121,7 +1126,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   label = gtk_label_new (g_basename (pathname));
   gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
-  
+
 /* gtk_widget_pop_style ();*/
 
   notebook = gtk_notebook_new ();
@@ -1156,7 +1161,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   {
     /* How sucky ... we create a vbox in order to center the hscale within
-     * its allocation, thus actually lining it up with its label ... 
+     * its allocation, thus actually lining it up with its label ...
      */
     GtkWidget * vbox_pants;
 
@@ -1202,7 +1207,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			NULL);
 
   g_object_set_data (G_OBJECT(checkbutton), "quality_widget", hbox);
-  
+
   frame = gtk_frame_new (_("Bitrate management engine"));
   gtk_box_pack_start (GTK_BOX(vbox), frame, TRUE, TRUE, 4);
   gtk_container_set_border_width (GTK_CONTAINER(frame), 12);
@@ -1228,7 +1233,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 0, 1,
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (_("Nominal bitrate (ABR):"));
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1257,7 +1262,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 1, 2,
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (_("Minimum bitrate:"));
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1287,7 +1292,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 2, 3,
 		    GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (_("Maximum bitrate:"));
   gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1516,7 +1521,9 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
     randomise_serialno (entry);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
   } else {
-    gtk_entry_set_text (GTK_ENTRY(entry), g_strdup_printf ("%ld", *l));
+    char temp [128];
+    snprintf (temp, sizeof (temp), "%ld", *l);
+    gtk_entry_set_text (GTK_ENTRY(entry), temp);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
   }
 
@@ -1558,7 +1565,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_add (GTK_CONTAINER(ebox), vbox);
   gtk_container_set_border_width (GTK_CONTAINER(vbox), 8);
   gtk_widget_show (vbox);
-  
+
   label =
     gtk_label_new (_("Ogg Vorbis is a high quality general purpose\n"
 		     "perceptual audio codec. It is free, open and\n"

@@ -164,7 +164,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   GtkTooltips * tooltips;
 
-  gchar * title, * common_slider_title;
+  gchar title [600], * common_slider_title;
 
   sw_time_t duration;
   char buf[16];
@@ -201,12 +201,11 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   /* Source */
 
-  title = g_strdup_printf ("%s: %s", _("Source"), _("Clipboard"));
+  snprintf (title, sizeof (title), "%s: %s", _("Source"), _("Clipboard"));
   frame = gtk_frame_new (title);
   gtk_container_set_border_width (GTK_CONTAINER(frame), 8);
   gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
-  g_free (title);
 
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER(frame), vbox);
@@ -226,7 +225,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
     slider = db_slider_new (_("End gain"), 1.0, 0.0, 2.0);
     gtk_box_pack_start (GTK_BOX(hbox2), slider, TRUE, TRUE, 2);
     gtk_widget_show (slider);
-    
+
     g_object_set_data (G_OBJECT(dialog), "src_slider2", slider);
   }
 
@@ -239,13 +238,12 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
 
   /* Destination */
 
-  title = g_strdup_printf ("%s: %s", _("Destination"),
+  snprintf (title, sizeof (title), "%s: %s", _("Destination"),
 			   g_basename (sample->pathname));
   frame = gtk_frame_new (title);
   gtk_container_set_border_width (GTK_CONTAINER(frame), 8);
   gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
-  g_free (title);
 
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER(frame), vbox);
@@ -352,7 +350,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   sample_set_edit_state (sample, SWEEP_EDIT_STATE_BUSY);
   sample_set_edit_mode (sample, SWEEP_EDIT_MODE_FILTER);
   sample_set_progress_percent (sample, 0);
-  
+
   if (!GTK_WIDGET_VISIBLE(dialog)) {
     gtk_widget_show (dialog);
   } else {

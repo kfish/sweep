@@ -379,6 +379,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
       samplerate_chooser_set_rate (entry, sample->sounddata->format->rate);
 
   } else {
+    char temp [32];
     hbox = gtk_hbox_new (FALSE, 0);
     gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 1, 2,
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
@@ -393,8 +394,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
     gtk_widget_show (hbox);
 
-    label = gtk_label_new (g_strdup_printf ("%d Hz",
-					    sample->sounddata->format->rate));
+    snprintf (temp, sizeof (temp), "%d Hz", sample->sounddata->format->rate);
+    label = gtk_label_new (temp);
     gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
   }
@@ -610,7 +611,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 {
   SNDFILE * sndfile;
   char buf[128];
-  gchar * message;
+  gchar message [256];
 
   gboolean isnew = (sample == NULL);
 
@@ -664,9 +665,8 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 
     } else {
       if (errno == 0) {
-	message = g_strdup_printf ("%s:\n%s", pathname, buf);
+	snprintf (message, sizeof (message), "%s:\n%s", pathname, buf);
 	info_dialog_new (buf, NULL, message);
-	g_free (message);
       } else {
 	/* We've already got the error string so no need to call
 	 * sweep_sndfile_perror() here */

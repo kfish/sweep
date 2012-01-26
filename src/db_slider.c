@@ -120,15 +120,15 @@ db_slider_value_changed_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * slider = (GtkWidget *)data;
   gfloat value, db_value;
-  gchar * db_text;
+  gchar db_text [16];
 
   value = db_slider_get_value (DB_SLIDER(slider));
   db_value = VALUE_TO_DB (value);
 
   if (db_value > -10.0) {
-    db_text = g_strdup_printf ("%1.1f dB", db_value);
+    snprintf (db_text, sizeof (db_text), "%1.1f dB", db_value);
   } else {
-    db_text = g_strdup_printf ("%2.0f dB", db_value);
+    snprintf (db_text, sizeof (db_text), "%2.0f dB", db_value);
   }
 
   gtk_label_set_text (GTK_LABEL(DB_SLIDER(slider)->db_label), db_text);
@@ -148,7 +148,7 @@ db_slider_build (GtkWidget * slider, gchar * title, gfloat value)
 
   GtkObject * adj;
 
-  gchar * range_text;
+  gchar range_text [128];
 
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER(slider), vbox);
@@ -182,7 +182,7 @@ db_slider_build (GtkWidget * slider, gchar * title, gfloat value)
 
   db_slider_value_changed_cb (NULL, slider);
 
-  range_text = g_strdup_printf ("%s\n[%2.0f to %2.0f dB]",
+  snprintf (range_text, sizeof (range_text), "%s\n[%2.0f to %2.0f dB]",
 				title,
 				VALUE_TO_DB(DB_SLIDER(slider)->lower),
 				VALUE_TO_DB(DB_SLIDER(slider)->upper));

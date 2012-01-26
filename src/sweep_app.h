@@ -177,7 +177,7 @@ struct _sw_head {
   gfloat gain;
   gfloat rate;
   gfloat mix; /* record mixing level */
-  
+
   sw_head * scrub_master; /* another head this is being scrubbed by */
   gboolean scrubbing; /* if this head is a scrub master, is it scrubbing ? */
 
@@ -202,7 +202,7 @@ struct _sw_sample {
 
   sw_view_bounds stored_views[10];
 
-  gchar * pathname;
+  gchar pathname [512];
 
   time_t last_mtime;
   gboolean edit_ignore_mtime;

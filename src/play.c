@@ -646,7 +646,7 @@ play_head_update_device (sw_head * head)
 static gchar *
 generate_demo_filename (void)
 {
-  return g_strdup_printf ("/tmp/sweep-demo-%d.au", getpid ());
+  return erikd ("/tmp/sweep-demo-%d.au", getpid ());
 }
 #endif
 

@@ -302,7 +302,7 @@ process_header(ogg_packet *op, int enh_enabled, int * frame_size, int * rate,
   if (*channels == -1)
     *channels = header->nb_channels;
 
-#ifdef DEBUG  
+#ifdef DEBUG
   fprintf (stderr, "Decoding %d Hz audio using %s mode",
 	   *rate, mode->modeName);
 
@@ -384,7 +384,7 @@ sample_load_speex_data (sw_op_instance * inst)
   ogg_sync_init (&oy);
 
   speex_bits_init (&bits);
-  
+
   while (active && remaining > 0) {
     g_mutex_lock (sample->ops_mutex);
 
@@ -481,7 +481,7 @@ sample_load_speex_data (sw_op_instance * inst)
 	}
 
 	remaining -= n;
-	
+
 	percent = (file_length - remaining) * 100 / file_length;
 	sample_set_progress_percent (sample, percent);
       }
@@ -808,10 +808,10 @@ speex_sample_save_thread (sw_op_instance * inst)
     while(!eos){
       int result = ogg_stream_flush (&os, &og);
       if (result == 0) break;
-      
+
       n = fwrite (og.header, 1, og.header_len, outfile);
       n += fwrite (og.body, 1, og.body_len, outfile);
-      
+
       if (fflush (outfile) == 0) {
 	bytes_written += n;
       } else {
@@ -858,7 +858,7 @@ speex_sample_save_thread (sw_op_instance * inst)
 
   while (!eos) {
     g_mutex_lock (sample->ops_mutex);
-    
+
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
     }
@@ -875,12 +875,12 @@ speex_sample_save_thread (sw_op_instance * inst)
       for (i = 0; i < so->framepack; i++) {
 	if (remaining > 0) {
 	  len = MIN (remaining, frame_size);
-	  
+
 	  d = &((sw_audio_t *)sample->sounddata->data)
 	    [run_total * format->channels];
-	  
+
 	  memcpy (input, d, sizeof (sw_audio_t) * len * format->channels);
-	  
+
 	  /* rip channel 0 out, in required format */
 	  for (j = 0; j < len * format->channels; j++) {
 	    input[j] *= 32767.0;
@@ -889,9 +889,9 @@ speex_sample_save_thread (sw_op_instance * inst)
 	  if (format->channels == 2)
 	    speex_encode_stereo (input, len, &bits);
 	  speex_encode (st, input, &bits);
-	  
+
 	  remaining -= len;
-	  
+
 	  run_total += len;
 	  percent = run_total / cframes;
 	  sample_set_progress_percent (sample, percent);
@@ -919,15 +919,15 @@ speex_sample_save_thread (sw_op_instance * inst)
 
     /* weld the packet into the bitstream */
     ogg_stream_packetin(&os,&op);
-    
+
     /* write out pages (if any) */
     while(!eos){
       int result=ogg_stream_pageout(&os,&og);
       if(result==0)break;
-      
+
       n = fwrite (og.header, 1, og.header_len, outfile);
       n += fwrite (og.body, 1, og.body_len, outfile);
-      
+
       if (fflush (outfile) == 0) {
 	bytes_written += n;
       } else {
@@ -970,7 +970,7 @@ speex_sample_save_thread (sw_op_instance * inst)
 
     average_bitrate =
       8.0/1000.0*((double)bytes_written/((double)nr_frames/(double)format->rate));
-    
+
     info_dialog_new (_("Speex encoding results"), xifish_xpm,
 		     "Encoding of %s succeeded.\n\n"
 		     "%s written, %s audio\n"
@@ -1045,7 +1045,7 @@ speex_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
   const gchar * text;
 
   gboolean use_br;
-  GtkObject * adj; 
+  GtkObject * adj;
   int mode, features, quality, bitrate, complexity, framepack;
   gboolean rem_encode;
   long serialno;
@@ -1137,7 +1137,7 @@ speex_save_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 
   so->serialno = serialno;
 
-  sample->file_info = so;  
+  sample->file_info = so;
 
   speex_sample_save (sample, pathname);
 }
@@ -1360,43 +1360,43 @@ speex_encode_options_reset_cb (GtkWidget * widget, gpointer data)
   /* Quality */
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "quality_adj"));
-  
+
   i = prefs_get_int (QUALITY_KEY);
-  
+
   if (i == NULL) {
     quality = DEFAULT_QUALITY;
   } else {
     quality = *i;
   }
-  
+
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)quality);
 
   /* Complexity */
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "complexity_adj"));
-  
+
   i = prefs_get_int (COMPLEXITY_KEY);
-  
+
   if (i == NULL) {
     complexity = DEFAULT_COMPLEXITY;
   } else {
     complexity = *i;
   }
-  
+
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)complexity);
 
   /* Framepack */
 
   adj = GTK_OBJECT(g_object_get_data (G_OBJECT(dialog), "framepack_adj"));
-  
+
   i = prefs_get_int (FRAMEPACK_KEY);
-  
+
   if (i == NULL) {
     framepack = DEFAULT_FRAMEPACK;
   } else {
     framepack = *i;
   }
-  
+
   gtk_adjustment_set_value (GTK_ADJUSTMENT(adj), (float)framepack);
 
   speex_encode_options_update_cb (widget, data);
@@ -1406,9 +1406,9 @@ static void
 speex_encode_options_default_cb (GtkWidget * widget, gpointer data)
 {
   GtkWidget * dialog;
-  GtkObject * quality_adj; 
-  GtkObject * complexity_adj; 
-  GtkObject * framepack_adj; 
+  GtkObject * quality_adj;
+  GtkObject * complexity_adj;
+  GtkObject * framepack_adj;
 
   dialog = gtk_widget_get_toplevel (widget);
 
@@ -1457,11 +1457,10 @@ static gboolean
 randomise_serialno (gpointer data)
 {
   GtkWidget * entry = (GtkWidget *)data;
-  gchar * new_text;
+  gchar new_text [256];
 
-  new_text = g_strdup_printf ("%ld", random ());
+  snprintf (new_text, sizeof (new_text), "%ld", random ());
   gtk_entry_set_text (GTK_ENTRY (entry), new_text);
-  g_free (new_text);
 
   return TRUE;
 }
@@ -1512,7 +1511,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   GtkWidget * notebook;
 
-  GtkWidget * checkbutton;  
+  GtkWidget * checkbutton;
   GtkObject * quality_adj;
   GtkWidget * quality_hscale;
   GtkObject * complexity_adj;
@@ -1565,7 +1564,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
    /* filename */
 
-  
+
 /* worth changing this over to pango?
 
   style = gtk_style_new ();
@@ -1577,7 +1576,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   label = gtk_label_new (g_basename (pathname));
   gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
-  
+
 /* gtk_widget_pop_style (); */
 
   notebook = gtk_notebook_new ();
@@ -1611,7 +1610,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     menuitem =
       gtk_menu_item_new_with_label (_(mode_choices[i].name));
     gtk_menu_append (GTK_MENU(menu), menuitem);
-    g_object_set_data (G_OBJECT(menuitem), "default", 
+    g_object_set_data (G_OBJECT(menuitem), "default",
 			      GINT_TO_POINTER(mode_choices[i].number));
     gtk_widget_show (menuitem);
 
@@ -1620,7 +1619,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			dialog);
   }
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
-    
+
   g_object_set_data (G_OBJECT(dialog), "mode_menu", option_menu);
 
   button = gtk_button_new_with_label (_("Auto"));
@@ -1629,13 +1628,13 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 		      G_CALLBACK(speex_encode_options_mode_auto_cb),
 		      sample);
   gtk_widget_show (button);
-  
+
   tooltips = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tooltips, button,
 			_("Automatically select the encoding mode based on "
 			  "the sampling rate of the file."),
 			NULL);
-  
+
   separator = gtk_hseparator_new ();
   gtk_box_pack_start (GTK_BOX(vbox), separator, FALSE, TRUE, 4);
   gtk_widget_show (separator);
@@ -1652,7 +1651,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     menuitem =
       gtk_menu_item_new_with_label (_(feature_choices[i].name));
     gtk_menu_append (GTK_MENU(menu), menuitem);
-    g_object_set_data (G_OBJECT(menuitem), "default", 
+    g_object_set_data (G_OBJECT(menuitem), "default",
 			      GINT_TO_POINTER(feature_choices[i].number));
     gtk_widget_show (menuitem);
 
@@ -1667,7 +1666,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     }
   }
   gtk_option_menu_set_menu (GTK_OPTION_MENU(option_menu), menu);
-    
+
   g_object_set_data (G_OBJECT(dialog), "features_menu", option_menu);
 
 
@@ -1701,7 +1700,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   {
     /* How sucky ... we create a vbox in order to center the hscale within
-     * its allocation, thus actually lining it up with its label ... 
+     * its allocation, thus actually lining it up with its label ...
      */
     GtkWidget * vbox_pants;
 
@@ -1816,7 +1815,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 
   {
     /* How sucky ... we create a vbox in order to center the hscale within
-     * its allocation, thus actually lining it up with its label ... 
+     * its allocation, thus actually lining it up with its label ...
      */
     GtkWidget * vbox_pants;
 
@@ -2003,7 +2002,10 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
     randomise_serialno (entry);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), FALSE);
   } else {
-    gtk_entry_set_text (GTK_ENTRY(entry), g_strdup_printf ("%ld", *l));
+    char temp [128];
+
+    snprintf (temp, sizeof (temp), "%ld", *l);
+    gtk_entry_set_text (GTK_ENTRY(entry), temp);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(checkbutton), TRUE);
   }
 
@@ -2045,7 +2047,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gtk_container_add (GTK_CONTAINER(ebox), vbox);
   gtk_container_set_border_width (GTK_CONTAINER(vbox), 8);
   gtk_widget_show (vbox);
-  
+
   label =
     gtk_label_new (_("Speex is a high quality speech codec designed for\n"
 		     "voice over IP (VoIP) and file-based compression.\n"

@@ -101,9 +101,9 @@ sample_remove_view (sw_sample * s, sw_view * v)
  * Idea due to Erik de Castro Lopo
  */
 static int
-filename_color_hash (char * filename)
+filename_color_hash (const char * filename)
 {
-  char *p;
+  const char *p;
   int i = 0;
 
   if (filename == NULL) return 0;
@@ -113,10 +113,10 @@ filename_color_hash (char * filename)
   return (i % VIEW_COLOR_DEFAULT_MAX);
 }
 
-static gchar *
-filename_generate (void)
+static void
+filename_generate (char *name, size_t len)
 {
-  return g_strdup_printf ("%s-%d.aiff", _("Untitled"), ++untitled_count);
+  snprintf (name, len, "%s-%d.aiff", _("Untitled"), ++untitled_count);
 }
 
 sw_sample *
@@ -135,9 +135,9 @@ sample_new_empty(gchar * pathname,
   s->views = NULL;
 
   if (pathname != NULL)
-    s->pathname = strdup (pathname);
+    snprintf (s->pathname, sizeof (s->pathname), "%s", pathname);
   else
-    s->pathname = filename_generate ();
+    filename_generate (s->pathname, sizeof (s->pathname));
 
   s->ops_thread = (pthread_t) -1;
 
@@ -384,6 +384,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   GtkTooltips * tooltips;
 
   gchar buf[16];
+  char tmpname [512];
 
   dialog = gtk_dialog_new ();
   sweep_set_window_icon (GTK_WINDOW(dialog));
@@ -424,13 +425,16 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_box_pack_start (GTK_BOX(hbox), entry, TRUE, TRUE, 4);
   gtk_widget_show (entry);
 
-  gtk_entry_set_text (GTK_ENTRY (entry), 
-		      pathname ? pathname : filename_generate ()); 
+  if (pathname == NULL)
+    filename_generate (tmpname, sizeof (tmpname));
+
+  gtk_entry_set_text (GTK_ENTRY (entry),
+		      pathname ? pathname : tmpname);
 
   g_object_set_data (G_OBJECT (dialog), "name_entry", entry);
 
   /* Duration */
-  
+
   hbox = gtk_hbox_new (FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER(hbox), 8);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 4);
@@ -445,7 +449,7 @@ create_sample_new_dialog ( gchar * pathname, gint nr_channels, gint sample_rate,
   gtk_widget_show (entry);
 
   snprint_time (buf, sizeof (buf), duration);
-  gtk_entry_set_text (GTK_ENTRY (entry), buf); 
+  gtk_entry_set_text (GTK_ENTRY (entry), buf);
 
   g_signal_connect (G_OBJECT(entry), "changed",
 		      G_CALLBACK(sample_new_dialog_update), NULL);
@@ -638,7 +642,6 @@ sample_destroy (sw_sample * s)
   /* trim_registered_ops (s, 0); */
 
   g_list_free (s->views);
-  g_free (s->pathname);
 
   g_mutex_free (s->ops_mutex);
   g_mutex_free (s->edit_mutex);
@@ -676,13 +679,12 @@ sample_set_pathname (sw_sample * s, gchar * pathname)
   sw_view * v;
   GList * gl;
 
-  if (pathname == s->pathname) return;
+  if (strcmp (pathname, s->pathname) == 0) return;
 
   if (pathname) {
-    s->pathname = strdup (pathname);
+    snprintf (s->pathname, sizeof (s->pathname), "%s", pathname);
   } else {
-    if (s->pathname) g_free (s->pathname);
-    s->pathname = NULL;
+    s->pathname [0] = 0;
   }
 
   for(gl = s->views; gl; gl = gl->next) {
@@ -718,7 +720,7 @@ sample_bank_find_byname (const gchar * name)
   for (gl = sample_bank; gl; gl = gl->next) {
     sample = (sw_sample *)gl->data;
 
-    if ((sample->pathname != NULL) &&
+    if ((sample->pathname [0]) &&
 	(!strcmp (name, g_basename (sample->pathname))))
       return sample;
   }
@@ -754,7 +756,7 @@ sample_bank_remove (sw_sample * s)
 {
   if (s) {
     sample_bank = g_list_remove(sample_bank, s);
-    
+
     undo_dialog_refresh_sample_list ();
     rec_dialog_refresh_sample_list ();
     sample_destroy(s);
@@ -1088,7 +1090,7 @@ sample_set_looping (sw_sample * s, gboolean looping)
   sw_head * head = s->play_head;
 
   head_set_looping (head, looping);
-  
+
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
     view_refresh_looping (v);
@@ -1559,7 +1561,7 @@ sample_clear_tmp_sel (sw_sample * s)
 }
 
 
-/* 
+/*
  * sample_set_tmp_sel (s, tsel)
  *
  * sets the tmp_sel of sample s to a list containing only tsel.
@@ -1656,7 +1658,7 @@ sample_selection_insert_tmp_sel (sw_sample * s)
   last_tmp_view = NULL;
 
   g_mutex_unlock (s->sounddata->sels_mutex);
-  
+
   perform_selection_op (s, buf, ssits, NULL, sel);
 }
 
@@ -1707,7 +1709,7 @@ sample_selection_subtract_tmp_sel (sw_sample * s)
   last_tmp_view = NULL;
 
   g_mutex_unlock (s->sounddata->sels_mutex);
-  
+
   perform_selection_op (s, buf, sssts, NULL, sel);
 }
 
@@ -1777,7 +1779,7 @@ sample_info_update (sw_sample * sample)
 
   snprint_bytes (byte_buf, sizeof (byte_buf),
 		 frames_to_bytes (sounddata->format, sounddata->nr_frames));
-  
+
   snprint_time (time_buf, sizeof (time_buf),
 		frames_to_time (sounddata->format, sounddata->nr_frames));
 
@@ -1833,7 +1835,7 @@ sample_show_info_dialog (sw_sample * sample)
     g_signal_connect (G_OBJECT(dialog), "destroy",
 			G_CALLBACK(sample_info_dialog_destroy_cb),
 			sample);
-    
+
     clist = gtk_clist_new (2);
     gtk_clist_set_selection_mode (GTK_CLIST(clist), GTK_SELECTION_BROWSE);
     gtk_clist_set_column_justification (GTK_CLIST(clist), 0,
@@ -1842,14 +1844,14 @@ sample_show_info_dialog (sw_sample * sample)
 					GTK_JUSTIFY_LEFT);
     gtk_box_pack_start (GTK_BOX(GTK_DIALOG(dialog)->vbox), clist,
 			FALSE, FALSE, 0);
-    /*    
+    /*
     gtk_clist_append (GTK_CLIST(clist), filename_info);
     gtk_clist_append (GTK_CLIST(clist), rate_info);
     gtk_clist_append (GTK_CLIST(clist), channels_info);
     gtk_clist_append (GTK_CLIST(clist), size_info);
     gtk_clist_append (GTK_CLIST(clist), duration_info);
     */
-     
+
     gtk_clist_append (GTK_CLIST(clist), list_item);
     gtk_clist_set_text (GTK_CLIST(clist), i++, 0, _("Filename: "));
     gtk_clist_append (GTK_CLIST(clist), list_item);
@@ -1860,16 +1862,16 @@ sample_show_info_dialog (sw_sample * sample)
     gtk_clist_set_text (GTK_CLIST(clist), i++, 0, _("Data memory: "));
     gtk_clist_append (GTK_CLIST(clist), list_item);
     gtk_clist_set_text (GTK_CLIST(clist), i++, 0, _("Duration: "));
-    
+
     gtk_clist_set_column_min_width (GTK_CLIST(clist), 0, 120);
     gtk_clist_set_column_min_width (GTK_CLIST(clist), 1, 160);
-    
+
     gtk_widget_show (clist);
 
     sample->info_clist = clist;
 
     /* OK */
-    
+
     ok_button = gtk_button_new_with_label (_("OK"));
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (ok_button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), ok_button,
@@ -1877,9 +1879,9 @@ sample_show_info_dialog (sw_sample * sample)
     gtk_widget_show (ok_button);
     g_signal_connect (G_OBJECT(ok_button), "clicked",
 			G_CALLBACK (sample_info_dialog_ok_cb), sample);
-    
+
     gtk_widget_grab_default (ok_button);
-    
+
   } else {
     dialog = gtk_widget_get_toplevel (sample->info_clist);
   }

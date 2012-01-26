@@ -438,7 +438,7 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   char * desc;
   int i;
 
-  gchar * current;
+  gchar current [256];
 
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Resample"));
@@ -470,7 +470,7 @@ samplerate_dialog_new_cb (GtkWidget * widget, gpointer data)
   gtk_container_set_border_width (GTK_CONTAINER(vbox), 4);
   gtk_widget_show (vbox);
 
-  current = g_strdup_printf (_("Current sample rate: %d Hz"),
+  snprintf (current, sizeof (current), _("Current sample rate: %d Hz"),
 			     sample->sounddata->format->rate);
   label = gtk_label_new (current);
   gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, TRUE, 8);

@@ -99,7 +99,7 @@ noteplay_setup (GtkWidget *subsubmenu, sw_view * view,
 {
   GtkWidget *menuitem;
   int k;
-  gchar * tmpchar;
+  gchar tmpchar [256];
 
   for (k = 0 ; k < sizeof (notes) / sizeof (notes [0]) ; k++) {
     menuitem = gtk_menu_item_new_with_label (_(notes [k].name));
@@ -107,13 +107,13 @@ noteplay_setup (GtkWidget *subsubmenu, sw_view * view,
 	gtk_menu_set_accel_group(GTK_MENU(subsubmenu), accel_group);
     g_signal_connect (G_OBJECT(menuitem), "activate",
 			G_CALLBACK(play_view_note_cb), view);
-    tmpchar = g_strdup_printf("<Sweep-View>/Playback/Play Note/%s",
+    snprintf (tmpchar, sizeof (tmpchar), "<Sweep-View>/Playback/Play Note/%s",
 	                       notes[k].accel_basename);
-	  
+
     gtk_menu_item_set_accel_path (GTK_MENU_ITEM(menuitem), tmpchar);
 	gtk_accel_map_add_entry  ( tmpchar, notes[k].accel_key, 0);
 
-    g_object_set_data (G_OBJECT(menuitem), "default", 
+    g_object_set_data (G_OBJECT(menuitem), "default",
 			      GINT_TO_POINTER(k));
 	gtk_widget_show (menuitem);
   }
@@ -129,7 +129,7 @@ play_view_note_cb (GtkWidget * widget, gpointer data)
   sw_framecount_t mouse_offset;
   int k;
   float pitch;
-  
+
   /* Retrieve the pitch. */
   k = GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "default"));
   pitch = notes[k].pitch;
