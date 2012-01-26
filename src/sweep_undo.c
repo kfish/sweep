@@ -236,7 +236,7 @@ sw_op_instance_clear (sw_op_instance * inst)
 }
 
 sw_op_instance *
-sw_op_instance_new (sw_sample * sample, char * desc, sw_operation * op)
+sw_op_instance_new (sw_sample * sample, const char * desc, sw_operation * op)
 {
   sw_op_instance * inst;
 
@@ -296,7 +296,7 @@ schedule_operation_ok_cb (GtkWidget * widget, gpointer data)
 }
 
 void
-schedule_operation (sw_sample * sample, char * description,
+schedule_operation (sw_sample * sample, const char * description,
 		    sw_operation * operation, void * do_data)
 {
   sw_op_instance * inst;
