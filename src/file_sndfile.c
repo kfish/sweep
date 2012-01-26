@@ -54,8 +54,6 @@
 
 extern GtkStyle * style_wb;
 
-#if defined (SNDFILE_1)
-
 #include "../pixmaps/libsndfile.xpm"
 
 typedef struct {
@@ -937,5 +935,3 @@ sndfile_sample_save (sw_sample * sample, gchar * pathname)
 
   return 0;
 }
-
-#endif
