@@ -146,7 +146,7 @@ dup_channels (sw_sample * sample, int new_channels)
     g_snprintf (buf, sizeof (buf), _("Duplicate from %d to %d channels"),
 		sample->sounddata->format->channels, new_channels);
   }
- 
+
   schedule_operation (sample, buf, &dup_channels_op,
 		      GINT_TO_POINTER(new_channels));
 }
@@ -195,11 +195,8 @@ dup_channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   sw_sample * sample = view->sample;
   GtkWidget * dialog;
   GtkWidget * main_vbox;
-  /*GtkWidget * label;*/
   GtkWidget * chooser;
   GtkWidget * button, * ok_button;
-
-  /*gchar * current;*/
 
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Duplicate channel"));
@@ -488,7 +485,7 @@ do_stereo_swap (sw_sample * sample, gpointer data)
 
       remaining -= n;
       run_total += n;
-    
+
       percent = run_total / ctotal;
       sample_set_progress_percent (sample, percent);
     }
@@ -630,7 +627,7 @@ change_channels (sw_sample * sample, int new_channels)
 
   g_snprintf (buf, sizeof (buf), _("Convert from %d to %d channels"),
 	      sample->sounddata->format->channels, new_channels);
- 
+
   schedule_operation (sample, buf, &change_channels_op,
 		      GINT_TO_POINTER(new_channels));
 }
@@ -674,7 +671,7 @@ channels_dialog_new_cb (GtkWidget * widget, gpointer data)
   GtkWidget * chooser;
   GtkWidget * button, * ok_button;
 
-  gchar * current;
+  gchar current [128];
 
   dialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW(dialog), _("Sweep: Add/Remove channels"));
@@ -683,7 +680,7 @@ channels_dialog_new_cb (GtkWidget * widget, gpointer data)
 
   main_vbox = GTK_DIALOG(dialog)->vbox;
 
-  current = g_strdup_printf (_("Currently: %d channels"),
+  snprintf (current, sizeof (current), _("Currently: %d channels"),
 			     sample->sounddata->format->channels);
   label = gtk_label_new (current);
   gtk_box_pack_start (GTK_BOX(main_vbox), label, TRUE, TRUE, 8);

@@ -27,11 +27,11 @@ gint
 update_edit_progress (gpointer data);
 
 sw_op_instance *
-sw_op_instance_new (sw_sample * sample, char * description,
+sw_op_instance_new (sw_sample * sample, const char * description,
 		    sw_operation * operation);
 
 void
-schedule_operation (sw_sample * sample, char * description,
+schedule_operation (sw_sample * sample, const char * description,
 		    sw_operation * operation, void * do_data);
 
 void

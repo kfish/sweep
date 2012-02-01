@@ -97,7 +97,7 @@ oss_get_names (void)
 static sw_handle *
 oss_open (int monitoring, int flags)
 {
-  char * dev_name;
+  const char * dev_name;
   int dev_dsp;
   sw_handle * handle = &oss_handle;
   int i;
@@ -178,7 +178,7 @@ oss_setup (sw_handle * handle, sw_format * format)
 #ifdef DEBUG
   g_print ("Got %d frags of size 2^%d\n", nfrags, fragsize);
 #endif
-    
+
   bits = 16 ;
   if ((error = ioctl (dev_dsp, SOUND_PCM_WRITE_BITS, &bits)) != 0) {
     perror ("open_dsp_device 4 ");
@@ -281,7 +281,7 @@ oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
   if (need_bswap) {
     unsigned char * ucptr = (unsigned char *)bbuf;
     unsigned char temp;
-    
+
     for (i = 0; i < count; i++) {
       temp = ucptr[2 * i];
       ucptr[2 * i] = ucptr [2 * i + 1];
@@ -299,7 +299,7 @@ oss_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 #define PLAYBACK_SCALE (32768 / SW_AUDIO_T_MAX)
 
 static ssize_t
-oss_write (sw_handle * handle, sw_audio_t * buf, size_t count)
+oss_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
 {
   gint16 * bbuf;
   size_t byte_count;
@@ -331,7 +331,7 @@ oss_write (sw_handle * handle, sw_audio_t * buf, size_t count)
   if (need_bswap) {
     unsigned char * ucptr = (unsigned char *)bbuf;
     unsigned char temp;
-    
+
     for (i = 0; i < count; i++) {
       temp = ucptr[2 * i];
       ucptr[2 * i] = ucptr [2 * i + 1];

@@ -45,13 +45,13 @@ struct _sw_driver {
   void (*setup) (sw_handle * handle, sw_format * format);
   int (*wait) (sw_handle * handle);
   ssize_t (*read) (sw_handle * handle, sw_audio_t * buf, size_t count);
-  ssize_t (*write) (sw_handle * handle, sw_audio_t * buf, size_t count);
+  ssize_t (*write) (sw_handle * handle, const sw_audio_t * buf, size_t count);
   sw_framecount_t (*offset) (sw_handle * handle);
   void (*reset) (sw_handle * handle);
   void (*flush) (sw_handle * handle);
   void (*drain) (sw_handle * handle);
   void (*close) (sw_handle * handle);
-  
+
   char * primary_device_key;
   char * monitor_device_key;
   char * log_frags_key;
@@ -76,20 +76,20 @@ ssize_t
 device_read (sw_handle * handle, sw_audio_t * buf, size_t count);
 
 ssize_t
-device_write (sw_handle * handle, sw_audio_t * buf, size_t count);
+device_write (sw_handle * handle, const sw_audio_t * buf, size_t count);
 
 /* As far as I'm aware the method
  * used to monitor latency in OSS and Solaris etc. is different to that which
  * ALSA uses, and different again from JACK and PortAudio.
- * 
+ *
  * Basically, when the device is written to, the driver is also told what the
  * offset into the file is for that bit of sound.
- * 
+ *
  * Then, when the GUI thread goes to draw the cursor, it asks the driver
  * what the offset of the sound that's currently coming out of the speaker is
  * and draws it there (which may be a little behind or ahead of where the
  * user is scrubbing) -- hence the sound and the vision are kept in sync.
- * 
+ *
  * However, this is all currently disabled, and going to change, as its not
  * properly monitoring the latency of multiple files being played
  * simultaneously; plus it may have to change with respect to ALSA and JACK and

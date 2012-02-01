@@ -646,7 +646,7 @@ play_head_update_device (sw_head * head)
 static gchar *
 generate_demo_filename (void)
 {
-  return g_strdup_printf ("/tmp/sweep-demo-%d.au", getpid ());
+  return erikd ("/tmp/sweep-demo-%d.au", getpid ());
 }
 #endif
 
@@ -750,12 +750,9 @@ play_heads (GList ** heads, sw_handle * handle)
 static gboolean
 monitor_active (void)
 {
-  int * use_monitor;
+  int use_monitor = prefs_get_int (USE_MONITOR_KEY, 0);
 
-  use_monitor = prefs_get_int (USE_MONITOR_KEY);
-
-  if (use_monitor == NULL) return 0;
-  else return (*use_monitor != 0);
+  return (use_monitor != 0);
 }
 
 static void

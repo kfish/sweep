@@ -54,8 +54,6 @@
 
 extern GtkStyle * style_wb;
 
-#if defined (SNDFILE_1)
-
 #include "../pixmaps/libsndfile.xpm"
 
 typedef struct {
@@ -67,7 +65,7 @@ typedef struct {
 typedef struct {
   gboolean saving; /* loading or saving ? */
   sw_sample * sample;
-  gchar * pathname;
+  gchar pathname [512];
   SF_INFO * sfinfo;
   GtkWidget * ok_button;
 } sndfile_save_options;
@@ -379,6 +377,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
       samplerate_chooser_set_rate (entry, sample->sounddata->format->rate);
 
   } else {
+    char temp [32];
     hbox = gtk_hbox_new (FALSE, 0);
     gtk_table_attach (GTK_TABLE(table), hbox, 0, 1, 1, 2,
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
@@ -393,8 +392,8 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
 		      GTK_FILL|GTK_EXPAND, GTK_SHRINK, 0, 0);
     gtk_widget_show (hbox);
 
-    label = gtk_label_new (g_strdup_printf ("%d Hz",
-					    sample->sounddata->format->rate));
+    snprintf (temp, sizeof (temp), "%d Hz", sample->sounddata->format->rate);
+    label = gtk_label_new (temp);
     gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
   }
@@ -483,7 +482,7 @@ sndfile_save_options_dialog (sw_sample * sample, gchar * pathname)
 
   sfinfo->format = sample->file_format;
 
-  so->pathname = g_strdup (pathname);
+  snprintf (so->pathname, sizeof (so->pathname), "%s", pathname);
   so->sfinfo = sfinfo;
 
   dialog = create_sndfile_encoding_options_dialog (so);
@@ -514,16 +513,14 @@ sndfile_load_options_dialog_ok_cb (GtkWidget * widget, gpointer data)
 {
   sndfile_save_options * so = (sndfile_save_options *)data;
   sw_sample * sample = so->sample;
-  gchar * pathname = so->pathname;
   SF_INFO * sfinfo = so->sfinfo;
   GtkWidget * dialog;
 
   dialog = gtk_widget_get_toplevel (widget);
   gtk_widget_destroy (dialog);
 
-  _sndfile_sample_load (sample, pathname, sfinfo, TRUE);
+  _sndfile_sample_load (sample, so->pathname, sfinfo, TRUE);
 
-  g_free (so->pathname);
   g_free (so);
 }
 
@@ -610,7 +607,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 {
   SNDFILE * sndfile;
   char buf[128];
-  gchar * message;
+  gchar message [256];
 
   gboolean isnew = (sample == NULL);
 
@@ -644,7 +641,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
       so = g_malloc0 (sizeof(*so));
       so->saving = FALSE;
       so->sample = sample;
-      so->pathname = g_strdup (pathname);
+      snprintf (so->pathname, sizeof (so->pathname), "%s", pathname);
       so->sfinfo = sfinfo;
 
       sfinfo->format = (SF_FORMAT_RAW | SF_FORMAT_PCM_S8);
@@ -664,9 +661,8 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 
     } else {
       if (errno == 0) {
-	message = g_strdup_printf ("%s:\n%s", pathname, buf);
+	snprintf (message, sizeof (message), "%s:\n%s", pathname, buf);
 	info_dialog_new (buf, NULL, message);
-	g_free (message);
       } else {
 	/* We've already got the error string so no need to call
 	 * sweep_sndfile_perror() here */
@@ -939,5 +935,3 @@ sndfile_sample_save (sw_sample * sample, gchar * pathname)
 
   return 0;
 }
-
-#endif

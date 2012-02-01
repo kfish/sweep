@@ -235,11 +235,11 @@ try_sample_load (char * pathname)
 #endif
 
   if (sample == NULL)
-    sample = sndfile_sample_load (pathname, TRUE);  
-  
+    sample = sndfile_sample_load (pathname, TRUE);
+
   if (sample != NULL)
         recent_manager_add_item (pathname);
-        
+
   return sample;
 }
 
@@ -261,7 +261,7 @@ sample_load (char * pathname)
       }
     } else {
       prefs_set_string (LAST_LOAD_KEY, pathname);
-      
+
       return try_sample_load (pathname);
     }
   }
@@ -274,12 +274,12 @@ sample_load_cb(GtkWidget * widget, gpointer data)
 {
 
   GtkWidget *dialog;
-  gchar *load_current_file;
+  gchar load_current_file [512];
   gint win_width, win_height;
   GSList *filenames, *list;
- 
+
   filenames = list = NULL;
-    
+
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
 
@@ -289,42 +289,40 @@ sample_load_cb(GtkWidget * widget, gpointer data)
 				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 				      NULL);
-    
+
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (dialog, win_width, win_height);
   gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
-  
+
   sweep_set_window_icon (GTK_WINDOW(dialog));
   attach_window_close_accel(GTK_WINDOW(dialog));
-    
-  load_current_file = prefs_get_string (LAST_LOAD_KEY);
-  
-  if (load_current_file) {
+
+  prefs_get_string (LAST_LOAD_KEY, load_current_file, sizeof (load_current_file), "");
+
+  if (load_current_file [0]) {
       gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog), load_current_file);
-      
-      g_free(load_current_file);
   }
-    
+
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-      
-   filenames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(dialog));      
-   
+
+   filenames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER(dialog));
+
    for (list = filenames; list; list = list->next) {
 
      if (list->data) {
        sample_load ((gchar *)list->data);
        g_free (list->data);
-     }   
+     }
   }
-      
+
   if (filenames)
     g_slist_free(filenames);
-      
+
   } else {
     /* do nothing so exit */
      sample_bank_remove(NULL);
   }
-    
+
   gtk_widget_destroy (dialog);
 }
 
@@ -358,7 +356,7 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
   sw_view * view = (sw_view *)data;
   sw_sample * sample;
   char buf[512];
-    
+
   sample = view->sample;
 
   snprintf (buf, sizeof (buf),
@@ -437,7 +435,7 @@ file_guess_method (sw_sample * sample, char * pathname)
     for (i = 0; i <  count ; i++) {
       info.format = i ;
       sf_command (NULL, SFC_GET_FORMAT_MAJOR, &info, sizeof (info)) ;
-		
+
       if (!g_strncasecmp (ext, info.extension, SW_DIR_LEN)) {
 	sample->file_method = SWEEP_FILE_METHOD_LIBSNDFILE;
 	sample->file_format = info.format;
@@ -477,7 +475,7 @@ file_guess_method (sw_sample * sample, char * pathname)
   }
 
  guess_raw:
-  
+
   if (sample->file_method == SWEEP_FILE_METHOD_BY_EXTENSION) {
     sample->file_method = SWEEP_FILE_METHOD_LIBSNDFILE;
 #if defined (SNDFILE_1)
@@ -488,7 +486,7 @@ file_guess_method (sw_sample * sample, char * pathname)
   }
 
   return;
-}    
+}
 
 typedef struct {
   sw_sample * sample;
@@ -535,11 +533,10 @@ static void
 overwrite_cancel_cb (GtkWidget * widget, gpointer data)
 {
   save_as_data * sd = (save_as_data *)data;
-  gchar * msg;
+  gchar msg [1024];
 
-  msg = g_strdup_printf (_("Save as %s cancelled"), g_basename (sd->pathname));
+  snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_basename (sd->pathname));
   sample_set_tmp_message (sd->sample, msg);
-  g_free (msg);
 
   g_free (sd);
 }
@@ -687,11 +684,10 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   save_as_data * sd;
 
   char buf[512];
-  char * last_save;
 
   win_width = gdk_screen_width () / 2;
   win_height = gdk_screen_height () / 2;
-    
+
   sample = view->sample;
 
   dialog = gtk_file_chooser_dialog_new (_("Sweep: Save file"),
@@ -700,34 +696,34 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 				      NULL);
-          
-    
+
+
   //gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
   attach_window_close_accel(GTK_WINDOW(dialog));
   sweep_set_window_icon (GTK_WINDOW(dialog));
-    
+
   save_options = gtk_hbox_new (TRUE, 1);
 
   frame = gtk_frame_new (_("Save Options"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
   gtk_box_pack_start (GTK_BOX (save_options), frame, TRUE, TRUE, 4);
-  
+
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
-  
+
   label = gtk_label_new (_("Determine File Type:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
-  
+
   option_menu = gtk_option_menu_new ();
   gtk_box_pack_start (GTK_BOX (hbox), option_menu, TRUE, TRUE, 0);
   gtk_widget_show (option_menu);
-  
+
   save_menu = create_save_menu (sample);
   gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), save_menu);
-  
+
   gtk_widget_show (frame);
 
   /* pack the containing save_options hbox into the save-dialog */
@@ -735,28 +731,27 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
 		    save_options, FALSE, FALSE, 0);
 
   gtk_widget_show (save_options);
-    
+
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
   gtk_widget_set_size_request (dialog, win_width, win_height);
-    
+
   if (strcmp (g_path_get_dirname(sample->pathname), ".") == 0) {
+    char last_save [512];
 
-    last_save = prefs_get_string (LAST_SAVE_KEY);
+    prefs_get_string (LAST_SAVE_KEY, last_save, sizeof (last_save), "");
 
-    if (last_save != NULL) {
+    if (last_save [0]) {
       gchar * last_save_dir = g_dirname (last_save);
-            
+
 	  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER(dialog),
-				      last_save_dir);			      
+				      last_save_dir);
       gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER(dialog),
 				      sample->pathname);
 
       g_free (last_save_dir);
-      g_free (last_save);
-
-    } 
+    }
   } else {
-     retval =  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog), 
+     retval =  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(dialog),
 				    sample->pathname);
         /* FIXME: bug (local only?) causes gtk_file_chooser_set_filename
            to fail silently in some cases*/
@@ -765,9 +760,9 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
         //printf("sample->pathname: %s\n", sample->pathname);
 
   }
- 
+
   retval = gtk_dialog_run (GTK_DIALOG (dialog));
-                           
+
   filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
   //printf("filename post: %s\n", filename);
   sample = view->sample;
@@ -776,9 +771,9 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
   sd->pathname = filename;
 
   if (retval == GTK_RESPONSE_ACCEPT) {
-    
+
     if (!sweep_dir_exists (filename)) {
-      g_free (sd);  
+      g_free (sd);
       g_free (filename);
       return;
     }
@@ -795,7 +790,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
       }
     } else {
       /* file exists */
-        
+
       if (access(filename, W_OK) == -1) {
         sweep_perror (errno, _("You are not allowed to write to\n%s"), filename);
       } else {
@@ -809,20 +804,18 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
     }
     /* FIXME: wrapped this due to the above gtk_file_chooser_set_filename problem */
     } else if (sd->pathname != NULL) {
-      gchar * msg;
+      gchar msg [1024];
 
-      msg = g_strdup_printf (_("Save as %s cancelled"), g_basename (sd->pathname));
+      snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_basename (sd->pathname));
       sample_set_tmp_message (sd->sample, msg);
-      g_free (msg);
-      
     } else {
-  
+
     g_free (sd);
     g_free (filename);
     }
   gtk_widget_destroy (dialog);
-    
-    
+
+
 }
 
 static void
@@ -860,7 +853,7 @@ sample_save_cb (GtkWidget * widget, gpointer data)
   sw_view * view = (sw_view *)data;
   sw_sample * sample;
   char buf[512];
-    
+
   sample = view->sample;
 
   if (sample->last_mtime == 0 ||
@@ -871,7 +864,7 @@ sample_save_cb (GtkWidget * widget, gpointer data)
 	      _("%s\n has changed on disk.\n\n"
 		"Are you sure you want to save?"),
 	      sample->pathname);
-    
+
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Save"), _("Don't save"),
 			  G_CALLBACK (sample_save_ok_cb), view, NULL, NULL,

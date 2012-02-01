@@ -87,7 +87,7 @@ solaris_setup (sw_handle * handle, sw_format * format)
 }
 
 static ssize_t
-solaris_write (sw_handle * handle, void * buf, size_t count)
+solaris_write (sw_handle * handle, const void * buf, size_t count)
 {
   return write (handle->driver_fd, buf, count);
 }
