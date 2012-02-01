@@ -113,7 +113,7 @@ _undo_dialog_set_sample (sw_sample * sample, gboolean select_current)
   GdkPixmap * pixmap_data;
   GdkBitmap * mask;
   gboolean done = FALSE;
-  
+
   g_mutex_lock (sample->ops_mutex);
 
   clist = GTK_CLIST(undo_clist);
@@ -185,7 +185,7 @@ undo_dialog_refresh_history (sw_sample * sample)
 
   if (undo_dialog == NULL || !GTK_WIDGET_VISIBLE(undo_dialog))
     return;
-  
+
   _undo_dialog_set_sample (sample, FALSE);
 }
 
@@ -337,7 +337,7 @@ undo_dialog_create (sw_sample * sample)
                                              GDK_CONTROL_MASK,
                                              0, /* non of the GtkAccelFlags seem suitable? */
                                              gclosure);
-    
+
     vbox = GTK_DIALOG(undo_dialog)->vbox;
 
     hbox = gtk_hbox_new (FALSE, 8);
@@ -420,7 +420,7 @@ undo_dialog_create (sw_sample * sample)
 
   undo_dialog_refresh_sample_list ();
   _undo_dialog_set_sample (sample, TRUE);
-  
+
   if (!GTK_WIDGET_VISIBLE(undo_dialog)) {
     gtk_widget_show (undo_dialog);
   } else {

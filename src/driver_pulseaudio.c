@@ -96,7 +96,7 @@ pulse_setup (sw_handle * handle, sw_format * format)
     fprintf(stderr, __FILE__": pulse_setup(): The maximum number of channels supported is %d, while %d have been requested.\n", PA_CHANNELS_MAX, format->channels);
     return;
   }
-  
+
   ss.format = PA_SAMPLE_FLOAT32;
   ss.rate = format->rate;
   ss.channels = format->channels;
@@ -144,7 +144,7 @@ pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 static ssize_t
-pulse_write (sw_handle * handle, sw_audio_t * buf, size_t count)
+pulse_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
 {
   struct pa_simple * pa ;
   int error;

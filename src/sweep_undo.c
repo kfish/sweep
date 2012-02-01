@@ -82,16 +82,16 @@ op_main (sw_sample * sample)
 #endif
     } else {
       gboolean was_going = FALSE;
-      
+
       inst = (sw_op_instance *)gl->data;
 
       g_assert (sample->edit_state == SWEEP_EDIT_STATE_PENDING);
-      
+
       sample->edit_state = SWEEP_EDIT_STATE_BUSY;
       sample->pending_ops = g_list_remove_link (sample->pending_ops, gl);
-      
+
       g_mutex_unlock (sample->edit_mutex);
-      
+
       if (inst->op->edit_mode == SWEEP_EDIT_MODE_ALLOC) {
 	g_mutex_lock (sample->play_mutex);
 	if ((was_going = sample->play_head->going)) {
@@ -106,7 +106,7 @@ op_main (sw_sample * sample)
       inst->op->_do_ ((sw_sample *)inst, (void *)inst);
 
       g_mutex_lock (sample->edit_mutex);
-      
+
 #ifdef DEBUG
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	g_print ("Caught a late cancelmoose; pending is %p\n",
@@ -117,7 +117,7 @@ op_main (sw_sample * sample)
 		 sample->edit_state);
       }
 #endif
-      
+
     }
 
     sample->edit_state = SWEEP_EDIT_STATE_DONE;
@@ -155,7 +155,7 @@ prepare_op (sw_op_instance * inst)
 
   g_snprintf (buf, sizeof (buf), "%s (%%p%%%%)", inst->description);
   sample_set_progress_text (sample, buf);
-  
+
   sample_set_edit_mode (sample, inst->op->edit_mode);
   sample_set_progress_percent (sample, 0);
 
@@ -236,7 +236,7 @@ sw_op_instance_clear (sw_op_instance * inst)
 }
 
 sw_op_instance *
-sw_op_instance_new (sw_sample * sample, char * desc, sw_operation * op)
+sw_op_instance_new (sw_sample * sample, const char * desc, sw_operation * op)
 {
   sw_op_instance * inst;
 
@@ -296,7 +296,7 @@ schedule_operation_ok_cb (GtkWidget * widget, gpointer data)
 }
 
 void
-schedule_operation (sw_sample * sample, char * description,
+schedule_operation (sw_sample * sample, const char * description,
 		    sw_operation * operation, void * do_data)
 {
   sw_op_instance * inst;
@@ -312,7 +312,7 @@ schedule_operation (sw_sample * sample, char * description,
 	      _("%s\n has changed on disk.\n\n"
 		"Do you want to continue editing this buffer?"),
 	      sample->pathname);
-    
+
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Continue editing"), _("Reread from disk"),
 			 G_CALLBACK (schedule_operation_ok_cb), inst,
@@ -401,7 +401,7 @@ do_undo_current_thread (sw_op_instance * inst)
   if (s == NULL || s->current_undo == NULL) goto noop;
 
   undo_operation (s, inst->do_data);
-  
+
   g_mutex_lock (s->ops_mutex);
   if (s->edit_state == SWEEP_EDIT_STATE_BUSY) {
     s->current_redo = s->current_undo;
@@ -609,9 +609,9 @@ try_cancel_active_op (gpointer data)
     if (s->active_op) {
       undo_operation (s, s->active_op);
     }
-    
+
     s->active_op = NULL;
-    
+
     sample_set_edit_state (s, SWEEP_EDIT_STATE_CANCEL);
 
     g_mutex_unlock (s->ops_mutex);
@@ -634,7 +634,7 @@ cancel_active_op (sw_sample * s)
 
   g_mutex_lock (s->ops_mutex);
 
-    
+
   if (s->active_op) {
     undo_operation (s, s->active_op);
 
@@ -643,7 +643,7 @@ cancel_active_op (sw_sample * s)
     /* XXX: does this leak s->active_op here? */
   }
   s->active_op = NULL;
-  
+
   g_mutex_lock (s->edit_mutex);
 
   /*
@@ -668,7 +668,7 @@ cancel_active_op (sw_sample * s)
   g_mutex_unlock (s->edit_mutex);
 
   /*  sample_set_edit_state (s, SWEEP_EDIT_STATE_CANCEL);*/
-  
+
   g_mutex_unlock (s->ops_mutex);
 
 #endif

@@ -62,14 +62,14 @@ static gint
 initial_sample_load (gpointer data)
 {
   char * arg = (char *)data;
-  gchar * pathname;
+  gchar pathname [512];
 
   if (!strncmp (g_dirname (arg), ".", 1)) {
-    pathname = g_strdup_printf ("%s/%s", g_get_current_dir(), arg);
+    snprintf (pathname, sizeof (pathname), "%s/%s", g_get_current_dir(), arg);
   } else {
-    pathname = arg;
+    snprintf (pathname, sizeof (pathname), "%s", arg);
   }
- 
+
   sample_load (pathname);
 
   return FALSE;
@@ -129,7 +129,7 @@ main (int argc, char *argv[])
 
   g_thread_init (NULL);
 
-	
+
 
   /* must be done before g_idle_add / g_timeout_add */
   sweep_timeouts_init ();
@@ -145,7 +145,7 @@ main (int argc, char *argv[])
       argv[i] = NULL;
 	} else if ((strcmp (argv[i], "--ignore-failed-lock") == 0)) {
       ignore_failed_tdb_lock = TRUE;
-      argv[i] = NULL;		   	   
+      argv[i] = NULL;
 
 #ifdef DEVEL_CODE
     } else if (argv[i][0] == '-' && argv[i][1] != '\0') {
@@ -170,7 +170,7 @@ main (int argc, char *argv[])
 
   if (show_help) {
     g_print (_("Usage: %s [option ...] [files ...]\n"), argv[0]);
-    g_print (_("Valid options are:\n"));   
+    g_print (_("Valid options are:\n"));
     g_print (_("  -h --help                Output this help.\n"));
     g_print (_("  -v --version             Output version info.\n"));
     g_print (_("  --display <display>      Use the designated X display.\n"));
@@ -186,12 +186,12 @@ main (int argc, char *argv[])
   }
 
   srandom ((unsigned int)time(NULL));
-  
+
 
   if (no_files) {
     g_idle_add ((GSourceFunc)initial_sample_ask, NULL);
   }
-  
+
   /* initialise preferences */
   prefs_init ();
 
@@ -210,13 +210,13 @@ main (int argc, char *argv[])
   /* init playback subsystem */
   init_playback ();
 
-  
+
   gtk_main ();
 
 
   /* close preferences database */
   prefs_close ();
-  
+
   /* save key bindings */
   save_accels ();
 

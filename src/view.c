@@ -192,7 +192,7 @@ create_proc_menu (sw_view * view, GtkAccelGroup * accel_group)
   gboolean use_submenus = FALSE;
   gint i = 0;
   gchar first_name[32], last_name[32];
-  gchar * title;
+  gchar title [256];
 
   menu = gtk_menu_new ();
 
@@ -216,7 +216,7 @@ create_proc_menu (sw_view * view, GtkAccelGroup * accel_group)
 	gtk_container_add (GTK_CONTAINER(menuitem), hbox);
 	gtk_widget_show (hbox);
 
-	title = g_strdup_printf ("%s  ...  %s", first_name, last_name);
+	snprintf (title, sizeof (title), "%s  ...  %s", first_name, last_name);
 	label = gtk_label_new (title);
 	gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
 	/*menuitem = gtk_menu_item_new_with_label (title);*/
@@ -240,12 +240,14 @@ create_proc_menu (sw_view * view, GtkAccelGroup * accel_group)
   }
 
   if (menuitem) {
+    char temp [256];
+
     hbox = gtk_hbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER(menuitem), hbox);
     gtk_widget_show (hbox);
 
-    label = gtk_label_new (g_strdup_printf ("%s ... %s", first_name,
-					    last_name));
+    snprintf (temp, sizeof (temp), "%s ... %s", first_name, last_name);
+    label = gtk_label_new (temp);
     gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
   }
