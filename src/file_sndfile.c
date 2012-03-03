@@ -73,11 +73,7 @@ typedef struct {
 static void
 sweep_sndfile_perror (SNDFILE * sndfile, gchar * pathname)
 {
-  char buf[128];
-
-  sf_error_str (sndfile, buf, sizeof (buf));
-
-  sweep_perror (errno, "libsndfile: %s\n\n%s", buf,
+  sweep_perror (errno, "libsndfile: %s\n\n%s", sf_strerror (sndfile),
 		(pathname == NULL) ? "" : pathname);
 }
 
