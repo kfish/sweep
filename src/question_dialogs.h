@@ -23,6 +23,13 @@
 
 #include <sweep/sweep_types.h>
 
+#ifdef __GNUC__
+#define PRINTF_FORMAT(x, y) __attribute__ ((format (printf, x, y)))
+#else
+#define PRINTF_FORMAT(x, y)
+#endif
+
+
 void
 question_dialog_new (sw_sample * sample, char * title, char * question,
 		     char * yes_answer, char * no_answer,
@@ -31,9 +38,11 @@ question_dialog_new (sw_sample * sample, char * title, char * question,
 		     sw_edit_mode edit_mode);
 
 void
-info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...);
+info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
+						PRINTF_FORMAT(3, 4) ;
 
 void
-sweep_perror (int thread_errno, const char * fmt, ...);
+sweep_perror (int thread_errno, const char * fmt, ...)
+						PRINTF_FORMAT(2, 3) ;
 
 #endif /* __QUESTION_DIALOGS_H__ */
