@@ -31,14 +31,14 @@
 
 
 void
-question_dialog_new (sw_sample * sample, char * title, char * question,
-		     char * yes_answer, char * no_answer,
+question_dialog_new (sw_sample * sample, const char * title, const char * question,
+		     const char * yes_answer, const char * no_answer,
 		     GCallback yes_callback, gpointer yes_callback_data,
 		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode);
 
 void
-info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
+info_dialog_new (const char * title, gpointer xpm_data, const char * fmt, ...)
 						PRINTF_FORMAT(3, 4) ;
 
 void
