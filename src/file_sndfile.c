@@ -602,6 +602,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 		      gboolean try_raw)
 {
   SNDFILE * sndfile;
+  const char * errstr;
   char buf[128];
   gchar message [256];
 
@@ -630,9 +631,9 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
       return NULL;
     }
 
-    sf_error_str (NULL, buf, sizeof (buf));
-    if (!strncmp (buf, RAW_ERR_STR_1, sizeof (buf)) ||
-	!strncmp (buf, RAW_ERR_STR_2, sizeof (buf))) {
+    errstr = sf_strerror (NULL);
+    if (!strcmp (errstr, RAW_ERR_STR_1) ||
+	!strcmp (errstr, RAW_ERR_STR_2)) {
 
       so = g_malloc0 (sizeof(*so));
       so->saving = FALSE;
@@ -657,12 +658,12 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 
     } else {
       if (errno == 0) {
-	snprintf (message, sizeof (message), "%s:\n%s", pathname, buf);
-	info_dialog_new (buf, NULL, message);
+	snprintf (message, sizeof (message), "%s:\n%s", pathname, errstr);
+	info_dialog_new (errstr, NULL, message);
       } else {
 	/* We've already got the error string so no need to call
 	 * sweep_sndfile_perror() here */
-	sweep_perror (errno, "libsndfile: %s\n\n%s", buf, pathname);
+	sweep_perror (errno, "libsndfile: %s\n\n%s", errstr, pathname);
       }
 
       g_free (sfinfo);
