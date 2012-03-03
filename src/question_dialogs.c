@@ -229,7 +229,7 @@ info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
 
 typedef struct {
   int thread_errno;
-  char * message;
+  char message [512];
 } sweep_perror_data;
 
 static gint
@@ -263,7 +263,7 @@ sweep_perror (int thread_errno, const char * fmt, ...)
   pd = g_malloc (sizeof (sweep_perror_data));
 
   va_start (ap, fmt);
-  snprintf (pd->message, sizeof (pd->message), fmt, ap);
+  vsnprintf (pd->message, sizeof (pd->message), fmt, ap);
   va_end (ap);
 
   sweep_timeout_add ((guint32)0, (GtkFunction)syserror_dialog_new, pd);
