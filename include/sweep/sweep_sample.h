@@ -25,7 +25,7 @@
 
 sw_sample *
 sample_new_empty(char * pathname, gint nr_channels, gint sample_rate,
-		 gint sample_length);
+		 sw_framecount_t sample_length);
 
 sw_sample *
 sample_new_copy(sw_sample * s);

@@ -125,7 +125,7 @@ pulse_wait (sw_handle * handle)
 }
 
 static ssize_t
-pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
+pulse_read (sw_handle * handle, float * buf, size_t count)
 {
   struct pa_simple * pa ;
   int error;
@@ -134,7 +134,7 @@ pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
   if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
     return 0;
 
-  byte_count = count * sizeof (sw_audio_t);
+  byte_count = count * sizeof (float);
 
   if (pa_simple_read(pa, buf, byte_count, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_read() failed: %s\n", pa_strerror(error));
@@ -144,7 +144,7 @@ pulse_read (sw_handle * handle, sw_audio_t * buf, size_t count)
 }
 
 static ssize_t
-pulse_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
+pulse_write (sw_handle * handle, const float * buf, size_t count)
 {
   struct pa_simple * pa ;
   int error;
@@ -153,7 +153,7 @@ pulse_write (sw_handle * handle, const sw_audio_t * buf, size_t count)
   if ((pa = (struct pa_simple *)handle->custom_data) == NULL)
     return 0;
 
-  byte_count = count * sizeof (sw_audio_t);
+  byte_count = count * sizeof (float);
 
   if (pa_simple_write(pa, buf, byte_count, &error) < 0) {
     fprintf(stderr, __FILE__": pa_simple_write() failed: %s\n", pa_strerror(error));

@@ -114,7 +114,7 @@ _undo_dialog_set_sample (sw_sample * sample, gboolean select_current)
   GdkBitmap * mask;
   gboolean done = FALSE;
 
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
 
   clist = GTK_CLIST(undo_clist);
 
@@ -155,15 +155,15 @@ _undo_dialog_set_sample (sw_sample * sample, gboolean select_current)
 
   gtk_clist_thaw (clist);
 
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   ud_sample = sample;
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(combo)->entry),
-		      g_basename(sample->pathname));
+		      g_path_get_basename(sample->pathname));
 
-  g_mutex_lock (ud_sample->edit_mutex);
+  g_mutex_lock (&ud_sample->edit_mutex);
   undo_dialog_refresh_edit_mode (ud_sample);
-  g_mutex_unlock (ud_sample->edit_mutex);
+  g_mutex_unlock (&ud_sample->edit_mutex);
 }
 
 void
@@ -232,7 +232,7 @@ undo_dialog_revert_cb (GtkWidget * widget, gpointer data)
 
   s = GPOINTER_TO_INT((GTK_CLIST(undo_clist)->selection)->data);
 
-  g_mutex_lock (ud_sample->ops_mutex);
+  g_mutex_lock (&ud_sample->ops_mutex);
 
   for (gl = g_list_last (ud_sample->registered_ops); gl; gl = gl->prev) {
     if (i == s) {
@@ -243,7 +243,7 @@ undo_dialog_revert_cb (GtkWidget * widget, gpointer data)
     i++;
   }
 
-  g_mutex_unlock (ud_sample->ops_mutex);
+  g_mutex_unlock (&ud_sample->ops_mutex);
 
   revert_op (ud_sample, sel_gl);
 }

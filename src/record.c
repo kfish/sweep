@@ -193,7 +193,7 @@ do_record_regions (sw_sample * sample)
   sw_framecount_t offset, remaining, n, count;
   gint percent;
 
-  sw_audio_t * rbuf;
+  float * rbuf;
 
   gboolean active = TRUE;
 
@@ -208,7 +208,7 @@ do_record_regions (sw_sample * sample)
   if (sel_total == 0) sel_total = 1;
   run_total = 0;
 
-  rbuf = alloca (1024 * f->channels * sizeof (sw_audio_t));
+  rbuf = alloca (1024 * f->channels * sizeof (float));
 
   while (active) {
 
@@ -222,7 +222,7 @@ do_record_regions (sw_sample * sample)
 
     count = device_read (rec_handle, rbuf, count);
 
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL || count == -1 ||
 	!head->going) {
@@ -240,7 +240,7 @@ do_record_regions (sw_sample * sample)
 
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
  done:
@@ -324,7 +324,7 @@ _rec_dialog_set_sample (sw_sample * sample, gboolean select_current)
   sw_head * head;
 
   gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(combo)->entry),
-		      g_basename (sample->pathname));
+		      g_path_get_basename (sample->pathname));
 
   if (sample->rec_head == NULL) {
     sample->rec_head = head_new (sample, SWEEP_HEAD_RECORD);

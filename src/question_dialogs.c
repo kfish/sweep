@@ -81,8 +81,8 @@ question_dialog_answer_cb (GtkWidget * widget, gpointer data)
 }
 
 static void
-query_dialog_new (sw_sample * sample, char * title, char * question,
-		  gboolean show_cancel, char * ok_answer, char * no_answer,
+query_dialog_new (sw_sample * sample, const char * title, const char * question,
+		  gboolean show_cancel, const char * ok_answer, const char * no_answer,
 		  GCallback ok_callback, gpointer ok_callback_data,
 		  GCallback no_callback, gpointer no_callback_data,
 		  gpointer xpm_data, gboolean quit_if_no_files)
@@ -172,8 +172,8 @@ query_dialog_new (sw_sample * sample, char * title, char * question,
 }
 
 void
-question_dialog_new (sw_sample * sample, char * title, char * question,
-		     char * yes_answer, char * no_answer,
+question_dialog_new (sw_sample * sample, const char * title, const char * question,
+		     const char * yes_answer, const char * no_answer,
 		     GCallback yes_callback, gpointer yes_callback_data,
 		     GCallback no_callback, gpointer no_callback_data,
 		     sw_edit_mode edit_mode)
@@ -207,7 +207,7 @@ do_info_dialog (gpointer data)
 }
 
 void
-info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
+info_dialog_new (const char * title, gpointer xpm_data, const char * fmt, ...)
 {
   info_dialog_data * id;
   va_list ap;
@@ -229,7 +229,7 @@ info_dialog_new (char * title, gpointer xpm_data, const char * fmt, ...)
 
 typedef struct {
   int thread_errno;
-  char * message;
+  char message [512];
 } sweep_perror_data;
 
 static gint
@@ -263,7 +263,7 @@ sweep_perror (int thread_errno, const char * fmt, ...)
   pd = g_malloc (sizeof (sweep_perror_data));
 
   va_start (ap, fmt);
-  snprintf (pd->message, sizeof (pd->message), fmt, ap);
+  vsnprintf (pd->message, sizeof (pd->message), fmt, ap);
   va_end (ap);
 
   sweep_timeout_add ((guint32)0, (GtkFunction)syserror_dialog_new, pd);

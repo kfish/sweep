@@ -77,7 +77,7 @@ struct _sw_view {
   sw_sample * sample;
 
   sw_framecount_t start, end; /* bounds of visible frames */
-  sw_audio_t vlow, vhigh; /* bounds of vertical zoom */
+  float vlow, vhigh; /* bounds of vertical zoom */
   /*  gfloat gain;*/
   /*gfloat rate;*/
 
@@ -160,7 +160,7 @@ struct _sw_head_controller {
 struct _sw_head {
   sw_sample * sample;
 
-  GMutex * head_mutex;
+  GMutex head_mutex;
   sw_head_t type; /* SWEEP_HEAD_PLAY or SWEEP_HEAD_RECORD */
   /*  sw_transport_type transport_mode;*/
   sw_framecount_t stop_offset;
@@ -217,7 +217,7 @@ struct _sw_sample {
 
   pthread_t ops_thread;
 
-  GMutex * ops_mutex;
+  GMutex ops_mutex;
   GList * registered_ops;
   GList * current_undo;
   GList * current_redo;
@@ -226,12 +226,12 @@ struct _sw_sample {
 
   /* Per-edit locking */
 
-  GMutex * edit_mutex; /* Mutex for access to edit state */
+  GMutex edit_mutex; /* Mutex for access to edit state */
   sw_edit_mode edit_mode; /* READY/MODIFYING/ALLOC */
   sw_edit_state edit_state; /* IDLE/BUSY/DONE/CANCEL */
   gboolean modified; /* modified since last save ? */
 
-  GCond * pending_cond; /* held with edit_mutex */
+  GCond pending_cond; /* held with edit_mutex */
   GList * pending_ops;
 
   /* Playback, recording, scrubbing */
@@ -239,7 +239,7 @@ struct _sw_sample {
   sw_framecount_t user_offset; /* XXX: Actual offset of driver (frames) */
   gboolean by_user; /* Offset was last changed by user */
 
-  GMutex * play_mutex; /* Mutex for access to play state */
+  GMutex play_mutex; /* Mutex for access to play state */
   sw_head * play_head;
 
   sw_head * rec_head;

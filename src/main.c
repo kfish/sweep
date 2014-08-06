@@ -127,10 +127,6 @@ main (int argc, char *argv[])
   putenv (display_env);
 #endif
 
-  g_thread_init (NULL);
-
-
-
   /* must be done before g_idle_add / g_timeout_add */
   sweep_timeouts_init ();
 

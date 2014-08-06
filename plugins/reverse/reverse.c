@@ -61,11 +61,11 @@ sounddata_reverse (sw_sample * sample, sw_param_set pset,
     nr_frames = sel->sel_end - sel->sel_start;
 
     e = d + frames_to_bytes (format, nr_frames);
-    
+
     remaining = nr_frames/2;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -76,7 +76,7 @@ sounddata_reverse (sw_sample * sample, sw_param_set pset,
 	  memcpy (t, d, sw);
 	  memcpy (d, e, sw);
 	  memcpy (e, t, sw);
-	
+
 	  d += sw;
 	  e -= sw;
 	}
@@ -87,7 +87,7 @@ sounddata_reverse (sw_sample * sample, sw_param_set pset,
 	sample_set_progress_percent (sample, run_total / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 

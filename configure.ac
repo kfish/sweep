@@ -7,7 +7,7 @@ AC_INIT([sweep],[0.9.3],[sweep-devel@lists.sourceforge.net],
 		[sweep],[http://www.metadecks.org/software/sweep/])
 
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
 
 AC_ISC_POSIX
@@ -91,24 +91,31 @@ if test "x$HAVE_GTHREADS" != xyes ; then
   AC_CHECK_LIB(gthread-2.0, g_thread_init, HAVE_GTHREADS="maybe", sweep_config_ok="no")
 fi
 
+PKG_CHECK_MODULES(GMODULE, gmodule-2.0 >=  2.2.0, HAVE_GMODULE="yes", sweep_config_ok="no")
+AC_SUBST(GMODULE_CFLAGS)
+AC_SUBST(GMODULE_LIBS)
+if test "x$HAVE_GMODULE" != xyes ; then
+  AC_CHECK_LIB(gmodule-2.0, g_module_init, HAVE_GMODULE="maybe", sweep_config_ok="no")
+fi
+
 dnl
 dnl  Detect libsndfile 1.0
 dnl
 
 PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
-                  HAVE_LIBSNDFILE1="yes", HAVE_LIBSNDFILE1="no")
+                  HAVE_LIBSNDFILE="yes", HAVE_LIBSNDFILE="no")
 
-if test "x$HAVE_LIBSNDFILE1" = xyes ; then
-  AC_DEFINE([HAVE_LIBSNDFILE1], [], [Define if we have libsndfile1.])
+if test "x$HAVE_LIBSNDFILE" = xyes ; then
+  AC_DEFINE([HAVE_LIBSNDFILE], [], [Define if we have libsndfile1.])
   AC_SUBST(SNDFILE_LIBS)
 else
   sweep_config_ok="no"
-  AC_CHECK_LIB(sndfile, sf_open, HAVE_LIBSNDFILE1="maybe")
+  AC_CHECK_LIB(sndfile, sf_open, HAVE_LIBSNDFILE="maybe")
 fi
 
-if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
-  AC_CHECK_HEADERS(sndfile.h, HAVE_LIBSNDFILE1="ouch")
-  if test "x$HAVE_LIBSNDFILE1" = xouch ; then
+if test "x$HAVE_LIBSNDFILE" = xmaybe ; then
+  AC_CHECK_HEADERS(sndfile.h, HAVE_LIBSNDFILE="ouch")
+  if test "x$HAVE_LIBSNDFILE" = xouch ; then
     AC_MSG_ERROR([
 ***
 *** libsndfile-1.0.0 or greater seems to exist on your system, however
@@ -545,13 +552,13 @@ if test "x$HAVE_GTK" = xmaybe ; then
 ])
 fi
 
-if test "x$HAVE_LIBSNDFILE1" != xyes ; then
+if test "x$HAVE_LIBSNDFILE" != xyes ; then
   AC_MSG_RESULT([
 *** libsndfile version 1.0.0 or greater, available from
 *** http://www.mega-nerd.com/libsndfile/
 ])
 fi
-if test "x$HAVE_LIBSNDFILE1" = xmaybe ; then
+if test "x$HAVE_LIBSNDFILE" = xmaybe ; then
     AC_MSG_RESULT([
       Development files missing: libsndfile-1.0.0 or greater
       seems to exist on your system, however the header files
@@ -607,7 +614,7 @@ if test "x$HAVE_VORBIS" != xyes ; then
 fi
 
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
-   test "x$HAVE_LIBSNDFILE1" = xmaybe || test "x$HAVE_LIBTDB" = xmaybe ||
+   test "x$HAVE_LIBSNDFILE" = xmaybe || test "x$HAVE_LIBTDB" = xmaybe ||
    test "x$HAVE_GTHREADS" = xmaybe || test "x$HAVE_ALSA" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
   AC_MSG_RESULT([
@@ -670,7 +677,7 @@ AC_MSG_RESULT([
 **
 **     Experimental code: ....... ${ac_enable_experimental}
 **     Audio devices: ...........$sweep_config_driver
-**     PCM: libsndfile .......... $HAVE_LIBSNDFILE1
+**     PCM: libsndfile .......... $HAVE_LIBSNDFILE
 **     Ogg Vorbis support: ...... $HAVE_VORBIS
 **     MPEG (MP3) loading: ...... $HAVE_MAD
 **     Speex support: ........... $HAVE_SPEEX

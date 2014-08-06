@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
+#include <inttypes.h>
 
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_typeconvert.h>
@@ -59,7 +60,7 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
     s->data = g_malloc0 ((size_t)len);
 
     if (!(s->data)) {
-      fprintf(stderr, "Unable to allocate %d bytes for sample data.\n", len);
+      fprintf(stderr, "Unable to allocate %" PRId64 " bytes for sample data.\n", len);
       g_free(s);
       return NULL;
 #ifdef DEBUG
@@ -72,8 +73,8 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
   }
 
   s->sels = NULL;
-  s->sels_mutex = g_mutex_new();
-  s->data_mutex = g_mutex_new();
+  g_mutex_init (&s->sels_mutex);
+  g_mutex_init (&s->data_mutex);
 
   return s;
 }
@@ -101,7 +102,7 @@ sounddata_destroy (sw_sounddata * sounddata)
 
   if (sounddata->refcount <= 0) {
     g_free (sounddata->data);
-    g_mutex_free(sounddata->data_mutex);
+    g_mutex_clear(&sounddata->data_mutex);
     sounddata_clear_selection (sounddata);
     memset (sounddata, 0, sizeof (*sounddata));
     g_free (sounddata);
@@ -111,13 +112,13 @@ sounddata_destroy (sw_sounddata * sounddata)
 void
 sounddata_lock_selection (sw_sounddata * sounddata)
 {
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 }
 
 void
 sounddata_unlock_selection (sw_sounddata * sounddata)
 {
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 }
 
 guint
@@ -134,7 +135,7 @@ sounddata_sel_needs_normalising (sw_sounddata *sounddata)
   sw_framecount_t nr_frames;
 
   if(!sounddata->sels) return FALSE;
-  
+
   nr_frames = sounddata->nr_frames;
 
   /* Seed osel with 'fake' iteration of following loop */
@@ -174,7 +175,7 @@ sounddata_normalise_selection (sw_sounddata * sounddata)
 {
   GList * gl;
   GList * nsels = NULL;
-  sw_sel * osel = NULL, * sel; 
+  sw_sel * osel = NULL, * sel;
   sw_framecount_t nr_frames;
 
   if (!sounddata_sel_needs_normalising(sounddata)) return;
@@ -186,7 +187,7 @@ sounddata_normalise_selection (sw_sounddata * sounddata)
   sel = (sw_sel *)gl->data;
   sel->sel_start = CLAMP(sel->sel_start, 0, nr_frames);
   sel->sel_end = CLAMP(sel->sel_end, 0, nr_frames);
-  
+
   osel = sel_copy(sel);
 
   gl = gl->next;
@@ -321,7 +322,7 @@ sounddata_selection_scale (sw_sounddata * sounddata, gfloat scale)
   sw_framecount_t sels_start;
 
   if ((gl = sounddata->sels) == NULL) return;
-  
+
   sel = (sw_sel *)gl->data;
   sels_start = sel->sel_start;
 

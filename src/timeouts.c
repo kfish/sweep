@@ -33,7 +33,7 @@
 #include <sweep/sweep_types.h>
 #include <sweep/sweep_sample.h>
 
-static GMutex * timeouts_mutex = NULL;
+static GMutex timeouts_mutex;
 
 static GList * timeouts = NULL;
 
@@ -55,10 +55,10 @@ sweep_timeout_wrapper (gpointer data)
   if (td->function (td->data)) {
     return TRUE;
   } else {
-    g_mutex_lock (timeouts_mutex);
+    g_mutex_lock (&timeouts_mutex);
     timeouts = g_list_remove (timeouts, td);
-    g_mutex_unlock (timeouts_mutex);
-    
+    g_mutex_unlock (&timeouts_mutex);
+
     g_free (td);
 
     return FALSE;
@@ -71,7 +71,7 @@ sweep_timeouts_handle_pending (gpointer data)
   GList * gl, * gl_next;
   sweep_timeout_data * td;
 
-  g_mutex_lock (timeouts_mutex);
+  g_mutex_lock (&timeouts_mutex);
 
   for (gl = timeouts; gl; gl = gl_next) {
     td = (sweep_timeout_data *)gl->data;
@@ -89,7 +89,7 @@ sweep_timeouts_handle_pending (gpointer data)
     }
   }
 
-  g_mutex_unlock (timeouts_mutex);
+  g_mutex_unlock (&timeouts_mutex);
 
   return TRUE;
 }
@@ -97,13 +97,17 @@ sweep_timeouts_handle_pending (gpointer data)
 void
 sweep_timeouts_init (void)
 {
-  if (timeouts_mutex == NULL)
-    timeouts_mutex = g_mutex_new ();
+  static int timeouts_mutex_initialized = 0;
 
-  g_mutex_lock (timeouts_mutex); /* get some practice in ;) */
+  if (timeouts_mutex_initialized == 0) {
+    g_mutex_init (&timeouts_mutex);
+    timeouts_mutex_initialized = 1;
+  }
+
+  g_mutex_lock (&timeouts_mutex); /* get some practice in ;) */
   if (timeouts != NULL) g_list_free (timeouts);
   timeouts = NULL;
-  g_mutex_unlock (timeouts_mutex);
+  g_mutex_unlock (&timeouts_mutex);
 
   g_timeout_add ((guint32)500, sweep_timeouts_handle_pending, NULL);
 }
@@ -121,9 +125,9 @@ sweep_timeout_add (guint32 interval, GtkFunction function, gpointer data)
   td->function = function;
   td->data = data;
 
-  g_mutex_lock (timeouts_mutex);
+  g_mutex_lock (&timeouts_mutex);
   timeouts = g_list_append (timeouts, td);
-  g_mutex_unlock (timeouts_mutex);
+  g_mutex_unlock (&timeouts_mutex);
 
   return td->sweep_tag;
 }
@@ -137,7 +141,7 @@ sweep_timeout_remove (guint sweep_timeout_handler_id)
   if (sweep_timeout_handler_id == -1)
     return;
 
-  g_mutex_lock (timeouts_mutex);
+  g_mutex_lock (&timeouts_mutex);
 
   for (gl = timeouts; gl; gl = gl_next) {
     td = (sweep_timeout_data *)gl->data;
@@ -157,5 +161,5 @@ sweep_timeout_remove (guint sweep_timeout_handler_id)
     }
   }
 
-  g_mutex_unlock (timeouts_mutex);
+  g_mutex_unlock (&timeouts_mutex);
 }

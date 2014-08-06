@@ -73,11 +73,7 @@ typedef struct {
 static void
 sweep_sndfile_perror (SNDFILE * sndfile, gchar * pathname)
 {
-  char buf[128];
-
-  sf_error_str (sndfile, buf, sizeof (buf));
-
-  sweep_perror (errno, "libsndfile: %s\n\n%s", buf,
+  sweep_perror (errno, "libsndfile: %s\n\n%s", sf_strerror (sndfile),
 		(pathname == NULL) ? "" : pathname);
 }
 
@@ -275,7 +271,7 @@ create_sndfile_encoding_options_dialog (sndfile_save_options * so)
   gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
   gtk_widget_push_style (style);
 */
-  label = gtk_label_new (g_basename (so->pathname));
+  label = gtk_label_new (g_path_get_basename (so->pathname));
   gtk_box_pack_start (GTK_BOX(vbox), label,
 		      FALSE, FALSE, 8);
   gtk_widget_show (label);
@@ -532,7 +528,7 @@ sample_load_sf_data (sw_op_instance * inst)
   sf_data * sf = (sf_data *)inst->do_data;
   SNDFILE * sndfile = sf->sndfile;
   SF_INFO * sfinfo = sf->sfinfo;
-  sw_audio_t * d;
+  float * d;
   sw_framecount_t remaining, n, run_total;
   sw_framecount_t cframes;
   gint percent;
@@ -552,7 +548,7 @@ sample_load_sf_data (sw_op_instance * inst)
   if (cframes == 0) cframes = 1;
 
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -574,7 +570,7 @@ sample_load_sf_data (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   sf_close (sndfile) ;
@@ -606,6 +602,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 		      gboolean try_raw)
 {
   SNDFILE * sndfile;
+  const char * errstr;
   char buf[128];
   gchar message [256];
 
@@ -634,9 +631,9 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
       return NULL;
     }
 
-    sf_error_str (NULL, buf, sizeof (buf));
-    if (!strncmp (buf, RAW_ERR_STR_1, sizeof (buf)) ||
-	!strncmp (buf, RAW_ERR_STR_2, sizeof (buf))) {
+    errstr = sf_strerror (NULL);
+    if (!strcmp (errstr, RAW_ERR_STR_1) ||
+	!strcmp (errstr, RAW_ERR_STR_2)) {
 
       so = g_malloc0 (sizeof(*so));
       so->saving = FALSE;
@@ -661,12 +658,12 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
 
     } else {
       if (errno == 0) {
-	snprintf (message, sizeof (message), "%s:\n%s", pathname, buf);
-	info_dialog_new (buf, NULL, message);
+	snprintf (message, sizeof (message), "%s:\n%s", pathname, errstr);
+	info_dialog_new (errstr, NULL, message);
       } else {
 	/* We've already got the error string so no need to call
 	 * sweep_sndfile_perror() here */
-	sweep_perror (errno, "libsndfile: %s\n\n%s", buf, pathname);
+	sweep_perror (errno, "libsndfile: %s\n\n%s", errstr, pathname);
       }
 
       g_free (sfinfo);
@@ -702,7 +699,7 @@ _sndfile_sample_load (sw_sample * sample, gchar * pathname, SF_INFO * sfinfo,
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_path_get_basename (sample->pathname));
 
   sf = g_malloc0 (sizeof(sf_data));
 
@@ -739,7 +736,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
   SNDFILE *sndfile;
   SF_INFO * sfinfo;
   sw_format * format;
-  sw_audio_t * fbuf, * d;
+  float * fbuf, * d;
   sw_framecount_t nwritten = 0, len, n;
   sw_framecount_t cframes;
   int i, j;
@@ -781,7 +778,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
   if ((int)format->channels == sfinfo->channels) {
     fbuf = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_mode == SWEEP_EDIT_MODE_META) {
 	len = MIN (sfinfo->frames - nwritten, 1024);
@@ -800,14 +797,14 @@ sndfile_sample_save_thread (sw_op_instance * inst)
 	active = FALSE;
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   } else if (format->channels == 1 && sfinfo->channels == 2) {
     /* Duplicate mono to stereo */
-    fbuf = (sw_audio_t *)alloca(1024 * sizeof(sw_audio_t));
+    fbuf = (float *)alloca(1024 * sizeof(float));
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_mode == SWEEP_EDIT_MODE_META) {
 	len = MIN (sfinfo->frames - nwritten, 512);
@@ -828,14 +825,14 @@ sndfile_sample_save_thread (sw_op_instance * inst)
 	active = FALSE;
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   } else if (format->channels == 2 && sfinfo->channels == 1) {
     /* Mix down stereo to mono */
-    fbuf = (sw_audio_t *)alloca(1024 * sizeof(sw_audio_t));
+    fbuf = (float *)alloca(1024 * sizeof(float));
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_mode == SWEEP_EDIT_MODE_META) {
 	len = MIN (sfinfo->frames - nwritten, 1024);
@@ -858,18 +855,18 @@ sndfile_sample_save_thread (sw_op_instance * inst)
 	active = FALSE;
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   } else {
     gint min_channels = MIN (format->channels, sfinfo->channels);
-    size_t buf_size = 1024 * sizeof (sw_audio_t) * sfinfo->channels;
+    size_t buf_size = 1024 * sizeof (float) * sfinfo->channels;
 
     /* Copy corresponding channels as much as possible */
-    fbuf = (sw_audio_t *)alloca(buf_size);
+    fbuf = (float *)alloca(buf_size);
     memset (fbuf, 0, buf_size);
     d = sample->sounddata->data;
     while (active && nwritten < sfinfo->frames) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_mode == SWEEP_EDIT_MODE_META) {
 	len = MIN (sfinfo->frames - nwritten, 1024);
@@ -894,7 +891,7 @@ sndfile_sample_save_thread (sw_op_instance * inst)
 	active = FALSE;
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -929,7 +926,7 @@ sndfile_sample_save (sw_sample * sample, gchar * pathname)
 {
   char buf[128];
 
-  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_path_get_basename (pathname));
 
   schedule_operation (sample, buf, &sndfile_save_op, g_strdup (pathname));
 

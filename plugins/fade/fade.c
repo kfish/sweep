@@ -34,7 +34,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
   sw_format * f;
   GList * gl;
   sw_sel * sel;
-  sw_audio_t * d;
+  float * d;
   gfloat factor = start;
   sw_framecount_t op_total, run_total, frames_total;
   glong i, j;
@@ -59,7 +59,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -70,12 +70,12 @@ fade (sw_sample * sample, gfloat start, gfloat end)
 
 	for (i = 0; i < n; i++)
 	{
-		factor = start + (end - start) * 
+		factor = start + (end - start) *
                   (gfloat)run_total++ / (gfloat)frames_total;
 
 		for (j = 0; j < f->channels; j++)
 		{
-			d[i*f->channels+j] = (sw_audio_t)((gfloat)d[i*f->channels+j] * factor);
+			d[i*f->channels+j] = (float)((gfloat)d[i*f->channels+j] * factor);
 		}
 	}
 
@@ -84,7 +84,7 @@ fade (sw_sample * sample, gfloat start, gfloat end)
         sample_set_progress_percent (sample, run_total / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -150,7 +150,7 @@ static sw_procedure proc_fade_out = {
   apply_fade_out,
   NULL, /* custom_data */
 };
-  
+
 static GList *
 fade_init (void)
 {

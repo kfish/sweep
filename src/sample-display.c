@@ -90,7 +90,7 @@ extern GdkCursor * sweep_cursors[];
   (s->height / s->view->sample->sounddata->format->channels)
 
 #define YPOS_TO_VALUE(y) \
-  ((sw_audio_t)(CHANNEL_HEIGHT/2 - (y - (YPOS_TO_CHANNEL(y) * CHANNEL_HEIGHT)))/(CHANNEL_HEIGHT/2))
+  ((float)(CHANNEL_HEIGHT/2 - (y - (YPOS_TO_CHANNEL(y) * CHANNEL_HEIGHT)))/(CHANNEL_HEIGHT/2))
 
 #define MARCH_INTERVAL 300
 #define PULSE_INTERVAL 450
@@ -736,10 +736,10 @@ sample_display_draw_data_channel (GdkDrawable * win,
   GdkGC * gc, * fg_gc;
   sw_sel * sel;
   int x1, x2, y1;
-  sw_audio_t vhigh, vlow;
-  sw_audio_intermediate_t totpos, totneg;
-  sw_audio_t d, maxpos, avgpos, minneg, avgneg;
-  sw_audio_t prev_maxpos, prev_minneg;
+  float vhigh, vlow;
+  double totpos, totneg;
+  float d, maxpos, avgpos, minneg, avgneg;
+  float prev_maxpos, prev_minneg;
   sw_framecount_t i, step, nr_frames, nr_pos, nr_neg;
   sw_sample * sample;
   const int channels = s->view->sample->sounddata->format->channels;
@@ -816,7 +816,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
 #ifdef LEGACY_DRAW_MODE
   {
     int py, ty;
-    sw_audio_t peak;
+    float peak;
 
     py = y+height/2;
 
@@ -825,7 +825,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
       for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
 	   i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
 	   i+=step) {
-	d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
+	d = ((float *)sample->sounddata->data)[i*channels + channel];
 	if (fabs(d) > fabs(peak)) peak = d;
       }
 
@@ -845,7 +845,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
   for (i = OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x-1));
        i < OFFSET_RANGE (nr_frames, XPOS_TO_OFFSET(x));
        i += step) {
-    d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
+    d = ((float *)sample->sounddata->data)[i*channels + channel];
     if (d >= 0) {
       if (d > prev_maxpos) prev_maxpos = d;
     } else {
@@ -861,12 +861,12 @@ sample_display_draw_data_channel (GdkDrawable * win,
 
     /* lock the sounddata against destructive ops to make sure
      * sounddata->data doesn't change under us */
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
 	 i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
 	 i+=step) {
-      d = ((sw_audio_t *)sample->sounddata->data)[i*channels + channel];
+      d = ((float *)sample->sounddata->data)[i*channels + channel];
       if (d >= 0) {
 	if (d > maxpos) maxpos = d;
 	totpos += d;
@@ -878,7 +878,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
 
     if (nr_pos > 0) {
       avgpos = totpos / nr_pos;
@@ -1031,8 +1031,8 @@ sample_display_draw_crossing_vector (GdkDrawable * win,
   cx1 = ( x > VRAD ? VRAD : 0 );
   cx2 = ( x < sample->sounddata->nr_frames - VRAD ? VRAD : 0 );
 
-  cy1 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) - cx1];
-  cy2 = ((sw_audio_t *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) + cx2];
+  cy1 = ((float *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) - cx1];
+  cy2 = ((float *)sample->sounddata->data)[OFFSET_RANGE(sample->sounddata->nr_frames, XPOS_TO_OFFSET(x)) + cx2];
 
   gdk_draw_line(win, s->crossing_gc,
 		x - cx1, (((cy1 + 1.0) * sh) / 2.0),
@@ -1742,15 +1742,15 @@ sample_display_handle_pencil_motion (SampleDisplay * s, int x, int y)
   sw_sample * sample;
   sw_framecount_t offset;
   int channel, channels;
-  sw_audio_t value;
-  sw_audio_t * sampledata;
+  float value;
+  float * sampledata;
 
   offset = XPOS_TO_OFFSET(x);
 
   if (offset < s->view->start || offset > s->view->end) return;
 
   sample = s->view->sample;
-  sampledata = (sw_audio_t *)sample->sounddata->data;
+  sampledata = (float *)sample->sounddata->data;
   channels = sample->sounddata->format->channels;
 
   y = CLAMP (y, 0, s->height);
@@ -1814,19 +1814,19 @@ sample_display_handle_noise_motion (SampleDisplay * s, int x, int y)
   sw_sample * sample;
   sw_framecount_t offset;
   int channel;
-  sw_audio_t value, oldvalue;
-  sw_audio_t * sampledata;
+  float value, oldvalue;
+  float * sampledata;
 
   offset = XPOS_TO_OFFSET(x);
 
   if (offset < s->view->start || offset > s->view->end) return;
 
   sample = s->view->sample;
-  sampledata = (sw_audio_t *)sample->sounddata->data;
+  sampledata = (float *)sample->sounddata->data;
 
   y = CLAMP (y, 0, s->height);
 
-  value = 2.0 * (random() - RAND_MAX/2) / (sw_audio_t)RAND_MAX;
+  value = 2.0 * (random() - RAND_MAX/2) / (float)RAND_MAX;
 
   if (sample->sounddata->format->channels == 1) {
     oldvalue = sampledata[offset];
@@ -1837,7 +1837,7 @@ sample_display_handle_noise_motion (SampleDisplay * s, int x, int y)
   }
 
   sampledata[offset] = CLAMP(oldvalue * 0.8 + value * 0.2,
-			     SW_AUDIO_T_MIN, SW_AUDIO_T_MAX);
+			     SW_AUDIO_MIN, SW_AUDIO_MAX);
 
   sample_refresh_views (sample);
 }

@@ -62,7 +62,7 @@
 
 #define USE_MONITOR_KEY "UseMonitor"
 
-static GMutex * play_mutex = NULL;
+static GMutex play_mutex;
 
 static sw_handle * main_handle = NULL;
 static sw_handle * monitor_handle = NULL;
@@ -76,7 +76,7 @@ static pthread_t player_thread = (pthread_t)-1;
 
 static gboolean stop_all = FALSE;
 
-static sw_audio_t * pbuf = NULL, * devbuf = NULL;
+static float * pbuf = NULL, * devbuf = NULL;
 static int pbuf_chans = 0, devbuf_chans = 0;
 
 
@@ -140,7 +140,7 @@ start_playmarker (sw_sample * s)
 }
 
 static sw_framecount_t
-head_read_unrestricted (sw_head * head, sw_audio_t * buf,
+head_read_unrestricted (sw_head * head, float * buf,
 			sw_framecount_t count, int driver_rate)
 {
   sw_sample * sample = head->sample;
@@ -176,12 +176,12 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 
       p = po - (gdouble)si;
       si *= f->channels;
-      g_mutex_lock(head->sample->sounddata->data_mutex);
+      g_mutex_lock(&head->sample->sounddata->data_mutex);
 
       if (interpolate) {
 	si_next = si+f->channels;
 	for (j = 0; j < f->channels; j++) {
-         buf[b] = head->gain * (((sw_audio_t *)head->sample->sounddata->data)[si] * p + ((sw_audio_t *)head->sample->sounddata->data)[si_next] * (1 - p));
+         buf[b] = head->gain * (((float *)head->sample->sounddata->data)[si] * p + ((float *)head->sample->sounddata->data)[si_next] * (1 - p));
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -194,7 +194,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 	}
       } else {
 	for (j = 0; j < f->channels; j++) {
-	 buf[b] = head->gain * ((sw_audio_t *)head->sample->sounddata->data)[si];
+	 buf[b] = head->gain * ((float *)head->sample->sounddata->data)[si];
 	  if (do_smoothing) {
 	    sw_framecount_t b1, b2;
 	    b1 = (b - f->channels + pbuf_size) % pbuf_size;
@@ -206,7 +206,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 	  b++; si++;
 	}
       }
-     g_mutex_unlock(head->sample->sounddata->data_mutex);
+     g_mutex_unlock (&head->sample->sounddata->data_mutex);
     }
 
     if (head->scrubbing) {
@@ -287,7 +287,7 @@ head_read_unrestricted (sw_head * head, sw_audio_t * buf,
 }
 
 sw_framecount_t
-head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
+head_read (sw_head * head, float * buf, sw_framecount_t count,
 	   int driver_rate)
 {
   sw_sample * sample = head->sample;
@@ -303,10 +303,10 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
     n = 0;
 
     if (head->restricted /* && !head->scrubbing */) {
-      g_mutex_lock (sounddata->sels_mutex);
+      g_mutex_lock (&sounddata->sels_mutex);
 
       if (g_list_length (sounddata->sels) == 0) {
-	g_mutex_unlock (sounddata->sels_mutex);
+	g_mutex_unlock (&sounddata->sels_mutex);
 
 	if (head->previewing && !head->scrubbing) {
 	  if (head->reverse) {
@@ -418,7 +418,7 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	}
       }
 
-      g_mutex_unlock (sounddata->sels_mutex);
+      g_mutex_unlock (&sounddata->sels_mutex);
 
     } else { /* unrestricted */
       if (head->previewing && !head->scrubbing) {
@@ -444,7 +444,7 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
       } else if (!head->restricted || sounddata->sels == NULL) {
 	head->offset = head->reverse ? sounddata->nr_frames : 0;
       } else {
-	g_mutex_lock (sounddata->sels_mutex);
+	g_mutex_lock (&sounddata->sels_mutex);
 	if (head->reverse) {
 	  gl = g_list_last (sounddata->sels);
 	  sel = (sw_sel *)gl->data;
@@ -454,7 +454,7 @@ head_read (sw_head * head, sw_audio_t * buf, sw_framecount_t count,
 	  sel = (sw_sel *)gl->data;
 	  head->offset = sel->sel_start;
 	}
-	g_mutex_unlock (sounddata->sels_mutex);
+	g_mutex_unlock (&sounddata->sels_mutex);
       }
 
       if (!head->looping || head->previewing) {
@@ -499,7 +499,7 @@ head_init_playback (sw_sample * s)
   sw_framecount_t sels_start, sels_end;
   sw_framecount_t delta;
 
-  /*  g_mutex_lock (s->play_mutex);*/
+  /*  g_mutex_lock (&s->play_mutex);*/
 
   s->by_user = FALSE;
 
@@ -510,7 +510,7 @@ head_init_playback (sw_sample * s)
 
 
   if (head->restricted) {
-    g_mutex_lock (s->sounddata->sels_mutex);
+    g_mutex_lock (&s->sounddata->sels_mutex);
 
     if ((gl = s->sounddata->sels) != NULL) {
       sel = (sw_sel *)gl->data;
@@ -520,7 +520,7 @@ head_init_playback (sw_sample * s)
 
       sel = (sw_sel *)gl->data;
       sels_end = sel->sel_end;
-      g_mutex_unlock (s->sounddata->sels_mutex);
+      g_mutex_unlock (&s->sounddata->sels_mutex);
 
       if (head->previewing) {
 	/* preroll 1 second */
@@ -570,17 +570,17 @@ head_init_playback (sw_sample * s)
     }
   }
 
-  /*  g_mutex_unlock (s->play_mutex);*/
+  /*  g_mutex_unlock (&s->play_mutex);*/
 }
 
 static void
-channel_convert_adding (sw_audio_t * src, int src_channels,
-			sw_audio_t * dest, int dest_channels,
+channel_convert_adding (float * src, int src_channels,
+			float * dest, int dest_channels,
 			sw_framecount_t n)
 {
   int j;
   sw_framecount_t i, b = 0;
-  sw_audio_intermediate_t a;
+  double a;
 
   if (src_channels == 1) { /* mix mono data up */
     for (i = 0; i < n; i++) {
@@ -596,8 +596,8 @@ channel_convert_adding (sw_audio_t * src, int src_channels,
 	a += src[b];
 	b++;
       }
-      a /= (sw_audio_intermediate_t)src_channels;
-      dest[i] += (sw_audio_t)a;
+      a /= (double)src_channels;
+      dest[i] += (float)a;
     }
   } else if (src_channels < dest_channels) { /* copy to first channels */
     for (i = 0; i < n; i++) {
@@ -623,8 +623,8 @@ channel_convert_adding (sw_audio_t * src, int src_channels,
 static void
 play_head_update_device (sw_head * head)
 {
-  g_mutex_lock (play_mutex);
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&play_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->monitor) {
     if (g_list_find (active_monitor_heads, head) == 0) {
@@ -638,8 +638,8 @@ play_head_update_device (sw_head * head)
     active_monitor_heads = g_list_remove (active_monitor_heads, head);
   }
 
-  g_mutex_unlock (head->head_mutex);
-  g_mutex_unlock (play_mutex);
+  g_mutex_unlock (&head->head_mutex);
+  g_mutex_unlock (&play_mutex);
 }
 
 #ifdef RECORD_DEMO_FILES
@@ -666,7 +666,7 @@ prepare_to_play_heads (GList * heads, sw_handle * handle)
     f = head->sample->sounddata->format;
 
     if (f->channels > pbuf_chans) {
-      pbuf = g_realloc (pbuf, PSIZ * f->channels * sizeof (sw_audio_t));
+      pbuf = g_realloc (pbuf, PSIZ * f->channels * sizeof (float));
       pbuf_chans = f->channels;
     }
   }
@@ -692,24 +692,24 @@ play_heads (GList ** heads, sw_handle * handle)
 
   for (gl = *heads; gl; gl = gl_next) {
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     head = (sw_head *)gl->data;
     gl_next = gl->next;
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
 
     if (!head) {
       /* XXX: wtf??? */
       return;
     } else if (!head->going || !sample_bank_contains (head->sample)) {
-      g_mutex_lock (play_mutex);
+      g_mutex_lock (&play_mutex);
       *heads = g_list_remove (*heads, head);
-      g_mutex_unlock (play_mutex);
+      g_mutex_unlock (&play_mutex);
     } else {
       s = head->sample;
       f = s->sounddata->format;
 
       if (f->channels > pbuf_chans) {
-	pbuf = g_realloc (pbuf, n * f->channels * sizeof (sw_audio_t));
+	pbuf = g_realloc (pbuf, n * f->channels * sizeof (float));
 	pbuf_chans = f->channels;
       }
 
@@ -720,7 +720,7 @@ play_heads (GList ** heads, sw_handle * handle)
 
       /* XXX: store the head->offset NOW for device_offset referencing */
 
-      g_mutex_lock (s->play_mutex);
+      g_mutex_lock (&s->play_mutex);
 
       head->realoffset = device_offset (handle);
       if (head->realoffset == -1) {
@@ -737,7 +737,7 @@ play_heads (GList ** heads, sw_handle * handle)
 
       /*	if (!head->going) active = FALSE;*/
 
-      g_mutex_unlock (s->play_mutex);
+      g_mutex_unlock (&s->play_mutex);
     }
   }
 
@@ -824,7 +824,7 @@ play_active_heads (void)
 
   if (max_driver_chans > devbuf_chans) {
     devbuf = g_realloc (devbuf,
-			PSIZ * max_driver_chans * sizeof (sw_audio_t));
+			PSIZ * max_driver_chans * sizeof (float));
     devbuf_chans = max_driver_chans;
   }
 
@@ -836,7 +836,7 @@ play_active_heads (void)
       inactive_writes = 0;
     }
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     if (use_monitor) {
       prepare_to_play_heads (active_monitor_heads, monitor_handle);
       prepare_to_play_heads (active_main_heads, main_handle);
@@ -844,21 +844,21 @@ play_active_heads (void)
       prepare_to_play_heads (active_monitor_heads, main_handle);
       prepare_to_play_heads (active_main_heads, main_handle);
     }
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
 
     if (use_monitor) {
       count = PSIZ * monitor_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_monitor_heads, monitor_handle);
       device_write (monitor_handle, devbuf, count);
 
       count = PSIZ * main_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_main_heads, main_handle);
       device_write (main_handle, devbuf, count);
     } else {
       count = PSIZ * main_handle->driver_channels;
-      memset (devbuf, 0, count * sizeof (sw_audio_t));
+      memset (devbuf, 0, count * sizeof (float));
       play_heads (&active_monitor_heads, main_handle);
       play_heads (&active_main_heads, main_handle);
       device_write (main_handle, devbuf, count);
@@ -1080,9 +1080,9 @@ stop_playback (sw_sample * s)
     head_set_going (head, FALSE);
     sample_set_playmarker (s, head->stop_offset, TRUE);
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     active_main_heads = g_list_remove (active_main_heads, head);
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
   }
 }
 
@@ -1095,5 +1095,5 @@ any_playing (void)
 void
 init_playback (void)
 {
-  play_mutex = g_mutex_new ();
+  g_mutex_init (&play_mutex);
 }

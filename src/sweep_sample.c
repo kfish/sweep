@@ -141,7 +141,7 @@ sample_new_empty(gchar * pathname,
 
   s->ops_thread = (pthread_t) -1;
 
-  s->ops_mutex = g_mutex_new ();
+  g_mutex_init (&s->ops_mutex);
   s->registered_ops = NULL;
   s->current_undo = NULL;
   s->current_redo = NULL;
@@ -152,15 +152,15 @@ sample_new_empty(gchar * pathname,
 
   s->playmarker_tag = 0;
 
-  s->edit_mutex = g_mutex_new ();
+  g_mutex_init (&s->edit_mutex);
   s->edit_mode = SWEEP_EDIT_MODE_READY;
   s->edit_state = SWEEP_EDIT_STATE_IDLE;
   s->modified = FALSE;
 
-  s->pending_cond = g_cond_new ();
+  g_cond_init (&s->pending_cond);
   s->pending_ops = NULL;
 
-  s->play_mutex = g_mutex_new ();
+  g_mutex_init (&s->play_mutex);
   s->user_offset = 0;
   s->by_user = 0;
 
@@ -168,7 +168,7 @@ sample_new_empty(gchar * pathname,
 
   s->rate = 1.0;
 
-  s->color = filename_color_hash ((gchar *)g_basename (s->pathname));
+  s->color = filename_color_hash ((gchar *)g_path_get_basename (s->pathname));
 
   s->info_clist = NULL;
 
@@ -304,7 +304,7 @@ sample_new_dialog_update (GtkWidget * widget)
 
   memsize_label = g_object_get_data (G_OBJECT(dialog), "memsize_label");
 
-  bytes = (glong) (seconds * sample_rate * nr_channels * sizeof(sw_audio_t));
+  bytes = (glong) (seconds * sample_rate * nr_channels * sizeof(float));
   if (bytes < 0) {
     gtk_label_set_text (GTK_LABEL(memsize_label), _("Overflow"));
   } else {
@@ -641,9 +641,9 @@ sample_destroy (sw_sample * s)
 
   g_list_free (s->views);
 
-  g_mutex_free (s->ops_mutex);
-  g_mutex_free (s->edit_mutex);
-  g_mutex_free (s->play_mutex);
+  g_mutex_clear (&s->ops_mutex);
+  g_mutex_clear (&s->edit_mutex);
+  g_mutex_clear (&s->play_mutex);
 
   /* XXX: Should do this, but GTK+ barfs. */
   /*
@@ -700,7 +700,7 @@ sample_bank_list_names (void)
   for (gl = sample_bank; gl; gl = gl->next) {
     s = (sw_sample *)gl->data;
 
-    ret = g_list_append (ret, (gpointer *)g_basename (s->pathname));
+    ret = g_list_append (ret, (gpointer *)g_path_get_basename (s->pathname));
   }
 
   return ret;
@@ -718,7 +718,7 @@ sample_bank_find_byname (const gchar * name)
     sample = (sw_sample *)gl->data;
 
     if ((sample->pathname [0]) &&
-	(!strcmp (name, g_basename (sample->pathname))))
+	(!strcmp (name, g_path_get_basename (sample->pathname))))
       return sample;
   }
 
@@ -831,7 +831,7 @@ sample_refresh_views (sw_sample * s)
   sw_view * v;
   GList * gl;
 
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
 
   sample_info_update (s);
 
@@ -840,7 +840,7 @@ sample_refresh_views (sw_sample * s)
     view_refresh (v);
   }
 
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 }
 
 void
@@ -889,7 +889,7 @@ _sample_set_edit_mode (sw_sample * s, sw_edit_mode edit_mode)
 void
 sample_set_edit_mode (sw_sample * s, sw_edit_mode edit_mode)
 {
-  g_mutex_lock (s->edit_mutex);
+  g_mutex_lock (&s->edit_mutex);
 
   _sample_set_edit_mode (s, edit_mode);
 
@@ -897,13 +897,13 @@ sample_set_edit_mode (sw_sample * s, sw_edit_mode edit_mode)
   g_print ("set_edit_mode %d\n", edit_mode);
 #endif
 
-  g_mutex_unlock (s->edit_mutex);
+  g_mutex_unlock (&s->edit_mutex);
 }
 
 void
 sample_set_edit_state (sw_sample * s, sw_edit_state edit_state)
 {
-  g_mutex_lock (s->edit_mutex);
+  g_mutex_lock (&s->edit_mutex);
 
   s->edit_state = edit_state;
 
@@ -915,10 +915,10 @@ sample_set_edit_state (sw_sample * s, sw_edit_state edit_state)
     _sample_set_edit_mode (s, SWEEP_EDIT_MODE_READY);
   }
 
-  g_mutex_unlock (s->edit_mutex);
+  g_mutex_unlock (&s->edit_mutex);
 
   if (edit_state == SWEEP_EDIT_STATE_PENDING) {
-    g_cond_signal (s->pending_cond);
+    g_cond_signal (&s->pending_cond);
   }
 }
 
@@ -948,7 +948,7 @@ sample_set_stop_offset (sw_sample * s)
 {
   sw_framecount_t offset;
 
-  g_mutex_lock (s->play_mutex);
+  g_mutex_lock (&s->play_mutex);
 
   offset = s->user_offset;
   if (offset == s->sounddata->nr_frames)
@@ -957,7 +957,7 @@ sample_set_stop_offset (sw_sample * s)
   head_set_stop_offset (s->play_head, offset);
   /*  s->play_head->stop_offset = offset;*/
 
-  g_mutex_unlock (s->play_mutex);
+  g_mutex_unlock (&s->play_mutex);
 }
 
 void
@@ -973,7 +973,7 @@ sample_set_playmarker (sw_sample * s, sw_framecount_t offset,
 	   by_user ? "TRUE" : "FALSE");
 #endif
 
-  g_mutex_lock (s->play_mutex);
+  g_mutex_lock (&s->play_mutex);
 
   if (offset < 0) offset = 0;
   if (offset > s->sounddata->nr_frames) offset = s->sounddata->nr_frames;
@@ -992,7 +992,7 @@ sample_set_playmarker (sw_sample * s, sw_framecount_t offset,
     */
   }
 
-  g_mutex_unlock (s->play_mutex);
+  g_mutex_unlock (&s->play_mutex);
 
   for(gl = s->views; gl; gl = gl->next) {
     v = (sw_view *)gl->data;
@@ -1377,7 +1377,7 @@ ss_invert (sw_sample * s, sw_param_set unused, gpointer unused2)
   GList * osels;
   sw_sel * osel, * sel;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   if (!sounddata->sels) {
     sounddata_set_selection_1 (sounddata, 0, sounddata->nr_frames);
@@ -1408,7 +1408,7 @@ ss_invert (sw_sample * s, sw_param_set unused, gpointer unused2)
 
 out:
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1424,11 +1424,11 @@ ss_select_all (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
   sw_sounddata * sounddata = s->sounddata;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   sounddata_set_selection_1 (sounddata, 0, sounddata->nr_frames);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1444,11 +1444,11 @@ ss_select_none (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
   sw_sounddata * sounddata = s->sounddata;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   sounddata_clear_selection (sounddata);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1464,11 +1464,11 @@ ss_halve (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
   sw_sounddata * sounddata = s->sounddata;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   sounddata_selection_scale (sounddata, 0.5);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1484,11 +1484,11 @@ ss_double (sw_sample * s, sw_param_set unused, gpointer unused2)
 {
   sw_sounddata * sounddata = s->sounddata;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   sounddata_selection_scale (sounddata, 2.0);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1506,12 +1506,12 @@ ss_shift_left (sw_sample * s, sw_param_set unused, gpointer unused2)
 
   sw_framecount_t delta;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   delta = - (sounddata_selection_width (sounddata));
   sounddata_selection_translate (sounddata, delta);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1528,12 +1528,12 @@ ss_shift_right (sw_sample * s, sw_param_set unused, gpointer unused2)
   sw_sounddata * sounddata = s->sounddata;
   sw_framecount_t delta;
 
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 
   delta = (sounddata_selection_width (sounddata));
   sounddata_selection_translate (sounddata, delta);
 
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 
   return s;
 }
@@ -1577,7 +1577,7 @@ sample_set_tmp_sel (sw_sample * s, sw_view * tview, sw_sel * tsel)
     sel_copy (tsel); /* XXX: try to do this without copying? */
   last_tmp_view = tview;
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   for(gl = s->sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
@@ -1587,7 +1587,7 @@ sample_set_tmp_sel (sw_sample * s, sw_view * tview, sw_sel * tsel)
     }
   }
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 }
 
 void
@@ -1609,12 +1609,12 @@ ssits (sw_sample * s, sw_param_set unused, gpointer data)
 {
   sw_sel * sel = (sw_sel *)data;
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sample_add_selection (s, sel);
   sample_normalise_selection (s);
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   return s;
 }
@@ -1646,14 +1646,14 @@ sample_selection_insert_tmp_sel (sw_sample * s)
     n += snprintf (buf+n, sizeof (buf)-n, "]");
   }
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sel = sel_copy (s->tmp_sel);
 
   s->tmp_sel = NULL;
   last_tmp_view = NULL;
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   perform_selection_op (s, buf, ssits, NULL, sel);
 }
@@ -1664,7 +1664,7 @@ sssts (sw_sample * s, sw_param_set unused, gpointer data)
   GList * sels;
   sw_sel * sel = (sw_sel *)data;
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sels = s->sounddata->sels;
 
@@ -1676,7 +1676,7 @@ sssts (sw_sample * s, sw_param_set unused, gpointer data)
 
   s->sounddata->sels = sels_invert (sels, s->sounddata->nr_frames);
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   return s;
 }
@@ -1697,14 +1697,14 @@ sample_selection_subtract_tmp_sel (sw_sample * s)
 		     frames_to_time (format, s->tmp_sel->sel_end));
   n += snprintf (buf+n, sizeof (buf)-n, "]");
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sel = sel_copy (s->tmp_sel);
 
   s->tmp_sel = NULL;
   last_tmp_view = NULL;
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   perform_selection_op (s, buf, sssts, NULL, sel);
 }
@@ -1714,13 +1714,13 @@ ssrwts (sw_sample * s, sw_param_set unused, gpointer data)
 {
   sw_sel * sel = (sw_sel *)data;
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sample_clear_selection (s);
 
   sample_add_selection (s, sel);
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   return s;
 }
@@ -1741,14 +1741,14 @@ sample_selection_replace_with_tmp_sel (sw_sample * s)
 		     frames_to_time (format, s->tmp_sel->sel_end));
   n += snprintf (buf+n, sizeof (buf)-n, "]");
 
-  g_mutex_lock (s->sounddata->sels_mutex);
+  g_mutex_lock (&s->sounddata->sels_mutex);
 
   sel = sel_copy (s->tmp_sel);
 
   s->tmp_sel = NULL;
   last_tmp_view = NULL;
 
-  g_mutex_unlock (s->sounddata->sels_mutex);
+  g_mutex_unlock (&s->sounddata->sels_mutex);
 
   perform_selection_op (s, buf, ssrwts, NULL, sel);
 }
@@ -1780,7 +1780,7 @@ sample_info_update (sw_sample * sample)
 		frames_to_time (sounddata->format, sounddata->nr_frames));
 
 
-  gtk_clist_set_text (GTK_CLIST(clist), 0, 1, g_basename(sample->pathname));
+  gtk_clist_set_text (GTK_CLIST(clist), 0, 1, g_path_get_basename(sample->pathname));
   gtk_clist_set_text (GTK_CLIST(clist), 1, 1, rate_buf);
   gtk_clist_set_text (GTK_CLIST(clist), 2, 1, chan_buf);
   gtk_clist_set_text (GTK_CLIST(clist), 3, 1, byte_buf);

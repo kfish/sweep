@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CFLAGS = \
-	$(GTK_DISABLE_DEPRECATED) \
 	-DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@' \
+	$(GTK_DISABLE_DEPRECATED) \
 	@SNDFILE_CFLAGS@ \
 	@OGG_CFLAGS@ @VORBIS_CFLAGS@ \
 	@SAMPLERATE_CFLAGS@ \
@@ -13,7 +13,7 @@ AM_CFLAGS = \
 	@PULSEAUDIO_CFLAGS@ \
 	@TDB_CFLAGS@
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)/intl \
 	-I$(top_srcdir)/include
 
@@ -70,14 +70,14 @@ sweep_SOURCES = \
 	view.c view.h \
 	view_pixmaps.h
 
-sweep_LDADD = @TDB_LIBS@ \
-	@GTK_LIBS@ $(INTLLIBS) $(PTHREAD_LIBS) \
-	$(SNDFILE_LIBS) \
-	$(OGG_LIBS) $(VORBIS_LIBS) $(VORBISFILE_LIBS) $(VORBISENC_LIBS) \
+sweep_LDADD = $(TDB_LIBS) \
+	$(GTHREADS_LIBS) $(GMODULE_LIBS) \
+	$(GTK_LIBS) $(INTLLIBS) \
+	$(SNDFILE_LIBS) $(OGG_LIBS) $(VORBIS_LIBS) \
+	$(VORBISFILE_LIBS) $(VORBISENC_LIBS) \
 	$(MAD_LIBS) $(SPEEX_LIBS) \
 	$(SAMPLERATE_LIBS) \
-	@GLIB_LIBS@ @GTHREADS_LIBS@ \
-	@ALSA_LIBS@ \
-	@PULSEAUDIO_LIBS@
+	$(ALSA_LIBS) \
+	$(PULSEAUDIO_LIBS)
 
 sweep_LDFLAGS = -lX11 @EXPORT_DYNAMIC_FLAGS@

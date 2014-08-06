@@ -239,7 +239,7 @@ create_paste_dialog (sw_sample * sample, gboolean xfade)
   /* Destination */
 
   snprintf (title, sizeof (title), "%s: %s", _("Destination"),
-			   g_basename (sample->pathname));
+			   g_path_get_basename (sample->pathname));
   frame = gtk_frame_new (title);
   gtk_container_set_border_width (GTK_CONTAINER(frame), 8);
   gtk_box_pack_start (GTK_BOX(hbox), frame, TRUE, TRUE, 0);

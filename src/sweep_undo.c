@@ -68,10 +68,10 @@ op_main (sw_sample * sample)
   while (sample->edit_state != SWEEP_EDIT_STATE_CANCEL &&
 	 (gl = sample->pending_ops) != NULL) {
 
-    g_mutex_lock (sample->edit_mutex);
+    g_mutex_lock (&sample->edit_mutex);
     while (sample->edit_state != SWEEP_EDIT_STATE_PENDING &&
 	   sample->edit_state != SWEEP_EDIT_STATE_CANCEL) {
-      g_cond_wait (sample->pending_cond, sample->edit_mutex);
+      g_cond_wait (&sample->pending_cond, &sample->edit_mutex);
     }
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
@@ -90,22 +90,22 @@ op_main (sw_sample * sample)
       sample->edit_state = SWEEP_EDIT_STATE_BUSY;
       sample->pending_ops = g_list_remove_link (sample->pending_ops, gl);
 
-      g_mutex_unlock (sample->edit_mutex);
+      g_mutex_unlock (&sample->edit_mutex);
 
       if (inst->op->edit_mode == SWEEP_EDIT_MODE_ALLOC) {
-	g_mutex_lock (sample->play_mutex);
+	g_mutex_lock (&sample->play_mutex);
 	if ((was_going = sample->play_head->going)) {
 	  head_set_stop_offset (sample->play_head, sample->user_offset);
 	  head_set_going (sample->play_head, FALSE);
 	}
-	g_mutex_unlock (sample->play_mutex);
+	g_mutex_unlock (&sample->play_mutex);
       }
 
       /* XXX: this is fubar -- change to SweepFunction ?? or change all to
        * have sample as first arg ... */
       inst->op->_do_ ((sw_sample *)inst, (void *)inst);
 
-      g_mutex_lock (sample->edit_mutex);
+      g_mutex_lock (&sample->edit_mutex);
 
 #ifdef DEBUG
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
@@ -122,11 +122,11 @@ op_main (sw_sample * sample)
 
     sample->edit_state = SWEEP_EDIT_STATE_DONE;
 
-    g_mutex_unlock (sample->edit_mutex);
+    g_mutex_unlock (&sample->edit_mutex);
   }
 
 
-  g_mutex_lock (sample->edit_mutex);
+  g_mutex_lock (&sample->edit_mutex);
 
 #ifdef DEBUG
   if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
@@ -142,7 +142,7 @@ op_main (sw_sample * sample)
 
   sample->ops_thread = (pthread_t) -1;
 
-  g_mutex_unlock (sample->edit_mutex);
+  g_mutex_unlock (&sample->edit_mutex);
 
 }
 
@@ -273,9 +273,9 @@ schedule_operation_do (sw_op_instance * inst)
 {
   sw_sample * sample = inst->sample;
 
-  g_mutex_lock (sample->edit_mutex);
+  g_mutex_lock (&sample->edit_mutex);
   sample->pending_ops = g_list_append (sample->pending_ops, inst);
-  g_mutex_unlock (sample->edit_mutex);
+  g_mutex_unlock (&sample->edit_mutex);
 
   if (sample->op_progress_tag == -1) {
     sample->op_progress_tag =
@@ -333,7 +333,7 @@ register_operation (sw_sample * s, sw_op_instance * inst)
   printf("Registering %s\n", inst->description);
 #endif
 
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
 
   if (s->registered_ops && s->current_redo) {
     /* Split the list here -- keep everything up to and
@@ -374,7 +374,7 @@ register_operation (sw_sample * s, sw_op_instance * inst)
     s->modified = TRUE;
   }
 
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 }
 
 static void
@@ -402,12 +402,12 @@ do_undo_current_thread (sw_op_instance * inst)
 
   undo_operation (s, inst->do_data);
 
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
   if (s->edit_state == SWEEP_EDIT_STATE_BUSY) {
     s->current_redo = s->current_undo;
     s->current_undo = s->current_undo->prev;
   }
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 
   return;
 
@@ -481,12 +481,12 @@ do_redo_current_thread (sw_op_instance * inst)
 
   redo_operation (s, inst->do_data);
 
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
   if (s->edit_state == SWEEP_EDIT_STATE_BUSY) {
     s->current_undo = s->current_redo;
     s->current_redo = s->current_redo->next;
   }
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 
   return;
 
@@ -589,13 +589,13 @@ revert_op (sw_sample * sample, GList * op_gl)
 void
 set_active_op (sw_sample * s, sw_op_instance * inst)
 {
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
 
   g_assert (s->active_op == NULL);
 
   s->active_op = inst;
 
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 }
 
 #ifdef TRYCANCEL
@@ -614,7 +614,7 @@ try_cancel_active_op (gpointer data)
 
     sample_set_edit_state (s, SWEEP_EDIT_STATE_CANCEL);
 
-    g_mutex_unlock (s->ops_mutex);
+    g_mutex_unlock (&s->ops_mutex);
 
     return FALSE;
   } else {
@@ -632,7 +632,7 @@ cancel_active_op (sw_sample * s)
 
 #else
 
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
 
 
   if (s->active_op) {
@@ -644,7 +644,7 @@ cancel_active_op (sw_sample * s)
   }
   s->active_op = NULL;
 
-  g_mutex_lock (s->edit_mutex);
+  g_mutex_lock (&s->edit_mutex);
 
   /*
    * Signal to the ops thread to cancel or not perform the current operation.
@@ -665,11 +665,11 @@ cancel_active_op (sw_sample * s)
     g_list_free (gltmp);
   }
 
-  g_mutex_unlock (s->edit_mutex);
+  g_mutex_unlock (&s->edit_mutex);
 
   /*  sample_set_edit_state (s, SWEEP_EDIT_STATE_CANCEL);*/
 
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 
 #endif
 }
@@ -707,17 +707,17 @@ sounddata_replace_data_destroy (sounddata_replace_data * sr)
 void
 undo_by_sounddata_replace (sw_sample * s, sounddata_replace_data * sr)
 {
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
   s->sounddata = sr->old_sounddata;
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 }
 
 void
 redo_by_sounddata_replace (sw_sample * s, sounddata_replace_data * sr)
 {
-  g_mutex_lock (s->ops_mutex);
+  g_mutex_lock (&s->ops_mutex);
   s->sounddata = sr->new_sounddata;
-  g_mutex_unlock (s->ops_mutex);
+  g_mutex_unlock (&s->ops_mutex);
 }
 
 

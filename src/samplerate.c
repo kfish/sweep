@@ -123,31 +123,31 @@ do_samplerate_thread (sw_op_instance * inst)
   offset_in = 0, offset_out = 0;
 
   /* Create selections */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
   for (gl = old_sounddata->sels; gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
 
     sounddata_add_selection_1 (new_sounddata, sel->sel_start * src_ratio,
 			       sel->sel_end * src_ratio);
   }
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   /* XXX: move play/rec offsets */
 
   /* Resample data */
   while (active) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
     } else {
 
       src_data.input_frames = MIN (old_nr_frames - offset_in, BUFFER_LEN);
-      src_data.data_in = &((sw_audio_t *)old_sounddata->data)
+      src_data.data_in = &((float *)old_sounddata->data)
 	[offset_in * old_format->channels];
 
       src_data.output_frames = MAX (new_nr_frames - offset_out, 0);
-      src_data.data_out = &((sw_audio_t *)new_sounddata->data)
+      src_data.data_out = &((float *)new_sounddata->data)
 	[offset_out * old_format->channels];
 
       if (src_data.input_frames < BUFFER_LEN) {
@@ -188,7 +188,7 @@ do_samplerate_thread (sw_op_instance * inst)
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   /* Only an error if remaining > 1 */

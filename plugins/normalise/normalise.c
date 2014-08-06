@@ -34,8 +34,8 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
   sw_format * f;
   GList * gl;
   sw_sel * sel;
-  sw_audio_t * d;
-  sw_audio_t max = 0;
+  float * d;
+  float max = 0;
   gfloat factor = 1.0;
   sw_framecount_t op_total, run_total;
   glong i;
@@ -58,7 +58,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -80,11 +80,11 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	sample_set_progress_percent (sample, run_total / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
-  if (max != 0) factor = SW_AUDIO_T_MAX / (gfloat)max;
+  if (max != 0) factor = SW_AUDIO_MAX / (gfloat)max;
 
   /* Scale */
   for (gl = sounddata->sels; active && gl; gl = gl->next) {
@@ -94,7 +94,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -104,7 +104,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	n = MIN(remaining, 1024);
 
 	for (i=0; i < n * f->channels; i++) {
-	  d[i] = (sw_audio_t)((gfloat)d[i] * factor);
+	  d[i] = (float)((gfloat)d[i] * factor);
 	}
 
 	remaining -= n;
@@ -114,7 +114,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	sample_set_progress_percent (sample, run_total * 100 / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -144,7 +144,7 @@ static sw_procedure proc_normalise = {
   apply_normalise,
   NULL, /* custom_data */
 };
-  
+
 static GList *
 normalise_init (void)
 {
