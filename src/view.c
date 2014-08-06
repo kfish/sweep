@@ -1952,7 +1952,7 @@ view_new(sw_sample * sample, sw_framecount_t start, sw_framecount_t end,
   gtk_table_set_row_spacing (GTK_TABLE(table), 1, 2);
   gtk_container_set_border_width (GTK_CONTAINER(table), 2);
 #ifdef DEVEL_CODE
-  label = gtk_label_new (g_basename(sample->pathname));
+  label = gtk_label_new (g_path_get_basename(sample->pathname));
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), table, label);
 #else
   gtk_box_pack_start (GTK_BOX(main_vbox), table, TRUE, TRUE, 0);
@@ -3061,10 +3061,10 @@ view_refresh_playmode (sw_view * view)
   sw_head * head = view->sample->play_head;
   gboolean playing, playing_sel;
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
   playing = head->going && !head->restricted;
   playing_sel = head->going && head->restricted;
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 
   g_signal_handlers_block_matched (GTK_OBJECT(view->play_toggle), G_SIGNAL_MATCH_DATA, 0, 0, 0, 0, view);
   gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON(view->play_toggle),
@@ -3161,7 +3161,7 @@ view_set_progress_ready (sw_view * view)
 
   snprintf (buf, sizeof (buf), "%s%s - %s",
 	    view->sample->modified ? "*" : "",
-	    g_basename (view->sample->pathname),
+	    g_path_get_basename (view->sample->pathname),
 	    view->sample->play_head->scrubbing ? _("Scrub!") : _("Ready"));
 
   gtk_progress_set_format_string (GTK_PROGRESS(view->progress), buf);
@@ -3207,7 +3207,7 @@ view_close (sw_view * view)
 
   if (sample->modified && g_list_length (sample->views) == 1) {
     snprintf (buf, sizeof (buf), _("%s has been modified. Close anyway?"),
-	      g_basename (sample->pathname));
+	      g_path_get_basename (sample->pathname));
     question_dialog_new (sample, _("File modified"), buf,
 			 _("Close"), _("Don't close"),
 			 G_CALLBACK (view_close_ok_cb), view, NULL, NULL,
@@ -3249,14 +3249,14 @@ view_refresh_title (sw_view * view)
     snprintf(buf, sizeof (buf),
 	     "%s%s %0d%% - Sweep " VERSION,
 	     s->modified ? _("*") : "",
-	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
+	     s->pathname ? g_path_get_basename (s->pathname) : _("Untitled"),
 
 	     s->progress_percent);
   } else {
     snprintf(buf, sizeof (buf),
 	     "%s%s %s - Sweep " VERSION,
 	     s->modified ? _("*") : "",
-	     s->pathname ? g_basename (s->pathname) : _("Untitled"),
+	     s->pathname ? g_path_get_basename (s->pathname) : _("Untitled"),
 	     _("Empty"));
   }
 

@@ -205,7 +205,7 @@ edit_buffer_copy (sw_edit_buffer * oeb)
     oer = (sw_edit_region *)gl->data;
 
     er = edit_region_copy (oeb->format, oer);
- 
+
     eb->regions = g_list_append (eb->regions, er);
   }
 
@@ -296,7 +296,7 @@ edit_buffer_width (sw_edit_buffer * eb)
   gl = g_list_last (eb->regions);
   er = (sw_edit_region *)gl->data;
   end = er->end;
-  
+
   return (end - start);
 }
 
@@ -384,7 +384,7 @@ sample_from_edit_buffer (sw_edit_buffer * eb)
 
   er = (sw_edit_region *)gl->data;
   start = er->start;
-  
+
   for (; gl->next; gl = gl->next);
   er = (sw_edit_region *)gl->data;
   length = er->end - start;
@@ -420,7 +420,7 @@ head_dec_if_within (sw_head * head, sw_framecount_t lower,
 {
   if (head == NULL) return;
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->stop_offset > lower && head->stop_offset < upper)
     head->stop_offset -= amount;
@@ -428,7 +428,7 @@ head_dec_if_within (sw_head * head, sw_framecount_t lower,
   if (head->offset > lower && head->offset < upper)
     head->offset -= amount;
 
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 }
 
 static void
@@ -436,7 +436,7 @@ head_inc_if_gt (sw_head * head, sw_framecount_t lower, sw_framecount_t amount)
 {
   if (head == NULL) return;
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->stop_offset > lower)
     head->stop_offset += amount;
@@ -444,7 +444,7 @@ head_inc_if_gt (sw_head * head, sw_framecount_t lower, sw_framecount_t amount)
   if (head->offset > lower)
     head->offset += amount;
 
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 }
 
 static void
@@ -453,15 +453,15 @@ head_set_if_within (sw_head * head, sw_framecount_t lower,
 {
   if (head == NULL) return;
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->stop_offset >= lower && head->stop_offset <= upper)
     head->stop_offset = value;
-  
+
   if (head->offset >= lower && head->offset <= upper)
     head->offset = value;
 
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 }
 
 /* modifies sounddata */
@@ -498,7 +498,7 @@ splice_out_sel (sw_sample * sample)
    * Each region's memmove needs to be treated as atomic anyway so the
    * gain isn't so much.
    */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
 
   gl = sounddata->sels;
   sel = osel = (sw_sel *)gl->data;
@@ -595,7 +595,7 @@ splice_out_sel (sw_sample * sample)
 
   sample_set_progress_percent (sample, 100);
 
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   return sample;
 }
@@ -610,7 +610,7 @@ sounddata_set_sel_from_eb (sw_sounddata * sounddata, sw_edit_buffer * eb)
     sounddata_clear_selection (sounddata);
 
   if (!eb) return;
-  
+
   for (gl = eb->regions; gl; gl = gl->next) {
     er = (sw_edit_region *)gl->data;
 
@@ -638,7 +638,7 @@ splice_in_eb_data (sw_sample * sample, sw_edit_buffer * eb)
     return sample;
   }
 
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
 
   /* in reverse ... decrementing d, di; just like paste at only crunchy */
 
@@ -699,7 +699,7 @@ splice_in_eb_data (sw_sample * sample, sw_edit_buffer * eb)
 
   sounddata->nr_frames = length;
 
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   return sample;
 }
@@ -757,7 +757,7 @@ crop_in_eb_data (sw_sounddata * sounddata, sw_edit_buffer * eb)
     if (len1 > 0) {
       /* Move middle region in place */
       memmove ((gpointer)(d + byte_len1), d, o_byte_length);
-      
+
       /* Copy (prepend) first region */
       memcpy (d, er1->data, byte_len1);
     } else {
@@ -767,7 +767,7 @@ crop_in_eb_data (sw_sounddata * sounddata, sw_edit_buffer * eb)
       memcpy ((gpointer)(d + frames_to_bytes (f, er->start)),
 	      er->data, frames_to_bytes (f, er->end - er->start));
     }
-    
+
     /* Overwrite with in-between regions */
     gl = eb->regions;
     for (gl = gl->next; gl && gl->next; gl = gl->next) {
@@ -775,7 +775,7 @@ crop_in_eb_data (sw_sounddata * sounddata, sw_edit_buffer * eb)
       memcpy ((gpointer)(d + frames_to_bytes (f, er->start)),
 	      er->data, frames_to_bytes (f, er->end - er->start));
     }
-    
+
     if (len2 > 0) {
       /* Copy (append) last_region */
       memcpy ((gpointer)(d + o_byte_length + byte_len1), er2->data, byte_len2);
@@ -814,24 +814,24 @@ crop_in (sw_sample * sample, sw_edit_buffer * eb)
   if (er->start == 0) {
     delta = er->end;
 
-    g_mutex_lock (sounddata->sels_mutex);
+    g_mutex_lock (&sounddata->sels_mutex);
     sounddata_selection_translate (sounddata, delta);
-    g_mutex_unlock (sounddata->sels_mutex);
+    g_mutex_unlock (&sounddata->sels_mutex);
 
-    g_mutex_lock (sample->play_mutex);
+    g_mutex_lock (&sample->play_mutex);
     sample->user_offset += delta;
-    g_mutex_unlock (sample->play_mutex);
+    g_mutex_unlock (&sample->play_mutex);
 
-    g_mutex_lock (sample->play_head->head_mutex);
+    g_mutex_lock (&sample->play_head->head_mutex);
     sample->play_head->offset += delta;
     sample->play_head->stop_offset += delta;
-    g_mutex_unlock (sample->play_head->head_mutex);
+    g_mutex_unlock (&sample->play_head->head_mutex);
 
     if (sample->rec_head) {
-      g_mutex_lock (sample->rec_head->head_mutex);
+      g_mutex_lock (&sample->rec_head->head_mutex);
       sample->rec_head->offset += delta;
       sample->rec_head->stop_offset += delta;
-      g_mutex_unlock (sample->rec_head->head_mutex);
+      g_mutex_unlock (&sample->rec_head->head_mutex);
     }
   }
 
@@ -856,23 +856,23 @@ edit_clear_sel (sw_sample * sample)
   run_total = 0;
 
   for (gl = sounddata->sels; active && gl; gl = gl->next) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
     } else {
       sel = (sw_sel *)gl->data;
-      
+
       offset = frames_to_bytes (f, sel->sel_start);
       len = frames_to_bytes (f, sel->sel_end - sel->sel_start);
-      
+
       memset ((gpointer)(sounddata->data + offset), 0, (size_t)len);
-      
+
       run_total += sel->sel_end - sel->sel_start;
       sample_set_progress_percent (sample, run_total / sel_total);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 }
 
@@ -906,7 +906,7 @@ crop_out (sw_sample * sample)
    * Each region's memmove needs to be treated as atomic anyway so the
    * gain isn't so much.
    */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
 
   gl = sounddata->sels;
   sel1 = (sw_sel *)gl->data;
@@ -944,7 +944,7 @@ crop_out (sw_sample * sample)
   sample->user_offset -= sel1->sel_start;
   sample->user_offset = CLAMP(sample->user_offset, 0, length);
 
-  g_mutex_lock (sample->play_head->head_mutex);
+  g_mutex_lock (&sample->play_head->head_mutex);
 
   sample->play_head->offset -= sel1->sel_start;
   sample->play_head->offset =
@@ -954,10 +954,10 @@ crop_out (sw_sample * sample)
   sample->play_head->stop_offset =
     CLAMP(sample->play_head->stop_offset, 0, length);
 
-  g_mutex_unlock (sample->play_head->head_mutex);
+  g_mutex_unlock (&sample->play_head->head_mutex);
 
   if (sample->rec_head) {
-    g_mutex_lock (sample->rec_head->head_mutex);
+    g_mutex_lock (&sample->rec_head->head_mutex);
 
     sample->rec_head->offset -= sel1->sel_start;
     sample->rec_head->offset =
@@ -967,7 +967,7 @@ crop_out (sw_sample * sample)
     sample->rec_head->stop_offset =
       CLAMP(sample->rec_head->stop_offset, 0, length);
 
-    g_mutex_unlock (sample->rec_head->head_mutex);
+    g_mutex_unlock (&sample->rec_head->head_mutex);
   }
 
   /* Fix selection */
@@ -990,7 +990,7 @@ crop_out (sw_sample * sample)
 
   sample_set_progress_percent (sample, 100);
 
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   return sample;
 }
@@ -1132,48 +1132,48 @@ paste_mix (sw_sample * sample, sw_edit_buffer * eb,
     er = (sw_edit_region *)gl->data;
 
     if (er->start > length) break;
-    
+
     d = sample->sounddata->data +
       frames_to_bytes (f, er->start - eb_delta + paste_offset);
     e = er->data;
-    
+
     offset = 0;
     remaining = MIN(er->end, length) - er->start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
-      
+      g_mutex_lock (&sample->ops_mutex);
+
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
       } else {
-	
+
 	n = MIN(remaining, 1024);
-	
+
 	for (i = 0; i < n * f->channels; i++) {
 	  d[i] = d[i] * dest_gain + e[i] * src_gain;
 	}
-	
+
 	remaining -= n;
 	offset += n;
-	
+
 	d += n * f->channels;
 	e += n * f->channels;
-	
+
 	run_total += n;
 	percent = run_total / (eb_total/100);
 	sample_set_progress_percent (sample, percent);
-	
+
 #ifdef DEBUG
 	g_print ("completed %d / %d frames, %d%%\n", run_total, eb_total,
 		 percent);
 #endif
       }
-      
-      g_mutex_unlock (sample->ops_mutex);
+
+      g_mutex_unlock (&sample->ops_mutex);
     }
-    
+
   }
-  
+
   return sample;
 }
 
@@ -1222,21 +1222,21 @@ paste_xfade (sw_sample * sample, sw_edit_buffer * eb,
     er = (sw_edit_region *)gl->data;
 
     if (er->start > length) break;
-    
+
     d = sample->sounddata->data +
       frames_to_bytes (f, er->start - eb_delta + paste_offset);
     e = er->data;
-    
+
     offset = 0;
     remaining = MIN(er->end, length) - er->start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
-      
+      g_mutex_lock (&sample->ops_mutex);
+
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
       } else {
-	
+
 	n = MIN(remaining, 1024);
 
 	k = 0;
@@ -1248,28 +1248,28 @@ paste_xfade (sw_sample * sample, sw_edit_buffer * eb,
 	  src_gain += src_gain_delta;
 	  dest_gain += dest_gain_delta;
 	}
-	
+
 	remaining -= n;
 	offset += n;
-	
+
 	d += n * f->channels;
 	e += n * f->channels;
-	
+
 	run_total += n;
 	percent = run_total / (eb_total/100);
 	sample_set_progress_percent (sample, percent);
-	
+
 #ifdef DEBUG
 	g_print ("completed %d / %d frames, %d%%\n", run_total, eb_total,
 		 percent);
 #endif
       }
-      
-      g_mutex_unlock (sample->ops_mutex);
+
+      g_mutex_unlock (&sample->ops_mutex);
     }
-    
+
   }
-  
+
   return sample;
 }
 

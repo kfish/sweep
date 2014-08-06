@@ -496,7 +496,7 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -518,14 +518,14 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 	     */
 	    input_buffers[0] = (LADSPA_Data *)pcmdata;
 	  }
-	  
+
 	  output_buffers[0] = (LADSPA_Data *)pcmdata;
-	  
+
 	} else {
 	  /* de-interleave multichannel data */
-	  
+
 	  p = (LADSPA_Data *)pcmdata;
-	  
+
 	  for (i=0; i < n; i++) {
 	    for (c=0; c < nr_channels; c++) {
 	      input_buffers[c][i] = *p++;
@@ -559,14 +559,14 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 	/* re-interleave data */
 	if (nr_channels > 1) {
 	  p = (LADSPA_Data *)pcmdata;
-	  
+
 	  for (i=0; i < n; i++) {
 	    for (c=0; c < nr_channels; c++) {
 	      *p++ = output_buffers[c][i];
 	    }
 	  }
 	}
-	
+
 	remaining -= n;
 	offset += n;
 
@@ -574,7 +574,7 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 	sample_set_progress_percent (sample, run_total / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -594,16 +594,16 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 
   /* free the array of handles */
   g_free (handles);
-  
+
   /* free the input and output buffers */
   if (control_inputs) g_free (control_inputs);
-  
+
   if ((nr_channels == 1) && (nr_ai == 1) && (nr_ao >= 1)) {
     if (LADSPA_META_IS_INPLACE_BROKEN(d->Properties)) {
       g_free (mono_input_buffers[0]);
     }
   } else {
-    
+
     /* free the output buffers */
     for (i=0; i < nr_o; i++) {
       g_free (output_buffers[i]);
@@ -623,7 +623,7 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 	g_free (input_buffers[i]);
       }
     }
-    g_free (input_buffers);  
+    g_free (input_buffers);
   }
 
   return sample;
@@ -771,7 +771,7 @@ ladspa_meta_init (void)
   do {
     next_sep = strchr (ladspa_path, ':');
     if (next_sep != NULL) *next_sep = '\0';
-    
+
     ladspa_meta_init_dir (ladspa_path);
 
     if (next_sep != NULL) ladspa_path = ++next_sep;

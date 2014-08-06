@@ -386,7 +386,7 @@ sample_load_speex_data (sw_op_instance * inst)
   speex_bits_init (&bits);
 
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -487,7 +487,7 @@ sample_load_speex_data (sw_op_instance * inst)
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   if (st) speex_decoder_destroy (st);
@@ -568,7 +568,7 @@ sample_load_speex_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_path_get_basename (sample->pathname));
 
   schedule_operation (sample, buf, &speex_load_op, sample);
 
@@ -857,7 +857,7 @@ speex_sample_save_thread (sw_op_instance * inst)
   speex_bits_init (&bits);
 
   while (!eos) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -904,7 +904,7 @@ speex_sample_save_thread (sw_op_instance * inst)
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
 
     nbBytes = speex_bits_write (&bits, cbits, MAX_FRAME_BYTES);
     speex_bits_reset (&bits);
@@ -975,7 +975,7 @@ speex_sample_save_thread (sw_op_instance * inst)
 		     "Encoding of %s succeeded.\n\n"
 		     "%s written, %s audio\n"
 		     "Average bitrate: %.1f kbps",
-		     g_basename (sample->pathname),
+		     g_path_get_basename (sample->pathname),
 		     bytes_buf, time_buf,
 		     average_bitrate);
   } else {
@@ -995,14 +995,14 @@ speex_sample_save_thread (sw_op_instance * inst)
 		       "Encoding of %s FAILED\n\n"
 		       "%s written, %s audio (%d%% complete)\n"
 		       "Average bitrate: %.1f kbps",
-		       g_basename (pathname), bytes_buf, time_buf, percent,
+		       g_path_get_basename (pathname), bytes_buf, time_buf, percent,
 		       average_bitrate);
     } else {
       sweep_perror (errno_save,
 		    "Encoding of %s FAILED\n\n"
 		    "%s written, %s audio (%d%% complete)\n"
 		    "Average bitrate: %.1f kbps",
-		    g_basename (pathname), bytes_buf, time_buf, percent,
+		    g_path_get_basename (pathname), bytes_buf, time_buf, percent,
 		    average_bitrate);
     }
   }
@@ -1027,7 +1027,7 @@ speex_sample_save (sw_sample * sample, char * pathname)
 {
   char buf[64];
 
-  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_path_get_basename (pathname));
 
   schedule_operation (sample, buf, &speex_save_op, pathname);
 
@@ -1549,7 +1549,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
   gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
   gtk_widget_push_style (style);
 */
-  label = gtk_label_new (g_basename (pathname));
+  label = gtk_label_new (g_path_get_basename (pathname));
   gtk_box_pack_start (GTK_BOX(vbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
 

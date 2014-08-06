@@ -58,36 +58,36 @@ do_filter_regions (sw_sample * sample, SweepFilterRegion func,
 
   for (gl = sounddata->sels; active && gl; gl = gl->next) {
     sel = (sw_sel *)gl->data;
-    
+
     offset = 0;
     remaining = sel->sel_end - sel->sel_start;
-    
+
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
-      
+      g_mutex_lock (&sample->ops_mutex);
+
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
       } else {
 	d = sounddata->data + (int)frames_to_bytes (f, sel->sel_start + offset);
-	
+
 	n = MIN(remaining, 1024);
-	
+
 	func (d, sounddata->format, n, pset, custom_data);
-	
+
 	remaining -= n;
 	offset += n;
-	
+
 	run_total += n;
 	percent = run_total / sel_total;
 	sample_set_progress_percent (sample, percent);
-	
+
 #ifdef DEBUG
 	g_print ("completed %d / %d frames, %d%%\n", run_total, sel_total,
 		 percent);
 #endif
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 }
@@ -115,7 +115,7 @@ do_filter_regions_thread (sw_op_instance * inst)
 
   if (sample->edit_state == SWEEP_EDIT_STATE_BUSY) {
     p->new_eb = edit_buffer_from_sample (sample);
-    
+
     register_operation (sample, inst);
   }
 

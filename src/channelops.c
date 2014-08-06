@@ -78,13 +78,13 @@ do_dup_channels_thread (sw_op_instance * inst)
   new_d = (float *)new_sounddata->data;
 
   /* Create selections */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
   new_sounddata->sels = sels_copy (old_sounddata->sels);
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   /* Mix down */
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -110,7 +110,7 @@ do_dup_channels_thread (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   if (remaining > 0) { /* cancelled or failed */
@@ -271,13 +271,13 @@ do_mono_mixdown_thread (sw_op_instance * inst)
   new_d = (float *)new_sounddata->data;
 
   /* Create selections */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
   new_sounddata->sels = sels_copy (old_sounddata->sels);
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   /* Mix down */
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -300,7 +300,7 @@ do_mono_mixdown_thread (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   if (remaining > 0) { /* cancelled or failed */
@@ -367,13 +367,13 @@ do_remove_channel_thread (sw_op_instance * inst)
   new_d = (float *)new_sounddata->data;
 
   /* Create selections */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
   new_sounddata->sels = sels_copy (old_sounddata->sels);
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   /* Mix down */
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -398,7 +398,7 @@ do_remove_channel_thread (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   if (remaining > 0) { /* cancelled or failed */
@@ -467,7 +467,7 @@ do_stereo_swap (sw_sample * sample, gpointer data)
 
   /* Swap channels */
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -490,7 +490,7 @@ do_stereo_swap (sw_sample * sample, gpointer data)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 }
 
@@ -566,13 +566,13 @@ do_change_channels_thread (sw_op_instance * inst)
   new_d = (float *)new_sounddata->data;
 
   /* Create selections */
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
   new_sounddata->sels = sels_copy (old_sounddata->sels);
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   /* Mix down */
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -595,7 +595,7 @@ do_change_channels_thread (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   if (remaining > 0) { /* cancelled or failed */

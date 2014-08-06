@@ -73,8 +73,8 @@ sounddata_new_empty(gint nr_channels, gint sample_rate, gint sample_length)
   }
 
   s->sels = NULL;
-  s->sels_mutex = g_mutex_new();
-  s->data_mutex = g_mutex_new();
+  g_mutex_init (&s->sels_mutex);
+  g_mutex_init (&s->data_mutex);
 
   return s;
 }
@@ -102,7 +102,7 @@ sounddata_destroy (sw_sounddata * sounddata)
 
   if (sounddata->refcount <= 0) {
     g_free (sounddata->data);
-    g_mutex_free(sounddata->data_mutex);
+    g_mutex_clear(&sounddata->data_mutex);
     sounddata_clear_selection (sounddata);
     memset (sounddata, 0, sizeof (*sounddata));
     g_free (sounddata);
@@ -112,13 +112,13 @@ sounddata_destroy (sw_sounddata * sounddata)
 void
 sounddata_lock_selection (sw_sounddata * sounddata)
 {
-  g_mutex_lock (sounddata->sels_mutex);
+  g_mutex_lock (&sounddata->sels_mutex);
 }
 
 void
 sounddata_unlock_selection (sw_sounddata * sounddata)
 {
-  g_mutex_unlock (sounddata->sels_mutex);
+  g_mutex_unlock (&sounddata->sels_mutex);
 }
 
 guint

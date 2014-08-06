@@ -62,7 +62,7 @@
 
 #define USE_MONITOR_KEY "UseMonitor"
 
-static GMutex * play_mutex = NULL;
+static GMutex play_mutex;
 
 static sw_handle * main_handle = NULL;
 static sw_handle * monitor_handle = NULL;
@@ -176,7 +176,7 @@ head_read_unrestricted (sw_head * head, float * buf,
 
       p = po - (gdouble)si;
       si *= f->channels;
-      g_mutex_lock(head->sample->sounddata->data_mutex);
+      g_mutex_lock(&head->sample->sounddata->data_mutex);
 
       if (interpolate) {
 	si_next = si+f->channels;
@@ -206,7 +206,7 @@ head_read_unrestricted (sw_head * head, float * buf,
 	  b++; si++;
 	}
       }
-     g_mutex_unlock(head->sample->sounddata->data_mutex);
+     g_mutex_unlock (&head->sample->sounddata->data_mutex);
     }
 
     if (head->scrubbing) {
@@ -303,10 +303,10 @@ head_read (sw_head * head, float * buf, sw_framecount_t count,
     n = 0;
 
     if (head->restricted /* && !head->scrubbing */) {
-      g_mutex_lock (sounddata->sels_mutex);
+      g_mutex_lock (&sounddata->sels_mutex);
 
       if (g_list_length (sounddata->sels) == 0) {
-	g_mutex_unlock (sounddata->sels_mutex);
+	g_mutex_unlock (&sounddata->sels_mutex);
 
 	if (head->previewing && !head->scrubbing) {
 	  if (head->reverse) {
@@ -418,7 +418,7 @@ head_read (sw_head * head, float * buf, sw_framecount_t count,
 	}
       }
 
-      g_mutex_unlock (sounddata->sels_mutex);
+      g_mutex_unlock (&sounddata->sels_mutex);
 
     } else { /* unrestricted */
       if (head->previewing && !head->scrubbing) {
@@ -444,7 +444,7 @@ head_read (sw_head * head, float * buf, sw_framecount_t count,
       } else if (!head->restricted || sounddata->sels == NULL) {
 	head->offset = head->reverse ? sounddata->nr_frames : 0;
       } else {
-	g_mutex_lock (sounddata->sels_mutex);
+	g_mutex_lock (&sounddata->sels_mutex);
 	if (head->reverse) {
 	  gl = g_list_last (sounddata->sels);
 	  sel = (sw_sel *)gl->data;
@@ -454,7 +454,7 @@ head_read (sw_head * head, float * buf, sw_framecount_t count,
 	  sel = (sw_sel *)gl->data;
 	  head->offset = sel->sel_start;
 	}
-	g_mutex_unlock (sounddata->sels_mutex);
+	g_mutex_unlock (&sounddata->sels_mutex);
       }
 
       if (!head->looping || head->previewing) {
@@ -499,7 +499,7 @@ head_init_playback (sw_sample * s)
   sw_framecount_t sels_start, sels_end;
   sw_framecount_t delta;
 
-  /*  g_mutex_lock (s->play_mutex);*/
+  /*  g_mutex_lock (&s->play_mutex);*/
 
   s->by_user = FALSE;
 
@@ -510,7 +510,7 @@ head_init_playback (sw_sample * s)
 
 
   if (head->restricted) {
-    g_mutex_lock (s->sounddata->sels_mutex);
+    g_mutex_lock (&s->sounddata->sels_mutex);
 
     if ((gl = s->sounddata->sels) != NULL) {
       sel = (sw_sel *)gl->data;
@@ -520,7 +520,7 @@ head_init_playback (sw_sample * s)
 
       sel = (sw_sel *)gl->data;
       sels_end = sel->sel_end;
-      g_mutex_unlock (s->sounddata->sels_mutex);
+      g_mutex_unlock (&s->sounddata->sels_mutex);
 
       if (head->previewing) {
 	/* preroll 1 second */
@@ -570,7 +570,7 @@ head_init_playback (sw_sample * s)
     }
   }
 
-  /*  g_mutex_unlock (s->play_mutex);*/
+  /*  g_mutex_unlock (&s->play_mutex);*/
 }
 
 static void
@@ -623,8 +623,8 @@ channel_convert_adding (float * src, int src_channels,
 static void
 play_head_update_device (sw_head * head)
 {
-  g_mutex_lock (play_mutex);
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&play_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->monitor) {
     if (g_list_find (active_monitor_heads, head) == 0) {
@@ -638,8 +638,8 @@ play_head_update_device (sw_head * head)
     active_monitor_heads = g_list_remove (active_monitor_heads, head);
   }
 
-  g_mutex_unlock (head->head_mutex);
-  g_mutex_unlock (play_mutex);
+  g_mutex_unlock (&head->head_mutex);
+  g_mutex_unlock (&play_mutex);
 }
 
 #ifdef RECORD_DEMO_FILES
@@ -692,18 +692,18 @@ play_heads (GList ** heads, sw_handle * handle)
 
   for (gl = *heads; gl; gl = gl_next) {
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     head = (sw_head *)gl->data;
     gl_next = gl->next;
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
 
     if (!head) {
       /* XXX: wtf??? */
       return;
     } else if (!head->going || !sample_bank_contains (head->sample)) {
-      g_mutex_lock (play_mutex);
+      g_mutex_lock (&play_mutex);
       *heads = g_list_remove (*heads, head);
-      g_mutex_unlock (play_mutex);
+      g_mutex_unlock (&play_mutex);
     } else {
       s = head->sample;
       f = s->sounddata->format;
@@ -720,7 +720,7 @@ play_heads (GList ** heads, sw_handle * handle)
 
       /* XXX: store the head->offset NOW for device_offset referencing */
 
-      g_mutex_lock (s->play_mutex);
+      g_mutex_lock (&s->play_mutex);
 
       head->realoffset = device_offset (handle);
       if (head->realoffset == -1) {
@@ -737,7 +737,7 @@ play_heads (GList ** heads, sw_handle * handle)
 
       /*	if (!head->going) active = FALSE;*/
 
-      g_mutex_unlock (s->play_mutex);
+      g_mutex_unlock (&s->play_mutex);
     }
   }
 
@@ -836,7 +836,7 @@ play_active_heads (void)
       inactive_writes = 0;
     }
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     if (use_monitor) {
       prepare_to_play_heads (active_monitor_heads, monitor_handle);
       prepare_to_play_heads (active_main_heads, main_handle);
@@ -844,7 +844,7 @@ play_active_heads (void)
       prepare_to_play_heads (active_monitor_heads, main_handle);
       prepare_to_play_heads (active_main_heads, main_handle);
     }
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
 
     if (use_monitor) {
       count = PSIZ * monitor_handle->driver_channels;
@@ -1080,9 +1080,9 @@ stop_playback (sw_sample * s)
     head_set_going (head, FALSE);
     sample_set_playmarker (s, head->stop_offset, TRUE);
 
-    g_mutex_lock (play_mutex);
+    g_mutex_lock (&play_mutex);
     active_main_heads = g_list_remove (active_main_heads, head);
-    g_mutex_unlock (play_mutex);
+    g_mutex_unlock (&play_mutex);
   }
 }
 
@@ -1095,5 +1095,5 @@ any_playing (void)
 void
 init_playback (void)
 {
-  play_mutex = g_mutex_new ();
+  g_mutex_init (&play_mutex);
 }

@@ -179,7 +179,7 @@ sample_load_vorbis_data (sw_op_instance * inst)
   if (cframes == 0) cframes = 1;
 
   while (active && remaining > 0) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -215,7 +215,7 @@ sample_load_vorbis_data (sw_op_instance * inst)
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
   }
 
   ov_clear (vf);
@@ -317,7 +317,7 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_path_get_basename (sample->pathname));
 
 #ifdef DEVEL_CODE
   /* Throw the comments plus a few lines about the bitstream we're
@@ -346,11 +346,11 @@ sample_load_vorbis_info (sw_sample * sample, char * pathname)
       ++ptr;
     }
 
-    info_dialog_new (g_basename (sample->pathname), xifish_xpm,
+    info_dialog_new (g_path_get_basename (sample->pathname), xifish_xpm,
 		     _("Decoding %s\n"
 		       "Encoded by: %s\n\n"
 		       "%s"),
-		     g_basename (sample->pathname),
+		     g_path_get_basename (sample->pathname),
 		     ov_comment(vf,-1)->vendor, buf);
   }
 #endif /* DEVEL_CODE */
@@ -518,7 +518,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
   }
 
   while (!eos) {
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
       active = FALSE;
@@ -556,7 +556,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
       sample_set_progress_percent (sample, percent);
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
 
     /* vorbis does some data preanalysis, then divvies up blocks for
        more involved (potentially parallel) processing.  Get a single
@@ -631,7 +631,7 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 		     "Encoding of %s succeeded.\n\n"
 		     "%s written, %s audio\n"
 		     "Average bitrate: %.1f kbps",
-		     g_basename (sample->pathname),
+		     g_path_get_basename (sample->pathname),
 		     bytes_buf, time_buf,
 		     average_bitrate);
   } else {
@@ -651,14 +651,14 @@ vorbis_sample_save_thread (sw_op_instance * inst)
 		       "Encoding of %s FAILED\n\n"
 		       "%s written, %s audio (%d%% complete)\n"
 		       "Average bitrate: %.1f kbps",
-		       g_basename (pathname), bytes_buf, time_buf, percent,
+		       g_path_get_basename (pathname), bytes_buf, time_buf, percent,
 		       average_bitrate);
     } else {
       sweep_perror (errno_save,
 		    "Encoding of %s FAILED\n\n"
 		    "%s written, %s audio (%d%% complete)\n"
 		    "Average bitrate: %.1f kbps",
-		    g_basename (pathname), bytes_buf, time_buf, percent,
+		    g_path_get_basename (pathname), bytes_buf, time_buf, percent,
 		    average_bitrate);
     }
   }
@@ -684,7 +684,7 @@ vorbis_sample_save (sw_sample * sample, char * pathname)
 {
   char buf[64];
 
-  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_basename (pathname));
+  g_snprintf (buf, sizeof (buf), _("Saving %s"), g_path_get_basename (pathname));
 
   schedule_operation (sample, buf, &vorbis_save_op, pathname);
 
@@ -1107,7 +1107,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
  gdk_font_load("-*-helvetica-medium-r-normal-*-*-180-*-*-*-*-*-*");
  gtk_widget_push_style (style);
 */
-  label = gtk_label_new (g_basename (pathname));
+  label = gtk_label_new (g_path_get_basename (pathname));
   gtk_box_pack_start (GTK_BOX(hbox), label, TRUE, FALSE, 0);
   gtk_widget_show (label);
 

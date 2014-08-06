@@ -58,7 +58,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -80,7 +80,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	sample_set_progress_percent (sample, run_total / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -94,7 +94,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
     remaining = sel->sel_end - sel->sel_start;
 
     while (active && remaining > 0) {
-      g_mutex_lock (sample->ops_mutex);
+      g_mutex_lock (&sample->ops_mutex);
 
       if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
 	active = FALSE;
@@ -114,7 +114,7 @@ normalise (sw_sample * sample, sw_param_set pset, gpointer custom_data)
 	sample_set_progress_percent (sample, run_total * 100 / op_total);
       }
 
-      g_mutex_unlock (sample->ops_mutex);
+      g_mutex_unlock (&sample->ops_mutex);
     }
   }
 
@@ -144,7 +144,7 @@ static sw_procedure proc_normalise = {
   apply_normalise,
   NULL, /* custom_data */
 };
-  
+
 static GList *
 normalise_init (void)
 {

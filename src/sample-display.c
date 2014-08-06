@@ -861,7 +861,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
 
     /* lock the sounddata against destructive ops to make sure
      * sounddata->data doesn't change under us */
-    g_mutex_lock (sample->ops_mutex);
+    g_mutex_lock (&sample->ops_mutex);
 
     for (i = OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x));
 	 i < OFFSET_RANGE(nr_frames, XPOS_TO_OFFSET(x+1));
@@ -878,7 +878,7 @@ sample_display_draw_data_channel (GdkDrawable * win,
       }
     }
 
-    g_mutex_unlock (sample->ops_mutex);
+    g_mutex_unlock (&sample->ops_mutex);
 
     if (nr_pos > 0) {
       avgpos = totpos / nr_pos;

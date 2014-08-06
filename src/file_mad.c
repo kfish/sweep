@@ -422,7 +422,7 @@ sample_load_mad_info (sw_sample * sample, char * pathname)
     trim_registered_ops (sample, 0);
   }
 
-  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_basename (sample->pathname));
+  g_snprintf (buf, sizeof (buf), _("Loading %s"), g_path_get_basename (sample->pathname));
 
   schedule_operation (sample, buf, &mad_load_op, sample);
 

@@ -69,7 +69,7 @@ head_init_repeater (sw_head * head, GtkFunction function, gpointer data)
 {
   function (data);
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->repeater_tag > 0) {
     g_source_remove (head->repeater_tag);
@@ -78,7 +78,7 @@ head_init_repeater (sw_head * head, GtkFunction function, gpointer data)
   head->repeater_tag = g_timeout_add ((guint32)1000/FRAMERATE,
 					function, data);
 
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 }
 
 void
@@ -87,14 +87,14 @@ hctl_repeater_released_cb (GtkWidget * widget, gpointer data)
   sw_head_controller * hctl = (sw_head_controller *)data;
   sw_head * head = hctl->head;
 
-  g_mutex_lock (head->head_mutex);
+  g_mutex_lock (&head->head_mutex);
 
   if (head->repeater_tag > 0) {
     g_source_remove (head->repeater_tag);
     head->repeater_tag = 0;
   }
 
-  g_mutex_unlock (head->head_mutex);
+  g_mutex_unlock (&head->head_mutex);
 }
 
 void
@@ -593,7 +593,7 @@ head_new (sw_sample * sample, sw_head_t head_type)
 
   head->sample = sample;
 
-  head->head_mutex = g_mutex_new ();
+  g_mutex_init (&head->head_mutex);
   head->type = head_type;
   head->stop_offset = 0;
   head->offset = 0;
@@ -616,21 +616,21 @@ head_new (sw_sample * sample, sw_head_t head_type)
 void
 head_set_scrubbing (sw_head * h, gboolean scrubbing)
 {
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->scrubbing = scrubbing;
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
 head_set_previewing (sw_head * h, gboolean previewing)
 {
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->previewing = previewing;
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -639,7 +639,7 @@ head_set_looping (sw_head * h, gboolean looping)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->looping = looping;
 
@@ -648,7 +648,7 @@ head_set_looping (sw_head * h, gboolean looping)
     hctl_refresh_looping (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -657,7 +657,7 @@ head_set_reverse (sw_head * h, gboolean reverse)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->reverse = reverse;
 
@@ -666,7 +666,7 @@ head_set_reverse (sw_head * h, gboolean reverse)
     hctl_refresh_reverse (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -675,7 +675,7 @@ head_set_mute (sw_head * h, gboolean mute)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->mute = mute;
 
@@ -684,7 +684,7 @@ head_set_mute (sw_head * h, gboolean mute)
     hctl_refresh_mute (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -693,7 +693,7 @@ head_set_going (sw_head * h, gboolean going)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->going = going;
 
@@ -702,7 +702,7 @@ head_set_going (sw_head * h, gboolean going)
     hctl_refresh_going (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -711,7 +711,7 @@ head_set_restricted (sw_head * h, gboolean restricted)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->restricted = restricted;
 
@@ -720,17 +720,17 @@ head_set_restricted (sw_head * h, gboolean restricted)
     hctl_refresh_going (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
 head_set_stop_offset (sw_head * h, sw_framecount_t offset)
 {
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->stop_offset = offset;
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -739,7 +739,7 @@ head_set_offset (sw_head * h, sw_framecount_t offset)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   offset = CLAMP (offset, 0, h->sample->sounddata->nr_frames);
 
@@ -753,7 +753,7 @@ head_set_offset (sw_head * h, sw_framecount_t offset)
   if (h == h->sample->rec_head)
     sample_refresh_rec_marker (h->sample);
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
@@ -762,7 +762,7 @@ head_set_gain (sw_head * h, gfloat gain)
   GList * gl;
   sw_head_controller * hctl;
 
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->gain = gain;
 
@@ -771,27 +771,27 @@ head_set_gain (sw_head * h, gfloat gain)
     hctl_refresh_gain (hctl);
   }
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
 head_set_rate (sw_head * h, gfloat rate)
 {
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->rate = rate;
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 }
 
 void
 head_set_monitor (sw_head * h, gboolean monitor)
 {
-  g_mutex_lock (h->head_mutex);
+  g_mutex_lock (&h->head_mutex);
 
   h->monitor = monitor;
 
-  g_mutex_unlock (h->head_mutex);
+  g_mutex_unlock (&h->head_mutex);
 
   sample_update_device (h->sample);
 }
@@ -849,7 +849,7 @@ head_write (sw_head * head, float * buf, sw_framecount_t count)
   sw_sel * sel;
 
   while (head->restricted && remaining > 0) {
-    g_mutex_lock (sounddata->sels_mutex);
+    g_mutex_lock (&sounddata->sels_mutex);
 
     /* Find selection region that offset is or should be in */
     if (head->reverse) {
@@ -878,7 +878,7 @@ head_write (sw_head * head, float * buf, sw_framecount_t count)
       }
     }
 
-    g_mutex_unlock (sounddata->sels_mutex);
+    g_mutex_unlock (&sounddata->sels_mutex);
 
     if (gl == NULL) {
       if (head->looping) {

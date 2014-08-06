@@ -7,7 +7,7 @@ AC_INIT([sweep],[0.9.3],[sweep-devel@lists.sourceforge.net],
 		[sweep],[http://www.metadecks.org/software/sweep/])
 
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
 
 AC_ISC_POSIX
@@ -89,6 +89,13 @@ AC_SUBST(GTHREADS_CFLAGS)
 AC_SUBST(GTHREADS_LIBS)
 if test "x$HAVE_GTHREADS" != xyes ; then
   AC_CHECK_LIB(gthread-2.0, g_thread_init, HAVE_GTHREADS="maybe", sweep_config_ok="no")
+fi
+
+PKG_CHECK_MODULES(GMODULE, gmodule-2.0 >=  2.2.0, HAVE_GMODULE="yes", sweep_config_ok="no")
+AC_SUBST(GMODULE_CFLAGS)
+AC_SUBST(GMODULE_LIBS)
+if test "x$HAVE_GMODULE" != xyes ; then
+  AC_CHECK_LIB(gmodule-2.0, g_module_init, HAVE_GMODULE="maybe", sweep_config_ok="no")
 fi
 
 dnl

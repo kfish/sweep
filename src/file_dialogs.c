@@ -176,8 +176,8 @@ file_guess_mp3 (char * pathname)
 
   if (ext != NULL) {
     ext++;
-    if (!g_strncasecmp (ext, "mp3", 4)) return TRUE;
-    if (!g_strncasecmp (ext, "mp2", 4)) return TRUE;
+    if (!g_ascii_strncasecmp (ext, "mp3", 4)) return TRUE;
+    if (!g_ascii_strncasecmp (ext, "mp2", 4)) return TRUE;
   }
 
   return FALSE;
@@ -362,7 +362,7 @@ sample_revert_cb (GtkWidget * widget, gpointer data)
   snprintf (buf, sizeof (buf),
 	    _("Are you sure you want to revert %s to\n%s?\n\n"
 	      "All changes and undo information will be lost."),
-	    g_basename (sample->pathname), sample->pathname);
+	    g_path_get_basename (sample->pathname), sample->pathname);
 
   question_dialog_new (sample, _("Revert file"), buf,
 		       _("Revert"), _("Don't revert"),
@@ -406,7 +406,7 @@ file_guess_method (sw_sample * sample, char * pathname)
     ext++;
 
 #ifdef HAVE_OGGVORBIS
-    if (!g_strncasecmp (ext, "ogg", SW_DIR_LEN)) {
+    if (!g_ascii_strncasecmp (ext, "ogg", SW_DIR_LEN)) {
       sample->file_method = SWEEP_FILE_METHOD_OGGVORBIS;
       sample->file_format = 0;
       return;
@@ -414,7 +414,7 @@ file_guess_method (sw_sample * sample, char * pathname)
 #endif
 
 #ifdef HAVE_SPEEX
-    if (!g_strncasecmp (ext, "spx", SW_DIR_LEN)) {
+    if (!g_ascii_strncasecmp (ext, "spx", SW_DIR_LEN)) {
       sample->file_method = SWEEP_FILE_METHOD_SPEEX;
       sample->file_format = 0;
       return;
@@ -422,7 +422,7 @@ file_guess_method (sw_sample * sample, char * pathname)
 #endif
 
     /* MP3 has dummy annoying dialog support */
-    if (!g_strncasecmp (ext, "mp3", SW_DIR_LEN)) {
+    if (!g_ascii_strncasecmp (ext, "mp3", SW_DIR_LEN)) {
       sample->file_method = SWEEP_FILE_METHOD_MP3;
       sample->file_format = 0;
       return;
@@ -436,7 +436,7 @@ file_guess_method (sw_sample * sample, char * pathname)
       info.format = i ;
       sf_command (NULL, SFC_GET_FORMAT_MAJOR, &info, sizeof (info)) ;
 
-      if (!g_strncasecmp (ext, info.extension, SW_DIR_LEN)) {
+      if (!g_ascii_strncasecmp (ext, info.extension, SW_DIR_LEN)) {
 	sample->file_method = SWEEP_FILE_METHOD_LIBSNDFILE;
 	sample->file_format = info.format;
 	break; /* NB. this break is essential to ensure that eg. a file
@@ -449,8 +449,8 @@ file_guess_method (sw_sample * sample, char * pathname)
 
     /* Catch some common conventions not offered by libsndfile */
     if (sample->file_method == SWEEP_FILE_METHOD_BY_EXTENSION) {
-      if (!g_strncasecmp(ext, "aifc", SW_DIR_LEN) ||
-	  !g_strncasecmp(ext, "aif", SW_DIR_LEN)) {
+      if (!g_ascii_strncasecmp(ext, "aifc", SW_DIR_LEN) ||
+	  !g_ascii_strncasecmp(ext, "aif", SW_DIR_LEN)) {
 	sample->file_method = SWEEP_FILE_METHOD_LIBSNDFILE;
 	sample->file_format = SF_FORMAT_AIFF;
       }
@@ -462,7 +462,7 @@ file_guess_method (sw_sample * sample, char * pathname)
       desc = &file_formats[i];
       exts = g_strsplit (desc->exts, ",", 16);
       for (e = exts; *e; e++) {
-	if (!g_strncasecmp (*e, ext, SW_DIR_LEN)) {
+	if (!g_ascii_strncasecmp (*e, ext, SW_DIR_LEN)) {
 	  sample->file_method = SWEEP_FILE_METHOD_LIBSNDFILE;
 	  sample->file_format = desc->file_format;
 	}
@@ -535,7 +535,7 @@ overwrite_cancel_cb (GtkWidget * widget, gpointer data)
   save_as_data * sd = (save_as_data *)data;
   gchar msg [1024];
 
-  snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_basename (sd->pathname));
+  snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_path_get_basename (sd->pathname));
   sample_set_tmp_message (sd->sample, msg);
 
   g_free (sd);
@@ -806,7 +806,7 @@ sample_save_as_cb(GtkWidget * widget, gpointer data)
     } else if (sd->pathname != NULL) {
       gchar msg [1024];
 
-      snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_basename (sd->pathname));
+      snprintf (msg, sizeof (msg), _("Save as %s cancelled"), g_path_get_basename (sd->pathname));
       sample_set_tmp_message (sd->sample, msg);
     } else {
 

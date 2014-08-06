@@ -124,7 +124,7 @@ sweep_set_window_icon (GtkWindow *window)
   if (window_icon)
    {
       gtk_window_set_icon (GTK_WINDOW (window), window_icon);
-      gdk_pixbuf_unref (window_icon);
+      g_object_unref (window_icon);
    }
 }
 
