@@ -366,7 +366,7 @@ AC_ARG_ENABLE(oss,
      [ ac_enable_oss=no ])
 
 if test "x${ac_enable_pulseaudio}" != xno ; then
-  PKG_CHECK_MODULES(PULSEAUDIO, libpulse-simple >= 0.9.10, HAVE_PULSEAUDIO="yes", sweep_config_ok="no")
+  PKG_CHECK_MODULES(PULSEAUDIO, libpulse-simple >= 0.9.10, HAVE_PULSEAUDIO="yes")
   AC_SUBST(PULSEAUDIO_CFLAGS)
   AC_SUBST(PULSEAUDIO_LIBS)
   if test "x$HAVE_PULSEAUDIO" = xyes; then
@@ -378,13 +378,11 @@ else
 fi
 
 if test "x${ac_enable_alsa}" != xno ; then
-  PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0,
-                    HAVE_ALSA="yes", sweep_config_ok="no")
+  PKG_CHECK_MODULES(ALSA, alsa >= 1.0.0, HAVE_ALSA="yes")
   AC_SUBST(ALSA_CFLAGS)
   AC_SUBST(ALSA_LIBS)
-  AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.])
-  if test "x$HAVE_ALSA" == xyes ; then
-    AC_CHECK_LIB(asound, snd_seq_open, HAVE_ALSA="maybe", sweep_config_ok="no")
+  if test "x$HAVE_ALSA" = xyes ; then
+    AC_DEFINE([DRIVER_ALSA], [], [Define if we have and want alsa.])
     sweep_config_driver="$sweep_config_driver ALSA"
   fi
 else
@@ -567,30 +565,6 @@ if test "x$HAVE_LIBSNDFILE" = xmaybe ; then
 ])
 fi
 
-if test "x${ac_enable_alsa}" != xno ; then
-  if test "x$HAVE_ALSA" != xyes ; then
-    AC_MSG_RESULT([
-*** alsa-lib version 1.0.0 or greater, available from
-*** http://alsa-project.org/
-])
-  fi
-  if test "x$HAVE_ALSA" = xmaybe ; then
-    AC_MSG_RESULT([
-      Development files missing: alsa-lib 1.0.0 or greater seems to exist
-      on your system, however the pkg-config tool cannot find the
-      build information.
-])
-  fi
-fi
-
-if test "x${ac_enable_pulseaudio}" != xno ; then
-  if test "x$HAVE_PULSEAUDIO" != xyes ; then
-    AC_MSG_RESULT([
-*** PulseAudio, available from http://pulseaudio.org/
-])
-  fi
-fi
-
 if test "x$HAVE_VORBIS" = xmaybe ; then
     AC_MSG_RESULT([
       Development files missing: The libogg, libvorbis, libvorbisenc and
@@ -615,7 +589,7 @@ fi
 
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
    test "x$HAVE_LIBSNDFILE" = xmaybe || test "x$HAVE_LIBTDB" = xmaybe ||
-   test "x$HAVE_GTHREADS" = xmaybe || test "x$HAVE_ALSA" = xmaybe ||
+   test "x$HAVE_GTHREADS" = xmaybe || test "x$HAVE_GMODULE" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
   AC_MSG_RESULT([
 *** HOW TO FIX "development files missing": you have probably
