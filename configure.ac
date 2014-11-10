@@ -135,23 +135,6 @@ if test "x$HAVE_LIBSNDFILE" = xmaybe ; then
   fi
 fi
 
-dnl
-dnl  Detect tdb (Tiny Database library)
-dnl
-
-PKG_CHECK_MODULES(TDB, tdb >= 1.2.0,
-                  HAVE_LIBTDB="yes", HAVE_LIBTDB="no")
-
-if test "x$HAVE_LIBTDB" = xyes ; then
-  AC_DEFINE([HAVE_LIBTDB], [], [Define if we have tdb.])
-  AC_SUBST(TDB_CFLAGS)
-  AC_SUBST(TDB_LIBS)
-else
-  sweep_config_ok="no"
-fi
-
-
-
 AC_CHECK_SIZEOF(off_t,1)
 
 
@@ -588,7 +571,7 @@ if test "x$HAVE_VORBIS" != xyes ; then
 fi
 
 if test "x$HAVE_GLIB" = xmaybe || test "x$HAVE_GTK" = xmaybe ||
-   test "x$HAVE_LIBSNDFILE" = xmaybe || test "x$HAVE_LIBTDB" = xmaybe ||
+   test "x$HAVE_LIBSNDFILE" = xmaybe || test "x$HAVE_TDB" = xmaybe ||
    test "x$HAVE_GTHREADS" = xmaybe || test "x$HAVE_GMODULE" = xmaybe ||
    test "x$HAVE_OGG" = xmaybe || test "x$HAVE_VORBIS" = xmaybe ; then
   AC_MSG_RESULT([
@@ -629,6 +612,7 @@ m4/Makefile
 include/Makefile
 include/sweep/Makefile
 src/Makefile
+src/tdb/Makefile
 plugins/Makefile
 plugins/echo/Makefile
 plugins/normalise/Makefile
@@ -656,7 +640,6 @@ AC_MSG_RESULT([
 **     MPEG (MP3) loading: ...... $HAVE_MAD
 **     Speex support: ........... $HAVE_SPEEX
 **     Secret Rabbit Code: ...... $HAVE_LIBSAMPLERATE
-**     libtdb for preferences: .. $HAVE_LIBTDB
 **     Translations: ............ $ALL_LINGUAS
 **
 **  Installation directories:

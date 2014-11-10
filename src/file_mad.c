@@ -214,7 +214,7 @@ enum mad_flow output(void *data,
 
   gboolean active = TRUE;
 
-  g_mutex_lock (sample->ops_mutex);
+  g_mutex_lock (&sample->ops_mutex);
 
   if (sample->edit_state == SWEEP_EDIT_STATE_CANCEL) {
     active = FALSE;
@@ -228,12 +228,12 @@ enum mad_flow output(void *data,
     info->nr_frames += pcm->length;
 
     if (info->nr_frames > sample->sounddata->nr_frames) {
-		g_mutex_lock(sample->sounddata->data_mutex);
+		g_mutex_lock(&sample->sounddata->data_mutex);
 
 		sample->sounddata->data = g_realloc(sample->sounddata->data,
 		   frames_to_bytes (sample->sounddata->format,
 				    info->nr_frames));
-	    g_mutex_unlock(sample->sounddata->data_mutex);
+	    g_mutex_unlock(&sample->sounddata->data_mutex);
 
     }
 
@@ -258,7 +258,7 @@ enum mad_flow output(void *data,
 #endif
 
   }
-  g_mutex_unlock (sample->ops_mutex);
+  g_mutex_unlock (&sample->ops_mutex);
 
   return (active ? MAD_FLOW_CONTINUE : MAD_FLOW_STOP);
 }

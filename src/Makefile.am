@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = tdb
+
 AM_CFLAGS = \
 	-DPACKAGE_DATA_DIR='@PACKAGE_DATA_DIR@' \
 	$(GTK_DISABLE_DEPRECATED) \
@@ -10,12 +12,14 @@ AM_CFLAGS = \
 	@GLIB_CFLAGS@ \
 	@GTHREADS_CFLAGS@ \
 	@ALSA_CFLAGS@ \
-	@PULSEAUDIO_CFLAGS@ \
-	@TDB_CFLAGS@
+	@PULSEAUDIO_CFLAGS@
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/intl \
-	-I$(top_srcdir)/include
+	-I$(top_srcdir)/include \
+	-I$(top_srcdir)/src/tdb
+
+TDB_LIBS = $(top_builddir)/src/tdb/libtdb.a
 
 bin_PROGRAMS = sweep
 
