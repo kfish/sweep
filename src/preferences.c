@@ -153,7 +153,7 @@ prefs_delete (const char * key)
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   return tdb_delete (prefs_tdb, key_data);
@@ -167,7 +167,7 @@ prefs_get_int (const char * key, int default_value)
 
   if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
@@ -190,12 +190,12 @@ prefs_set_int (const char * key, int val)
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   nval = g_htonl (val);
 
-  val_data.dptr = (unsigned char *)&nval;
+  val_data.dptr = (char *)&nval;
   val_data.dsize = sizeof (int);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
@@ -209,7 +209,7 @@ prefs_get_long (const char * key, long default_value)
 
   if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
@@ -232,12 +232,12 @@ prefs_set_long (const char * key, long val)
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   nval = val;
 
-  val_data.dptr = (unsigned char *)&nval;
+  val_data.dptr = (char *)&nval;
   val_data.dsize = sizeof (long);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
@@ -252,7 +252,7 @@ prefs_get_float (const char * key, float default_value)
   union { int ip; float fp;} fp;
   if (prefs_tdb == NULL) return default_value;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
@@ -287,14 +287,14 @@ prefs_set_float (const char * key, float val)
   printf ("preferences.c: setting %s to %f\n", key, val);
 #endif
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   fp.fp = val;
   ival = fp.ip;
   nval = g_htonl (ival);
 
-  val_data.dptr = (unsigned char *)&nval;
+  val_data.dptr = (char *)&nval;
   val_data.dsize = sizeof (float);
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
@@ -312,7 +312,7 @@ prefs_get_string (const char * key, char * value, size_t maxlen, const char * de
     return;
   }
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
   val_data = tdb_fetch (prefs_tdb, key_data);
@@ -328,10 +328,10 @@ prefs_set_string (const char * key, const char * val)
 
   if (prefs_tdb == NULL) return -1;
 
-  key_data.dptr = (unsigned char *) key;
+  key_data.dptr = (char *) key;
   key_data.dsize = strlen (key);
 
-  val_data.dptr = (unsigned char *) val;
+  val_data.dptr = (char *) val;
   val_data.dsize = strlen (val) + 1;
 
   return tdb_store (prefs_tdb, key_data, val_data, TDB_REPLACE);
