@@ -64,14 +64,14 @@ prefs_init ()
   struct stat sbuf;
 
   prefs_path = g_get_home_dir ();
-  prefs_path = g_strconcat (prefs_path, "/.sweep", NULL);
+  prefs_path = g_strconcat (prefs_path, "/.config/sweep", NULL);
 
   if (stat (prefs_path, &sbuf) == -1) {
     switch (errno) {
     case ENOENT:
       if (mkdir (prefs_path, DIR_MODE) == -1) {
 	if (errno != EEXIST) {
-	  perror (_("Error creating ~/.sweep"));
+	  perror (_("Error creating ~/.config/sweep"));
 	  exit (1);
 	}
       } else {
@@ -82,7 +82,7 @@ prefs_init ()
       /* Directory exists, permission denied -- handled at access test */
       break;
     default:
-      perror (_("Error on ~/.sweep"));
+      perror (_("Error on ~/.config/sweep"));
       exit (1);
     }
   }
@@ -91,14 +91,14 @@ prefs_init ()
     switch (errno) {
     case EACCES:
       if (chmod (prefs_path, DIR_MODE) == -1) {
-	perror (_("Error setting permissions on ~/.sweep"));
+	perror (_("Error setting permissions on ~/.config/sweep"));
 	exit (1);
       } else {
 	printf ("Changed mode of %s to %04o\n", prefs_path, DIR_MODE);
       }
       break;
     default:
-      perror (_("Error accessing ~/.sweep"));
+      perror (_("Error accessing ~/.config/sweep"));
       exit (1);
     }
   }
@@ -109,7 +109,7 @@ prefs_init ()
     switch (errno) {
     case EACCES:
       if (chmod (prefs_path, FILE_MODE) == -1) {
-	perror ("Error setting permissions on ~/.sweep/preferences.tdb");
+	perror ("Error setting permissions on ~/.config/sweep/preferences.tdb");
 	exit (1);
       } else {
 	printf ("Changed mode of %s to %04o\n", prefs_path, FILE_MODE);
@@ -128,12 +128,12 @@ prefs_init ()
 	{
       prefs_tdb = tdb_open (prefs_path, 0, TDB_NOLOCK, O_RDWR | O_CREAT, FILE_MODE);
 	  if (prefs_tdb != NULL) {
-        fprintf(stderr,  "Warning: couldn't get lock to  ~/.sweep/preferences.tdb.\n"
+        fprintf(stderr,  "Warning: couldn't get lock to  ~/.config/sweep/preferences.tdb.\n"
            "         opened without locking\n");
 		  return;
       }
     }
-	perror (_("Error opening ~/.sweep/preferences.tdb"));
+	perror (_("Error opening ~/.config/sweep/preferences.tdb"));
     exit (1);
   }
 }

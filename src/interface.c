@@ -94,7 +94,7 @@ init_accels (void)
   gchar * accels_path;
 
   accels_path = (char *)g_get_home_dir ();
-  accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
+  accels_path = g_strconcat (accels_path, "/.config/sweep/keybindings", NULL);
   gtk_accel_map_load (accels_path);
 
 }
@@ -105,7 +105,7 @@ save_accels (void)
   gchar * accels_path;
 
   accels_path = (char *)g_get_home_dir ();
-  accels_path = g_strconcat (accels_path, "/.sweep/keybindings", NULL);
+  accels_path = g_strconcat (accels_path, "/.config/sweep/keybindings", NULL);
   gtk_accel_map_save (accels_path);
 
 }
