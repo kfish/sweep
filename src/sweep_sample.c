@@ -1805,21 +1805,13 @@ sample_info_dialog_ok_cb (GtkWidget * widget, gpointer data)
   gtk_widget_hide (dialog);
 }
 
-/*
-static gchar * filename_info[] = { N_("Filename:"), "" };
-static gchar * rate_info[] = { N_("Sampling rate:"), "" };
-static gchar * channels_info[] = { N_("Channels:"), "" };
-static gchar * size_info[] = { N_("Data memory:"), "" };
-static gchar * duration_info[] = { N_("Duration:"), "" };
-*/
-
 void
 sample_show_info_dialog (sw_sample * sample)
 {
   GtkWidget * dialog;
   GtkWidget * clist;
   GtkWidget * ok_button;
-  gchar * list_item[] = { "" };
+  gchar * list_item[] = { N_(""), "" };
   gint i=0;
 
   if (sample->info_clist == NULL) {
@@ -1840,13 +1832,6 @@ sample_show_info_dialog (sw_sample * sample)
 					GTK_JUSTIFY_LEFT);
     gtk_box_pack_start (GTK_BOX(GTK_DIALOG(dialog)->vbox), clist,
 			FALSE, FALSE, 0);
-    /*
-    gtk_clist_append (GTK_CLIST(clist), filename_info);
-    gtk_clist_append (GTK_CLIST(clist), rate_info);
-    gtk_clist_append (GTK_CLIST(clist), channels_info);
-    gtk_clist_append (GTK_CLIST(clist), size_info);
-    gtk_clist_append (GTK_CLIST(clist), duration_info);
-    */
 
     gtk_clist_append (GTK_CLIST(clist), list_item);
     gtk_clist_set_text (GTK_CLIST(clist), i++, 0, _("Filename: "));
