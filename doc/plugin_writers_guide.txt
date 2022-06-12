@@ -93,7 +93,7 @@ which can be translated.
 
 When writing a plugin, you will provide some text strings describing the
 plugin's procedures, the names of parameters used, and short descriptions
-of the paramters meanings. In order to enable translators to provide
+of the parameters meanings. In order to enable translators to provide
 complete translations of Sweep and its plugins in other languages, you
 must specifically mark strings which should be translated.
 
@@ -104,7 +104,7 @@ for later translation; _(...) marks a string for immediate translation,
 and can only be used where a function call is permitted.
 
 For more detailed information on the use of these macros, see the
-relevent section in "GTK+/Gnome Application Development" [4].
+relevant section in "GTK+/Gnome Application Development" [4].
 
 If you would like to add a translation for Sweep into a new language,
 all you need to do is provide translations for the text strings used in
@@ -523,7 +523,7 @@ perform_filter_op (sw_sample * sample, char * desc, SweepFilter func,
 		   sw_param_set pset, gpointer custom_data);
 
 For example, the Normalise plugin (plugins/normalise/normalise.c) is
-implemened as a Filter. This is necessary because it must first find
+implemented as a Filter. This is necessary because it must first find
 the greatest data value in any of the selected regions, and then in
 a second pass amplify each region by an amount calculated.
 
@@ -714,7 +714,7 @@ releases are subject to change.
 The version information V = M.m.R is updated to V' as follows:
 
 	1. If any interfaces have been removed or modified by a
-release (ie. backwards compatability has been broken) then the Major
+release (ie. backwards compatibility has been broken) then the Major
 number is incremented and Minor and Revision are set to 0. (V' = M+1.0.0)
 
 	2. Otherwise, if any interfaces have been added since the last
@@ -755,7 +755,7 @@ Note that this flag contains colons, not dots.
 Appendix A. Keeping in touch with Sweep development
 ===================================================
 
-The Sweep homepage contains links to many relevent resources.
+The Sweep homepage contains links to many relevant resources.
 http://sweep.sourceforge.net/
 
 The Sweep project page on Sourceforge holds the infrastructure for such

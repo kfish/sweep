@@ -320,7 +320,7 @@ static const char *category_to_name (int category) internal_function;
 #endif
 
 
-/* For those loosing systems which don't have `alloca' we have to add
+/* For those losing systems which don't have `alloca' we have to add
    some additional code emulating it.  */
 #ifdef HAVE_ALLOCA
 /* Nothing has to be done.  */
@@ -601,7 +601,7 @@ DCIGETTEXT (const char *domainname, const char *msgid1, const char *msgid2,
 	  /* When this is a SUID binary we must not allow accessing files
 	     outside the dedicated directories.  */
 	  if (ENABLE_SECURE && IS_PATH_WITH_DIR (single_locale))
-	    /* Ingore this entry.  */
+	    /* Ignore this entry.  */
 	    continue;
 	}
 

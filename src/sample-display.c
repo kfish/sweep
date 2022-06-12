@@ -2376,7 +2376,7 @@ sample_display_focus_in (GtkWidget * widget, GdkEventFocus * event)
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_HAS_FOCUS);
  /*
-  * FIXME: nonexistant in GTK+-2.0
+  * FIXME: nonexistent in GTK+-2.0
   * docs say draw in the expose function. draw what though?
   *
   *	gtk_widget_draw_focus (widget);
@@ -2405,7 +2405,7 @@ sample_display_focus_out (GtkWidget * widget, GdkEventFocus * event)
 
   GTK_WIDGET_UNSET_FLAGS (widget, GTK_HAS_FOCUS);
  /*
-  * FIXME: nonexistant in GTK+-2.0
+  * FIXME: nonexistent in GTK+-2.0
   * docs say draw in the expose function. draw what though?
   *
   *	gtk_widget_draw_focus (widget);

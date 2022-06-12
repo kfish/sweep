@@ -564,7 +564,7 @@ splice_out_sel (sw_sample * sample)
     osel = sel;
   }
 
-  /* Move offsets occuring after last sel */
+  /* Move offsets occurring after last sel */
   if (sample->user_offset > sel->sel_end) {
     sample->user_offset -= sel_length;
   }

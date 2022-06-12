@@ -26,7 +26,7 @@
  *   - Its API TDB not const correct ie it requires that the const correct API
  *     for preferences needs to cast away const internally.
  *   - Samba uses Talloc for memory management and the TDB API is therefore a
- *     little alloction happy. For instance, *every* tdb_fetch() call returns
+ *     little allocation happy. For instance, *every* tdb_fetch() call returns
  *     a pointer than the *caller* needs to free.
  */
 

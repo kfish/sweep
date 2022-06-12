@@ -16,7 +16,7 @@ This release is available as a source tarball at:
 Latest News
 -----------
 
-This is a maintainance release, including a new Spanish translation,
+This is a maintenance release, including a new Spanish translation,
 various bugfixes and no new functionality.
 
 Sweep has moved back into CVS at SourceForge. Five new developers have

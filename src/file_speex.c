@@ -111,7 +111,7 @@
  * configure. Then, remove all references to SPEEX_HAVE_BETA4 (assume
  * this is true, as those features will be available), and also assume
  * that SPEEX_NB_MODES > 2. This should reduce the random ifdef'ing
- * present to accomodate the flux of prerelease versions of Speex.
+ * present to accommodate the flux of prerelease versions of Speex.
  */
 
 #ifdef SPEEX_SET_DTX
@@ -535,7 +535,7 @@ sample_load_speex_info (sw_sample * sample, char * pathname)
    */
   if (sample == NULL) {
     /* Channels and rate will be set during decoding and are basically
-     * irrelevent here. Set them to 1, 8000 assuming these are the most
+     * irrelevant here. Set them to 1, 8000 assuming these are the most
      * likely values, in which case the file info displayed in the window
      * will not change suddenly
      */
@@ -1962,7 +1962,7 @@ create_speex_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "Each encoded file should have a different "
 			  "serial number; "
 			  "re-use of Ogg serial numbers in different files "
-			  "may create incompatabilities with streaming "
+			  "may create incompatibilities with streaming "
 			  "applications. "
 			  "This option is provided for bitstream engineering "
 			  "purposes only.\n"
