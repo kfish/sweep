@@ -15,7 +15,7 @@ This release is available as a source tarball at:
 New in this release
 -------------------
 
-This is maintainance release, including:
+This is maintenance release, including:
 
  	* updates for ALSA 1.0 (Daniel Dreschers, Charles Turner),
 	* a new Polish translation (Radoslaw Korzeniewski),

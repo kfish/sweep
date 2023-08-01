@@ -79,12 +79,12 @@ file_is_mpeg_audio (const char * pathname)
 
 /* FIXME
  * the mpeg frame marker can occur in non mpeg files so
- * one blind check for a marker can produce a false postive.
+ * one blind check for a marker can produce a false positive.
  * similarly, due to the metadata tags, the max
  * frame size may also not be a large enough window within
  * which to find a frame in a legal mpegfile.
  *
- * reimplement this check as a contextual verfification of
+ * reimplement this check as a contextual verification of
  * a sequence of frames, starting from somewhere in the middle
  * of a file. in the mean time, raise size of buf from 2048 to 8192
  * to mitigate the chance of a false negative. (with an increased
@@ -388,7 +388,7 @@ sample_load_mad_info (sw_sample * sample, char * pathname)
    */
   if (sample == NULL) {
     /* Channels and rate will be set during decoding and are basically
-     * irrelevent here. Set them to 2, 44100 assuming these are the most
+     * irrelevant here. Set them to 2, 44100 assuming these are the most
      * likely values, in which case the file info displayed in the window
      * will not change suddenly
      */

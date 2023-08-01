@@ -655,7 +655,7 @@ static int remove_from_freelist(TDB_CONTEXT *tdb, tdb_off off, tdb_off next)
 }
 
 /* Add an element into the freelist. Merge adjacent records if
-   neccessary. */
+   necessary. */
 static int tdb_free(TDB_CONTEXT *tdb, tdb_off offset, struct list_struct *rec)
 {
 	tdb_off right, left;
@@ -1320,7 +1320,7 @@ int tdb_traverse(TDB_CONTEXT *tdb, tdb_traverse_func fn, void *private_val)
 	struct tdb_traverse_lock tl = { NULL, 0, 0 };
 	int ret, count = 0;
 
-	/* This was in the initializaton, above, but the IRIX compiler
+	/* This was in the initialization, above, but the IRIX compiler
 	 * did not like it.  crh
 	 */
 	tl.next = tdb->travlocks.next;
@@ -1998,7 +1998,7 @@ int tdb_chainunlock_read(TDB_CONTEXT *tdb, TDB_DATA key)
 }
 
 
-/* register a loging function */
+/* register a logging function */
 void tdb_logging_function(TDB_CONTEXT *tdb, void (*fn)(TDB_CONTEXT *, int , const char *, ...))
 {
 	tdb->log_fn = fn;

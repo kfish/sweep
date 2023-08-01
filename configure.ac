@@ -43,7 +43,7 @@ AC_ARG_ENABLE(experimental,
      [ ac_enable_experimental=yes ])
 
 if test "x${ac_enable_experimental}" = xyes ; then
-    AC_DEFINE([DEVEL_CODE], [], [Whether to build the develpment code.])
+    AC_DEFINE([DEVEL_CODE], [], [Whether to build the development code.])
 fi
 
 
@@ -378,7 +378,7 @@ if test "x${ac_enable_oss}" != xno ; then
   if test "x${ac_cv_header_sys_soundcard_h}" = xyes || \
     test "x${ac_cv_header_machine_soundcard_h}" = xyes; then
     AC_DEFINE([DRIVER_OSS], [], [Define if we have and want OSS.])
-    dnl Check for NetBSD's OSS compatability layer
+    dnl Check for NetBSD's OSS compatibility layer
     AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
     sweep_config_driver="$sweep_config_driver OSS"
   fi

@@ -278,7 +278,7 @@ typedef enum {
  * If this field is valid, then the parameter will only have values
  * equal to  (lower + n*step) for integer n.
  *
- * This constraint is ignored for string paramters.
+ * This constraint is ignored for string parameters.
  */
 #define SW_RANGE_STEP_VALID (1<<2)
 

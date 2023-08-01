@@ -236,7 +236,7 @@ alsa_device_setup (sw_handle * handle, sw_format * format)
        (pcm_handle, hwparams, &periods, 0)) < 0) {
     fprintf (stderr,
 	     "sweep: alsa_setup: audio interface does not support "
-	     "period size of %d (%s) - suprising that we get this err!\n",
+	     "period size of %d (%s) - surprising that we get this err!\n",
 	     periods, snd_strerror (err));
     return;
   }
@@ -334,7 +334,7 @@ alsa_device_write (sw_handle * handle, const float * buf, size_t count)
   uframes = handle->driver_channels > 0 ? count / handle->driver_channels : 0;
   //printf ("sweep: alsa_write 1\n");
 
-  // this basicaly ripped straight out of alsaplayer alsa-final driver:
+  // this basically ripped straight out of alsaplayer alsa-final driver:
   err = snd_pcm_writei(pcm_handle, buf, uframes);
 
   if (err == -EPIPE) {

@@ -15,7 +15,7 @@ This release is available as a source tarball at:
 New in this release
 -------------------
 
-This is a maintainance release.
+This is a maintenance release.
 
 The previous release (0.9.0) had a bug that prevented sweep from
 populating the ALSA devices in settings. The bug was only apparent

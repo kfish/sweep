@@ -148,7 +148,7 @@ chooser_set_number_direct (GtkWidget * chooser, int number)
 
   /*
    * Print the number in the direct_entry, but leave it blank for zero.
-   * (otherwise, if zero is printed as '0', the GtkEntry behaves wierdly).
+   * (otherwise, if zero is printed as '0', the GtkEntry behaves weirdly).
    */
   if (number > 0) {
     snprintf (buf, sizeof (buf), "%d", number);

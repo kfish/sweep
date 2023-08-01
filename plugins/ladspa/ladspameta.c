@@ -360,7 +360,7 @@ ladspa_meta_apply_filter (sw_sample * sample, sw_param_set pset,
 
   /* Basic assumption of this meta plugin, which was
    * checked above in is_usable(); nb. for future expansion
-   * much of this routine is written to accomodate this
+   * much of this routine is written to accommodate this
    * assumption being incorrect.
    */
   g_assert (nr_ai == nr_ao);

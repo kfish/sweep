@@ -1489,7 +1489,7 @@ create_vorbis_encoding_options_dialog (sw_sample * sample, char * pathname)
 			  "Each encoded file should have a different "
 			  "serial number; "
 			  "re-use of Ogg serial numbers in different files "
-			  "may create incompatabilities with streaming "
+			  "may create incompatibilities with streaming "
 			  "applications. "
 			  "This option is provided for bitstream engineering "
 			  "purposes only.\n"

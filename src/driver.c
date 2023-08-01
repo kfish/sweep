@@ -237,7 +237,7 @@ choose_driver_cb (GtkWidget * widget, gpointer data)
   driver_index = gtk_combo_box_get_active (GTK_COMBO_BOX(driver_combo));
 
   /* Change the driver dialog, not the current_dialog. The change in
-  ** dialog_driver gets picked up and transfered to current_driver
+  ** dialog_driver gets picked up and transferred to current_driver
   ** at the next call to driver_open().
   */
   dialog_driver = driver_table [driver_index];
